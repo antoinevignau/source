@@ -1,0 +1,2051 @@
+Platform: BlueSCSI (Pico2/W)
+FW Version: 2026.04.27-rel Apr 28 2026 00:34:35
+Flash chip size: 4096 kB
+=== Bootloader Log ===
+[0ms] Bootloader version: Apr 28 2026 00:34:19 BlueSCSI
+[0ms] Looking for firmware: BlueSCSI_Pico_2_DaynaPORT*.bin
+[188ms] Bootloader continuing to main firmware
+=== End Bootloader Log ===
+Reclock Pico 2/2W based boards to standardized speed
+Initial Clock set to 150MHz
+Reclocking the MCU to 155MHz
+Setting the SDIO clock to 26MHz
+After reclocking, system reports clock set to 155MHz
+ 
+=== SD Card Info ===
+SD card detected, FAT32 volume size: 30424 MB
+SD Name: SK32G, MID: 0x03 (SanDisk), OID: "SD" (0x53 0x44)
+
+=== Global Config ===
+Reading configuration from bluescsi.ini
+
+=== Finding images ===
+=== Finding images in / ===
+== Opening /HD60 GSOS 6.0.4.hda for ID:6 LUN:0
+---- INFO: Image file is fragmented (3 fragments), FastSeek enabled for best performance.
+---- Configuring as disk drive
+== Opening /NE4.hda for ID:4 LUN:0
+---- Configuring as network based on image name
+== Opening /CD50 DeluxeWare.hda for ID:5 LUN:0
+---- Configuring as CD-ROM drive
+
+== Platform supports ROM drive up to 2848 kB
+ 
+=== Configured SCSI Devices ===
+ID: 4, Type: Network
+ID: 5, BlockSize: 2048, Type: Optical, Quirks: Apple, Size: 664576kB, Removable
+ID: 6, BlockSize: 512, Type: Fixed, Quirks: Apple, Size: 102400kB
+ 
+=== Network Initialization ===
+Wi-Fi MAC: 00:80:19:65:DA:8C
+No Wi-Fi SSID or Password found. Use the BlueSCSI Wi-Fi DA to configure the network.
+
+ID: 5, Eject button: #1
+Clock set to: 155MHz
+Initialization complete!
+Disabling status LED
+INFO: Pico Voltage: 3.295V.
+WARNING: Host used command 0x1C which is affected by drive geometry. Current settings are 0 sectors x 0 heads = 0 but image size of 332288 sectors is not divisible. This can cause error messages in diagnostics tools.
+Switching to next image for id 5: CD5/
+---- Image file is read-only, writes disabled
+---- Failed to load image 'CD5/', ignoring
+WARNING: unable to find capacity of device ID 5
+WARNING: Host attempted read at sector 1+1, exceeding image size 0 sectors (512B/sector)
+WARNING: unable to find capacity of device ID 5
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+[2786852ms] Set debug logs to: true
+[2786852ms] DBG ---- STATUS: 0 GOOD
+[2786855ms] DBG ---- MESSAGE_IN
+[2786855ms] DBG ------ IN: 0x00 
+[2786856ms] DBG -- BUS_FREE
+[2786859ms] DBG -- BUS_BUSY
+[2786859ms] DBG ---- SELECTION: 4
+[2786861ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[2786861ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[2786862ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[2786862ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[2786863ms] Debug currently set to: true
+[2786863ms] DBG ---- DATA_IN
+[2786865ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[2786865ms] DBG ---- STATUS: 0 GOOD
+[2786871ms] DBG ---- MESSAGE_IN
+[2786871ms] DBG ------ IN: 0x00 
+[2786872ms] DBG -- BUS_FREE
+[2796347ms] DBG -- BUS_BUSY
+[2796347ms] DBG ---- SELECTION: 4
+[2796349ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[2796350ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[2796351ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[2796351ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+Debug currently set to: false
+WARNING: unable to find capacity of device ID 5
+WARNING: Host attempted read at sector 1+1, exceeding image size 0 sectors (512B/sector)
+WARNING: unable to find capacity of device ID 5
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+[3630827ms] Set debug logs to: true
+[3630827ms] DBG ---- STATUS: 0 GOOD
+[3630830ms] DBG ---- MESSAGE_IN
+[3630830ms] DBG ------ IN: 0x00 
+[3630832ms] DBG -- BUS_FREE
+[3630834ms] DBG -- BUS_BUSY
+[3630834ms] DBG ---- SELECTION: 4
+[3630836ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3630837ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3630837ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3630838ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3630838ms] Debug currently set to: true
+[3630839ms] DBG ---- DATA_IN
+[3630840ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3630840ms] DBG ---- STATUS: 0 GOOD
+[3630846ms] DBG ---- MESSAGE_IN
+[3630846ms] DBG ------ IN: 0x00 
+[3630847ms] DBG -- BUS_FREE
+[3638996ms] DBG -- BUS_BUSY
+[3638996ms] DBG ---- SELECTION: 4
+[3638998ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3638998ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[3638999ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3638999ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+[3640960ms] Set debug logs to: true
+[3640960ms] DBG ---- STATUS: 0 GOOD
+[3640964ms] DBG ---- MESSAGE_IN
+[3640964ms] DBG ------ IN: 0x00 
+[3640965ms] DBG -- BUS_FREE
+[3640968ms] DBG -- BUS_BUSY
+[3640968ms] DBG ---- SELECTION: 4
+[3640970ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3640971ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3640971ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3640972ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3640972ms] Debug currently set to: true
+[3640973ms] DBG ---- DATA_IN
+[3640974ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3640974ms] DBG ---- STATUS: 0 GOOD
+[3640980ms] DBG ---- MESSAGE_IN
+[3640980ms] DBG ------ IN: 0x00 
+[3640982ms] DBG -- BUS_FREE
+[3641960ms] DBG -- BUS_BUSY
+[3641960ms] DBG ---- SELECTION: 4
+[3641962ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3641962ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[3641963ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3641963ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+Debug currently set to: false
+[3649359ms] Set debug logs to: true
+[3649359ms] DBG ---- STATUS: 0 GOOD
+[3649363ms] DBG ---- MESSAGE_IN
+[3649363ms] DBG ------ IN: 0x00 
+[3649364ms] DBG -- BUS_FREE
+[3649366ms] DBG -- BUS_BUSY
+[3649366ms] DBG ---- SELECTION: 4
+[3649369ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3649369ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3649370ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3649370ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3649371ms] Debug currently set to: true
+[3649371ms] DBG ---- DATA_IN
+[3649372ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3649372ms] DBG ---- STATUS: 0 GOOD
+[3649378ms] DBG ---- MESSAGE_IN
+[3649378ms] DBG ------ IN: 0x00 
+[3649380ms] DBG -- BUS_FREE
+[3653933ms] DBG -- BUS_BUSY
+[3653933ms] DBG ---- SELECTION: 4
+[3653935ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3653936ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3653937ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3653937ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3653937ms] Debug currently set to: true
+[3653938ms] DBG ---- DATA_IN
+[3653939ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3653939ms] DBG ---- STATUS: 0 GOOD
+[3653944ms] DBG ---- MESSAGE_IN
+[3653944ms] DBG ------ IN: 0x00 
+[3653946ms] DBG -- BUS_FREE
+[3655785ms] DBG -- BUS_BUSY
+[3655785ms] DBG ---- SELECTION: 4
+[3655787ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3655788ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[3655788ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3655789ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD Error Code: 0x02
+SD card reinit succeeded
+ 
+=== SD Card Info ===
+SD card detected, FAT32 volume size: 30424 MB
+SD Name: SK32G, MID: 0x03 (SanDisk), OID: "SD" (0x53 0x44)
+[33836ms] -- Debug = Yes
+[33836ms] 
+[33836ms] === Global Config ===
+[33837ms] Reading configuration from bluescsi.ini
+[33839ms] 
+[33839ms] === Finding images ===
+[33891ms] === Finding images in / ===
+[33893ms] == Opening /HD60 GSOS 6.0.4.hda for ID:6 LUN:0
+[33902ms] ---- INFO: Image file is fragmented (3 fragments), FastSeek enabled for best performance.
+[33905ms] ---- Configuring as disk drive
+[33905ms] DBG ---- Geometry set from image size: SectorsPerTrack=50 HeadsPerCylinder=16 total sectors 204800 (divisible)
+[33907ms] DBG ---- Read prefetch enabled: 8192 bytes
+[33909ms] == Opening /NE4.hda for ID:4 LUN:0
+[33910ms] ---- Configuring as network based on image name
+[33914ms] 
+[33914ms] == Platform supports ROM drive up to 2848 kB
+[33914ms] DBG ---- ROM drive image not detected
+[33914ms]  
+[33915ms] === Configured SCSI Devices ===
+[33915ms] ID: 4, Type: Network
+[33915ms] ID: 6, BlockSize: 512, Type: Fixed, Quirks: Apple, Size: 102400kB
+[34121ms]  
+[34121ms] === Network Initialization ===
+[34121ms] DBG Unique board id: 0xAA 0x95 0xF8 0x65 0xDA 0x8C 0x57 0x34
+[34856ms] Wi-Fi MAC: 00:80:19:65:DA:8C
+[34856ms] No Wi-Fi SSID or Password found. Use the BlueSCSI Wi-Fi DA to configure the network.
+[34857ms] 
+[34897ms] DBG No removable media found for 2 eject buttons, skipping.
+[50194ms] DBG -- BUS_BUSY
+[50194ms] DBG -- BUS_FREE
+[50444ms] DBG -- BUS_BUSY
+[50444ms] DBG -- BUS_FREE
+[50695ms] DBG -- BUS_BUSY
+[50695ms] DBG ---- SELECTION: 6
+[50698ms] DBG ---- COMMAND: 0x00 (TestUnitReady)
+[50698ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 0x00 0x00 
+[50698ms] DBG ---- STATUS: 0 GOOD
+[50703ms] DBG ---- MESSAGE_IN
+[50703ms] DBG ------ IN: 0x00 
+[50704ms] DBG -- BUS_FREE
+[50704ms] DBG ---- SELECTION: 6
+[50706ms] DBG ---- COMMAND: 0x12 (Inquiry)
+[50706ms] DBG ------ OUT: 0x12 0x00 0x00 0x00 0x08 0x00 
+[50707ms] DBG ---- DATA_IN
+[50708ms] DBG ---- Total IN: 8 OUT: 0 CHECKSUM: 32798
+[50708ms] DBG ---- STATUS: 0 GOOD
+[50715ms] DBG ---- MESSAGE_IN
+[50715ms] DBG ------ IN: 0x00 
+[50718ms] DBG -- BUS_FREE
+[50718ms] DBG -- BUS_BUSY
+[50718ms] DBG -- BUS_FREE
+[50968ms] DBG -- BUS_BUSY
+[50968ms] DBG -- BUS_FREE
+[51219ms] DBG -- BUS_BUSY
+[51219ms] DBG ---- SELECTION: 4
+[51221ms] DBG ---- COMMAND: 0x00 (TestUnitReady)
+[51221ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 0x00 0x00 
+[51222ms] DBG ---- STATUS: 0 GOOD
+[51225ms] DBG ---- MESSAGE_IN
+[51225ms] DBG ------ IN: 0x00 
+[51227ms] DBG -- BUS_FREE
+[51227ms] DBG ---- SELECTION: 4
+[51229ms] DBG ---- COMMAND: 0x12 (Inquiry)
+[51229ms] DBG ------ OUT: 0x12 0x00 0x00 0x00 0x08 0x00 
+[51229ms] DBG ---- DATA_IN
+[51231ms] DBG ---- Total IN: 8 OUT: 0 CHECKSUM: 65051
+[51231ms] DBG ---- STATUS: 0 GOOD
+[51236ms] DBG ---- MESSAGE_IN
+[51237ms] DBG ------ IN: 0x00 
+[51239ms] DBG -- BUS_FREE
+[51240ms] DBG -- BUS_BUSY
+[51240ms] DBG -- BUS_FREE
+[51490ms] DBG -- BUS_BUSY
+[51490ms] DBG -- BUS_FREE
+[51741ms] DBG -- BUS_BUSY
+[51741ms] DBG -- BUS_FREE
+[51992ms] DBG -- BUS_BUSY
+[51992ms] DBG -- BUS_FREE
+[52242ms] DBG -- BUS_BUSY
+[52243ms] DBG -- BUS_FREE
+[52493ms] DBG -- BUS_BUSY
+[52493ms] DBG -- BUS_FREE
+[54833ms] DBG -- BUS_BUSY
+[54833ms] DBG ---- SELECTION: 4
+[54836ms] DBG ---- COMMAND: 0x00 (TestUnitReady)
+[54836ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 0x00 0x00 
+[54837ms] DBG ---- STATUS: 0 GOOD
+[54840ms] DBG ---- MESSAGE_IN
+[54840ms] DBG ------ IN: 0x00 
+[54841ms] DBG -- BUS_FREE
+[54842ms] DBG -- BUS_BUSY
+[54842ms] DBG ---- SELECTION: 4
+[54844ms] DBG ---- COMMAND: 0x12 (Inquiry)
+[54845ms] DBG ------ OUT: 0x12 0x00 0x00 0x00 0x40 0x00 
+[54845ms] DBG ---- DATA_IN
+[54846ms] DBG ---- Total IN: 64 OUT: 0 CHECKSUM: 4038
+[54847ms] DBG ---- STATUS: 0 GOOD
+[54853ms] DBG ---- MESSAGE_IN
+[54853ms] DBG ------ IN: 0x00 
+[54856ms] DBG -- BUS_FREE
+[57519ms] DBG -- BUS_BUSY
+[57519ms] DBG ---- SELECTION: 6
+[57521ms] DBG ---- COMMAND: 0x00 (TestUnitReady)
+[57522ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 0x00 0x00 
+[57522ms] DBG ---- STATUS: 0 GOOD
+[57527ms] DBG ---- MESSAGE_IN
+[57527ms] DBG ------ IN: 0x00 
+[57528ms] DBG -- BUS_FREE
+[57529ms] DBG -- BUS_BUSY
+[57529ms] DBG ---- SELECTION: 6
+[57531ms] DBG ---- COMMAND: 0x1A (ModeSense)
+[57531ms] DBG ------ OUT: 0x1A 0x00 0x01 0x00 0x14 0x00 
+[57532ms] DBG ---- DATA_IN
+[57533ms] DBG ---- Total IN: 20 OUT: 0 CHECKSUM: 44042
+[57533ms] DBG ---- STATUS: 0 GOOD
+[57536ms] DBG ---- MESSAGE_IN
+[57536ms] DBG ------ IN: 0x00 
+[57539ms] DBG -- BUS_FREE
+[57540ms] DBG -- BUS_BUSY
+[57541ms] DBG ---- SELECTION: 6
+[57543ms] DBG ---- COMMAND: 0x15 (ModeSelect6)
+[57543ms] DBG ------ OUT: 0x15 0x01 0x00 0x00 0x14 0x00 
+[57543ms] DBG ---- DATA_OUT
+[57544ms] DBG ---- Total IN: 0 OUT: 20 CHECKSUM: 19470
+[57545ms] DBG ---- STATUS: 0 GOOD
+[57551ms] DBG ---- MESSAGE_IN
+[57551ms] DBG ------ IN: 0x00 
+[57554ms] DBG -- BUS_FREE
+[57555ms] DBG -- BUS_BUSY
+[57555ms] DBG ---- SELECTION: 6
+[57557ms] DBG ---- COMMAND: 0x12 (Inquiry)
+[57557ms] DBG ------ OUT: 0x12 0x00 0x00 0x00 0x40 0x00 
+[57558ms] DBG ---- DATA_IN
+[57559ms] DBG ---- Total IN: 64 OUT: 0 CHECKSUM: 50297
+[57559ms] DBG ---- STATUS: 0 GOOD
+[57565ms] DBG ---- MESSAGE_IN
+[57565ms] DBG ------ IN: 0x00 
+[57568ms] DBG -- BUS_FREE
+[57569ms] DBG -- BUS_BUSY
+[57569ms] DBG ---- SELECTION: 6
+[57571ms] DBG ---- COMMAND: 0x25 (ReadCapacity)
+[57571ms] DBG ------ OUT: 0x25 0x00 0x00 0x00 0x00 0x00 
+[57572ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[57572ms] DBG ---- DATA_IN
+[57573ms] DBG ---- Total IN: 8 OUT: 0 CHECKSUM: 62481
+[57574ms] DBG ---- STATUS: 0 GOOD
+[57580ms] DBG ---- MESSAGE_IN
+[57580ms] DBG ------ IN: 0x00 
+[57583ms] DBG -- BUS_FREE
+[57584ms] DBG -- BUS_BUSY
+[57584ms] DBG ---- SELECTION: 6
+[57586ms] DBG ---- COMMAND: 0x08 (Read6)
+[57586ms] DBG ------ OUT: 0x08 0x00 0x00 0x01 0x01 0x00 
+[57586ms] DBG ------ Read 1x512 starting at 1
+[57587ms] DBG ---- DATA_IN
+[57588ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 53446
+[57589ms] DBG ---- STATUS: 0 GOOD
+[57593ms] DBG ---- MESSAGE_IN
+[57594ms] DBG ------ IN: 0x00 
+[57596ms] DBG -- BUS_FREE
+[57597ms] DBG -- BUS_BUSY
+[57598ms] DBG ---- SELECTION: 6
+[57600ms] DBG ---- COMMAND: 0x08 (Read6)
+[57600ms] DBG ------ OUT: 0x08 0x00 0x00 0x02 0x01 0x00 
+[57600ms] DBG ------ Read 1x512 starting at 2
+[57601ms] DBG ---- DATA_IN
+[57601ms] DBG ------ Found 1 sectors in prefetch cache
+[57602ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 29629
+[57602ms] DBG ---- STATUS: 0 GOOD
+[57608ms] DBG ---- MESSAGE_IN
+[57609ms] DBG ------ IN: 0x00 
+[57611ms] DBG -- BUS_FREE
+[57612ms] DBG -- BUS_BUSY
+[57613ms] DBG ---- SELECTION: 6
+[57615ms] DBG ---- COMMAND: 0x08 (Read6)
+[57615ms] DBG ------ OUT: 0x08 0x00 0x00 0x03 0x01 0x00 
+[57615ms] DBG ------ Read 1x512 starting at 3
+[57616ms] DBG ---- DATA_IN
+[57616ms] DBG ------ Found 1 sectors in prefetch cache
+[57617ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 15642
+[57617ms] DBG ---- STATUS: 0 GOOD
+[57624ms] DBG ---- MESSAGE_IN
+[57624ms] DBG ------ IN: 0x00 
+[57627ms] DBG -- BUS_FREE
+[57628ms] DBG -- BUS_BUSY
+[57628ms] DBG ---- SELECTION: 6
+[57630ms] DBG ---- COMMAND: 0x08 (Read6)
+[57630ms] DBG ------ OUT: 0x08 0x00 0x00 0x04 0x01 0x00 
+[57631ms] DBG ------ Read 1x512 starting at 4
+[57631ms] DBG ---- DATA_IN
+[57632ms] DBG ------ Found 1 sectors in prefetch cache
+[57632ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 15772
+[57633ms] DBG ---- STATUS: 0 GOOD
+[57639ms] DBG ---- MESSAGE_IN
+[57639ms] DBG ------ IN: 0x00 
+[57642ms] DBG -- BUS_FREE
+[57643ms] DBG -- BUS_BUSY
+[57643ms] DBG ---- SELECTION: 6
+[57645ms] DBG ---- COMMAND: 0x08 (Read6)
+[57645ms] DBG ------ OUT: 0x08 0x00 0x00 0x05 0x01 0x00 
+[57646ms] DBG ------ Read 1x512 starting at 5
+[57647ms] DBG ---- DATA_IN
+[57647ms] DBG ------ Found 1 sectors in prefetch cache
+[57648ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 12830
+[57648ms] DBG ---- STATUS: 0 GOOD
+[57653ms] DBG ---- MESSAGE_IN
+[57653ms] DBG ------ IN: 0x00 
+[57656ms] DBG -- BUS_FREE
+[57657ms] DBG -- BUS_BUSY
+[57657ms] DBG ---- SELECTION: 6
+[57659ms] DBG ---- COMMAND: 0x08 (Read6)
+[57659ms] DBG ------ OUT: 0x08 0x00 0x00 0x06 0x01 0x00 
+[57660ms] DBG ------ Read 1x512 starting at 6
+[57661ms] DBG ---- DATA_IN
+[57662ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 23260
+[57662ms] DBG ---- STATUS: 0 GOOD
+[57668ms] DBG ---- MESSAGE_IN
+[57668ms] DBG ------ IN: 0x00 
+[57671ms] DBG -- BUS_FREE
+[57686ms] DBG -- BUS_BUSY
+[57686ms] DBG ---- SELECTION: 6
+[57688ms] DBG ---- COMMAND: 0x08 (Read6)
+[57688ms] DBG ------ OUT: 0x08 0x00 0x00 0x07 0x01 0x00 
+[57689ms] DBG ------ Read 1x512 starting at 7
+[57690ms] DBG ---- DATA_IN
+[57690ms] DBG ------ Found 1 sectors in prefetch cache
+[57691ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 24316
+[57691ms] DBG ---- STATUS: 0 GOOD
+[57695ms] DBG ---- MESSAGE_IN
+[57695ms] DBG ------ IN: 0x00 
+[57698ms] DBG -- BUS_FREE
+[57701ms] DBG -- BUS_BUSY
+[57701ms] DBG ---- SELECTION: 6
+[57703ms] DBG ---- COMMAND: 0x08 (Read6)
+[57703ms] DBG ------ OUT: 0x08 0x00 0x00 0x08 0x01 0x00 
+[57703ms] DBG ------ Read 1x512 starting at 8
+[57704ms] DBG ---- DATA_IN
+[57704ms] DBG ------ Found 1 sectors in prefetch cache
+[57705ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 41757
+[57705ms] DBG ---- STATUS: 0 GOOD
+[57712ms] DBG ---- MESSAGE_IN
+[57712ms] DBG ------ IN: 0x00 
+[57715ms] DBG -- BUS_FREE
+[57717ms] DBG -- BUS_BUSY
+[57717ms] DBG ---- SELECTION: 6
+[57719ms] DBG ---- COMMAND: 0x08 (Read6)
+[57719ms] DBG ------ OUT: 0x08 0x00 0x00 0x09 0x01 0x00 
+[57720ms] DBG ------ Read 1x512 starting at 9
+[57720ms] DBG ---- DATA_IN
+[57721ms] DBG ------ Found 1 sectors in prefetch cache
+[57722ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 41657
+[57722ms] DBG ---- STATUS: 0 GOOD
+[57726ms] DBG ---- MESSAGE_IN
+[57726ms] DBG ------ IN: 0x00 
+[57729ms] DBG -- BUS_FREE
+[77141ms] DBG -- BUS_BUSY
+[77141ms] DBG ---- SELECTION: 6
+[77143ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[77143ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[77144ms] DBG ---- DATA_IN
+[77145ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[77145ms] DBG ---- STATUS: 0 GOOD
+[77148ms] DBG ---- MESSAGE_IN
+[77148ms] DBG ------ IN: 0x00 
+[77151ms] DBG -- BUS_FREE
+[77154ms] DBG -- BUS_BUSY
+[77154ms] DBG ---- SELECTION: 6
+[77157ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[77157ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[77157ms] DBG ---- DATA_IN
+[77158ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[77159ms] DBG ---- STATUS: 0 GOOD
+[77163ms] DBG ---- MESSAGE_IN
+[77163ms] DBG ------ IN: 0x00 
+[77166ms] DBG -- BUS_FREE
+[77168ms] DBG -- BUS_BUSY
+[77169ms] DBG ---- SELECTION: 6
+[77171ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[77171ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[77171ms] DBG ---- DATA_IN
+[77172ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[77173ms] DBG ---- STATUS: 0 GOOD
+[77179ms] DBG ---- MESSAGE_IN
+[77180ms] DBG ------ IN: 0x00 
+[77183ms] DBG -- BUS_FREE
+[77186ms] DBG -- BUS_BUSY
+[77186ms] DBG ---- SELECTION: 6
+[77188ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[77188ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[77189ms] DBG ---- DATA_IN
+[77190ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[77190ms] DBG ---- STATUS: 0 GOOD
+[77196ms] DBG ---- MESSAGE_IN
+[77196ms] DBG ------ IN: 0x00 
+[77200ms] DBG -- BUS_FREE
+[77211ms] DBG -- BUS_BUSY
+[77211ms] DBG ---- SELECTION: 6
+[77213ms] DBG ---- COMMAND: 0x28 (Read10)
+[77213ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xC3 
+[77214ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77214ms] DBG ------ Read 1x512 starting at 195
+[77215ms] DBG ---- DATA_IN
+[77216ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 54644
+[77217ms] DBG ---- STATUS: 0 GOOD
+[77223ms] DBG ---- MESSAGE_IN
+[77223ms] DBG ------ IN: 0x00 
+[77226ms] DBG -- BUS_FREE
+[77236ms] DBG -- BUS_BUSY
+[77236ms] DBG ---- SELECTION: 6
+[77238ms] DBG ---- COMMAND: 0x28 (Read10)
+[77238ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xC7 
+[77239ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77239ms] DBG ------ Read 1x512 starting at 199
+[77240ms] DBG ---- DATA_IN
+[77246ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 0
+[77247ms] DBG ---- STATUS: 0 GOOD
+[77250ms] DBG ---- MESSAGE_IN
+[77250ms] DBG ------ IN: 0x00 
+[77251ms] DBG -- BUS_FREE
+[77258ms] DBG -- BUS_BUSY
+[77258ms] DBG ---- SELECTION: 6
+[77260ms] DBG ---- COMMAND: 0x28 (Read10)
+[77260ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xC8 
+[77261ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77261ms] DBG ------ Read 1x512 starting at 200
+[77262ms] DBG ---- DATA_IN
+[77262ms] DBG ------ Found 1 sectors in prefetch cache
+[77269ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 0
+[77269ms] DBG ---- STATUS: 0 GOOD
+[77274ms] DBG ---- MESSAGE_IN
+[77275ms] DBG ------ IN: 0x00 
+[77276ms] DBG -- BUS_FREE
+[77283ms] DBG -- BUS_BUSY
+[77283ms] DBG ---- SELECTION: 6
+[77285ms] DBG ---- COMMAND: 0x28 (Read10)
+[77285ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xC9 
+[77286ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77286ms] DBG ------ Read 1x512 starting at 201
+[77287ms] DBG ---- DATA_IN
+[77287ms] DBG ------ Found 1 sectors in prefetch cache
+[77293ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 3841
+[77294ms] DBG ---- STATUS: 0 GOOD
+[77297ms] DBG ---- MESSAGE_IN
+[77297ms] DBG ------ IN: 0x00 
+[77298ms] DBG -- BUS_FREE
+[77308ms] DBG -- BUS_BUSY
+[77308ms] DBG ---- SELECTION: 6
+[77310ms] DBG ---- COMMAND: 0x28 (Read10)
+[77311ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xCA 
+[77311ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77312ms] DBG ------ Read 1x512 starting at 202
+[77313ms] DBG ---- DATA_IN
+[77313ms] DBG ------ Found 1 sectors in prefetch cache
+[77319ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77319ms] DBG ---- STATUS: 0 GOOD
+[77325ms] DBG ---- MESSAGE_IN
+[77325ms] DBG ------ IN: 0x00 
+[77327ms] DBG -- BUS_FREE
+[77338ms] DBG -- BUS_BUSY
+[77338ms] DBG ---- SELECTION: 6
+[77340ms] DBG ---- COMMAND: 0x28 (Read10)
+[77340ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xCB 
+[77341ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77342ms] DBG ------ Read 1x512 starting at 203
+[77342ms] DBG ---- DATA_IN
+[77343ms] DBG ------ Found 1 sectors in prefetch cache
+[77349ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77349ms] DBG ---- STATUS: 0 GOOD
+[77354ms] DBG ---- MESSAGE_IN
+[77354ms] DBG ------ IN: 0x00 
+[77355ms] DBG -- BUS_FREE
+[77367ms] DBG -- BUS_BUSY
+[77367ms] DBG ---- SELECTION: 6
+[77369ms] DBG ---- COMMAND: 0x28 (Read10)
+[77369ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xCC 
+[77370ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77370ms] DBG ------ Read 1x512 starting at 204
+[77371ms] DBG ---- DATA_IN
+[77371ms] DBG ------ Found 1 sectors in prefetch cache
+[77377ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77377ms] DBG ---- STATUS: 0 GOOD
+[77382ms] DBG ---- MESSAGE_IN
+[77382ms] DBG ------ IN: 0x00 
+[77383ms] DBG -- BUS_FREE
+[77394ms] DBG -- BUS_BUSY
+[77394ms] DBG ---- SELECTION: 6
+[77396ms] DBG ---- COMMAND: 0x28 (Read10)
+[77396ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xCD 
+[77397ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77397ms] DBG ------ Read 1x512 starting at 205
+[77398ms] DBG ---- DATA_IN
+[77398ms] DBG ------ Found 1 sectors in prefetch cache
+[77404ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77405ms] DBG ---- STATUS: 0 GOOD
+[77409ms] DBG ---- MESSAGE_IN
+[77409ms] DBG ------ IN: 0x00 
+[77410ms] DBG -- BUS_FREE
+[77422ms] DBG -- BUS_BUSY
+[77422ms] DBG ---- SELECTION: 6
+[77424ms] DBG ---- COMMAND: 0x28 (Read10)
+[77424ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xCE 
+[77425ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77425ms] DBG ------ Read 1x512 starting at 206
+[77426ms] DBG ---- DATA_IN
+[77426ms] DBG ------ Found 1 sectors in prefetch cache
+[77432ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77433ms] DBG ---- STATUS: 0 GOOD
+[77437ms] DBG ---- MESSAGE_IN
+[77437ms] DBG ------ IN: 0x00 
+[77439ms] DBG -- BUS_FREE
+[77450ms] DBG -- BUS_BUSY
+[77450ms] DBG ---- SELECTION: 6
+[77452ms] DBG ---- COMMAND: 0x28 (Read10)
+[77452ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xCF 
+[77453ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77454ms] DBG ------ Read 1x512 starting at 207
+[77454ms] DBG ---- DATA_IN
+[77455ms] DBG ------ Found 1 sectors in prefetch cache
+[77461ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77461ms] DBG ---- STATUS: 0 GOOD
+[77466ms] DBG ---- MESSAGE_IN
+[77466ms] DBG ------ IN: 0x00 
+[77467ms] DBG -- BUS_FREE
+[77478ms] DBG -- BUS_BUSY
+[77478ms] DBG ---- SELECTION: 6
+[77480ms] DBG ---- COMMAND: 0x28 (Read10)
+[77480ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xD0 
+[77481ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77481ms] DBG ------ Read 1x512 starting at 208
+[77482ms] DBG ---- DATA_IN
+[77482ms] DBG ------ Found 1 sectors in prefetch cache
+[77488ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77489ms] DBG ---- STATUS: 0 GOOD
+[77493ms] DBG ---- MESSAGE_IN
+[77493ms] DBG ------ IN: 0x00 
+[77494ms] DBG -- BUS_FREE
+[77506ms] DBG -- BUS_BUSY
+[77506ms] DBG ---- SELECTION: 6
+[77508ms] DBG ---- COMMAND: 0x28 (Read10)
+[77508ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xD1 
+[77509ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77509ms] DBG ------ Read 1x512 starting at 209
+[77510ms] DBG ---- DATA_IN
+[77510ms] DBG ------ Found 1 sectors in prefetch cache
+[77517ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77517ms] DBG ---- STATUS: 0 GOOD
+[77522ms] DBG ---- MESSAGE_IN
+[77522ms] DBG ------ IN: 0x00 
+[77523ms] DBG -- BUS_FREE
+[77534ms] DBG -- BUS_BUSY
+[77535ms] DBG ---- SELECTION: 6
+[77537ms] DBG ---- COMMAND: 0x28 (Read10)
+[77537ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xD2 
+[77537ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77538ms] DBG ------ Read 1x512 starting at 210
+[77539ms] DBG ---- DATA_IN
+[77539ms] DBG ------ Found 1 sectors in prefetch cache
+[77545ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77545ms] DBG ---- STATUS: 0 GOOD
+[77550ms] DBG ---- MESSAGE_IN
+[77550ms] DBG ------ IN: 0x00 
+[77551ms] DBG -- BUS_FREE
+[77562ms] DBG -- BUS_BUSY
+[77562ms] DBG ---- SELECTION: 6
+[77564ms] DBG ---- COMMAND: 0x28 (Read10)
+[77564ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xD3 
+[77565ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77565ms] DBG ------ Read 1x512 starting at 211
+[77566ms] DBG ---- DATA_IN
+[77566ms] DBG ------ Found 1 sectors in prefetch cache
+[77572ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77573ms] DBG ---- STATUS: 0 GOOD
+[77577ms] DBG ---- MESSAGE_IN
+[77577ms] DBG ------ IN: 0x00 
+[77579ms] DBG -- BUS_FREE
+[77590ms] DBG -- BUS_BUSY
+[77590ms] DBG ---- SELECTION: 6
+[77592ms] DBG ---- COMMAND: 0x28 (Read10)
+[77592ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xD4 
+[77593ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77593ms] DBG ------ Read 1x512 starting at 212
+[77594ms] DBG ---- DATA_IN
+[77594ms] DBG ------ Found 1 sectors in prefetch cache
+[77601ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77601ms] DBG ---- STATUS: 0 GOOD
+[77606ms] DBG ---- MESSAGE_IN
+[77606ms] DBG ------ IN: 0x00 
+[77607ms] DBG -- BUS_FREE
+[77619ms] DBG -- BUS_BUSY
+[77619ms] DBG ---- SELECTION: 6
+[77621ms] DBG ---- COMMAND: 0x28 (Read10)
+[77621ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xD5 
+[77622ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77622ms] DBG ------ Read 1x512 starting at 213
+[77623ms] DBG ---- DATA_IN
+[77623ms] DBG ------ Found 1 sectors in prefetch cache
+[77629ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[77629ms] DBG ---- STATUS: 0 GOOD
+[77634ms] DBG ---- MESSAGE_IN
+[77634ms] DBG ------ IN: 0x00 
+[77635ms] DBG -- BUS_FREE
+[77646ms] DBG -- BUS_BUSY
+[77646ms] DBG ---- SELECTION: 6
+[77649ms] DBG ---- COMMAND: 0x28 (Read10)
+[77649ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x00 0xD6 
+[77650ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77650ms] DBG ------ Read 1x512 starting at 214
+[77651ms] DBG ---- DATA_IN
+[77651ms] DBG ------ Found 1 sectors in prefetch cache
+[77657ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50170
+[77657ms] DBG ---- STATUS: 0 GOOD
+[77662ms] DBG ---- MESSAGE_IN
+[77662ms] DBG ------ IN: 0x00 
+[77663ms] DBG -- BUS_FREE
+[77675ms] DBG -- BUS_BUSY
+[77675ms] DBG ---- SELECTION: 6
+[77677ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[77677ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[77677ms] DBG ---- DATA_IN
+[77679ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[77679ms] DBG ---- STATUS: 0 GOOD
+[77683ms] DBG ---- MESSAGE_IN
+[77683ms] DBG ------ IN: 0x00 
+[77686ms] DBG -- BUS_FREE
+[77736ms] DBG -- BUS_BUSY
+[77736ms] DBG ---- SELECTION: 6
+[77738ms] DBG ---- COMMAND: 0x28 (Read10)
+[77738ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x04 0xF2 
+[77739ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77739ms] DBG ------ Read 1x512 starting at 1266
+[77740ms] DBG ---- DATA_IN
+[77741ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 37426
+[77742ms] DBG ---- STATUS: 0 GOOD
+[77746ms] DBG ---- MESSAGE_IN
+[77747ms] DBG ------ IN: 0x00 
+[77750ms] DBG -- BUS_FREE
+[77833ms] DBG -- BUS_BUSY
+[77833ms] DBG ---- SELECTION: 6
+[77835ms] DBG ---- COMMAND: 0x28 (Read10)
+[77835ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x28 0x7D 
+[77836ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77836ms] DBG ------ Read 1x512 starting at 10365
+[77837ms] DBG ---- DATA_IN
+[77841ms] DBG SD card readSector(9364) slow transfer, buffer0x2004A550 vs. 0x20034110
+[77844ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 29244
+[77845ms] DBG ---- STATUS: 0 GOOD
+[77851ms] DBG ---- MESSAGE_IN
+[77851ms] DBG ------ IN: 0x00 
+[77852ms] DBG -- BUS_FREE
+[77857ms] DBG -- BUS_BUSY
+[77857ms] DBG ---- SELECTION: 6
+[77859ms] DBG ---- COMMAND: 0x28 (Read10)
+[77859ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x28 0x7E 
+[77860ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77860ms] DBG ------ Read 1x512 starting at 10366
+[77861ms] DBG ---- DATA_IN
+[77861ms] DBG ------ Found 1 sectors in prefetch cache
+[77868ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 8090
+[77868ms] DBG ---- STATUS: 0 GOOD
+[77873ms] DBG ---- MESSAGE_IN
+[77873ms] DBG ------ IN: 0x00 
+[77874ms] DBG -- BUS_FREE
+[77886ms] DBG -- BUS_BUSY
+[77886ms] DBG ---- SELECTION: 6
+[77889ms] DBG ---- COMMAND: 0x28 (Read10)
+[77889ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x28 0x7F 
+[77889ms] DBG ------ OUT: 0x00 0x00 0x04 0x00 
+[77890ms] DBG ------ Read 4x512 starting at 10367
+[77891ms] DBG ---- DATA_IN
+[77891ms] DBG ------ Found 4 sectors in prefetch cache
+[77893ms] DBG ---- Total IN: 2048 OUT: 0 CHECKSUM: 38622
+[77893ms] DBG ---- STATUS: 0 GOOD
+[77900ms] DBG ---- MESSAGE_IN
+[77900ms] DBG ------ IN: 0x00 
+[77903ms] DBG -- BUS_FREE
+[77906ms] DBG -- BUS_BUSY
+[77906ms] DBG ---- SELECTION: 6
+[77908ms] DBG ---- COMMAND: 0x28 (Read10)
+[77908ms] DBG ------ OUT: 0x28 0x00 0x00 0x00 0x28 0x83 
+[77909ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[77909ms] DBG ------ Read 1x512 starting at 10371
+[77910ms] DBG ---- DATA_IN
+[77910ms] DBG ------ Found 1 sectors in prefetch cache
+[77916ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 51673
+[77917ms] DBG ---- STATUS: 0 GOOD
+[77921ms] DBG ---- MESSAGE_IN
+[77921ms] DBG ------ IN: 0x00 
+[77922ms] DBG -- BUS_FREE
+[77993ms] DBG -- BUS_BUSY
+[77993ms] DBG ---- SELECTION: 6
+[77995ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[77995ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[77996ms] DBG ---- DATA_IN
+[77997ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[77997ms] DBG ---- STATUS: 0 GOOD
+[78002ms] DBG ---- MESSAGE_IN
+[78002ms] DBG ------ IN: 0x00 
+[78005ms] DBG -- BUS_FREE
+[78008ms] DBG -- BUS_BUSY
+[78008ms] DBG ---- SELECTION: 6
+[78010ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78010ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78011ms] DBG ---- DATA_IN
+[78012ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78012ms] DBG ---- STATUS: 0 GOOD
+[78018ms] DBG ---- MESSAGE_IN
+[78018ms] DBG ------ IN: 0x00 
+[78021ms] DBG -- BUS_FREE
+[78023ms] DBG -- BUS_BUSY
+[78023ms] DBG ---- SELECTION: 6
+[78025ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78026ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78026ms] DBG ---- DATA_IN
+[78027ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78028ms] DBG ---- STATUS: 0 GOOD
+[78034ms] DBG ---- MESSAGE_IN
+[78034ms] DBG ------ IN: 0x00 
+[78037ms] DBG -- BUS_FREE
+[78040ms] DBG -- BUS_BUSY
+[78040ms] DBG ---- SELECTION: 6
+[78042ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78042ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78043ms] DBG ---- DATA_IN
+[78044ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78044ms] DBG ---- STATUS: 0 GOOD
+[78051ms] DBG ---- MESSAGE_IN
+[78051ms] DBG ------ IN: 0x00 
+[78054ms] DBG -- BUS_FREE
+[78064ms] DBG -- BUS_BUSY
+[78064ms] DBG ---- SELECTION: 6
+[78067ms] DBG ---- COMMAND: 0x28 (Read10)
+[78067ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xC3 
+[78067ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78068ms] DBG ------ Read 1x512 starting at 65731
+[78069ms] DBG ---- DATA_IN
+[78070ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 13736
+[78070ms] DBG ---- STATUS: 0 GOOD
+[78075ms] DBG ---- MESSAGE_IN
+[78075ms] DBG ------ IN: 0x00 
+[78078ms] DBG -- BUS_FREE
+[78089ms] DBG -- BUS_BUSY
+[78089ms] DBG ---- SELECTION: 6
+[78091ms] DBG ---- COMMAND: 0x28 (Read10)
+[78091ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xC7 
+[78092ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78092ms] DBG ------ Read 1x512 starting at 65735
+[78093ms] DBG ---- DATA_IN
+[78100ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 16872
+[78100ms] DBG ---- STATUS: 0 GOOD
+[78104ms] DBG ---- MESSAGE_IN
+[78104ms] DBG ------ IN: 0x00 
+[78106ms] DBG -- BUS_FREE
+[78118ms] DBG -- BUS_BUSY
+[78118ms] DBG ---- SELECTION: 6
+[78120ms] DBG ---- COMMAND: 0x28 (Read10)
+[78120ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xC8 
+[78121ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78121ms] DBG ------ Read 1x512 starting at 65736
+[78122ms] DBG ---- DATA_IN
+[78122ms] DBG ------ Found 1 sectors in prefetch cache
+[78128ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78128ms] DBG ---- STATUS: 0 GOOD
+[78133ms] DBG ---- MESSAGE_IN
+[78133ms] DBG ------ IN: 0x00 
+[78134ms] DBG -- BUS_FREE
+[78146ms] DBG -- BUS_BUSY
+[78146ms] DBG ---- SELECTION: 6
+[78148ms] DBG ---- COMMAND: 0x28 (Read10)
+[78148ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xC9 
+[78149ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78149ms] DBG ------ Read 1x512 starting at 65737
+[78150ms] DBG ---- DATA_IN
+[78150ms] DBG ------ Found 1 sectors in prefetch cache
+[78156ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78157ms] DBG ---- STATUS: 0 GOOD
+[78161ms] DBG ---- MESSAGE_IN
+[78161ms] DBG ------ IN: 0x00 
+[78163ms] DBG -- BUS_FREE
+[78174ms] DBG -- BUS_BUSY
+[78175ms] DBG ---- SELECTION: 6
+[78177ms] DBG ---- COMMAND: 0x28 (Read10)
+[78177ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xCA 
+[78177ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78178ms] DBG ------ Read 1x512 starting at 65738
+[78179ms] DBG ---- DATA_IN
+[78179ms] DBG ------ Found 1 sectors in prefetch cache
+[78185ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78186ms] DBG ---- STATUS: 0 GOOD
+[78190ms] DBG ---- MESSAGE_IN
+[78190ms] DBG ------ IN: 0x00 
+[78192ms] DBG -- BUS_FREE
+[78203ms] DBG -- BUS_BUSY
+[78203ms] DBG ---- SELECTION: 6
+[78205ms] DBG ---- COMMAND: 0x28 (Read10)
+[78206ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xCB 
+[78206ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78207ms] DBG ------ Read 1x512 starting at 65739
+[78208ms] DBG ---- DATA_IN
+[78208ms] DBG ------ Found 1 sectors in prefetch cache
+[78214ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78214ms] DBG ---- STATUS: 0 GOOD
+[78219ms] DBG ---- MESSAGE_IN
+[78219ms] DBG ------ IN: 0x00 
+[78221ms] DBG -- BUS_FREE
+[78232ms] DBG -- BUS_BUSY
+[78232ms] DBG ---- SELECTION: 6
+[78234ms] DBG ---- COMMAND: 0x28 (Read10)
+[78234ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xCC 
+[78235ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78235ms] DBG ------ Read 1x512 starting at 65740
+[78236ms] DBG ---- DATA_IN
+[78236ms] DBG ------ Found 1 sectors in prefetch cache
+[78242ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78243ms] DBG ---- STATUS: 0 GOOD
+[78247ms] DBG ---- MESSAGE_IN
+[78247ms] DBG ------ IN: 0x00 
+[78248ms] DBG -- BUS_FREE
+[78260ms] DBG -- BUS_BUSY
+[78260ms] DBG ---- SELECTION: 6
+[78262ms] DBG ---- COMMAND: 0x28 (Read10)
+[78263ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xCD 
+[78263ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78264ms] DBG ------ Read 1x512 starting at 65741
+[78265ms] DBG ---- DATA_IN
+[78265ms] DBG ------ Found 1 sectors in prefetch cache
+[78271ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78271ms] DBG ---- STATUS: 0 GOOD
+[78276ms] DBG ---- MESSAGE_IN
+[78276ms] DBG ------ IN: 0x00 
+[78277ms] DBG -- BUS_FREE
+[78289ms] DBG -- BUS_BUSY
+[78289ms] DBG ---- SELECTION: 6
+[78291ms] DBG ---- COMMAND: 0x28 (Read10)
+[78291ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xCE 
+[78292ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78292ms] DBG ------ Read 1x512 starting at 65742
+[78293ms] DBG ---- DATA_IN
+[78293ms] DBG ------ Found 1 sectors in prefetch cache
+[78300ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78300ms] DBG ---- STATUS: 0 GOOD
+[78305ms] DBG ---- MESSAGE_IN
+[78305ms] DBG ------ IN: 0x00 
+[78306ms] DBG -- BUS_FREE
+[78318ms] DBG -- BUS_BUSY
+[78318ms] DBG ---- SELECTION: 6
+[78320ms] DBG ---- COMMAND: 0x28 (Read10)
+[78320ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xCF 
+[78321ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78321ms] DBG ------ Read 1x512 starting at 65743
+[78322ms] DBG ---- DATA_IN
+[78322ms] DBG ------ Found 1 sectors in prefetch cache
+[78328ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78328ms] DBG ---- STATUS: 0 GOOD
+[78332ms] DBG ---- MESSAGE_IN
+[78332ms] DBG ------ IN: 0x00 
+[78334ms] DBG -- BUS_FREE
+[78345ms] DBG -- BUS_BUSY
+[78345ms] DBG ---- SELECTION: 6
+[78347ms] DBG ---- COMMAND: 0x28 (Read10)
+[78347ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xD0 
+[78348ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78348ms] DBG ------ Read 1x512 starting at 65744
+[78349ms] DBG ---- DATA_IN
+[78349ms] DBG ------ Found 1 sectors in prefetch cache
+[78355ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78356ms] DBG ---- STATUS: 0 GOOD
+[78361ms] DBG ---- MESSAGE_IN
+[78362ms] DBG ------ IN: 0x00 
+[78363ms] DBG -- BUS_FREE
+[78375ms] DBG -- BUS_BUSY
+[78375ms] DBG ---- SELECTION: 6
+[78377ms] DBG ---- COMMAND: 0x28 (Read10)
+[78377ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xD1 
+[78378ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78378ms] DBG ------ Read 1x512 starting at 65745
+[78379ms] DBG ---- DATA_IN
+[78379ms] DBG ------ Found 1 sectors in prefetch cache
+[78385ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78386ms] DBG ---- STATUS: 0 GOOD
+[78390ms] DBG ---- MESSAGE_IN
+[78390ms] DBG ------ IN: 0x00 
+[78391ms] DBG -- BUS_FREE
+[78403ms] DBG -- BUS_BUSY
+[78403ms] DBG ---- SELECTION: 6
+[78405ms] DBG ---- COMMAND: 0x28 (Read10)
+[78405ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xD2 
+[78406ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78407ms] DBG ------ Read 1x512 starting at 65746
+[78407ms] DBG ---- DATA_IN
+[78408ms] DBG ------ Found 1 sectors in prefetch cache
+[78414ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78414ms] DBG ---- STATUS: 0 GOOD
+[78418ms] DBG ---- MESSAGE_IN
+[78418ms] DBG ------ IN: 0x00 
+[78419ms] DBG -- BUS_FREE
+[78431ms] DBG -- BUS_BUSY
+[78431ms] DBG ---- SELECTION: 6
+[78433ms] DBG ---- COMMAND: 0x28 (Read10)
+[78434ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xD3 
+[78434ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78435ms] DBG ------ Read 1x512 starting at 65747
+[78436ms] DBG ---- DATA_IN
+[78436ms] DBG ------ Found 1 sectors in prefetch cache
+[78442ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78442ms] DBG ---- STATUS: 0 GOOD
+[78446ms] DBG ---- MESSAGE_IN
+[78446ms] DBG ------ IN: 0x00 
+[78448ms] DBG -- BUS_FREE
+[78459ms] DBG -- BUS_BUSY
+[78460ms] DBG ---- SELECTION: 6
+[78462ms] DBG ---- COMMAND: 0x28 (Read10)
+[78462ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xD4 
+[78463ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78463ms] DBG ------ Read 1x512 starting at 65748
+[78464ms] DBG ---- DATA_IN
+[78464ms] DBG ------ Found 1 sectors in prefetch cache
+[78470ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78471ms] DBG ---- STATUS: 0 GOOD
+[78475ms] DBG ---- MESSAGE_IN
+[78476ms] DBG ------ IN: 0x00 
+[78477ms] DBG -- BUS_FREE
+[78489ms] DBG -- BUS_BUSY
+[78489ms] DBG ---- SELECTION: 6
+[78491ms] DBG ---- COMMAND: 0x28 (Read10)
+[78491ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xD5 
+[78492ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78492ms] DBG ------ Read 1x512 starting at 65749
+[78493ms] DBG ---- DATA_IN
+[78493ms] DBG ------ Found 1 sectors in prefetch cache
+[78500ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50171
+[78500ms] DBG ---- STATUS: 0 GOOD
+[78504ms] DBG ---- MESSAGE_IN
+[78505ms] DBG ------ IN: 0x00 
+[78506ms] DBG -- BUS_FREE
+[78518ms] DBG -- BUS_BUSY
+[78518ms] DBG ---- SELECTION: 6
+[78520ms] DBG ---- COMMAND: 0x28 (Read10)
+[78520ms] DBG ------ OUT: 0x28 0x00 0x00 0x01 0x00 0xD6 
+[78521ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78521ms] DBG ------ Read 1x512 starting at 65750
+[78522ms] DBG ---- DATA_IN
+[78522ms] DBG ------ Found 1 sectors in prefetch cache
+[78528ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 50170
+[78528ms] DBG ---- STATUS: 0 GOOD
+[78533ms] DBG ---- MESSAGE_IN
+[78533ms] DBG ------ IN: 0x00 
+[78535ms] DBG -- BUS_FREE
+[78546ms] DBG -- BUS_BUSY
+[78546ms] DBG ---- SELECTION: 6
+[78548ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78548ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78549ms] DBG ---- DATA_IN
+[78550ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78550ms] DBG ---- STATUS: 0 GOOD
+[78556ms] DBG ---- MESSAGE_IN
+[78557ms] DBG ------ IN: 0x00 
+[78559ms] DBG -- BUS_FREE
+[78683ms] DBG -- BUS_BUSY
+[78683ms] DBG ---- SELECTION: 6
+[78685ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78685ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78686ms] DBG ---- DATA_IN
+[78687ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78687ms] DBG ---- STATUS: 0 GOOD
+[78692ms] DBG ---- MESSAGE_IN
+[78692ms] DBG ------ IN: 0x00 
+[78695ms] DBG -- BUS_FREE
+[78698ms] DBG -- BUS_BUSY
+[78698ms] DBG ---- SELECTION: 6
+[78701ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78701ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78701ms] DBG ---- DATA_IN
+[78703ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78703ms] DBG ---- STATUS: 0 GOOD
+[78709ms] DBG ---- MESSAGE_IN
+[78709ms] DBG ------ IN: 0x00 
+[78712ms] DBG -- BUS_FREE
+[78714ms] DBG -- BUS_BUSY
+[78714ms] DBG ---- SELECTION: 6
+[78717ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78717ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78717ms] DBG ---- DATA_IN
+[78719ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78719ms] DBG ---- STATUS: 0 GOOD
+[78725ms] DBG ---- MESSAGE_IN
+[78725ms] DBG ------ IN: 0x00 
+[78728ms] DBG -- BUS_FREE
+[78731ms] DBG -- BUS_BUSY
+[78731ms] DBG ---- SELECTION: 6
+[78733ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78734ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78734ms] DBG ---- DATA_IN
+[78735ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78736ms] DBG ---- STATUS: 0 GOOD
+[78739ms] DBG ---- MESSAGE_IN
+[78739ms] DBG ------ IN: 0x00 
+[78742ms] DBG -- BUS_FREE
+[78751ms] DBG -- BUS_BUSY
+[78751ms] DBG ---- SELECTION: 6
+[78753ms] DBG ---- COMMAND: 0x28 (Read10)
+[78753ms] DBG ------ OUT: 0x28 0x00 0x00 0x02 0x00 0xC3 
+[78754ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78754ms] DBG ------ Read 1x512 starting at 131267
+[78755ms] DBG ---- DATA_IN
+[78756ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 8366
+[78756ms] DBG ---- STATUS: 0 GOOD
+[78760ms] DBG ---- MESSAGE_IN
+[78761ms] DBG ------ IN: 0x00 
+[78763ms] DBG -- BUS_FREE
+[78774ms] DBG -- BUS_BUSY
+[78774ms] DBG ---- SELECTION: 6
+[78776ms] DBG ---- COMMAND: 0x28 (Read10)
+[78776ms] DBG ------ OUT: 0x28 0x00 0x00 0x02 0x00 0xC1 
+[78777ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78778ms] DBG ------ Read 1x512 starting at 131265
+[78778ms] DBG ---- DATA_IN
+[78779ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 0
+[78780ms] DBG ---- STATUS: 0 GOOD
+[78786ms] DBG ---- MESSAGE_IN
+[78786ms] DBG ------ IN: 0x00 
+[78789ms] DBG -- BUS_FREE
+[78809ms] DBG -- BUS_BUSY
+[78809ms] DBG ---- SELECTION: 6
+[78811ms] DBG ---- COMMAND: 0x28 (Read10)
+[78811ms] DBG ------ OUT: 0x28 0x00 0x00 0x02 0x02 0xD4 
+[78812ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78812ms] DBG ------ Read 1x512 starting at 131796
+[78813ms] DBG ---- DATA_IN
+[78815ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 26072
+[78815ms] DBG ---- STATUS: 0 GOOD
+[78823ms] DBG ---- MESSAGE_IN
+[78823ms] DBG ------ IN: 0x00 
+[78826ms] DBG -- BUS_FREE
+[78832ms] DBG -- BUS_BUSY
+[78832ms] DBG ---- SELECTION: 6
+[78834ms] DBG ---- COMMAND: 0x28 (Read10)
+[78834ms] DBG ------ OUT: 0x28 0x00 0x00 0x02 0x00 0xD4 
+[78835ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78835ms] DBG ------ Read 1x512 starting at 131284
+[78836ms] DBG ---- DATA_IN
+[78838ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 36292
+[78838ms] DBG ---- STATUS: 0 GOOD
+[78844ms] DBG ---- MESSAGE_IN
+[78844ms] DBG ------ IN: 0x00 
+[78847ms] DBG -- BUS_FREE
+[78854ms] DBG -- BUS_BUSY
+[78854ms] DBG ---- SELECTION: 6
+[78856ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78856ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78857ms] DBG ---- DATA_IN
+[78858ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78858ms] DBG ---- STATUS: 0 GOOD
+[78864ms] DBG ---- MESSAGE_IN
+[78864ms] DBG ------ IN: 0x00 
+[78867ms] DBG -- BUS_FREE
+[78877ms] DBG -- BUS_BUSY
+[78877ms] DBG ---- SELECTION: 6
+[78879ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78880ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78880ms] DBG ---- DATA_IN
+[78881ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78882ms] DBG ---- STATUS: 0 GOOD
+[78888ms] DBG ---- MESSAGE_IN
+[78888ms] DBG ------ IN: 0x00 
+[78891ms] DBG -- BUS_FREE
+[78895ms] DBG -- BUS_BUSY
+[78895ms] DBG ---- SELECTION: 6
+[78897ms] DBG ---- COMMAND: 0x28 (Read10)
+[78898ms] DBG ------ OUT: 0x28 0x00 0x00 0x02 0x02 0xD7 
+[78898ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78899ms] DBG ------ Read 1x512 starting at 131799
+[78900ms] DBG ---- DATA_IN
+[78901ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 53809
+[78901ms] DBG ---- STATUS: 0 GOOD
+[78907ms] DBG ---- MESSAGE_IN
+[78908ms] DBG ------ IN: 0x00 
+[78910ms] DBG -- BUS_FREE
+[78920ms] DBG -- BUS_BUSY
+[78920ms] DBG ---- SELECTION: 6
+[78922ms] DBG ---- COMMAND: 0x28 (Read10)
+[78922ms] DBG ------ OUT: 0x28 0x00 0x00 0x02 0x02 0xD6 
+[78923ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[78924ms] DBG ------ Read 1x512 starting at 131798
+[78924ms] DBG ---- DATA_IN
+[78925ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 55014
+[78926ms] DBG ---- STATUS: 0 GOOD
+[78931ms] DBG ---- MESSAGE_IN
+[78931ms] DBG ------ IN: 0x00 
+[78934ms] DBG -- BUS_FREE
+[78988ms] DBG -- BUS_BUSY
+[78988ms] DBG ---- SELECTION: 6
+[78990ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[78990ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[78991ms] DBG ---- DATA_IN
+[78992ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[78992ms] DBG ---- STATUS: 0 GOOD
+[78996ms] DBG ---- MESSAGE_IN
+[78997ms] DBG ------ IN: 0x00 
+[79000ms] DBG -- BUS_FREE
+[79036ms] DBG -- BUS_BUSY
+[79036ms] DBG ---- SELECTION: 6
+[79038ms] DBG ---- COMMAND: 0x28 (Read10)
+[79038ms] DBG ------ OUT: 0x28 0x00 0x00 0x02 0x02 0xD5 
+[79039ms] DBG ------ OUT: 0x00 0x00 0x01 0x00 
+[79039ms] DBG ------ Read 1x512 starting at 131797
+[79040ms] DBG ---- DATA_IN
+[79041ms] DBG ---- Total IN: 512 OUT: 0 CHECKSUM: 18220
+[79041ms] DBG ---- STATUS: 0 GOOD
+[79047ms] DBG ---- MESSAGE_IN
+[79047ms] DBG ------ IN: 0x00 
+[79050ms] DBG -- BUS_FREE
+[79067ms] DBG -- BUS_BUSY
+[79067ms] DBG ---- SELECTION: 6
+[79069ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[79070ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[79070ms] DBG ---- DATA_IN
+[79071ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[79072ms] DBG ---- STATUS: 0 GOOD
+[79077ms] DBG ---- MESSAGE_IN
+[79078ms] DBG ------ IN: 0x00 
+[79081ms] DBG -- BUS_FREE
+[79169ms] DBG -- BUS_BUSY
+[79169ms] DBG ---- SELECTION: 6
+[79171ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[79171ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[79172ms] DBG ---- DATA_IN
+[79173ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[79173ms] DBG ---- STATUS: 0 GOOD
+[79179ms] DBG ---- MESSAGE_IN
+[79180ms] DBG ------ IN: 0x00 
+[79182ms] DBG -- BUS_FREE
+[109567ms] DBG -- BUS_BUSY
+[109567ms] DBG ---- SELECTION: 6
+[109569ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[109570ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[109570ms] DBG ---- DATA_IN
+[109571ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[109572ms] DBG ---- STATUS: 0 GOOD
+[109577ms] DBG ---- MESSAGE_IN
+[109577ms] DBG ------ IN: 0x00 
+[109580ms] DBG -- BUS_FREE
+[109600ms] DBG -- BUS_BUSY
+[109600ms] DBG ---- SELECTION: 6
+[109602ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[109602ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[109603ms] DBG ---- DATA_IN
+[109604ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[109604ms] DBG ---- STATUS: 0 GOOD
+[109610ms] DBG ---- MESSAGE_IN
+[109610ms] DBG ------ IN: 0x00 
+[109613ms] DBG -- BUS_FREE
+[109634ms] DBG -- BUS_BUSY
+[109634ms] DBG ---- SELECTION: 6
+[109636ms] DBG ---- COMMAND: 0x03 (RequestSense)
+[109636ms] DBG ------ OUT: 0x03 0x00 0x00 0x00 0x12 0x00 
+[109637ms] DBG ---- DATA_IN
+[109638ms] DBG ---- Total IN: 18 OUT: 0 CHECKSUM: 696
+[109638ms] DBG ---- STATUS: 0 GOOD
+[109644ms] DBG ---- MESSAGE_IN
+[109644ms] DBG ------ IN: 0x00 
+[109647ms] DBG -- BUS_FREE
+[121413ms] DBG -- BUS_BUSY
+[121413ms] DBG ---- SELECTION: 4
+[121415ms] DBG ---- COMMAND: 0xD2 (Vendor 0xD2 Command (Toolbox count files))
+[121415ms] DBG ------ OUT: 0xD2 0x00 0x00 0x00 0x00 0x00 
+[121416ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[121416ms] DBG BLUESCSI_TOOLBOX_COUNT_FILES
+[121418ms] DBG TOOLBOX COUNT FILES: truncated filename is 'file2.txt'
+[121418ms] DBG TOOLBOX COUNT FILES: truncated filename is '._file2.txt'
+[121419ms] DBG toolbox: Ignoring hidden file ._file2.txt
+[121419ms] DBG TOOLBOX COUNT FILES: truncated filename is 'gile4.txt'
+[121420ms] DBG TOOLBOX COUNT FILES: truncated filename is '._gile4.txt'
+[121421ms] DBG toolbox: Ignoring hidden file ._gile4.txt
+[121421ms] DBG TOOLBOX COUNT FILES: truncated filename is 'file1.txt'
+[121422ms] DBG TOOLBOX COUNT FILES: truncated filename is '._file1.txt'
+[121423ms] DBG toolbox: Ignoring hidden file ._file1.txt
+[121423ms] DBG TOOLBOX COUNT FILES: truncated filename is 'folder3'
+[121424ms] DBG TOOLBOX COUNT FILES: truncated filename is 'hile5.txt'
+[121425ms] DBG TOOLBOX COUNT FILES: truncated filename is '._hile5.txt'
+[121426ms] DBG toolbox: Ignoring hidden file ._hile5.txt
+[121426ms] DBG TOOLBOX COUNT FILES: truncated filename is 'ifolder6'
+[121427ms] DBG ---- DATA_IN
+[121428ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 6
+[121428ms] DBG ---- STATUS: 0 GOOD
+[121437ms] DBG ---- MESSAGE_IN
+[121437ms] DBG ------ IN: 0x00 
+[121440ms] DBG -- BUS_FREE
+[149823ms] DBG -- BUS_BUSY
+[149823ms] DBG ---- SELECTION: 4
+[149825ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[149826ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[149827ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[149827ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[149827ms] Debug currently set to: true
+[149828ms] DBG ---- DATA_IN
+[149829ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[149829ms] DBG ---- STATUS: 0 GOOD
+[149838ms] DBG ---- MESSAGE_IN
+[149838ms] DBG ------ IN: 0x00 
+[149841ms] DBG -- BUS_FREE
+[152387ms] DBG -- BUS_BUSY
+[152387ms] DBG ---- SELECTION: 4
+[152389ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[152389ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[152390ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[152390ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+Debug currently set to: false
+Debug currently set to: false
+Debug currently set to: false
+Debug currently set to: false
+Debug currently set to: false
+Debug currently set to: false
+Debug currently set to: false
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+[1989711ms] Set debug logs to: true
+[1989711ms] DBG ---- STATUS: 0 GOOD
+[1989714ms] DBG ---- MESSAGE_IN
+[1989714ms] DBG ------ IN: 0x00 
+[1989716ms] DBG -- BUS_FREE
+[1989718ms] DBG -- BUS_BUSY
+[1989718ms] DBG ---- SELECTION: 4
+[1989720ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[1989721ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[1989721ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[1989722ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[1989722ms] Debug currently set to: true
+[1989723ms] DBG ---- DATA_IN
+[1989724ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[1989724ms] DBG ---- STATUS: 0 GOOD
+[1989730ms] DBG ---- MESSAGE_IN
+[1989730ms] DBG ------ IN: 0x00 
+[1989732ms] DBG -- BUS_FREE
+[1991413ms] DBG -- BUS_BUSY
+[1991413ms] DBG ---- SELECTION: 4
+[1991415ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[1991415ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[1991416ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[1991417ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+[2126923ms] Set debug logs to: true
+[2126923ms] DBG ---- STATUS: 0 GOOD
+[2126927ms] DBG ---- MESSAGE_IN
+[2126927ms] DBG ------ IN: 0x00 
+[2126929ms] DBG -- BUS_FREE
+[2126931ms] DBG -- BUS_BUSY
+[2126931ms] DBG ---- SELECTION: 4
+[2126933ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[2126934ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[2126935ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[2126935ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[2126935ms] Debug currently set to: true
+[2126936ms] DBG ---- DATA_IN
+[2126937ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[2126937ms] DBG ---- STATUS: 0 GOOD
+[2126942ms] DBG ---- MESSAGE_IN
+[2126942ms] DBG ------ IN: 0x00 
+[2126944ms] DBG -- BUS_FREE
+[2127957ms] DBG -- BUS_BUSY
+[2127957ms] DBG ---- SELECTION: 4
+[2127959ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[2127960ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[2127960ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[2127961ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false

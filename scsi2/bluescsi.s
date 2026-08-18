@@ -1666,7 +1666,7 @@ strTOOLBOXD6	asc	0d'TOGGLE_DEBUG ($D6)'0d
 	asc	' R. Return to previous menu'0d
 	asc	' 1. Set debug on'0d
 	asc	' 2. Set debug off'0d
-	asc	' 3. Debug status is : $'
+	asc	' >> Debug status is : $'
 strDEBUGSTATUS	asc	'00'0d00
 	
 *-------------------------------

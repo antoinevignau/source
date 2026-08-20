@@ -45,6 +45,11 @@ GSOS	=	$e100a8
 *-------------------------------
 
 theINDEX	=	$00
+theNBENTRIES	=	theINDEX+2
+dpFROM	=	theNBENTRIES+2
+skipWAIT	=	dpFROM+4	; true or false
+theFILESIZE	=	skipWAIT+2
+theNBBLOCKS	=	theFILESIZE+4
 
 *-------------------------------
 * SCSI EQUATES
@@ -77,13 +82,18 @@ chrDEUXPOINTS	=	':'
 chrRETURN	=	$0d
 chrRETURN2	=	$8d
 
+SIZE_BLOCK	=	4096
 SIZE_DATA	=	4096	; more than a MTU, please
+
+TRUE	=	0
+FALSE	=	65535
 
 *-------------------------------
 * BLUESCSI EQUATES
 *-------------------------------
 
 MAX_MAC_PATH	=	32
+MAX_FILE_LEN	=	32
 ENTRY_SIZE	=	40
 MAX_FILE_LISTING_FILES	=	100
 
@@ -102,6 +112,14 @@ BLUESCSI_TOOLBOX_LIST_CDS	=	$d7
 BLUESCSI_TOOLBOX_SET_NEXT_CD	=	$d8
 BLUESCSI_TOOLBOX_METADATA	=	$d9
 BLUESCSI_TOOLBOX_COUNT_CDS	=	$da
+
+iINDEX	=	0	; index in ToolboxFileEntry
+iTYPE	=	1
+iNAME	=	2
+iSIZE	=	35
+
+TYPE_FILE	=	0	; file types
+TYPE_FOLDER	=	1
 
 * The RECEIVE DIAGNOSTIC RESULT sub-commands...
 
@@ -168,6 +186,22 @@ TOOLBOX_API_VERSION	=	0
                   plx
                   stx       haBUFFER+2
 
+*---------- Make the pointer a string for the GET_FILE command
+
+	pha
+	pha
+	lda	ptrBUFFER+2
+	pha
+	_HexIt
+	PullLong	strBUFFERHIGH
+
+	pha
+	pha
+	lda	ptrBUFFER
+	pha
+	_HexIt
+	PullLong	strBUFFERLOW
+
 *----------
 
                   PushWord  #$00FF
@@ -200,28 +234,16 @@ TOOLBOX_API_VERSION	=	0
                   PushWord  #$0c                 ; home
                   _WriteChar
 
+	lda	#FALSE	; never skip wait
+	sta	skipWAIT
+	
 * DEBUG
 
-	lda	#doTOOLBOX
+	lda	#commandBUFF
 	stal	$300
-	lda	#^doTOOLBOX
+	lda	#^commandBUFF
 	stal	$302
 
-	lda	#commandBUFF
-	stal	$308
-	lda	#^commandBUFF
-	stal	$30a
-
-*	lda	#finalCALL
-*	stal	$310
-*	lda	#^finalCALL
-*	stal	$312
-	
-*	lda	#proCONTROL
-*	stal	$318
-*	lda	#^proCONTROL
-*	stal	$31a
-	
 *----------------------------
 * MAIN MENU
 *----------------------------
@@ -290,9 +312,11 @@ searchMENU	PushLong	#strSEARCHMENU
 	jsr	pollSCSI	; show SCSI devices
 
 ]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"r"
+	beq	searchMENU1
 	cmp	#"R"
 	bne	searchMENU2
-	jmp	mainMENU	; or even 0 to exit
+searchMENU1	jmp	mainMENU	; or even 0 to exit
 searchMENU2	cmp	#"0"
 	bcc	]lp
 	cmp	#"9"+1
@@ -421,9 +445,11 @@ deviceMENU	lda	theDEVICE            ; get our ID
 *---
 
 ]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"r"
+	beq	deviceMENU1
 	cmp	#"R"
 	bne	deviceMENU2
-	jmp	searchMENU	; or even 0 to exit
+deviceMENU1	jmp	searchMENU	; or even 0 to exit
 deviceMENU2	cmp	#"0"
 	bcc	]lp
 	cmp	#"4"+1
@@ -1032,9 +1058,11 @@ lastaccesspoint	PushWord	#chrRETURN	; a last return
 *--- Let the user select one access point
 
 ]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"r"
+	beq	apMENU1
 	cmp	#"R"
 	bne	apMENU2
-	jmp	deviceMENU	; or even 0 to exit
+apMENU1	jmp	deviceMENU	; or even 0 to exit
 apMENU2	cmp	#"0"
 	bcc	]lp
 	sec		; we have a value
@@ -1148,9 +1176,11 @@ apMENU4	sta	offsetNETWORK	; we point to the SSID information
 	_WriteCString
 
 ]lp	jsr	waitFORKEY	; is it 0-1
+	cmp	#"r"
+	beq	apMENU9
 	cmp	#"R"	; R to return
 	bne	apMENU10
-	jmp	deviceMENU
+apMENU9	jmp	deviceMENU
 apMENU10	cmp	#"1"	; 1 to connect
 	bne	]lp
 
@@ -1174,7 +1204,7 @@ apMENU20	PushLong	#strCONNECTING
 
 * Rewrite the key (bit 7)
 
-finalCALL	ldx	#MAX_KEY-1
+	ldx	#MAX_KEY-1
 	sep	#$20
 ]lp	lda	theKEY,x
 	and	#%0111_1111
@@ -1324,9 +1354,11 @@ doTOOLBOX	pha
 *---
 
 ]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"r"
+	beq	doTOOLBOX0
 	cmp	#"R"
 	bne	doTOOLBOX1
-	jmp	deviceMENU	; or even 0 to exit
+doTOOLBOX0	jmp	deviceMENU	; or even 0 to exit
 doTOOLBOX1	cmp	#"0"
 	bcc	]lp
 	cmp	#"9"
@@ -1390,11 +1422,21 @@ toolboxRTS	rts
 * $D0 - BLUESCSI_TOOLBOX_LIST_FILES
 *-------------------------------
 
-toolboxD0	jsr	initCOMMANDDATA
+toolboxD0
+
+*--- Print the header
+
+listFILES	jsr	getFILECOUNT	; First, get number of entries
 
 	PushLong	#strTOOLBOXD0
 	_WriteCString
+
+	jsr	getWORKINGDIRECTORY
+
+*--- Do the command
 	
+	jsr	initCOMMANDDATA	; Then, get list
+
 	ldx	#LEN_CMD_TOOLBOX-2
 ]lp	lda	scsiTOOLBOXD0,x
 	sta	commandDATA,x
@@ -1404,6 +1446,128 @@ toolboxD0	jsr	initCOMMANDDATA
 
 	lda	#dcBLUESCSI_TOOLBOX_LIST_FILES
 	jsr	statusCALL	; a status command
+
+*--- Set pointer / Alternate entry for LIST_CDS
+
+listFILES_ALT	lda	#commandBUFF	; made a 24-bit pointer
+	sta	dpFROM	; even if the buffer is
+	lda	#^commandBUFF	; here. For portability
+	sta	dpFROM+2
+
+	stz	theINDEX	; reset index
+	
+	lda	theNBENTRIES	; check if we have entries
+	bne	listFILES_LOOP	; in the folder
+	
+	PushLong	#strNOFILES	; no, exit
+	_WriteCString
+	jmp	listFILES_END
+
+*--- Init structure
+
+listFILES_LOOP	sep	#$20	; clear entry
+	ldx	#DATA_IN
+	lda	#' '
+]lp	sta	|$0000,x
+	inx
+	cpx	#DATA_OUT
+	bcc	]lp
+	rep	#$20
+
+*--- Set the file index
+
+	lda	[dpFROM]
+	and	#$ff
+	jsr	listFILES_HEXIT
+	sty	strINDEX
+	
+*--- Set the file type
+	
+	ldy	#iTYPE
+	lda	[dpFROM],y
+	and	#$ff
+	cmp	#TYPE_FOLDER+1	; 0 and 1 only
+	bcs	listFILES_1
+	asl
+	asl
+	tax
+	lda	strTHETYPE,x
+	sta	strTYPE
+	lda	strTHETYPE+2,x
+	sta	strTYPE+2
+
+*--- Set the file name
+
+listFILES_1	ldy	#iNAME
+	sep	#$20
+]lp	lda	[dpFROM],y
+	beq	listFILES_2
+	sta	strNAME,y
+	iny
+	cpy	#MAX_FILE_LEN
+	bcc	]lp
+
+listFILES_2	rep	#$20
+
+*--- Set the file size
+
+	ldy	#iSIZE
+	lda	[dpFROM],y
+	xba
+	jsr	listFILES_HEXIT
+	stx	strSIZE
+	sty	strSIZE+2
+
+	ldy	#iSIZE+2
+	lda	[dpFROM],y
+	xba
+	jsr	listFILES_HEXIT
+	stx	strSIZE+4
+	sty	strSIZE+6
+
+	ldy	#iSIZE+4
+	lda	[dpFROM],y
+	and	#$ff
+	jsr	listFILES_HEXIT
+	sty	strSIZE+8
+	
+*--- Output the string
+
+	PushLong	#strFILEENTRY
+	_WriteCString
+	
+*--- Next file entry
+
+listFILES_9	lda	dpFROM	; prepare pointer
+	clc		; to next entry
+	adc	#ENTRY_SIZE
+	sta	dpFROM
+	lda	dpFROM+2
+	adc	#0
+	sta	dpFROM+2
+	
+	inc	theINDEX	; check index
+	lda	theINDEX
+	cmp	theNBENTRIES
+	bcs	listFILES_END	; exit
+	jmp	listFILES_LOOP	; or continue
+
+listFILES_END	lda	#FALSE	; shall I skip wait?
+	tax
+	cmp	skipWAIT
+	stx	skipWAIT	; always reset
+	beq	listFILES_WAIT	; no
+	rts		; yes
+listFILES_WAIT	jmp	waitKEY
+
+*--- Code
+
+listFILES_HEXIT	pha		; from a byte to a string
+	pha
+	pha		; <= here, really
+	_HexIt
+	plx
+	ply
 	rts
 
 *--- Data
@@ -1412,16 +1576,176 @@ scsiTOOLBOXD0	dfb	BLUESCSI_TOOLBOX_LIST_FILES
 	hex	00,00,00,00,00,00,00,00,00
 
 strTOOLBOXD0	asc	0d'LIST_FILES ($D0)'0d00
+strNOFILES	asc	0d'> No entries found.'00
 
+strTHETYPE	asc	'Dir File'	; File Directory
+
+strFILEENTRY	asc	0d
+DATA_IN
+strINDEX	ds	3	;  3  2 + space
+strTYPE	ds	5	;  8  4 + space
+strNAME	ds	33	; 41 32 + space
+strSIZE	ds	10	; 52 10
+DATA_OUT			; 62
+	dfb	0
+	
 *-------------------------------
 * $D1 - BLUESCSI_TOOLBOX_GET_FILE
 *-------------------------------
 
-toolboxD1	jsr	initCOMMANDDATA
+toolboxD1	lda	#TRUE
+	sta	skipWAIT
+
+	jsr	listFILES
+
+	lda	#FALSE
+	sta	skipWAIT
+
+*--- Ask for the file index
 
 	PushLong	#strTOOLBOXD1
 	_WriteCString
 	
+	PushWord	#0
+	PushLong	#strFILEINDEX
+	PushWord	#2
+	PushWord	#chrRETURN2
+	PushWord	#1
+	_ReadLine
+	pla
+	bne	toolboxD1_1
+	rts
+
+*--- Set the file index in the SCSI command
+
+toolboxD1_1	pha
+	PushLong	#strFILEINDEX
+	PushWord	#2
+	_Hex2Int
+	
+	lda	1,s
+	sep	#$20
+	sta	scsiTOOLBOXD1+1
+	rep	#$20
+
+*--- Now get the file size from the buffer
+
+	plx		; index
+	lda	#0	; offset
+]lp	cpx	#0
+	beq	toolboxD1_2
+	clc
+	adc	#ENTRY_SIZE	; +40
+	dex
+	bra	]lp	; loop
+
+*--- Tell the size in bytes
+
+toolboxD1_2	tax		; get the filesize
+	lda	commandBUFF+36,x
+	xba		; but skip 8 bytes
+	sta	theFILESIZE+2
+	pha
+	lda	commandBUFF+38,x
+	xba
+	sta	theFILESIZE
+	pha
+	PushLong	#strTELLSIZE2
+	PushWord	#8
+	_Long2Hex
+	
+	PushLong	#strTELLSIZE
+	_WriteCString
+
+*--- Tell the size in blocks
+
+	lda	theFILESIZE	; make it +4095
+	clc
+	adc	#4095
+	sta	theNBBLOCKS
+	lda	theFILESIZE+2
+	adc	#0
+	sta	theNBBLOCKS+2
+
+	ldx	#12	; 2^12 = 4096
+]lp	lsr	theNBBLOCKS+2	; /2
+	ror	theNBBLOCKS
+	dex
+	bne	]lp	; we have the number of blocks
+
+	PushLong	theNBBLOCKS
+	PushLong	#strTELLBLOCK2
+	PushWord	#8
+	_Long2Hex
+	
+	PushLong	#strTELLBLOCK
+	_WriteCString
+
+*--- Prepare the read
+
+	stz	theINDEX	; reset index
+
+	lda	ptrBUFFER	; set pointer
+	sta	dpFROM
+	lda	ptrBUFFER+2
+	sta	dpFROM+2
+
+	ldy	#0	; clear the destination buffer
+	tya
+]lp	sta	[dpFROM],y
+	iny
+	iny
+	bne	]lp
+
+*--- Now read the file (limit is 64K)
+
+	stz	scsiTOOLBOXD1+2	; block offset high is 0
+	sep	#$20	; (it is a test app only)
+	stz	scsiTOOLBOXD1+6	; block count is 0
+	rep	#$20	; meaning, read 1 block
+
+toolboxD1_3	lda	theINDEX	; block offset low
+	xba
+	sta	scsiTOOLBOXD1+4
+
+	jsr	execGETFILE	; read a block
+
+	PushWord	#chrPOINT
+	_WriteChar
+	
+	ldy	#0	; copy 4096 bytes
+]lp	lda	commandBUFF,y
+	sta	[dpFROM],y
+	iny
+	iny
+	cpy	#SIZE_BLOCK
+	bcc	]lp
+
+	lda	dpFROM
+	clc
+	adc	#SIZE_BLOCK
+	sta	dpFROM
+	lda	dpFROM+2
+	adc	#0
+	sta	dpFROM+2
+	
+	inc	theINDEX
+	lda	theINDEX
+	cmp	#16	; 65536/4096
+	bcs	toolboxD1_4
+	cmp	theNBBLOCKS
+	bcc	toolboxD1_3	; or loop
+
+*--- And tell the world...
+
+toolboxD1_4	PushLong	#strTOOLBOXD1END
+	_WriteCString
+	jmp	waitKEY
+
+*--- Back to the original command to execute
+	
+execGETFILE	jsr	initCOMMANDDATA
+
 	ldx	#LEN_CMD_TOOLBOX-2
 ]lp	lda	scsiTOOLBOXD1,x
 	sta	commandDATA,x
@@ -1430,25 +1754,48 @@ toolboxD1	jsr	initCOMMANDDATA
 	bpl	]lp
 
 	lda	#dcBLUESCSI_TOOLBOX_GET_FILE
-	jsr	statusCALL	; a status command
-	jmp	waitKEY
+	jmp	statusCALL	; a status command
 
 *--- Data
 
 scsiTOOLBOXD1	dfb	BLUESCSI_TOOLBOX_GET_FILE
 	hex	00,00,00,00,00,00,00,00,00
 
-strTOOLBOXD1	asc	0d'GET_FILE ($D1)'0d00
+strTOOLBOXD1	asc	0d'GET_FILE ($D1) - Enter file index to get'0d
+	asc	'> '00
+
+strTOOLBOXD1END	asc	0d'> Read finished. Check buffer at $'
+strBUFFERHIGH	asc	'0000'
+strBUFFERLOW	asc	'0000'00
+
+strFILEINDEX	ds	2
+
+strTELLSIZE	asc	0d'File size in bytes is $'
+strTELLSIZE2	asc	'00000000'00
+
+strTELLBLOCK	asc	0d'File size in 4096-byte blocks is $'
+strTELLBLOCK2	asc	'00000000'00
 
 *-------------------------------
 * $D2 - BLUESCSI_TOOLBOX_COUNT_FILES
 *-------------------------------
 
-toolboxD2	jsr	initCOMMANDDATA
+toolboxD2	PushLong	#strTOOLBOXD2
+	_WriteCString
 
-	PushLong	#strTOOLBOXD2
+	jsr	getFILECOUNT
+
+	PushLong	#strCOUNTFILES
 	_WriteCString
 	
+	lda	theNBENTRIES
+	jsr	showDECIMAL
+	jmp	waitKEY
+
+*--- Execute command
+
+getFILECOUNT	jsr	initCOMMANDDATA
+
 	ldx	#LEN_CMD_TOOLBOX-2
 ]lp	lda	scsiTOOLBOXD2,x
 	sta	commandDATA,x
@@ -1458,14 +1805,11 @@ toolboxD2	jsr	initCOMMANDDATA
 
 	lda	#dcBLUESCSI_TOOLBOX_COUNT_FILES
 	jsr	statusCALL	; a status command
-
-	PushLong	#strCOUNTFILES
-	_WriteCString
 	
 	lda	commandBUFF
 	and	#$ff
-	jsr	showDECIMAL
-	jmp	waitKEY
+	sta	theNBENTRIES
+	rts
 
 *--- Data
 
@@ -1568,9 +1912,11 @@ toolboxD6_loop	jsr	toolboxD6_3	; first, get debug status
 	_WriteCString
 
 ]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"r"
+	beq	toolboxD61
 	cmp	#"R"
 	bne	toolboxD62
-	jmp	doTOOLBOX	; or even 0 to exit
+toolboxD61	jmp	doTOOLBOX	; or even 0 to exit
 toolboxD62	cmp	#"1"
 	bcc	]lp
 	cmp	#"2"+1
@@ -1673,7 +2019,9 @@ strDEBUGSTATUS	asc	'00'0d00
 * $D7 - BLUESCSI_TOOLBOX_LIST_CDS
 *-------------------------------
 
-toolboxD7	jsr	initCOMMANDDATA
+toolboxD7	jsr	getCDCOUNT	; First, get number of entries
+
+	jsr	initCOMMANDDATA	; Then, get the list
 
 	PushLong	#strTOOLBOXD7
 	_WriteCString
@@ -1687,7 +2035,8 @@ toolboxD7	jsr	initCOMMANDDATA
 
 	lda	#dcBLUESCSI_TOOLBOX_LIST_CDS
 	jsr	statusCALL	; a status command
-	jmp	waitKEY
+
+	jmp	listFILES_ALT	; and list files
 
 *--- Data
 
@@ -1733,9 +2082,11 @@ toolboxD9	jsr	initCOMMANDDATA
 	_WriteCString
 
 ]lp	jsr	waitFORKEY	; is it 0-9
+	cmp	#"r"
+	beq	toolboxD91
 	cmp	#"R"
 	bne	toolboxD92
-	jmp	doTOOLBOX	; or even 0 to exit
+toolboxD91	jmp	doTOOLBOX	; or even 0 to exit
 toolboxD92	cmp	#"0"
 	bcc	]lp
 	cmp	#"3"+1
@@ -1921,18 +2272,47 @@ toolboxD9_2	sep	#$20
 	PushLong	#strSETWD
 	_WriteCString
 
-*	jsr	execD9_CONTROL
+* Enter the path of the directory
+
+	PushWord	#0
+	PushLong	#theWORKINGDIR
+	PushWord	#MAX_SET_WD
+	PushWord	#chrRETURN2
+	PushWord	#1
+	_ReadLine
+	pla
+	bne	toolboxD9_21
+	rts
+
+* Rewrite the path (bit 7) and save it into the buffer
+
+toolboxD9_21	ldx	#MAX_SET_WD-1
+	sep	#$20
+]lp	lda	theWORKINGDIR,x
+	and	#%0111_1111
+	sta	commandBUFF,x
+	dex
+	bpl	]lp
+	rep	#$20
+
+	jsr	execD9_CONTROL
 	jmp	waitKEY
 
 *---
 
-strSETWD	asc	0d'TO BE IMPLEMENTED'00
+strSETWD	asc	0d'Set working directory:'0d
+	asc	'> '00
+
+theWORKINGDIR	ds	MAX_SET_WD
 
 *---------------
 * GET WORKING DIRECTORY
 *---------------
 
 MAX_GET_WD	=	128
+
+getWORKINGDIRECTORY
+	jsr	initCOMMANDDATA
 
 toolboxD9_3	sep	#$20
 	lda	#TOOLBOX_SUBCMD_GET_WORKING_DIR
@@ -1948,7 +2328,7 @@ toolboxD9_3	sep	#$20
 
 	PushLong	#commandBUFF
 	_WriteCString
-	jmp	waitKEY
+	rts
 
 *---
 
@@ -1997,11 +2377,22 @@ strTOOLBOXD9	asc	0d'METADATA ($D9)'0d
 * $DA - BLUESCSI_TOOLBOX_COUNT_CDS
 *-------------------------------
 
-toolboxDA	jsr	initCOMMANDDATA
-
-	PushLong	#strTOOLBOXDA
+toolboxDA	PushLong	#strTOOLBOXDA
 	_WriteCString
 	
+	jsr	getCDCOUNT
+
+	PushLong	#strCOUNTCDS
+	_WriteCString
+
+	lda	commandBUFF
+	jsr	showDECIMAL
+	jmp	waitKEY
+
+*--- Code
+
+getCDCOUNT	jsr	initCOMMANDDATA
+
 	ldx	#LEN_CMD_TOOLBOX-2
 ]lp	lda	scsiTOOLBOXDA,x
 	sta	commandDATA,x
@@ -2011,14 +2402,12 @@ toolboxDA	jsr	initCOMMANDDATA
 
 	lda	#dcBLUESCSI_TOOLBOX_COUNT_CDS
 	jsr	statusCALL	; a status command
-	
-	PushLong	#strCOUNTCDS
-	_WriteCString
 
 	lda	commandBUFF
-	jsr	showDECIMAL
-	jmp	waitKEY
-
+	and	#$ff
+	sta	theNBENTRIES
+	rts
+	
 *--- Data
 
 scsiTOOLBOXDA	dfb	BLUESCSI_TOOLBOX_COUNT_CDS

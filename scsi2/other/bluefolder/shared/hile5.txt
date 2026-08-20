@@ -1,0 +1,184 @@
+Platform: BlueSCSI (Pico2/W)
+FW Version: 2026.04.27-rel Apr 28 2026 00:34:35
+Flash chip size: 4096 kB
+=== Bootloader Log ===
+[0ms] Bootloader version: Apr 28 2026 00:34:19 BlueSCSI
+[0ms] Looking for firmware: BlueSCSI_Pico_2_DaynaPORT*.bin
+[188ms] Bootloader continuing to main firmware
+=== End Bootloader Log ===
+Reclock Pico 2/2W based boards to standardized speed
+Initial Clock set to 150MHz
+Reclocking the MCU to 155MHz
+Setting the SDIO clock to 26MHz
+After reclocking, system reports clock set to 155MHz
+ 
+=== SD Card Info ===
+SD card detected, FAT32 volume size: 30424 MB
+SD Name: SK32G, MID: 0x03 (SanDisk), OID: "SD" (0x53 0x44)
+
+=== Global Config ===
+Reading configuration from bluescsi.ini
+
+=== Finding images ===
+=== Finding images in / ===
+== Opening /HD60 GSOS 6.0.4.hda for ID:6 LUN:0
+---- INFO: Image file is fragmented (3 fragments), FastSeek enabled for best performance.
+---- Configuring as disk drive
+== Opening /NE4.hda for ID:4 LUN:0
+---- Configuring as network based on image name
+== Opening /CD50 DeluxeWare.hda for ID:5 LUN:0
+---- Configuring as CD-ROM drive
+
+== Platform supports ROM drive up to 2848 kB
+ 
+=== Configured SCSI Devices ===
+ID: 4, Type: Network
+ID: 5, BlockSize: 2048, Type: Optical, Quirks: Apple, Size: 664576kB, Removable
+ID: 6, BlockSize: 512, Type: Fixed, Quirks: Apple, Size: 102400kB
+ 
+=== Network Initialization ===
+Wi-Fi MAC: 00:80:19:65:DA:8C
+No Wi-Fi SSID or Password found. Use the BlueSCSI Wi-Fi DA to configure the network.
+
+ID: 5, Eject button: #1
+Clock set to: 155MHz
+Initialization complete!
+Disabling status LED
+INFO: Pico Voltage: 3.295V.
+WARNING: Host used command 0x1C which is affected by drive geometry. Current settings are 0 sectors x 0 heads = 0 but image size of 332288 sectors is not divisible. This can cause error messages in diagnostics tools.
+Switching to next image for id 5: CD5/
+---- Image file is read-only, writes disabled
+---- Failed to load image 'CD5/', ignoring
+WARNING: unable to find capacity of device ID 5
+WARNING: Host attempted read at sector 1+1, exceeding image size 0 sectors (512B/sector)
+WARNING: unable to find capacity of device ID 5
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+[2786852ms] Set debug logs to: true
+[2786852ms] DBG ---- STATUS: 0 GOOD
+[2786855ms] DBG ---- MESSAGE_IN
+[2786855ms] DBG ------ IN: 0x00 
+[2786856ms] DBG -- BUS_FREE
+[2786859ms] DBG -- BUS_BUSY
+[2786859ms] DBG ---- SELECTION: 4
+[2786861ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[2786861ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[2786862ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[2786862ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[2786863ms] Debug currently set to: true
+[2786863ms] DBG ---- DATA_IN
+[2786865ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[2786865ms] DBG ---- STATUS: 0 GOOD
+[2786871ms] DBG ---- MESSAGE_IN
+[2786871ms] DBG ------ IN: 0x00 
+[2786872ms] DBG -- BUS_FREE
+[2796347ms] DBG -- BUS_BUSY
+[2796347ms] DBG ---- SELECTION: 4
+[2796349ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[2796350ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[2796351ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[2796351ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+Debug currently set to: false
+WARNING: unable to find capacity of device ID 5
+WARNING: Host attempted read at sector 1+1, exceeding image size 0 sectors (512B/sector)
+WARNING: unable to find capacity of device ID 5
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+[3630827ms] Set debug logs to: true
+[3630827ms] DBG ---- STATUS: 0 GOOD
+[3630830ms] DBG ---- MESSAGE_IN
+[3630830ms] DBG ------ IN: 0x00 
+[3630832ms] DBG -- BUS_FREE
+[3630834ms] DBG -- BUS_BUSY
+[3630834ms] DBG ---- SELECTION: 4
+[3630836ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3630837ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3630837ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3630838ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3630838ms] Debug currently set to: true
+[3630839ms] DBG ---- DATA_IN
+[3630840ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3630840ms] DBG ---- STATUS: 0 GOOD
+[3630846ms] DBG ---- MESSAGE_IN
+[3630846ms] DBG ------ IN: 0x00 
+[3630847ms] DBG -- BUS_FREE
+[3638996ms] DBG -- BUS_BUSY
+[3638996ms] DBG ---- SELECTION: 4
+[3638998ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3638998ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[3638999ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3638999ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+[3640960ms] Set debug logs to: true
+[3640960ms] DBG ---- STATUS: 0 GOOD
+[3640964ms] DBG ---- MESSAGE_IN
+[3640964ms] DBG ------ IN: 0x00 
+[3640965ms] DBG -- BUS_FREE
+[3640968ms] DBG -- BUS_BUSY
+[3640968ms] DBG ---- SELECTION: 4
+[3640970ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3640971ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3640971ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3640972ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3640972ms] Debug currently set to: true
+[3640973ms] DBG ---- DATA_IN
+[3640974ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3640974ms] DBG ---- STATUS: 0 GOOD
+[3640980ms] DBG ---- MESSAGE_IN
+[3640980ms] DBG ------ IN: 0x00 
+[3640982ms] DBG -- BUS_FREE
+[3641960ms] DBG -- BUS_BUSY
+[3641960ms] DBG ---- SELECTION: 4
+[3641962ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3641962ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[3641963ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3641963ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false
+Set debug logs to: false
+Debug currently set to: false
+Debug currently set to: false
+[3649359ms] Set debug logs to: true
+[3649359ms] DBG ---- STATUS: 0 GOOD
+[3649363ms] DBG ---- MESSAGE_IN
+[3649363ms] DBG ------ IN: 0x00 
+[3649364ms] DBG -- BUS_FREE
+[3649366ms] DBG -- BUS_BUSY
+[3649366ms] DBG ---- SELECTION: 4
+[3649369ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3649369ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3649370ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3649370ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3649371ms] Debug currently set to: true
+[3649371ms] DBG ---- DATA_IN
+[3649372ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3649372ms] DBG ---- STATUS: 0 GOOD
+[3649378ms] DBG ---- MESSAGE_IN
+[3649378ms] DBG ------ IN: 0x00 
+[3649380ms] DBG -- BUS_FREE
+[3653933ms] DBG -- BUS_BUSY
+[3653933ms] DBG ---- SELECTION: 4
+[3653935ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3653936ms] DBG ------ OUT: 0xD6 0x01 0x00 0x00 0x00 0x00 
+[3653937ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3653937ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+[3653937ms] Debug currently set to: true
+[3653938ms] DBG ---- DATA_IN
+[3653939ms] DBG ---- Total IN: 1 OUT: 0 CHECKSUM: 1
+[3653939ms] DBG ---- STATUS: 0 GOOD
+[3653944ms] DBG ---- MESSAGE_IN
+[3653944ms] DBG ------ IN: 0x00 
+[3653946ms] DBG -- BUS_FREE
+[3655785ms] DBG -- BUS_BUSY
+[3655785ms] DBG ---- SELECTION: 4
+[3655787ms] DBG ---- COMMAND: 0xD6 (Vendor 0xD6 Command (Toolbox toggle debug))
+[3655788ms] DBG ------ OUT: 0xD6 0x00 0x00 0x00 0x00 0x00 
+[3655788ms] DBG ------ OUT: 0x00 0x00 0x00 0x00 
+[3655789ms] DBG BLUESCSI_TOOLBOX_TOGGLE_DEBUG
+Set debug logs to: false
+Debug currently set to: false

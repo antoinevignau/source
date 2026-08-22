@@ -143,6 +143,12 @@ TOOLBOX_CAP_SET_WORKING_DIR	=	4
 TOOLBOX_API_VERSION	=	0
 
 *-------------------------------
+* SOFTSWITCH
+*-------------------------------
+
+VERTCNT	=	$c02e	; for file size!
+
+*-------------------------------
 * CODE
 *-------------------------------
 
@@ -244,6 +250,11 @@ TOOLBOX_API_VERSION	=	0
 	lda	#^commandBUFF
 	stal	$302
 
+	lda	#toolboxD3_1
+	stal	$308
+	lda	#^toolboxD3_1
+	stal	$30a
+	
 *----------------------------
 * MAIN MENU
 *----------------------------
@@ -1821,11 +1832,56 @@ strCOUNTFILES	asc	' Number of files: '00
 
 *-------------------------------
 * $D3 - BLUESCSI_TOOLBOX_SEND_FILE_PREP
+* $D4 - BLUESCSI_TOOLBOX_SEND_FILE
+* $D5 - BLUESCSI_TOOLBOX_SEND_FILE_END
 *-------------------------------
 
-toolboxD3	jsr	initCOMMANDDATA
+toolboxD3
+toolboxD4
+toolboxD5	lda	#TRUE
+	sta	skipWAIT
 
+	jsr	listFILES
+
+	lda	#FALSE
+	sta	skipWAIT
+
+*--- Ask for the filename to create
+
+	ldx	#MAX_FILE_LEN-1
+	sep	#$20
+]lp	stz	strFILENAMED3,x
+	dex
+	bpl	]lp
+	rep	#$20
+	
 	PushLong	#strTOOLBOXD3
+	_WriteCString
+	
+	PushWord	#0
+	PushLong	#strFILENAMED3
+	PushWord	#MAX_FILE_LEN
+	PushWord	#chrRETURN2
+	PushWord	#1
+	_ReadLine
+	pla
+	bne	toolboxD3_1
+	rts
+
+*--- Create the file
+
+toolboxD3_1	jsr	initCOMMANDDATA
+
+	ldx	#MAX_FILE_LEN-1	; move file name to destination
+	sep	#$20
+]lp	lda	strFILENAMED3,x
+	and	#%0111_1111
+	sta	commandBUFF,x
+	dex
+	bpl	]lp
+	rep	#$20
+
+	PushLong	#strTOOLBOXD3_1
 	_WriteCString
 	
 	ldx	#LEN_CMD_TOOLBOX-2
@@ -1837,22 +1893,23 @@ toolboxD3	jsr	initCOMMANDDATA
 
 	lda	#dcBLUESCSI_TOOLBOX_SEND_FILE_PREP
 	jsr	controlCALL	; a control command
-	jmp	waitKEY
 
-*--- Data
+*--- Write the file (old mode)
 
-scsiTOOLBOXD3	dfb	BLUESCSI_TOOLBOX_SEND_FILE_PREP
-	hex	00,00,00,00,00,00,00,00,00
+toolboxD4_1	jsr	initCOMMANDDATA
 
-strTOOLBOXD3	asc	0d'SEND_FILE_PREP ($D3)'0d00
+	ldal	VERTCNT	; file size
+	xba
+	sta	scsiTOOLBOXD4+1
 
-*-------------------------------
-* $D4 - BLUESCSI_TOOLBOX_SEND_FILE
-*-------------------------------
+	ldx	#0	; fill in the buffer
+]lp	sta	commandBUFF,x	; with usefuless data
+	inc
+	inx
+	inx
+	bne	]lp
 
-toolboxD4	jsr	initCOMMANDDATA
-
-	PushLong	#strTOOLBOXD4
+	PushLong	#strTOOLBOXD4_1
 	_WriteCString
 	
 	ldx	#LEN_CMD_TOOLBOX-2
@@ -1864,22 +1921,12 @@ toolboxD4	jsr	initCOMMANDDATA
 
 	lda	#dcBLUESCSI_TOOLBOX_SEND_FILE
 	jsr	controlCALL	; a control command
-	jmp	waitKEY
 
-*--- Data
+*--- Close the file
 
-scsiTOOLBOXD4	dfb	BLUESCSI_TOOLBOX_SEND_FILE
-	hex	00,00,00,00,00,00,00,00,00
+toolboxD5_1	jsr	initCOMMANDDATA
 
-strTOOLBOXD4	asc	0d'SEND_FILE ($D4)'0d00
-
-*-------------------------------
-* $D5 - BLUESCSI_TOOLBOX_SEND_FILE_END
-*-------------------------------
-
-toolboxD5	jsr	initCOMMANDDATA
-
-	PushLong	#strTOOLBOXD5
+	PushLong	#strTOOLBOXD5_1
 	_WriteCString
 	
 	ldx	#LEN_CMD_TOOLBOX-2
@@ -1891,14 +1938,31 @@ toolboxD5	jsr	initCOMMANDDATA
 
 	lda	#dcBLUESCSI_TOOLBOX_SEND_FILE_END
 	jsr	controlCALL	; a control command
+	
+	PushLong	#strTOOLBOXD5_2
+	_WriteCString
 	jmp	waitKEY
 
 *--- Data
 
+scsiTOOLBOXD3	dfb	BLUESCSI_TOOLBOX_SEND_FILE_PREP
+	hex	00,00,00,00,00,00,00,00,00
+
+scsiTOOLBOXD4	dfb	BLUESCSI_TOOLBOX_SEND_FILE
+	hex	00,00,00,00,00,00,00,00,00
+
 scsiTOOLBOXD5	dfb	BLUESCSI_TOOLBOX_SEND_FILE_END
 	hex	00,00,00,00,00,00,00,00,00
 
-strTOOLBOXD5	asc	0d'SEND_FILE_END ($D6)'0d00
+strTOOLBOXD3	asc	0d0d'SEND_FILE ($D3/$D4/$D5) - Enter file name to create'0d
+	asc	'> '00
+
+strFILENAMED3	ds	MAX_FILE_LEN
+
+strTOOLBOXD3_1	asc	0d' > Creating file entry.'00
+strTOOLBOXD4_1	asc	0d' > Writing file to SD card.'00
+strTOOLBOXD5_1	asc	0d' > Closing file.'00
+strTOOLBOXD5_2	asc	0d' > Write finished.'00
 
 *-------------------------------
 * $D6 - BLUESCSI_TOOLBOX_TOGGLE_DEBUG
@@ -2049,11 +2113,47 @@ strTOOLBOXD7	asc	0d'LIST_CDS ($D7)'0d00
 * $D8 - BLUESCSI_TOOLBOX_SET_NEXT_CD
 *-------------------------------
 
-toolboxD8	jsr	initCOMMANDDATA
+toolboxD8	lda	#TRUE
+	sta	skipWAIT
+
+	jsr	toolboxD7	; list all CDs
+
+	lda	#FALSE
+	sta	skipWAIT
+
+*--- Ask for the CD index
 
 	PushLong	#strTOOLBOXD8
 	_WriteCString
 	
+	PushWord	#0
+	PushLong	#strFILEINDEX
+	PushWord	#2
+	PushWord	#chrRETURN2
+	PushWord	#1
+	_ReadLine
+	pla
+	bne	toolboxD8_1
+	rts
+
+*--- Set the file index in the SCSI command
+
+toolboxD8_1	pha
+	PushLong	#strFILEINDEX
+	PushWord	#2
+	_Hex2Int
+	pla
+	bcc	toolboxD8_2
+	rts
+
+toolboxD8_2	sep	#$20
+	sta	scsiTOOLBOXD8+1
+	rep	#$20
+
+*--- Now, set the next CD
+
+	jsr	initCOMMANDDATA
+
 	ldx	#LEN_CMD_TOOLBOX-2
 ]lp	lda	scsiTOOLBOXD8,x
 	sta	commandDATA,x
@@ -2062,7 +2162,10 @@ toolboxD8	jsr	initCOMMANDDATA
 	bpl	]lp
 
 	lda	#dcBLUESCSI_TOOLBOX_SET_NEXT_CD
-	jsr	statusCALL	; a status command
+	jsr	controlCALL	; a control command
+
+	PushLong	#strTOOLBOXD8_E	; exit gracefully
+	_WriteCString
 	jmp	waitKEY
 
 *--- Data
@@ -2070,7 +2173,10 @@ toolboxD8	jsr	initCOMMANDDATA
 scsiTOOLBOXD8	dfb	BLUESCSI_TOOLBOX_SET_NEXT_CD
 	hex	00,00,00,00,00,00,00,00,00
 
-strTOOLBOXD8	asc	0d'SET_NEXT_CD ($D8)'0d00
+strTOOLBOXD8	asc	0d'SET_NEXT_CD ($D8) - Enter file index to select new CD'0d
+	asc	'> '00
+
+strTOOLBOXD8_E	asc	0d'> Command executed. It does nothing under GS/OS!'00
 
 *-------------------------------
 * $D9 - BLUESCSI_TOOLBOX_METADATA

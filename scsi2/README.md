@@ -24,10 +24,12 @@ What if I want to write a Marinetti link layer?
 2- If found, save the Device ID for use on the DControl and DStatus calls, and continue
 
 3- Perform a DStatus SCSI Inquiry ($12) call, and check the following two information:
+
 Vendor identification is "Dayna" (offset +$8 of status data)
 Product identification is "SCSI/Link" (offset +$10 of status data)
 
 4. Perform a DStatus SCSI TOOLBOX_GET_METADATA ($D9) call with sub-command GET_CAPABILITIES ($01), and check the following information:
+
 API Version value is 0 (unsigned byte at offset +$0 of status data)
 The SCSI Processor device driver supports commands for the API version 0. A change of the API version may require a change in the SCSI commands.
 

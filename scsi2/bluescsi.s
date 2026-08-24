@@ -52,6 +52,13 @@ theFILESIZE	=	skipWAIT+2
 theNBBLOCKS	=	theFILESIZE+4
 
 *-------------------------------
+* GS/OS EQUATES
+*-------------------------------
+
+SET_DISKSW	=	$01FC90
+GSOS_DPAGE	=	$BD00
+
+*-------------------------------
 * SCSI EQUATES
 *-------------------------------
 
@@ -2150,6 +2157,22 @@ toolboxD8_2	sep	#$20
 	sta	scsiTOOLBOXD8+1
 	rep	#$20
 
+*--- Eject the current CD
+
+	lda	#6
+	sta	proEJECT+2
+	
+	jsl	GSOS
+	dw	$202e
+	adrl	proEJECT
+
+	lda	#5
+	sta	proEJECT+2
+	
+	jsl	GSOS
+	dw	$202e
+	adrl	proEJECT
+
 *--- Now, set the next CD
 
 	jsr	initCOMMANDDATA
@@ -2177,6 +2200,13 @@ strTOOLBOXD8	asc	0d'SET_NEXT_CD ($D8) - Enter file index to select new CD'0d
 	asc	'> '00
 
 strTOOLBOXD8_E	asc	0d'> Command executed. It does nothing under GS/OS!'00
+
+proEJECT	dw	5	; pCount
+	ds	2	; devNum
+	dw	2	; controlCode - EjectMedium
+	ds	4	; controlList
+	ds	4	; requestCount
+	ds	4	; transferCount
 
 *-------------------------------
 * $D9 - BLUESCSI_TOOLBOX_METADATA

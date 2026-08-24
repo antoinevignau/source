@@ -1,7 +1,8 @@
-#SCSI
-The SCSI folder for the Apple IIgs
+# SCSI
 
+The SCSI folder for the Apple IIgs
 It contains the following code and releases:
+
 
 1. CD-Audio SCSI-2 commands
 
@@ -23,7 +24,7 @@ Target audience: developers
 
 
 
-#What if I want to write a Marinetti link layer?
+# What if I want to write a Marinetti link layer?
 
 1- Search for an APPLESCSI.PROC01.00 device with the DInfo call
 
@@ -34,10 +35,12 @@ Target audience: developers
 Vendor identification is "Dayna" (offset +$8 of status data)
 Product identification is "SCSI/Link" (offset +$10 of status data)
 
+
 4. Perform a DStatus SCSI TOOLBOX_GET_METADATA ($D9) call with sub-command GET_CAPABILITIES ($01), and check the following information:
 
 API Version value is 0 (unsigned byte at offset +$0 of status data)
 The SCSI Processor device driver supports commands for the API version 0. A change of the API version may require a change in the SCSI commands.
+
 
 5. Connect to the WiFi access point using the DControl SCSI Receive Diag ($1C) call with subcommand SCSI_NETWORK_WIFI_CMD_JOIN ($05)
 
@@ -46,7 +49,7 @@ The SCSI Processor device driver supports commands for the API version 0. A chan
 7. Receive ethernet frames with the DStatus SCSI Receive ($08) command.
 
 
-#More information
+# More information
 
 - SCSI-2 standard @ https://www.staff.uni-mainz.de/tacke/scsi/SCSI2-introduction.html
 - BlueSCSI @ https://github.com/BlueSCSI

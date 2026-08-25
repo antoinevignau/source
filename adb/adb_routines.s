@@ -562,7 +562,7 @@ ADBTalkRegister_0_0
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_0
-	PushWord	#%11_00_0000	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0000	; talk (11) + register (00) + address (0000)
 	_AsyncADBReceive
 	sta	errCODE_0_0
 	cmp	#adbBusy
@@ -573,7 +573,7 @@ ADBTalkRegister_0_1
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_1
-	PushWord	#%11_00_0001	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0001	; talk (11) + register (00) + address (0001)
 	_AsyncADBReceive
 	sta	errCODE_0_1
 	cmp	#adbBusy
@@ -584,7 +584,7 @@ ADBTalkRegister_0_2
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_2
-	PushWord	#%11_00_0010	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0010	; talk (11) + register (00) + address (0010)
 	_AsyncADBReceive
 	sta	errCODE_0_2
 	cmp	#adbBusy
@@ -595,7 +595,7 @@ ADBTalkRegister_0_3
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_3
-	PushWord	#%11_00_0011	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0011	; talk (11) + register (00) + address (0011)
 	_AsyncADBReceive
 	sta	errCODE_0_3
 	cmp	#adbBusy
@@ -606,7 +606,7 @@ ADBTalkRegister_0_4
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_4
-	PushWord	#%11_00_0100	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0100	; talk (11) + register (00) + address (0100)
 	_AsyncADBReceive
 	sta	errCODE_0_4
 	cmp	#adbBusy
@@ -617,7 +617,7 @@ ADBTalkRegister_0_5
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_5
-	PushWord	#%11_00_0101	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0101	; talk (11) + register (00) + address (0101)
 	_AsyncADBReceive
 	sta	errCODE_0_5
 	cmp	#adbBusy
@@ -628,7 +628,7 @@ ADBTalkRegister_0_6
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_6
-	PushWord	#%11_00_0110	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0110	; talk (11) + register (00) + address (0110)
 	_AsyncADBReceive
 	sta	errCODE_0_6
 	cmp	#adbBusy
@@ -639,7 +639,7 @@ ADBTalkRegister_0_7
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_7
-	PushWord	#%11_00_0111	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_0111	; talk (11) + register (00) + address (0111)
 	_AsyncADBReceive
 	sta	errCODE_0_7
 	cmp	#adbBusy
@@ -650,7 +650,7 @@ ADBTalkRegister_0_8
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_8
-	PushWord	#%11_00_1000	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1000	; talk (11) + register (00) + address (1000)
 	_AsyncADBReceive
 	sta	errCODE_0_8
 	cmp	#adbBusy
@@ -661,7 +661,7 @@ ADBTalkRegister_0_9
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_9
-	PushWord	#%11_00_1001	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1001	; talk (11) + register (00) + address (1001)
 	_AsyncADBReceive
 	sta	errCODE_0_9
 	cmp	#adbBusy
@@ -672,7 +672,7 @@ ADBTalkRegister_0_10
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_10
-	PushWord	#%11_00_1010	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1010	; talk (11) + register (00) + address (1010)
 	_AsyncADBReceive
 	sta	errCODE_0_10
 	cmp	#adbBusy
@@ -683,7 +683,7 @@ ADBTalkRegister_0_11
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_11
-	PushWord	#%11_00_1011	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1011	; talk (11) + register (00) + address (1011)
 	_AsyncADBReceive
 	sta	errCODE_0_11
 	cmp	#adbBusy
@@ -694,7 +694,7 @@ ADBTalkRegister_0_12
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_12
-	PushWord	#%11_00_1100	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1100	; talk (11) + register (00) + address (1100)
 	_AsyncADBReceive
 	sta	errCODE_0_12
 	cmp	#adbBusy
@@ -705,7 +705,7 @@ ADBTalkRegister_0_13
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_13
-	PushWord	#%11_00_1101	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1101	; talk (11) + register (00) + address (1101)
 	_AsyncADBReceive
 	sta	errCODE_0_13
 	cmp	#adbBusy
@@ -716,7 +716,7 @@ ADBTalkRegister_0_14
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_14
-	PushWord	#%11_00_1110	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1110	; talk (11) + register (00) + address (1110)
 	_AsyncADBReceive
 	sta	errCODE_0_14
 	cmp	#adbBusy
@@ -727,7 +727,7 @@ ADBTalkRegister_0_15
 	lda	#NB_RETRY
 	sta	errCNT
 ]lp	PushLong	#completionRoutine_0_15
-	PushWord	#%11_00_1111	; talk (11) + register (11) + address (0000)
+	PushWord	#%11_00_1111	; talk (11) + register (00) + address (1111)
 	_AsyncADBReceive
 	sta	errCODE_0_15
 	cmp	#adbBusy

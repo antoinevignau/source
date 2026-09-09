@@ -19,8 +19,9 @@ FIRST_ROOM	=	1
 WIN_ROOM	=	64
 
 MAX_AF	=	41
+MAX_ENIGME	=	32
 MAX_LIEU	=	64
-MAX_MESSAGE	=	152
+MAX_MESSAGE	=	153
 MAX_OBJET	=	32
 
 *-------------------------------
@@ -75,18 +76,51 @@ MAX_OBJET	=	32
 
 GAME	@MODE	#1	; 320x200
 	@BORDER	#0;#0
-	@INK	#0;#0
-	@INK	#1;#26
-	@INK	#2;#9
-	@INK	#3;#15
+	@INK	#0;#0	; noir
+	@INK	#1;#26	; blanc
+	@INK	#2;#9	; vert
+	@INK	#3;#15	; orange
 	
 	@PAPER	#0;#0
 	@PEN	#0;#1
 	@CLS	#0
 
+	@WINDOW	#1;#tblWINDOW1	; pour les dialogues
+	@PAPER	#1;#0
+	@PEN	#1;#1
+	
+	@WINDOW	#2;#tblWINDOW2	; pour les commandes
+	@PAPER	#2;#0
+	@PEN	#2;#1
+	
+	@WINDOW	#3;#tblWINDOW3	; pour l'inventaire
+	@PAPER	#3;#0
+	@PEN	#3;#1
+	
+	@WINDOW	#4;#tblWINDOW4	; pour les objets visibles
+	@PAPER	#4;#0
+	@PEN	#4;#1
+	
+	@WINDOW	#5;#tblWINDOW5	; pour les directions
+	@PAPER	#5;#0
+	@PEN	#5;#1
+	
+	@WINDOW	#6;#tblWINDOW6	; pour le nom de la salle
+	@PAPER	#6;#0
+	@PEN	#6;#1
+	
 	jsr	:8000	; init all
 	jsr	:1000	; dessine le cadre
 	jmp	:2000	; joue
+
+*---
+
+tblWINDOW1	dw	3,39,21,22	; dialogue
+tblWINDOW2	dw	3,39,24,24	; commande
+tblWINDOW3	dw	29,39,6,13	; inventaire plateau
+tblWINDOW4	dw	14,39,18,19	; objets de la salle
+tblWINDOW5	dw	3,12,18,19	; directions de la salle
+tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
 *-------------------------------
 * 1000 - DESSINE LE CADRE
@@ -138,10 +172,10 @@ GAME	@MODE	#1	; 320x200
 	@DRAW	#16;#2
 	@DRAW	#16;#32
 
-	@PEN	#0;#1
+	@PEN	#0;#1	; blanc
 	@LOCATE	#0;#9;#2
 	@message	#1
-	@PEN	#0;#2
+	@PEN	#0;#2	; vert
 	@LOCATE	#0;#29;#5
 	@message	#2
 	rts
@@ -150,19 +184,19 @@ GAME	@MODE	#1	; 320x200
 * 2000 - BOUCLE PRINCIPALE
 *-------------------------------
 
-:2000	lda	SP
-	cmp	LP
-	beq	:2005
+:2000	@STREAM	#0	; go back to the main window
+
+*	lda	SP
+*	cmp	LP
+*	beq	:2005
 
 	jsr	:3000	; load level
 	lda	SP	; save level
 	sta	LP
 	jsr	:3180	; draw frame
 	jsr	:3500	; level title
-	jmp	:2006
 
 :2005	jsr	:3510	; print directions
-
 :2006	jsr	:4000	; print objects
 	jsr	:4500	; print inventory
 
@@ -172,7 +206,7 @@ GAME	@MODE	#1	; 320x200
 	
 	jsr	:7050
 
-:2009	lda	1
+:2009	lda	#1
 	sta	DD
 	jsr	:5900
 	stz	DD
@@ -252,9 +286,24 @@ GAME	@MODE	#1	; 320x200
 * 3500 - LE TITRE
 *-------------------------------
 
-:3500	@PEN	#0;#0
-	@LOCATE	#0;#3;#15
-	@lieu	SP
+:3500	@CLS	#6
+	@PEN	#6;#3	; orange
+
+	lda	SP	; lieu index
+	jsr	getLIEU	; its address in A
+	jsr	LEN	; get string length
+	pha
+	
+	lda	#DFT_WIDTH	; X = (WIDTH - LEN) / 2
+	sec
+	sbc	1,s
+	lsr
+	tax
+	pla
+	ldy	#1	; Y = 1
+	lda	#6	; S =  6
+	jsr	LOCATE
+	@lieu	SP	; print lieu
 	rts
 
 *-------------------------------
@@ -268,32 +317,141 @@ GAME	@MODE	#1	; 320x200
 	@DRAW	#16;#144
 	@DRAW	#16;#176
 
-:3510	@PEN	#0;#2
-	@LOCATE	#0;#3;#18
-	@message	#5	; SORTIE(S) : 
-	rts
+:3510	@CLS	#5
+	@PEN	#5;#2
+	@LOCATE	#5;#1;#1	; #1;#3;#18
+	@message	#5	; SORTIE(S):
+
+	@PEN	#5;#1	; blanc
+
+	stz	I	; flag pour la virgule
+	
+	lda	SP	; adresse des directions
+	beq	:3540
+	dec
+	asl		; de la salle
+	asl
+	clc
+	adc	#tblDIRECTIONS
+	sta	dpFROM
+	
+	ldx	#0	; cherche une direction valable
+	txy
+	sep	#$20
+]lp	lda	(dpFROM),y
+	beq	:3530	; pas de direction valable
+	
+	bit	I	; une direction trouvee
+	bpl	:3520	; doit-on mettre une virgule ?
+
+	lda	#chrCOMMA
+	sta	strISSUES,x
+	inx
+:3520	lda	refISSUES,y	; met la lettre de la direction
+	sta	strISSUES,x
+	dec	I	; on devra mettre une virgule
+	inx
+	
+:3530	iny
+	cpy	#4
+	bcc	]lp
+
+	lda	#chrNULL	; put a trailing zero
+	sta	strISSUES,x
+
+*---
+
+	rep	#$20	; affiche la chaîne
+	
+	cpx	#0	; aucune issue ?
+	beq	:3540	; non, sort
+
+	@LEN	#strISSUES
+	pha
+
+	lda	#12	; X = (WIDTH - LEN) / 2
+	sec
+	sbc	1,s
+	lsr
+	tax
+	pla
+	ldy	#2	; Y = 2
+	lda	#5	; S =  5
+	jsr	LOCATE
+	@PRINT	#5;#strISSUES	; print lieu
+:3540	rts
 
 *-------------------------------
 * 4000 - AFFICHE LES OBJETS
 *-------------------------------
 
-:4000
+:4000	@CLS	#4
+	@PEN	#4;#2
+	@LOCATE	#4;#9;#1
+	@message	#6	; vous voyez
+	@PEN	#4;#1
+			; LOGO
+	@LOCATE	#4;#12;#2
+	@message	#7	; rien
 	rts
 
 *-------------------------------
-* 4500 - INVENTAIRE
+* 4500 - INVENTAIRE (PLATEAU)
 *-------------------------------
 
-:4500
+:4500	@CLS	#3
+	@PAPER	#3;#3
+			; LOGO
+	rts
+
+*-------------------------------
+* 4530 - INVENTAIRE (COMMANDE)
+*-------------------------------
+
+:4530	@CLS	#0
+	@LOCATE	#0;#15;#1	; #0;#35;#1 in MODE 2
+	@message	#2
+
+	lda	#3
+	sta	IX
+	sta	IY
+	
+	ldx	#0
+]lp	phx
+	lda	OP,x
+	and	#$ff
+	cmp	#-1
+	bne	:4530_NEXT
+	
+	@LOCATE	#0;IX;IY
+
+	pla
+	pha
+	jsr	printOBJET
+	inc	IY
+	
+:4530_NEXT	plx
+	inx
+	cpx	#MAX_OBJET
+	bcc	]lp
+
+	@LOCATE	#0;#11;#23	; #0;#30;#23 in MODE 2
+	@message	#14
+	@INKEY
+	
+	jsr	:1000
+	stz	LP
+	stz	VP
 	rts
 
 *-------------------------------
 * 5000 - SAISIE DE LA COMMANDE
 *-------------------------------
 
-:5000	@PEN	#0;#2
-	@LOCATE	#0;#3;#24
-	@message	#15
+:5000	@CLS	#2	; efface la fenêtre de commande
+	@PEN	#2;#2
+	@LOCATE	#2;#1;#1	; #0;#3;#24
+	@message	#15	; affiche COMMANDE >_
 	@PEN	#0;#1
 	@INPUT	#TEXTBUFFER;#MAX_LEN
 
@@ -303,50 +461,145 @@ GAME	@MODE	#1	; 320x200
 
 :5010	@UPPER	#TEXTBUFFER;#TEXTBUFFER
 
-	lda	lenSTRING
-	bne	:5012
-	rts
+	lda	lenSTRING	; a-t-on saisi des caractères ?
+	bne	:5012	; oui
+	rts		; non
 
 :5012	@STRCMP	#strCHEAT;#TEXTBUFFER
 	bcs	:5015
 	
-	lda	#WIN_ROOM
+	lda	#WIN_ROOM	; c'est le cheat ;-)
 	sta	SP
 	jmp	:6580
 
-:5015	@getvn	#TEXTBUFFER
-
-	brk	$bd
-
-	lda	MO$1
+:5015	@getvn	#TEXTBUFFER	; cherche verbe et nom
+	@CLS	#1	; efface la fenêtre de dialogue
+	
+	lda	MO$1	; a-t-on des résultats ?
 	ora	MO$2
 	bne	:5016
 
 	lda	#17	; je ne comprends pas
+	sta	M$
+	jmp	:5900
+	
+:5016			; on vérifie la forme du verbe (on s'en moque ici)
+:5020	lda	MO$1
+	cmp	#93	; QUITTER
+	bne	:5025
+	jmp	:6700
+
+:5025
+:5030	lda	MO$1
+	cmp	#39	; R/REGARDER
+	bne	:5040
+	jsr	:7050
 	jmp	:5900
 
-:5016	rts
+:5040	lda	MO$1
+	cmp	#7	; I/INVENTAIRE
+	bne	:5050
+	jmp	:4530
+
+:5050	lda	MO$1
+	cmp	#91	; SAUVER/SAVE
+	bne	:5060
+	jmp	:6000
+
+:5060	lda	MO$1
+	cmp	#90	; CHARGER/LOAD
+	bne	:5070
+	jmp	:6200
+
+* Les directions
+
+:5070	stz	DR
+
+	lda	MO$1
+	cmp	#5	; une direction directe ?
+	bcs	:5080
+	sta	DR	; oui
+	jmp	:5110
+
+:5080	lda	MO$1
+	cmp	#10	; VA/ALLER ?
+	bne	:5110
+
+:5090	lda	MO$2
+	cmp	#5
+	bcs	:5110
+	sta	DR
+
+:5110	lda	DR
+	beq	:5120
+	jmp	:5300
+
+* On reprend les actions
+
+:5120	lda	MO$1
+	cmp	#38	; PRENDRE
+	bne	:5122
+	jmp	:5400
+
+:5122	lda	MO$1
+	cmp	#26	; JETTE/JETER
+	bne	:5130
+	jmp	:5482
+
+:5130	lda	MO$1
+	cmp	#23	; examiner
+	beq	:5130_OK
+	cmp	#16	; chercher
+	beq	:5130_OK
+	cmp	#24	; fouiller
+	bne	:5140
+:5130_OK	jsr	:5500
+	lda	AC
+	cmp	#-1
+	bne	:5140
+	rts
 
 :5140	jsr	:5600
+	lda	AC
+	cmp	#-1
+	bne	:5150
+	rts
+
+:5150	lda	MO$1
+	cmp	#36	; POSER
+	bne	:5155
+	jmp	$5450
+
+:5155	jsr	:5800
+	lda	AC
+	cmp	#-1
+	bne	:5160
+	rts
 
 :5160	lda	#18	; vous ne pouvez pas faire ca ici
 	sta	M$
-:5161	jmp	:5900
+	jmp	:5900
 
 *-------------------------------
 * 5240 - SET DIRECTIONS
 *-------------------------------
 
 :5240	lda	SP
+	beq	:5245
+	dec
 	asl
 	asl
 	clc
 	adc	DR
-
+	tax
 	lda	tblDIRECTIONS-1,x	; b/c DR is 1..4
 	and	#$ff
 	sta	NX
-	rts
+:5245	rts
+
+*-------------------------------
+* 5250 - LA CHANCE
+*-------------------------------
 
 :5250	lda	#-1
 	sta	GA
@@ -413,8 +666,35 @@ GAME	@MODE	#1	; 320x200
 
 * Toutes les conditions
 
-:5253
-	rts
+:5253	lda	EC
+	cmp	#2129
+	bne	:5254
+	
+:5254	lda	EC
+	cmp	#4142
+	bne	:5255
+
+:5255	lda	EC
+	cmp	#4755
+	bne	:5256
+	
+:5256	lda	EC
+	cmp	#5556
+	bne	:5257
+
+:5257	lda	EC
+	cmp	#4957
+	bne	:5258
+
+:5258	lda	SP
+	cmp	#47
+	bne	:5259
+
+:5259	lda	EC
+	cmp	#2532
+	bne	:5260
+
+:5260	rts
 
 *-------------------------------
 * 5300 - DIRECTIONS
@@ -424,8 +704,8 @@ GAME	@MODE	#1	; 320x200
 
 	lda	NX
 	bne	:5301
-	
 	lda	#19	; aucun chemin dans cette direction
+	sta	M$
 	jmp	:5900
 
 :5301	lda	SP
@@ -436,7 +716,6 @@ GAME	@MODE	#1	; 320x200
 	bne	:5302
 	@GET_F	#22
 	bne	:5302
-	
 	lda	#20	; vous tombez dans le ravin
 	jmp	:6500
 
@@ -448,7 +727,6 @@ GAME	@MODE	#1	; 320x200
 	bne	:5303
 	@GET_F	#33
 	bne	:5303
-	
 	lda	#21	; la passerelle cede sous vos pieds
 	jmp	:6500
 
@@ -460,7 +738,6 @@ GAME	@MODE	#1	; 320x200
 	bne	:5303_2
 	@GET_F	#30
 	bne	:5303_2
-	
 	lda	#22	; votre odeur n'a pas echappe au predateur
 	jmp	:6500
 
@@ -472,7 +749,6 @@ GAME	@MODE	#1	; 320x200
 	bne	:5304
 	@GET_F	#29
 	bne	:5304
-	
 	lda	#23	; les pieges du temple vous sont fatals
 	jmp	:6500
 
@@ -484,7 +760,6 @@ GAME	@MODE	#1	; 320x200
 	bne	:5304_2
 	@GET_F	#41
 	beq	:5304_2
-	
 	lda	#25
 	sta	SP
 	rts
@@ -492,8 +767,8 @@ GAME	@MODE	#1	; 320x200
 :5304_2	jsr	:5250
 	lda	GA
 	bne	:5305
-	
 	lda	#24	; passage bloque. examinez le lieu
+	sta	M$
 	jmp	:5900
 
 :5305	lda	NX
@@ -563,7 +838,35 @@ GAME	@MODE	#1	; 320x200
 	cmp	#31	; ouvrir
 	bne	:5785
 	jmp	:6400
-:5785
+
+*-------------------------------
+* 5785 - EXTENSION POUR LA CORDE
+*-------------------------------
+
+:5785	lda	SP
+	cmp	#41
+	bne	:5790
+	lda	MO$2
+	cmp	#28	; CORDE
+	beq	:5785_OK
+	cmp	#30	; CROCHET
+	bne	:5790
+
+:5785_OK	@GET_OP	#3	; a-t-on la corde ?
+	cmp	#-1
+	beq	:5786	; oui
+	lda	#120	; il vous manque une corde
+	sta	M$
+	rts
+
+:5786	@GET_OP	#21	; a-t-on le crochet ?
+	cmp	#-1
+	beq	:5787	; oui
+	cmp	#41
+	beq	:5787
+	lda	#121	; il vous manque un crochet
+	sta	M$
+	rts
 
 :5787	@SET_F	#21;#-1
 	lda	#3
@@ -574,10 +877,242 @@ GAME	@MODE	#1	; 320x200
 	jsr	:5480
 	lda	#122	; vous voyez un passage vers la jungle
 	jmp	:5898
-:5788	rts
 
-:5790	sta	AC
+:5790	stz	AC
 	rts
+
+:5795	@INKEY
+	lda	#49
+	sta	SP
+	stz	VP
+	stz	LP
+	rts
+
+*-------------------------------
+* 5800 - AUTRES ACTIONS
+*-------------------------------
+
+:5800	lda	#-1
+	sta	AC
+	stz	M$
+
+:5801	lda	SP
+	cmp	#3
+	bne	:5803
+	lda	MO$1
+	cmp	#43	; TRAVERSER
+	beq	:5801_OK
+	cmp	#33	; PASSER
+	bne	:5803
+:5801_OK	@GET_F	#22
+	bne	:5803
+	lda	#123	; le pont cedera sans planche
+	sta	M$
+	jmp	:5898
+
+:5803	lda	SP
+	cmp	#6
+	bne	:5804
+	lda	MO$1
+	cmp	#21	; ENTRER
+	beq	:5803_OK
+	cmp	#31	; OUVRIR
+	bne	:5804
+:5803_OK	lda	MO$2
+	cmp	#67	; PORTE
+	bne	:5804
+	@GET_F	#4
+	bne	:5804
+	lda	#124	; elle est fermee a cle
+	sta	M$
+	jmp	:5898
+
+:5804	lda	SP
+	cmp	#6
+	bne	:5805
+	lda	MO$1
+	cmp	#21	; ENTRER
+	beq	:5804_OK
+	cmp	#31	; OUVRIR
+	bne	:5805
+:5804_OK	@GET_F	#4
+	beq	:5805
+	lda	#125	; la porte est ouverte
+	sta	M$
+	jmp	:5898
+
+:5805	lda	SP
+	cmp	#13
+	bne	:5806
+	lda	MO$1
+	cmp	#15	; BOIS/BOIRE
+	bne	:5806
+	lda	#126	; l'eau vous empoisonne
+	sta	M$
+	jmp	:5898
+
+:5806	lda	SP
+	cmp	#13
+	bne	:5807
+	lda	MO$1
+	cmp	#40	; REMPLIR
+	bne	:5807
+	lda	MO$2
+	cmp	#34	; EAU
+	bne	:5807
+	@GET_OP	#14
+	cmp	#-1
+	beq	:5807
+	lda	#127	; il faut une gourde
+	sta	M$
+	jmp	:5898
+
+:5807	lda	SP
+	cmp	#14
+	bne	:5808
+	lda	MO$1
+	cmp	#46	; AVANCER
+	beq	:5807_OK
+	cmp	#33	; PASSER
+	bne	:5808
+:5807_OK	lda	MO$2
+	cmp	#69	; RACINE
+	bne	:5808
+	@GET_F	#1
+	bne	:5808
+	lda	#128	; une pelle degagerait les racines
+	sta	M$
+	jmp	:5898
+
+:5808	lda	MO$1
+	cmp	#28	; LIRE
+	bne	:5809
+	lda	MO$2
+	cmp	#65	; PLAN
+	bne	:5809
+	@GET_OP	#15
+	cmp	#-1
+	beq	:5809
+	lda	#129	; vous n'avez pas de plan
+	sta	M$
+	jmp	:5898
+
+:5809	lda	SP
+	cmp	#20
+	bne	:5810
+	lda	MO$1
+	cmp	#20	; ECOUTER
+	beq	:5809_OK1
+	cmp	#23	; EXAMINER
+	bne	:5810
+:5809_OK1	lda	MO$2
+	cmp	#35	; ECHO
+	beq	:5809_OK2
+	cmp	#58	; MUR
+	beq	:5809_OK2
+	cmp	#72	; SALLE
+	bne	:5810
+:5809_OK2	@GET_F	#8
+	bne	:5810
+	lda	#130	; la salle resonne
+	sta	M$
+	jmp	:5898
+
+:5810	lda	SP
+	cmp	#21
+	bne	:5811
+	lda	MO$1
+	cmp	#18	; DESCENDRE
+	bne	:5811
+	lda	MO$2
+	cmp	#67	; PUIT
+	beq	:5810_OK
+	cmp	#45	; GRILLE
+	bne	:5811
+:5810_OK	@GET_F	#18
+	bne	:5811
+	lda	#131	; la grille necessite un pied de biche
+	jmp	:5898
+
+:5811	lda	MO$1
+	cmp	#28	; LIRE
+	bne	:5812
+	lda	MO$2
+	cmp	#65	; PLAN
+	bne	:5812
+	@GET_OP	#15
+	cmp	#-1
+	beq	:5812
+	lda	#132	; il manque un fragment
+	sta	M$
+	jmp	:5898
+	
+:5812	lda	SP
+	cmp	#60
+	bne	:5841
+	lda	MO$1
+	cmp	#28	; LIRE
+	bne	:5841
+	lda	MO$2
+	cmp	#47	; INSCRIPTION
+	bne	:5841
+	lda	#133	; les inscriptions ne s'effacent...
+	jmp	:5898
+	
+:5841	lda	MO$1
+	cmp	#44	; utiliser
+	bne	:5843
+	jsr	:5850	; ...un objet ?
+	lda	OI
+	beq	:5843	; ce n'en est pas un
+
+	@COUT	#$d2	; " ouvrant
+	@objet	OI
+	@COUT	#$d3	; " fermant
+	lda	#134	; _ne sert à rien ici
+	sta	M$
+	jmp	:5898
+	
+:5843	lda	MO$1
+	cmp	#23	; examiner
+	beq	:5843_OK
+	cmp	#16	; chercher
+	beq	:5843_OK
+	cmp	#24	; fouiller
+	bne	:5844
+:5843_OK	lda	#61	; vous ne voyez rien de special
+	sta	M$
+	jmp	:5898
+	
+:5844	stz	AC
+	rts
+
+* Veut-on UTILISER OBJET ?
+
+:5850	jsr	:5390
+	stz	OI
+
+	lda	MO$2	; on n'a pas précisé de nom
+	beq	:5853	; on sort
+
+	ldx	#0	; est-ce que le nom
+]lp	lda	tblOV,x	; est un objet ?
+	and	#$ff
+	cmp	MO$2
+	bne	:5851	; non, continue
+	
+	lda	F,x	; a-t-on l'objet ?
+	and	#$ff
+	beq	:5851	; non, continue
+
+	stx	OI	; oui, sort
+	rts
+	
+:5851	inx		; next entry
+	cpx	#MAX_OBJET
+	bcc	]lp
+	
+:5853	rts
 
 *-------------------------------
 * 5900 - AFFICHAGE CENTRE
@@ -585,7 +1120,11 @@ GAME	@MODE	#1	; 320x200
 
 :5898
 
-:5900
+:5900	lda	DD
+	bne	:5901
+
+:5901	@PEN	#1;#3
+	@message	M$
 	rts
 
 *-------------------------------
@@ -606,15 +1145,35 @@ GAME	@MODE	#1	; 320x200
 * 6400 - VERIFICATION ENIGMES
 *-------------------------------
 
-:6400
-	rts
+:6400	ldy	#-1
+	
+	ldx	#0
+]lp	lda	F,x
+	and	#$ff
+	bne	:6405
+	tay		; pas realise
+:6405	inx
+	cpx	#MAX_ENIGME
+	bcc	]lp
+
+	cpy	#0	; des manquements ?
+	bne	:6430	; non
+	
+	lda	#139	; il reste des objets ou...
+	sta	M$
+	jmp	:5900
+
+:6430	@SET_F	#40;#-1
+	lda	#140	; la porte grince...
+	sta	M$
+	jmp	:5900
 
 *-------------------------------
 * 6500 - MORT
 *-------------------------------
 
 :6500	sta	M$
-
+	
 	@CLS	#0
 	@PEN	#0;#3
 	@LOCATE	#0;#14;#9
@@ -683,8 +1242,22 @@ GAGNE
 
 * Load FIN.SCR
 
-	@INKEY
 	rts
+
+*-------------------------------
+* 6700 - QUITTER
+*-------------------------------
+
+:6700	@CLS	#0
+	@PEN	#0;#3
+	@LOCATE	#0;#7;#17
+	@message	#153	; voulez-vous quitter ?
+	
+	@INKEY
+	cmp	#chrYES
+	bne	:6520
+	jmp	QUIT
+:6520	jmp	REPLAY
 
 *-------------------------------
 * 7050 - SCENE DESCRIPTION
@@ -720,8 +1293,49 @@ initALL
 	rts
 
 *-------------------------------
+* 8050 - LE GENRE DU NOM
+*-------------------------------
+
+:8050	lda	tblMF,x	; Male ou Femelle
+	and	#$ff
+	cmp	#'M'
+	beq	:8051
+	cmp	#'F'
+	bne	:8052
+	lda	#strUNE	; UNE_
+	rts
+:8051	lda	#strUN	; UN_
+	rts
+:8052	lda	#0	; rien
+	rts
+	
+*-------------------------------
 * LES HABITUELLES ROUTINES
 *-------------------------------
+
+*-------------------------------
+* GET LIEU ADDRESS
+*-------------------------------
+
+getLIEU	cmp	#MAX_LIEU
+	bcc	getLIEU_1
+	beq	getLIEU_1
+	rts
+
+getLIEU_1	ldy	#strLIEU
+	dec
+	beq	getLIEU_9
+	tax		; number of entries 
+]lp	iny
+	lda	|$0000,y
+	and	#$ff
+	bne	]lp
+	dex		; entries--
+	bne	]lp	; loop if non-zero
+	iny		; found it, pointer++
+	
+getLIEU_9	tya
+	rts
 
 *-------------------------------
 * PRINT LIEU
@@ -746,8 +1360,7 @@ printLIEU_1	ldy	#strLIEU
 	
 printLIEU_9	ldx	#^strLIEU
 	lda	theSTREAM
-	jsr	PRINT
-	rts
+	jmp	PRINT
 
 *-------------------------------
 * GET MESSAGE ADDRESS
@@ -796,7 +1409,7 @@ printMESSAGE_1	ldy	#strMESSAGE
 	
 printMESSAGE_9	ldx	#^strMESSAGE
 	lda	theSTREAM
-printMESSAGE_A	jmp	PRINT	; patched JMP/RTS
+	jmp	PRINT	; patched JMP/RTS
 
 *-------------------------------
 * PRINT OBJET
@@ -821,19 +1434,18 @@ printOBJET_1	ldy	#strOBJET
 	
 printOBJET_9	ldx	#^strOBJET
 	lda	theSTREAM
-	jsr	PRINT
-	rts
+	jmp	PRINT
 
 *-------------------------------
 * GET/SET_F - GET/SET F VALUE
 *-------------------------------
 
-GET_F	lda	F,x
+GET_F	lda	F-1,x
 	and	#$ff
 	rts
 
 SET_F	sep	#$20
-	sta	F,x
+	sta	F-1,x
 	rep	#$20
 	rts
 
@@ -841,12 +1453,12 @@ SET_F	sep	#$20
 * GET/SET_O - GET/SET O VALUE
 *-------------------------------
 
-GET_OP	lda	OP,x
+GET_OP	lda	OP-1,x
 	and	#$ff
 	rts
 
 SET_OP	sep	#$20
-	sta	OP,x
+	sta	OP-1,x
 	rep	#$20
 	rts
 
@@ -1074,13 +1686,16 @@ DATA_IN
 
 AC	ds	2
 CI	ds	2
-DD	ds	2
+DD	ds	2	; Majuscule
 DR	ds	2
 EC	ds	2
 G	ds	2
 GA	ds	2
 GE	ds	2
 GF	ds	2
+I	ds	2
+IX	ds	2
+IY	ds	2
 LP	ds	2
 M$	ds	2	; numero du message
 N1	ds	2

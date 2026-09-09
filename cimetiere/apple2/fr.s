@@ -12,9 +12,9 @@
 tblV	dfb	0	; value if not found
 	dfb	1,1,2,2,3,3,4,4,7,7,7
 	dfb	10,11,12,13,14,15,16,17,18,19
-	dfb	20,21,22,23,24,25,26,26,27,28,29
+	dfb	20,21,22,23,24,25,26,27,28,29
 	dfb	30,31,32,33,34,35,36,37,38,39,39
-	dfb	40,41,42,43,44,45
+	dfb	40,41,42,43,44,45,46,10,28
 	dfb	90,90,91,91,92,93
 	
 tblVERB	str	'N'	;  1 NORD
@@ -33,7 +33,7 @@ tblVERB	str	'N'	;  1 NORD
 	str	'ARRA'	; 12 ARRACHER
 	str	'ASSE'	; 13 ASSEMBLER
 	str	'ATTA'	; 14 ATTACHER
-	str	'BOIR'	; 15 BOIRE
+	str	'BOI'	; 15 BOIS/BOIRE
 	str	'CHER'	; 16 CHERCHER
 	str	'CREU'	; 17 CREUSER
 	str	'DESC'	; 18 DESCENDRE
@@ -44,11 +44,10 @@ tblVERB	str	'N'	;  1 NORD
 	str	'EXAM'	; 23 EXAMINER
 	str	'FOUI'	; 24 FOUILLER
 	str	'FRAP'	; 25 FRAPPER
-	str	'JETE'	; 26 JETER
-	str	'JETT'	; 26 JETTE
+	str	'JET'	; 26 JETTE
 	str	'JOUE'	; 27 JOUER
 	str	'LIRE'	; 28 LIRE
-	str	'METT'	; 29 METTRE
+	str	'MET'	; 29 METS/METTRE
 	str	'MONT'	; 30 MONTER
 	str	'OUVR'	; 31 OUVRIR
 	str	'PARL'	; 32 PARLER
@@ -66,6 +65,9 @@ tblVERB	str	'N'	;  1 NORD
 	str	'TRAV'	; 43 TRAVERSER
 	str	'UTIL'	; 44 UTILISER
 	str	'VERS'	; 45 VERSER
+	str	'AVAN'	; 46 AVANCER
+	str	'VA'	; 10 ALLER
+	str	'LIS'	; 28 LIRE
 	str	'CHAR'	; 90 CHARGER
 	str	'LOAD'	; 90 LOAD
 	str	'SAUV'	; 91 SAUVER
@@ -84,9 +86,9 @@ tblN	dfb	0	; value if not found
 	dfb	30,31,32,33,34,35,36,37,38,39
 	dfb	40,41,42,43,44,45,46,47,48,49
 	dfb	50,51,52,53,54,55,56,57,58,59
-	dfb	60,61,62,63,64,65,66,67,68,69
+	dfb	60,61,62,63,64,65,65,65,66,67,68,69
 	dfb	70,71,72,73,74,75,76,77,78,79
-	dfb	80,81,82,83,84
+	dfb	80,81,82,83,84,85,86,87
 
 tblNOUN	str	'N'	;  1 NORD
 	str	'NORD'	;  1 NORD
@@ -116,7 +118,7 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'CLOC'	; 27 CLOCHETTE
 	str	'CORD'	; 28 CORDE
 	str	'CRAI'	; 29 CRAIE
-	str	'CROC'	; 30 CROCHE
+	str	'CROC'	; 30 CROCHET
 	str	'CRYP'	; 31 CRYPTE
 	str	'DEBR'	; 32 DEBRIS
 	str	'DENT'	; 33 DENT
@@ -136,42 +138,52 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'INSC'	; 47 INSCRIPTION
 	str	'JARD'	; 48 JARDIN
 	str	'JETO'	; 49 JETON
-	str	'LIVR'	; 50 LIVRE
-	str	'LYNX'	; 51 LYNX
-	str	'MAIS'	; 52 MAISON
-	str	'MART'	; 53 MARTEAU
-	str	'MASQ'	; 54 MASQUE
-	str	'MEDA'	; 55 MEDAILLE
-	str	'MIRO'	; 56 MIROIR
-	str	'OCEL'	; 57 OCELOT
-	str	'PASS'	; 58 PASSERELLE
-	str	'PELL'	; 59 PELLE
-	str	'PIED'	; 60 PIED
-	str	'PIER'	; 61 PIERRE
-	str	'PIEU'	; 62 PIEU
-	str	'PLAN'	; 63 PLAN/PLANCHE/PLANTE
-	str	'PONT'	; 64 PONT
-	str	'PUIT'	; 65 PUIT
-	str	'RACI'	; 66 RACINE
-	str	'RAYO'	; 67 RAYON
-	str	'RIGO'	; 68 RIGOLE
-	str	'ROCH'	; 69 ROCHER
-	str	'SALL'	; 70 SALLE
-	str	'SCEA'	; 71 SCEAU
-	str	'SERR'	; 72 SERRURE
-	str	'SILH'	; 73 SILHOUETTE
-	str	'SOCL'	; 74 SOCLE
-	str	'SOL' 	; 75 SOL
-	str	'SOUR'	; 76 SOURCE
-	str	'STAT'	; 77 STATUE
-	str	'STEL'	; 78 STELE
-	str	'TOIL'	; 79 TOILE
-	str	'TOMB'	; 80 TOMBE
-	str	'TORC'	; 81 TORCHE
-	str	'TOUR'	; 82 TOUR
-	str	'TREU'	; 83 TREUIL
-	str	'VILL'	; 84 VILLAGE
+	str	'LANT'	; 50 LANTERNE
+	str	'LIVR'	; 51 LIVRE
+	str	'LYNX'	; 52 LYNX
+	str	'MAIS'	; 53 MAISON
+	str	'MART'	; 54 MARTEAU
+	str	'MASQ'	; 55 MASQUE
+	str	'MEDA'	; 56 MEDAILLE
+	str	'MIRO'	; 57 MIROIR
+	str	'MUR'	; 58 MUR
+	str	'OCEL'	; 59 OCELOT
+	str	'PASS'	; 60 PASSERELLE
+	str	'PELL'	; 61 PELLE
+	str	'PIED'	; 62 PIED
+	str	'PIER'	; 63 PIERRE
+	str	'PIEU'	; 64 PIEU
+	str	'PLAN'	; 65 PLAN/PLANCHE/PLANTE
+	str	'PONT'	; 66 PONT
+	str	'PORT'	; 67 PORTE
+	str	'PUIT'	; 68 PUIT
+	str	'RACI'	; 69 RACINE
+	str	'RAYO'	; 70 RAYON
+	str	'RIGO'	; 71 RIGOLE
+	str	'ROCH'	; 72 ROCHER
+	str	'SALL'	; 73 SALLE
+	str	'SCEA'	; 74 SCEAU
+	str	'SERR'	; 75 SERRURE
+	str	'SILH'	; 76 SILHOUETTE
+	str	'SOCL'	; 77 SOCLE
+	str	'SOL' 	; 78 SOL
+	str	'SOUR'	; 79 SOURCE
+	str	'STAT'	; 80 STATUE
+	str	'STEL'	; 81 STELE
+	str	'TOIL'	; 82 TOILE
+	str	'TOMB'	; 83 TOMBE
+	str	'TORC'	; 84 TORCHE
+	str	'TOUR'	; 85 TOUR
+	str	'TREU'	; 86 TREUIL
+	str	'VILL'	; 87 VILLAGE
 	dfb	chrNULL
+
+*-------------------------------
+* DIRECTIONS
+*-------------------------------
+
+refISSUES	asc	'NSOE'
+strISSUES	asc	'N,S,O,E'00
 
 *-------------------------------
 * MESSAGES
@@ -181,8 +193,8 @@ strMESSAGE	asc	'Le cimetiere des ocelots'00				;   1
 	asc	'Inventaire'00					;   2
 	asc	'Inserez face a et appuyez entree'00			;   3--
 	asc	'Tournez disquette : face b + entree'00			;   4--
-	asc	'SORTIE(S) : '00				;   5
-	asc	'Vous voyez : '00				;   6
+	asc	'SORTIE(S):'00					;   5
+	asc	'Vous voyez:'00					;   6
 	asc	'rien'00					;   7
 	asc	'Cle bronze'00					;   8
 	asc	'Medaille'00					;   9
@@ -210,7 +222,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Vous prenez le fragment'00				;  31
 	asc	'Vous prenez la craie'00				;  32
 	asc	'Vous avez pris '00				;  33
-	asc	'Objet pose'00					;  34
+	asc	'Objet pose'00				;  34
 	asc	'Vous jetez '00					;  35
 	asc	'Vous trouvez une pelle'00				;  36
 	asc	'J'27'ai l'27'impression qu'27'il y a quelque chose de cache'00		;  37
@@ -254,7 +266,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Le pont semble securise'00				;  75
 	asc	'La passerelle semble securisee'00			;  76
 	asc	'La porte s'27'ouvre'00				;  77
-	asc	'LA gourde est pleine'00				;  78
+	asc	'La gourde est pleine'00				;  78
 	asc	'Vous degagez le passage vers le sud'00			;  79
 	asc	'La corde est fixee'00				;  80
 	asc	'Il manque une corde'00				;  81
@@ -297,7 +309,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Le verrou est debloque'00				; 118
 	asc	'Dent placee'00					; 119
 	asc	'Il vous manque une corde'00				; 120
-	asc	'Il vous manque un croche'00				; 121
+	asc	'Il vous manque un crochet'00				; 121
 	asc	'Vous voyez un passage vers la jungle'00			; 122
 	asc	'Le pont cedera sans planche'00				; 123
 	asc	'Elle est fermee a cle'00				; 124
@@ -329,49 +341,54 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Le puits a deja ete fouille.'00			; 150
 	asc	'Les pieges sont maintenant visibles.'00			; 151
 	asc	'Le passage au sud est ouvert.'00			; 152
+	asc	'Voulez-vous quitter ? o/n '00				; 153
 	dfb	chrNULL
 
 *-------------------------------
 * OBJETS
 *-------------------------------
 
+tblOV	dfb	61,83,28,26,26,54,20,39,18,57,55,56,10,44,65,29	; index: object
+	dfb	27,62,50,46,30,65,63,33,74,50,81,26,36,22,49,38	; value: vocabulary index
+
 tblMF	asc	'FFFFFMMFFMMFFFMFFMFFMFFFMMMFMFMF'
 
 strUN	asc	'Un '00
 strUNE	asc	'Une '00
-	
-strOBJET	asc	'pelle'00		;  1
-	asc	'torche'00		;  2
-	asc	'corde'00		;  3
-	asc	'cle de bronze'00	;  4
-	asc	'cle d'27'os'00		;  5
-	asc	'marteau'00		;  6
-	asc	'burin'00		;  7
-	asc	'flute'00		;  8
-	asc	'boussole'00		;  9
-	asc	'miroir'00		; 10
-	asc	'masque'00		; 11
-	asc	'medaille de garde'00	; 12
-	asc	'amulette'00		; 13
-	asc	'gourde'00		; 14
-	asc	'plan dechire'00	; 15
-	asc	'craie'00		; 16
-	asc	'clochette'00		; 17
-	asc	'pied de biche'00	; 18
-	asc	'lanterne'00		; 19
-	asc	'fiole d'27'huile'00	; 20
-	asc	'crochet'00		; 21
-	asc	'planche'00		; 22
-	asc	'pierre gravee'00	; 23
-	asc	'dent'00		; 24
-	asc	'sceau de cire'00	; 25
-	asc	'livre humide'00	; 26
-	asc	'fragment de stele'00	; 27
-	asc	'cle noire'00		; 28
-	asc	'baton d'27'encens'00	; 29
-	asc	'cape de braconnier'00	; 30
-	asc	'jeton'00		; 31
-	asc	'fleur nocturne'00	; 32
+
+*				   # V#
+strOBJET	asc	'pelle'00		;  1 61
+	asc	'torche'00		;  2 83
+	asc	'corde'00		;  3 28
+	asc	'cle de bronze'00	;  4 26
+	asc	'cle d'27'os'00		;  5 26
+	asc	'marteau'00		;  6 54
+	asc	'burin'00		;  7 20
+	asc	'flute'00		;  8 39
+	asc	'boussole'00		;  9 18
+	asc	'miroir'00		; 10 57
+	asc	'masque'00		; 11 55
+	asc	'medaille de garde'00	; 12 56
+	asc	'amulette'00		; 13 10
+	asc	'gourde'00		; 14 44
+	asc	'plan dechire'00	; 15 65
+	asc	'craie'00		; 16 29
+	asc	'clochette'00		; 17 27
+	asc	'pied de biche'00	; 18 62
+	asc	'lanterne'00		; 19 50
+	asc	'fiole d'27'huile'00	; 20 46
+	asc	'crochet'00		; 21 30
+	asc	'planche'00		; 22 65
+	asc	'pierre gravee'00	; 23 63
+	asc	'dent'00		; 24 33
+	asc	'sceau de cire'00	; 25 74
+	asc	'livre humide'00	; 26 50
+	asc	'fragment de stele'00	; 27 81
+	asc	'cle noire'00		; 28 26
+	asc	'baton d'27'encens'00	; 29 36
+	asc	'cape de braconnier'00	; 30 22
+	asc	'jeton'00		; 31 49
+	asc	'fleur nocturne'00	; 32 38
 	dfb	chrNULL
 	
 *-------------------------------

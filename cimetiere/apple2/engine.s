@@ -132,6 +132,11 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 	jsr	
 	<<<
 
+@LEN	mac
+	lda	]1
+	jsr	LEN
+	<<<
+
 @LET	mac
 	lda	]1
 	ldx	]2
@@ -201,6 +206,11 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 	lda	]1
 	ldx	]2
 	jsr	STRCMP
+	<<<
+
+@STREAM	mac
+	lda	]1
+	jsr	STREAM
 	<<<
 
 @UPPER	mac
@@ -513,7 +523,9 @@ DRAW	txa
 	sec
 	sbc	1,s
 	lsr
-	sta	1,s
+	bpl	DRAW_1
+	dec		; -1
+DRAW_1	sta	1,s
 	
 	_LineTo
 	rts
@@ -532,7 +544,9 @@ MOVE	txa
 	sec
 	sbc	1,s
 	lsr
-	sta	1,s
+	bpl	MOVE_1
+	dec		; -1
+MOVE_1	sta	1,s
 	
 	_MoveTo
 	rts
@@ -561,6 +575,7 @@ BORDER	asl
 
 	rts
 
+*-------------------------------
 *-------------------------------
 * CLS #s
 * Clears stream #s
@@ -1367,6 +1382,13 @@ COUT160	sec
 	PushLong #iconParamPtr
 	_PaintPixels
 	
+	rts
+
+*-------------------------------
+* STREAM #s
+* Set the active stream
+
+STREAM	sta	theSTREAM	; CLS #s is another option
 	rts
 
 *-------------------------------

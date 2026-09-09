@@ -9,38 +9,38 @@
 * OBJETS
 *-------------------------------
 
-tblOBJETS	dfb	0
-	dfb	0
-	dfb	23
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
-	dfb	0
+tblOBJETS	dfb	0	;  1
+	dfb	0	;  2
+	dfb	23	;  3
+	dfb	0	;  4
+	dfb	23	;  5
+	dfb	23	;  6
+	dfb	23	;  7
+	dfb	23	;  8
+	dfb	23	;  9
+	dfb	23	; 10
+	dfb	23	; 11
+	dfb	23	; 12
+	dfb	23	; 13
+	dfb	0	; 14
+	dfb	0	; 15
+	dfb	0	; 16
+	dfb	0	; 17
+	dfb	0 	; 18
+	dfb	0	; 19
+	dfb	0	; 20
+	dfb	0	; 21
+	dfb	0	; 22
+	dfb	0	; 23
+	dfb	0	; 24
+	dfb	0	; 25
+	dfb	0	; 26
+	dfb	0	; 27
+	dfb	0	; 28
+	dfb	0	; 29
+	dfb	0	; 30
+	dfb	0	; 31
+	dfb	0	; 32
 
 *-------------------------------
 * DIRECTIONS (N/S/O/E)

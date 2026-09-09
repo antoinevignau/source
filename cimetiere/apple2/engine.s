@@ -1205,6 +1205,10 @@ SETCHARSINFO	stx	charWIDTH
 
 *------------------------------- Print a CSTRING
 
+PRINT_ALT	tay
+	ldx	#^PRINT_ALT
+	lda	theSTREAM
+
 PRINT	sta             theSTREAM
                 sty	GET_CHAR+1
 	sep	#$10

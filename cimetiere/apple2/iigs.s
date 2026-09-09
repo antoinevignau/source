@@ -550,6 +550,105 @@ loadERR	jsl	GSOS
 loadERR99	sec
 	rts
 
+*------------------------------
+* LOAD PARTIE
+*------------------------------
+
+loadGAME	jsl	GSOS
+	dw	$2010
+	adrl	proOPENGAME
+	bcs	loadKO99
+
+	lda	proOPENGAME+2
+	sta	proREADGAME+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADGAME
+	
+	php
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+	plp
+loadKO99	rts
+
+*------------------------------
+* SAVE PARTIE
+*------------------------------
+
+saveGAME	jsl	GSOS
+	dw	$2002
+	adrl	proDESTROYGAME
+	
+	jsl	GSOS
+	dw	$2001
+	adrl	proCREATEGAME
+	bcs	saveKO99
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPENGAME
+	bcs	saveKO99
+
+	lda	proOPENGAME+2
+	sta	proWRITEGAME+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITEGAME
+	
+	php
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+	plp
+saveKO99	rts
+
+*--- For the game party
+
+proCREATEGAME
+	dw	7	; pcount
+	adrl	pGAME	; pathname
+	dw	$c3	; access_code
+	dw	$5d	; file_type
+	adrl	$802d	; aux_type
+	ds	2	; storage_type
+	ds	4	; eof
+	ds	4	; resource_eof
+
+proDESTROYGAME
+	dw	1	; pcount
+	adrl	pGAME	; pathname
+
+proOPENGAME
+	dw	2
+	ds	2
+	adrl	pGAME
+
+proREADGAME
+	dw	4	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	SAVE_IN	; 4 - data_buffer
+	adrl	SAVE_OUT-SAVE_IN	; 8 - request_count
+	ds	4	; C - transfer_count
+
+proWRITEGAME
+	dw	5	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	SAVE_IN	; 4 - data_buffer (we are in same bank)
+	adrl	SAVE_OUT-SAVE_IN	; 8 - request_count
+	ds	4	; C - transfer_count
+	dw	1	; cache_priority
+
+pGAME	strl	'@/partie'
+
 *-------------------------------
 * DATA
 *-------------------------------

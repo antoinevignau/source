@@ -88,7 +88,7 @@ tblN	dfb	0	; value if not found
 	dfb	50,51,52,53,54,55,56,57,58,59
 	dfb	60,61,62,63,64,65,65,65,66,67,68,69
 	dfb	70,71,72,73,74,75,76,77,78,79
-	dfb	80,81,82,83,84,85,86,87
+	dfb	80,81,82,83,84,85,86,87,88,89,90
 
 tblNOUN	str	'N'	;  1 NORD
 	str	'NORD'	;  1 NORD
@@ -176,6 +176,9 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'TOUR'	; 85 TOUR
 	str	'TREU'	; 86 TREUIL
 	str	'VILL'	; 87 VILLAGE
+	str	'BRON'	; 88 CLE DE BRONZE
+	str	'OS'	; 89 CLE D'OS
+	str	'NOIR'	; 90 CLE NOIRE
 	dfb	chrNULL
 
 *-------------------------------
@@ -189,7 +192,7 @@ strISSUES	asc	'N,S,O,E'00
 * MESSAGES
 *-------------------------------
 
-strMESSAGE	asc	'Le cimeti'8f're des ocelots'00				;   1
+strMESSAGE	asc	'LE CIMETIERE DES OCELOTS'00				;   1
 	asc	'Inventaire'00					;   2
 	asc	'Ins'8e'rez face a et appuyez entr'8e'e'00			;   3--
 	asc	'Tournez disquette : face b + entr'8e'e'00			;   4--
@@ -215,7 +218,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Passage bloqu'8e'. Examinez le lieu'00			;  24
 	asc	'Des dards jaillissent des murs'00			;  25
 	asc	'Elle semble bouger'00				;  26
-	asc	'Il n'27'y a pas de '00				;  27
+	asc	'Il n'27'y a pas cela ici'00				;  27
 	asc	'Tr'8f's utile pour le puits sec'00			;  28
 	asc	'Une porte s'27'ouvre '88' l'27'est'00			;  29
 	asc	'Vous prenez la lanterne qui d'8e'voile un passage secret'00		;  30
@@ -343,53 +346,55 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Le passage au sud est ouvert.'00			; 152
 	asc	'Voulez-vous quitter ? o/n '00				; 153
 strDESCRIPTION	ds	48					; 154 - long level description string
+T$	ds	128					; 155 - multi-purpose string
 	dfb	chrNULL
 
 *-------------------------------
 * OBJETS
 *-------------------------------
 
-tblOV	dfb	61,83,28,26,26,54,20,39,18,57,55,56,10,44,65,29	; index: object
-	dfb	27,62,50,46,30,65,63,33,74,50,81,26,36,22,49,38	; value: vocabulary index
+tblOV	dfb	61,83,28,88,89,54,20,39,18,57,55,56,10,44,65,29	; index: object
+	dfb	27,62,50,46,30,65,63,33,74,50,81,90,36,22,49,38	; value: vocabulary index
 
 tblMF	asc	'FFFFFMMFFMMFFFMFFMFFMFFFMMMFMFMF'
 
-strUN	asc	'Un '00
-strUNE	asc	'Une '00
+strUN	asc	'un '00
+strUNE	asc	'une '00
+strVIRGULE	asc	', '00
 
 *				   # V#
-strOBJET	asc	'pelle'00		;  1 61
-	asc	'torche'00		;  2 83
-	asc	'corde'00		;  3 28
-	asc	'cl'8e' de bronze'00	;  4 26
-	asc	'cl'8e' d'27'os'00	;  5 26
-	asc	'marteau'00		;  6 54
-	asc	'burin'00		;  7 20
-	asc	'fl'9e'te'00		;  8 39
-	asc	'boussole'00		;  9 18
-	asc	'miroir'00		; 10 57
-	asc	'masque'00		; 11 55
-	asc	'm'8e'daille de garde'00	; 12 56
-	asc	'amulette'00		; 13 10
-	asc	'gourde'00		; 14 44
-	asc	'plan d'8e'chir'8e00	; 15 65
-	asc	'craie'00		; 16 29
-	asc	'clochette'00		; 17 27
-	asc	'pied de biche'00	; 18 62
-	asc	'lanterne'00		; 19 50
-	asc	'fiole d'27'huile'00	; 20 46
-	asc	'crochet'00		; 21 30
-	asc	'planche'00		; 22 65
-	asc	'pierre grav'8e'e'00	; 23 63
-	asc	'dent'00		; 24 33
-	asc	'sceau de cire'00	; 25 74
-	asc	'livre humide'00	; 26 50
-	asc	'fragment de st'8f'le'00	; 27 81
-	asc	'cl'8e' noire'00	; 28 26
-	asc	'b"89"ton d'27'encens'00	; 29 36
-	asc	'cape de braconnier'00	; 30 22
-	asc	'jeton'00		; 31 49
-	asc	'fleur nocturne'00	; 32 38
+strOBJET	asc	'Pelle'00		;  1 61
+	asc	'Torche'00		;  2 83
+	asc	'Corde'00		;  3 28
+	asc	'Cl'8e' de bronze'00	;  4 88
+	asc	'Cl'8e' d'27'os'00	;  5 89
+	asc	'Marteau'00		;  6 54
+	asc	'Burin'00		;  7 20
+	asc	'Fl'9e'te'00		;  8 39
+	asc	'Boussole'00		;  9 18
+	asc	'Miroir'00		; 10 57
+	asc	'Masque'00		; 11 55 *
+	asc	'M'8e'daille de garde'00	; 12 56
+	asc	'Amulette'00		; 13 10 *
+	asc	'Gourde'00		; 14 44
+	asc	'Plan d'8e'chir'8e00	; 15 65
+	asc	'Craie'00		; 16 29
+	asc	'Clochette'00		; 17 27
+	asc	'Pied de biche'00	; 18 62
+	asc	'Lanterne'00		; 19 50
+	asc	'Fiole d'27'huile'00	; 20 46
+	asc	'Crochet'00		; 21 30
+	asc	'Planche'00		; 22 65
+	asc	'Pierre grav'8e'e'00	; 23 63
+	asc	'Dent'00		; 24 33 *
+	asc	'Sceau de cire'00	; 25 74
+	asc	'Livre humide'00	; 26 50
+	asc	'Fragment de st'8f'le'00	; 27 81
+	asc	'Cl'8e' noire'00	; 28 90
+	asc	'B"89"ton d'27'encens'00	; 29 36
+	asc	'Cape de braconnier'00	; 30 22
+	asc	'Jeton'00		; 31 49
+	asc	'Fleur nocturne'00	; 32 38
 	dfb	chrNULL
 	
 *-------------------------------

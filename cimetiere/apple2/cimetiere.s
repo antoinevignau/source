@@ -15,13 +15,13 @@ MAX_LEN	=	30
 NB_CAR	=	16	; max size of a word
 LEN_WORD	=	4	; but limit to 4
 
-FIRST_ROOM	=	1
+FIRST_ROOM	=	23
 WIN_ROOM	=	64
 
 MAX_AF	=	41
 MAX_ENIGME	=	32
 MAX_LIEU	=	64
-MAX_MESSAGE	=	154
+MAX_MESSAGE	=	154	; two added
 MAX_OBJET	=	32
 
 *-------------------------------
@@ -117,7 +117,7 @@ GAME	@MODE	#1	; 320x200
 
 tblWINDOW1	dw	3,39,21,22	; dialogue
 tblWINDOW2	dw	3,39,24,24	; commande
-tblWINDOW3	dw	29,39,6,13	; inventaire plateau
+tblWINDOW3	dw	29,39,5,13	; inventaire plateau
 tblWINDOW4	dw	14,39,18,19	; objets de la salle
 tblWINDOW5	dw	3,12,18,19	; directions de la salle
 tblWINDOW6	dw	3,39,16,16	; nom de la salle
@@ -175,9 +175,6 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	@PEN	#0;#1	; blanc
 	@LOCATE	#0;#9;#2
 	@message	#1
-	@PEN	#0;#2	; vert
-	@LOCATE	#0;#29;#5
-	@message	#2
 	rts
 	
 *-------------------------------
@@ -186,9 +183,9 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
 :2000	@STREAM	#0	; go back to the main window
 
-*	lda	SP
-*	cmp	LP
-*	beq	:2005
+	lda	SP
+	cmp	LP
+	beq	:2005
 
 	jsr	:3000	; load level
 	lda	SP	; save level
@@ -197,7 +194,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	jsr	:3500	; level title
 
 :2005	jsr	:3510	; print directions
-:2006	jsr	:4000	; print objects
+	jsr	:4000	; print objects
 	jsr	:4500	; print inventory
 
 	lda	SP
@@ -388,22 +385,147 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
 :4000	@CLS	#4
 	@PEN	#4;#2
+
+	stz	I	; flag pour la virgule
+
+	ldx	#1
+	ldy	#0
+
+]lp	lda	OP-1,x	; a-t-on un objet
+	and	#$ff	; dans la salle ?
+	cmp	SP
+	bne	:4010
+	
+	jsr	:4030	; ajoute l'objet à T$
+	bcs	:4020	; ...on doit sortir
+
+:4010	inx		; on boucle
+	cpx	#MAX_OBJET
+	bcc	]lp
+	beq	]lp
+
+* Quelle chaîne affichons-nous ?
+
+:4020	cpy	#0	; a-t-on trouvé un objet ? ie. chaîne non vide
+	bne	:4025	; oui
+
 	@LOCATE	#4;#9;#1
 	@message	#6	; vous voyez
 	@PEN	#4;#1
-			; LOGO
 	@LOCATE	#4;#12;#2
 	@message	#7	; rien
 	rts
 
+:4025	@LOCATE	#4;#1;#1
+	@message	#6	; vous voyez
+	@PEN	#4;#1
+	@LOCATE	#4;#13;#1	; affiche la chaîne des objets
+	@PRINT	#4;#T$	; print les objets de la salle
+	rts
+
+* Ajout des objets
+
+:4030	phx		; save X
+
+	bit	I	; si on a trouve un objet,
+	bpl	:4040	; doit-on mettre une virgule ?
+	
+	lda	#strVIRGULE	; ajoute ", "
+	jsr	:4070
+
+:4040
+*	jsr	:8050	; A contient @article
+	jsr	:4070	; ajoute "Un " ou "Une "
+	dec	I	; on aura besoin d'une virgule
+
+	phy		; sauve Y
+	txa		; index = objet
+	jsr	getOBJET	; A contient @objet
+	ply		; restaure Y
+	jsr	:4070	; ajoute à la chaîne
+
+	plx		; restore X
+	cpy	#128
+	bcs	:4060	; 128 = longueur maxi de la chaîne T$
+	rts
+:4060	sec		; on sort mécontent
+	rts
+
+* Ajoute à la chaîne
+
+:4070	phx
+	tax
+	sep	#$20
+]lp	lda	|$0000,x
+	sta	T$,y
+	beq	:4080
+	inx
+	iny
+	bne	]lp
+:4080	rep	#$20
+	plx
+	rts
+	
 *-------------------------------
 * 4500 - INVENTAIRE (PLATEAU)
 *-------------------------------
 
 :4500	@CLS	#3
-	@PAPER	#3;#3
-			; LOGO
-	rts
+	@PEN	#3;#2	; vert
+	@LOCATE	#3;#1;#1
+	@message	#2
+	@PEN	#3;#1	; blanc
+
+	ldy	#2	; on commence ligne 2
+	sty	IY
+
+	ldx	#0
+]lp	phx
+	lda	OP,x
+	and	#$ff
+	cmp	#255
+	bne	:4515
+	
+	@LOCATE	#3;#1;IY
+
+	pla
+	pha
+	ldx	#8	; index pour Clé bronze
+	cmp	#4
+	beq	:4509
+	cmp	#12
+	beq	:4508
+	cmp	#20
+	beq	:4507
+	cmp	#15
+	beq	:4506
+	cmp	#25
+	beq	:4505
+	cmp	#18
+	beq	:4504
+	inc
+	jsr	printOBJET
+	jmp	:4510
+
+:4504	inx		; 13 pied biche
+:4505	inx		; 12 sceau
+:4506	inx		; 11 plan
+:4507	inx		; 10 huile
+:4508	inx		;  9 médaille
+:4509	txa		;  8 clé bronze
+	jsr	printMESSAGE
+
+:4510	inc	IY	; on finit ligne 9
+	lda	IY
+	cmp	#2+7
+	bcs	:4520
+	
+:4515	plx
+	inx
+	cpx	#MAX_OBJET
+	bcc	]lp
+
+:4520	rts
 
 *-------------------------------
 * 4530 - INVENTAIRE (COMMANDE)
@@ -421,13 +543,14 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 ]lp	phx
 	lda	OP,x
 	and	#$ff
-	cmp	#-1
+	cmp	#255
 	bne	:4530_NEXT
 	
 	@LOCATE	#0;IX;IY
 
 	pla
 	pha
+	inc
 	jsr	printOBJET
 	inc	IY
 	
@@ -569,7 +692,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 :5150	lda	MO$1
 	cmp	#36	; POSER
 	bne	:5155
-	jmp	$5450
+	jmp	:5450
 
 :5155	jsr	:5800
 	lda	AC
@@ -790,6 +913,151 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 *-------------------------------
 
 :5400	jsr	:5390
+
+	lda	SP
+	cmp	#52
+	bne	:5400_2
+	lda	MO$2
+	cmp	#55	; MASQUE
+	bne	:5400_2
+	@GET_F	#35
+	beq	:5400_2
+
+	lda	#25	; des dards jaillissent...
+	jmp	:6500
+
+:5400_2	stz	OI
+	ldx	#0	; est-ce que le nom
+]lp	lda	tblOV,x	; est un objet ?
+	and	#$ff
+	cmp	MO$2
+	bne	:5400_3	; non, continue
+	lda	OP,x
+	and	#$ff	; il est dans la salle ?
+	cmp	SP
+	bne	:5400_3
+	inx		; parce qu'on démarre à 0
+	stx	OI	; alors, c'est good
+	jmp	:5410
+	
+:5400_3	inx
+	cpx	#MAX_OBJET
+	bcc	]lp
+
+:5410	lda	OI
+	bne	:5410_2
+	lda	SP
+	cmp	#53
+	bne	:5410_2
+	lda	MO$2
+	cmp	#33	; DENT
+	bne	:5410_2
+	lda	#26	; elle semble bouger
+	sta	M$
+	jmp	:5898
+:5410_2	lda	OI
+	bne	:5412
+
+	stz	I
+	ldx	#0	; est-ce que le nom
+]lp	lda	tblOV,x	; est un objet ?
+	and	#$ff
+	cmp	MO$2
+	bne	:5410_3	; non, continue
+	inc	I
+:5410_3	inx
+	cpx	#MAX_OBJET
+	bcc	]lp
+
+:5412	lda	OI
+	bne	:5414
+	lda	I
+	beq	:5412_2
+	lda	#27	; il n'y a pas cela ici
+	sta	M$
+	jmp	:5414
+:5412_2	lda	#17	; je ne comprends pas
+	sta	M$
+	
+:5414	lda	OI
+	bne	:5425
+	jmp	:5898
+	rts
+
+:5425	lda	OI
+	cmp	#18
+	bne	:5426
+	@SET_OP	OI;#-1
+	lda	#28	; tres utile pour le puits sec
+	sta	M$
+	jmp	:5900
+
+:5426	lda	OI
+	cmp	#13
+	bne	:5427
+	lda	SP
+	cmp	#55
+	bne	:5427
+	@SET_OP	OI;#-1
+	lda	#29	; une porte s'ouvre à l'est
+	sta	M$
+	jmp	:5898
+	
+:5427	lda	OI
+	cmp	#19
+	bne	:5428
+	lda	SP
+	cmp	#54
+	bne	:5428
+	@SET_OP	OI;#-1
+	@SET_F	#19;#-1
+	lda	#30	; vous prenez la lanterne...
+	sta	M$
+	jmp	:5898
+	
+:5428	lda	SP
+	cmp	#34
+	bne	:5429
+	lda	OI
+	cmp	#27
+	beq	:5428_1
+	cmp	#16
+	bne	:5429
+:5428_1	@SET_OP	OI;#-1
+	lda	#31	; vous prenez le fragment
+	sta	M$
+	lda	OI
+	cmp	#16
+	bne	:5429
+	lda	#32	; vous prenez la craie
+	sta	M$
+	
+:5429	lda	SP
+	cmp	#34
+	bne	:5430
+	lda	OI
+	cmp	#27
+	beq	:5429_1
+	cmp	#16
+	bne	:5430
+:5429_1	jsr	:5900
+	@WAIT	#60	; 1 seconde
+	jsr	:7050
+	lda	#1
+	sta	DD
+	jsr	:5900
+	stz	DD
+	rts
+
+:5430	@SET_OP	OI;#-1	; on prend l'objet
+	lda	OI
+	sta	I
+	
+	@message	#33	; vous avez pris
+	ldx	OI
+	jsr	:8050	; UN/UNE
+	jsr	PRINT_ALT	; nom de l'objet
+	@objet	OI
 	rts
 
 *-------------------------------
@@ -797,23 +1065,72 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 *-------------------------------
 
 :5450	jsr	:5390
-	stz	OI
-	rts
 
+	stz	OI
+	ldx	#0	; est-ce que le nom
+]lp	lda	tblOV,x	; est un objet ?
+	and	#$ff
+	cmp	MO$2
+	bne	:5450_1	; non, continue
+	inx		; oui, sors
+	stx	OI
+	jmp	:5460
+:5450_1	inx
+	cpx	#MAX_OBJET
+	bcc	]lp
+
+:5460	lda	OI
+	bne	:5470
+	lda	#17	; je ne comprends pas
+	sta	M$
+	jmp	:5900
+	
 :5470	@SET_OP	OI;SP
 	lda	#34	; objet pose
 	sta	M$
 	jmp	:5900
 
+*-------------------------------
+* MALCHANCE
+*-------------------------------
+
 :5480	@SET_OP	CI;#-2
-		rts
+	rts
 
 *-------------------------------
 * 5482 - JETER UN OBJET
 *-------------------------------
 
 :5482	jsr	:5390
+
 	stz	OI
+	ldx	#0	; est-ce que le nom
+]lp	lda	tblOV,x	; est un objet ?
+	and	#$ff
+	cmp	MO$2
+	bne	:5482_1	; non, continue
+	inx		; oui, sors
+	stx	OI
+	jmp	:5484
+:5482_1	inx
+	cpx	#MAX_OBJET
+	bcc	]lp
+
+:5484	lda	OI
+	bne	:5486
+	lda	#17	; je ne comprends pas
+	sta	M$
+	jmp	:5900
+
+:5486	@SET_OP	OI;#-2
+	lda	OI
+	sta	I
+
+	@message	#35	; vous jetez
+	ldx	OI
+	jsr	:8050	; UN/UNE
+	jsr	PRINT_ALT	; nom de l'objet
+	@objet	OI
 	rts
 
 *-------------------------------
@@ -823,6 +1140,9 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 :5500	lda	#-1
 	sta	AC
 	stz	OI
+	rts
+
+:5550	stz	AC
 	rts
 
 *-------------------------------
@@ -854,14 +1174,14 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	bne	:5790
 
 :5785_OK	@GET_OP	#3	; a-t-on la corde ?
-	cmp	#-1
+	cmp	#255
 	beq	:5786	; oui
 	lda	#120	; il vous manque une corde
 	sta	M$
 	rts
 
 :5786	@GET_OP	#21	; a-t-on le crochet ?
-	cmp	#-1
+	cmp	#255
 	beq	:5787	; oui
 	cmp	#41
 	beq	:5787
@@ -962,7 +1282,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	cmp	#34	; EAU
 	bne	:5807
 	@GET_OP	#14
-	cmp	#-1
+	cmp	#255
 	beq	:5807
 	lda	#127	; il faut une gourde
 	sta	M$
@@ -992,7 +1312,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	cmp	#65	; PLAN
 	bne	:5809
 	@GET_OP	#15
-	cmp	#-1
+	cmp	#255
 	beq	:5809
 	lda	#129	; vous n'avez pas de plan
 	sta	M$
@@ -1042,7 +1362,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	cmp	#65	; PLAN
 	bne	:5812
 	@GET_OP	#15
-	cmp	#-1
+	cmp	#255
 	beq	:5812
 	lda	#132	; il manque un fragment
 	sta	M$
@@ -1132,15 +1452,28 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 * 6000 - SAVE GAME
 *-------------------------------
 
-:6000
+:6000	jsr	saveGAME
+	bcc	:6010
 	rts
+
+:6010	lda	#137
+	sta	M$
+	jmp	:5900
 
 *-------------------------------
 * 6200 - LOAD GAME
 *-------------------------------
 
-:6200
+:6200	jsr	loadGAME
+	bcc	:6210
 	rts
+
+:6210	stz	LP
+	stz	VP
+	
+	lda	#138
+	sta	M$
+	jmp	:5900
 
 *-------------------------------
 * 6400 - VERIFICATION ENIGMES
@@ -1153,11 +1486,12 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	and	#$ff
 	bne	:6405
 	tay		; pas realise
+	bra	:6410
 :6405	inx
 	cpx	#MAX_ENIGME
 	bcc	]lp
 
-	cpy	#0	; des manquements ?
+:6410	cpy	#0	; des manquements ?
 	bne	:6430	; non
 	
 	lda	#139	; il reste des objets ou...
@@ -1334,7 +1668,7 @@ GAGNE
 	cmp	#47
 	bne	:7060
 	@GET_OP	#16
-	cmp	#-1
+	cmp	#255
 	beq	:7054_3
 	@GET_F	#16
 	beq	:7054_4
@@ -1387,7 +1721,7 @@ initALL
 * 8050 - LE GENRE DU NOM
 *-------------------------------
 
-:8050	lda	tblMF,x	; Male ou Femelle
+:8050	lda	tblMF-1,x	; Male ou Femelle
 	and	#$ff
 	cmp	#'M'
 	beq	:8051
@@ -1501,6 +1835,30 @@ printMESSAGE_1	ldy	#strMESSAGE
 printMESSAGE_9	ldx	#^strMESSAGE
 	lda	theSTREAM
 	jmp	PRINT	; patched JMP/RTS
+
+*-------------------------------
+* GET OBJET ADDRESS
+*-------------------------------
+
+getOBJET	cmp	#MAX_OBJET
+	bcc	getOBJET_1
+	beq	getOBJET_1
+	rts
+
+getOBJET_1	ldy	#strOBJET
+	dec
+	beq	getOBJET_9
+	tax		; number of entries 
+]lp	iny
+	lda	|$0000,y
+	and	#$ff
+	bne	]lp
+	dex		; entries--
+	bne	]lp	; loop if non-zero
+	iny		; found it, pointer++
+	
+getOBJET_9	tya
+	rts
 
 *-------------------------------
 * PRINT OBJET
@@ -1770,9 +2128,6 @@ GETVN_6450	lda	$bdbd,x	; get a char from a list
 * LES HABITUELLES DONNEES
 *-------------------------------
 
-*DS	ds	2
-*NS	ds	2
-
 DATA_IN
 
 AC	ds	2
@@ -1796,15 +2151,16 @@ N3	ds	2
 N4	ds	2
 NX	ds	2
 OI	ds	2
-SP	ds	2
 VP	ds	2
 
+SAVE_IN
+
+SP	ds	2
 OP	ds	MAX_OBJET	; from tblOBJETS
 F	ds	MAX_AF
 
 DATA_OUT
-
-strBONJOUR	asc	'Bonjour'00
+SAVE_OUT
 
 *-------------- Routine texte
 

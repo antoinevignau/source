@@ -639,3 +639,5 @@ INIT_VARIABLES	sep	#$20
 	put	midi.s
 	put	fr.s
 	put	tables.s
+
+ptrLEVEL	putbin	L01.BIN

@@ -21,7 +21,7 @@ WIN_ROOM	=	64
 MAX_AF	=	41
 MAX_ENIGME	=	32
 MAX_LIEU	=	64
-MAX_MESSAGE	=	153
+MAX_MESSAGE	=	154
 MAX_OBJET	=	32
 
 *-------------------------------
@@ -52,7 +52,7 @@ MAX_OBJET	=	32
 	ldx	]1
 	jsr	GET_F
 	<<<
-
+	
 @SET_F	mac
 	ldx	]1
 	lda	]2
@@ -63,7 +63,7 @@ MAX_OBJET	=	32
 	ldx	]1
 	jsr	GET_OP
 	<<<
-
+	
 @SET_OP	mac
 	ldx	]1
 	lda	]2
@@ -204,14 +204,15 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	cmp	VP
 	beq	:2010
 	
-	jsr	:7050
+	@CLS	#1
+	jsr	:7050	; prend la description
 
-:2009	lda	#1
+	lda	#1	; affiche la
 	sta	DD
 	jsr	:5900
 	stz	DD
 	
-	lda	SP
+	lda	SP	; on a changŽ de salle
 	sta	VP
 
 :2010	jsr	:5000	; saisie et traitement commande
@@ -1263,7 +1264,97 @@ GAGNE
 * 7050 - SCENE DESCRIPTION
 *-------------------------------
 
-:7050
+:7050	stz	M$
+
+	lda	SP
+	cmp	#26
+	bne	:7050_2
+	@GET_F	#25
+	beq	:7050_2
+	
+	lda	#150	; le puits a dŽjˆ ŽtŽ fouillŽ
+	sta	M$
+	rts
+
+:7050_2	lda	SP
+	cmp	#51
+	bne	:7050_3
+	@GET_F	#29
+	beq	:7050_3
+	
+	lda	#151	; les pieges sont maintenant visibles
+	sta	M$
+	rts
+
+* AD is the offset to the string to display
+
+:7050_3	lda	#$0ea0
+	sta	AD
+
+:7051	ldx	#0
+	sep	#$20
+
+]lp	lda	tbl11000,x
+	beq	:7054_2
+	cmp	SP
+	bne	:7053
+	lda	tbl11000+1,x
+	cmp	#1
+	bne	:7053
+	ldy	tbl11000+2,x
+	lda	F-1,y
+	bne	:7053
+
+	lda	#$0ed0
+	sta	AD
+
+:7053	lda	tbl11000,x
+	beq	:7054_2
+	cmp	SP
+	bne	:7054
+	lda	tbl11000+1,x
+	cmp	#2
+	bne	:7053
+	ldy	tbl11000+2,x
+	lda	OP-1,y
+	bne	:7054
+
+	lda	#$0ed0
+	sta	AD
+
+:7054	inx
+	inx
+	inx
+	cpx	#3*24
+	bcc	]lp
+
+:7054_2	rep	#$20
+
+	lda	SP
+	cmp	#47
+	bne	:7060
+	@GET_OP	#16
+	cmp	#-1
+	beq	:7054_3
+	@GET_F	#16
+	beq	:7054_4
+:7054_3	lda	#152	; le passage au sud est ouvert
+	sta	M$
+:7054_4	rts
+
+:7060	ldx	AD
+	ldy	#0
+]lp	lda	ptrLEVEL,x
+	sta	strDESCRIPTION,y
+	inx
+	inx
+	iny
+	iny
+	cpy	#48
+	bcc	]lp
+	
+	lda	#154	; description ˆ afficher
+	sta	M$
 	rts
 
 *-------------------------------
@@ -1685,6 +1776,7 @@ GETVN_6450	lda	$bdbd,x	; get a char from a list
 DATA_IN
 
 AC	ds	2
+AD	ds	2	; Pointeur de texte
 CI	ds	2
 DD	ds	2	; Majuscule
 DR	ds	2

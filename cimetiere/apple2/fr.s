@@ -342,6 +342,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Les pi'8f'ges sont maintenant visibles.'00			; 151
 	asc	'Le passage au sud est ouvert.'00			; 152
 	asc	'Voulez-vous quitter ? o/n '00				; 153
+strDESCRIPTION	ds	48					; 154 - long level description string
 	dfb	chrNULL
 
 *-------------------------------

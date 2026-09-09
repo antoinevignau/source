@@ -132,6 +132,13 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 	jsr	
 	<<<
 
+@LEFT	mac
+	lda	]1
+	ldx	]2
+	ldy	]3
+	jsr	LEFT
+	<<<
+
 @LEN	mac
 	lda	]1
 	jsr	LEN
@@ -639,6 +646,33 @@ CLS_DIFFY	asl
 	_SpecialRect
 	rts
 
+*-------------------------------
+* LEFT @dest,@src;len
+* Copy len bytes of @src to @dest
+* A: destination variable pointer
+* X: source variable pointer
+* Y: number of bytes to copy
+
+LEFT	sty	LEFT_3+1	; number of bytes
+	stx	LEFT_1+1	; source variable
+	sta	LEFT_2+1	; destination variable
+	sta	LEFT_4+1	; destination variable
+
+	sep	#$20	; 8-bit A
+	ldx	#0	; copy string
+	txy
+LEFT_1	lda	$bdbd,x
+LEFT_2	sta	$bdbd,y
+	beq	LET_END	; and its final zero
+	inx		; src++
+	iny		; dest++
+LEFT_3	cpy	#0
+	bcc	LEFT_1
+	lda	#chrNULL	; put a trailing zero
+LEFT_4	sta	$bdbd,y
+LEFT_END	rep	#$20	; 16-bit A
+	rts
+	
 *-------------------------------
 * LET @dest,@src
 * Assigns data to a variable
@@ -1181,7 +1215,7 @@ PRINT	sta             theSTREAM
 *	PushWord #32768		; Amstrad.8
 *	PushWord #0
 *	_InstallFont
-*
+
 *	PushWord	#modeOr
 *	_SetTextMode
 

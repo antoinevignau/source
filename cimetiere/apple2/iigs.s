@@ -238,8 +238,10 @@ okMEM	sty	ptrUNPACK
 	bcs	koMEM
 	
 	sty	ptrIMAGE
-	stx	ptrIMAGE+2
-	
+*	sty	levelToSourceLocInfo+2	; for the level data
+	stx	ptrIMAGE+2		; from 2-bit to 4-bit
+*	stx	levelToSourceLocInfo+4
+
 *--- Flush everything
 
 	PushWord	#0

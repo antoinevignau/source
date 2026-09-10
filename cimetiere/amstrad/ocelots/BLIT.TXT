@@ -1,0 +1,187 @@
+             org 8000h; 8000h
+
+
+; Subroutine: Size=31, CC=2.
+; Called by: -
+; Calls: -
+8000 SUB1:
+8000              ld   hl,9000h 	; 36864, -28672
+8003              ld   ix,8020h 	; 32800, -32736
+8007              ld   c,4Eh  	; 78, 'N'
+8009 .sub1_loop1:
+8009              ld   e,(ix+0) 
+800C              ld   d,(ix+1) 
+800F              inc  ix     
+8011              inc  ix     
+8013              ld   b,30h  	; 48, '0'
+8015 .sub1_loop2:
+8015              ld   a,(hl) 
+8016              ld   (de),a 
+8017              inc  hl     
+8018              inc  de     
+8019              djnz .sub1_loop2 	; 8015h
+801B              dec  c      
+801C              jr   nz,.sub1_loop1 	; 8009h
+801E              ret         
+
+
+801F              defb 00h    	; 0
+8020              defb F4h    	; 244,  -12
+8021              defb E8h    	; 232,  -24
+8022              defb F4h    	; 244,  -12
+8023              defb F0h    	; 240,  -16
+8024              defb F4h    	; 244,  -12
+8025              defb F8h    	; 248,   -8
+8026              defb 44h    	; 68, 'D'
+8027              defb C1h    	; 193,  -63
+8028              defb 44h    	; 68, 'D'
+8029              defb C9h    	; 201,  -55
+802A              defb 44h    	; 68, 'D'
+802B              defb D1h    	; 209,  -47
+802C              defb 44h    	; 68, 'D'
+802D              defb D9h    	; 217,  -39
+802E              defb 44h    	; 68, 'D'
+802F              defb E1h    	; 225,  -31
+8030              defb 44h    	; 68, 'D'
+8031              defb E9h    	; 233,  -23
+8032              defb 44h    	; 68, 'D'
+8033              defb F1h    	; 241,  -15
+8034              defb 44h    	; 68, 'D'
+8035              defb F9h    	; 249,   -7
+8036              defb 94h    	; 148, -108
+8037              defb C1h    	; 193,  -63
+8038              defb 94h    	; 148, -108
+8039              defb C9h    	; 201,  -55
+803A              defb 94h    	; 148, -108
+803B              defb D1h    	; 209,  -47
+803C              defb 94h    	; 148, -108
+803D              defb D9h    	; 217,  -39
+803E              defb 94h    	; 148, -108
+803F              defb E1h    	; 225,  -31
+8040              defb 94h    	; 148, -108
+8041              defb E9h    	; 233,  -23
+8042              defb 94h    	; 148, -108
+8043              defb F1h    	; 241,  -15
+8044              defb 94h    	; 148, -108
+8045              defb F9h    	; 249,   -7
+8046              defb E4h    	; 228,  -28
+8047              defb C1h    	; 193,  -63
+8048              defb E4h    	; 228,  -28
+8049              defb C9h    	; 201,  -55
+804A              defb E4h    	; 228,  -28
+804B              defb D1h    	; 209,  -47
+804C              defb E4h    	; 228,  -28
+804D              defb D9h    	; 217,  -39
+804E              defb E4h    	; 228,  -28
+804F              defb E1h    	; 225,  -31
+8050              defb E4h    	; 228,  -28
+8051              defb E9h    	; 233,  -23
+8052              defb E4h    	; 228,  -28
+8053              defb F1h    	; 241,  -15
+8054              defb E4h    	; 228,  -28
+8055              defb F9h    	; 249,   -7
+8056              defb 34h    	; 52, '4'
+8057              defb C2h    	; 194,  -62
+8058              defb 34h    	; 52, '4'
+8059              defb CAh    	; 202,  -54
+805A              defb 34h    	; 52, '4'
+805B              defb D2h    	; 210,  -46
+805C              defb 34h    	; 52, '4'
+805D              defb DAh    	; 218,  -38
+805E              defb 34h    	; 52, '4'
+805F              defb E2h    	; 226,  -30
+8060              defb 34h    	; 52, '4'
+8061              defb EAh    	; 234,  -22
+8062              defb 34h    	; 52, '4'
+8063              defb F2h    	; 242,  -14
+8064              defb 34h    	; 52, '4'
+8065              defb FAh    	; 250,   -6
+8066              defb 84h    	; 132, -124
+8067              defb C2h    	; 194,  -62
+8068              defb 84h    	; 132, -124
+8069              defb CAh    	; 202,  -54
+806A              defb 84h    	; 132, -124
+806B              defb D2h    	; 210,  -46
+806C              defb 84h    	; 132, -124
+806D              defb DAh    	; 218,  -38
+806E              defb 84h    	; 132, -124
+806F              defb E2h    	; 226,  -30
+8070              defb 84h    	; 132, -124
+8071              defb EAh    	; 234,  -22
+8072              defb 84h    	; 132, -124
+8073              defb F2h    	; 242,  -14
+8074              defb 84h    	; 132, -124
+8075              defb FAh    	; 250,   -6
+8076              defb D4h    	; 212,  -44
+8077              defb C2h    	; 194,  -62
+8078              defb D4h    	; 212,  -44
+8079              defb CAh    	; 202,  -54
+807A              defb D4h    	; 212,  -44
+807B              defb D2h    	; 210,  -46
+807C              defb D4h    	; 212,  -44
+807D              defb DAh    	; 218,  -38
+807E              defb D4h    	; 212,  -44
+807F              defb E2h    	; 226,  -30
+8080              defb D4h    	; 212,  -44
+8081              defb EAh    	; 234,  -22
+8082              defb D4h    	; 212,  -44
+8083              defb F2h    	; 242,  -14
+8084              defb D4h    	; 212,  -44
+8085              defb FAh    	; 250,   -6
+8086              defb 24h    	; 36, '$'
+8087              defb C3h    	; 195,  -61
+8088              defb 24h    	; 36, '$'
+8089              defb CBh    	; 203,  -53
+808A              defb 24h    	; 36, '$'
+808B              defb D3h    	; 211,  -45
+808C              defb 24h    	; 36, '$'
+808D              defb DBh    	; 219,  -37
+808E              defb 24h    	; 36, '$'
+808F              defb E3h    	; 227,  -29
+8090              defb 24h    	; 36, '$'
+8091              defb EBh    	; 235,  -21
+8092              defb 24h    	; 36, '$'
+8093              defb F3h    	; 243,  -13
+8094              defb 24h    	; 36, '$'
+8095              defb FBh    	; 251,   -5
+8096              defb 74h    	; 116, 't'
+8097              defb C3h    	; 195,  -61
+8098              defb 74h    	; 116, 't'
+8099              defb CBh    	; 203,  -53
+809A              defb 74h    	; 116, 't'
+809B              defb D3h    	; 211,  -45
+809C              defb 74h    	; 116, 't'
+809D              defb DBh    	; 219,  -37
+809E              defb 74h    	; 116, 't'
+809F              defb E3h    	; 227,  -29
+80A0              defb 74h    	; 116, 't'
+80A1              defb EBh    	; 235,  -21
+80A2              defb 74h    	; 116, 't'
+80A3              defb F3h    	; 243,  -13
+80A4              defb 74h    	; 116, 't'
+80A5              defb FBh    	; 251,   -5
+80A6              defb C4h    	; 196,  -60
+80A7              defb C3h    	; 195,  -61
+80A8              defb C4h    	; 196,  -60
+80A9              defb CBh    	; 203,  -53
+80AA              defb C4h    	; 196,  -60
+80AB              defb D3h    	; 211,  -45
+80AC              defb C4h    	; 196,  -60
+80AD              defb DBh    	; 219,  -37
+80AE              defb C4h    	; 196,  -60
+80AF              defb E3h    	; 227,  -29
+80B0              defb C4h    	; 196,  -60
+80B1              defb EBh    	; 235,  -21
+80B2              defb C4h    	; 196,  -60
+80B3              defb F3h    	; 243,  -13
+80B4              defb C4h    	; 196,  -60
+80B5              defb FBh    	; 251,   -5
+80B6              defb 14h    	; 20
+80B7              defb C4h    	; 196,  -60
+80B8              defb 14h    	; 20
+80B9              defb CCh    	; 204,  -52
+80BA              defb 14h    	; 20
+80BB              defb D4h    	; 212,  -44
+; ...
+; ...
+; ...

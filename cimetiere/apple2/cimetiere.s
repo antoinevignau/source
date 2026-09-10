@@ -193,7 +193,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
 	lda	SP
 	cmp	LP
-*	beq	:2005
+	beq	:2005
 
 	jsr	:3000	; load level
 	lda	SP	; save level
@@ -228,9 +228,33 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 *-------------------------------
 
 :3000	lda	SP	; load level then...
-	jmp	loadLEVEL
-	
-* LOAD LEVEL...
+	jsr	loadLEVEL
+
+	PushLong #levelParamPtr
+	_PaintPixels
+	rts
+
+
+*---
+
+levelParamPtr	adrl	levelToSourceLocInfo
+	adrl	iconToDestLocInfo
+	adrl	levelToSourceRect
+	adrl	levelToDestPoint
+	dw	$0000	; mode copy
+	ds	4
+
+levelToSourceLocInfo
+	dw	mode320	; mode 320
+	adrl	ptrLEVEL
+	dw	48	; width in byte
+	dw	0,0,78,96	; 
+
+levelToSourceRect
+	dw	0,0,78,96	; 126
+
+levelToDestPoint
+	dw	30,14
 
 *-------------------------------
 * 3180 - AFFICHE LE CADRE
@@ -822,7 +846,21 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	
 :5256	lda	EC
 	cmp	#5556
+	bne	:5256_1
+	@GET_OP	#13
+	cmp	#255
+	beq	:5256_1
+	stz	GA
+	jmp	:5257
+:5256_1	lda	EC
+	cmp	#5253
 	bne	:5257
+	@GET_F	#35
+	beq	:5256_2
+	@GET_OP	#11
+	cmp	#255
+	beq	:5257
+:5256_2	stz	GA
 
 :5257	lda	EC
 	cmp	#4957

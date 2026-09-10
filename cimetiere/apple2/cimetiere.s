@@ -606,20 +606,20 @@ levelToDestPoint
 	
 	@LOCATE	#3;#1;IY
 
-	pla
+	pla		; -1 parce qu'index = 0 et non 1
 	pha
 	ldx	#8	; index pour Clé bronze
-	cmp	#4
+	cmp	#4-1
 	beq	:4509
-	cmp	#12
+	cmp	#12-1
 	beq	:4508
-	cmp	#20
+	cmp	#20-1
 	beq	:4507
-	cmp	#15
+	cmp	#15-1
 	beq	:4506
-	cmp	#25
+	cmp	#25-1
 	beq	:4505
-	cmp	#18
+	cmp	#18-1
 	beq	:4504
 	inc
 	jsr	printOBJET
@@ -693,6 +693,9 @@ levelToDestPoint
 :5000	@CLS	#2	; efface la fenêtre de commande
 	@PEN	#2;#2
 	@LOCATE	#2;#1;#1	; #0;#3;#24
+	
+	jsr	showSALLE	; oh le vilain debug
+
 	@message	#15	; affiche COMMANDE >_
 	@PEN	#2;#1
 	@INPUT	#TEXTBUFFER;#MAX_LEN
@@ -789,11 +792,11 @@ levelToDestPoint
 	jmp	:5482
 
 :5130	lda	MO$1
-	cmp	#23	; examiner
+	cmp	#23	; EXAMINER
 	beq	:5130_OK
-	cmp	#16	; chercher
+	cmp	#16	; CHERCHER
 	beq	:5130_OK
-	cmp	#24	; fouiller
+	cmp	#24	; FOUILLER
 	bne	:5140
 :5130_OK	jsr	:5500
 	lda	AC
@@ -886,7 +889,7 @@ levelToDestPoint
 	bne	:5252
 	
 	ldy	tbl8890+2,x	; AND F(GF) = 0
-	lda	F,y
+	lda	F-1,y
 	and	#$ff
 	bne	:5252
 
@@ -910,15 +913,69 @@ levelToDestPoint
 
 :5253	lda	EC
 	cmp	#2129
+	bne	:5253_1
+	@GET_F	#18
+	bne	:5253_1
+	stz	GA
+	jmp	:5254
+:5253_1	lda	EC
+	cmp	#3334
+	bne	:5253_2
+	@GET_F	#17
+	bne	:5253_2
+	stz	GA
+	jmp	:5254
+:5253_2	lda	EC
+	cmp	#4048
 	bne	:5254
-	
+	lda	SP
+	cmp	#40
+	bne	:5254
+	@GET_F	#5
+	bne	:5254
+	stz	GA
+
 :5254	lda	EC
 	cmp	#4142
+	bne	:5254_1
+	@GET_F	#35
+	bne	:5254_1
+	stz	GA
+	jmp	:5255
+:5254_1	lda	SP
+	cmp	#44
+	bne	:5254_2
+	lda	NX
+	cmp	#43
+	bne	:5254_2
+	@GET_F	#39
+	bne	:5254_2
+	stz	GA
+	jmp	:5255
+:5254_2	lda	EC
+	cmp	#3132
 	bne	:5255
+	@GET_F	#10
+	bne	:5255
+	stz	GA
 
 :5255	lda	EC
 	cmp	#4755
+	bne	:5255_1
+	lda	SP
+	cmp	#47
+	bne	:5255_1
+	@GET_OP	#16
+	cmp	#255
+	beq	:5255_1
+	@GET_F	#16
+	bne	:5255_1
+	stz	GA
+	jmp	:5256
+:5255_1	lda	EC
+	cmp	#4856
 	bne	:5256
+	stz	GA
 	
 :5256	lda	EC
 	cmp	#5556
@@ -1351,7 +1408,571 @@ levelToDestPoint
 :5500	lda	#-1
 	sta	AC
 	stz	OI
+
+:5501	lda	SP
+	cmp	#1
+	bne	:5502
+	lda	MO$2
+	cmp	#80
+	beq	:5501_1
+	cmp	#59
+	bne	:5502
+:5501_1	@GET_OP	#1
+	bne	:5502
+	@SET_OP	#1;#1
+	lda	#36
+	sta	M$
+	jmp	:5898
+
+:5502	lda	SP
+	cmp	#2
+	bne	:5503
+	lda	MO$1
+	cmp	#24	; FOUILLER
+	bne	:5503
+	lda	MO$2
+	cmp	#42	; FOUGERE
+	bne	:5503
+	lda	#22
+	sta	OI
+	jmp	:5540
+
+:5503	lda	SP
+	cmp	#2
+	bne	:5504
+	lda	MO$2
+	cmp	#42
+	bne	:5504
+	lda	#37
+	sta	M$
+	jmp	:5898
+
+:5504	lda	SP
+	cmp	#3
+	bne	:5505
+	lda	MO$2
+	cmp	#66
+	bne	:5505
+	lda	#38
+	sta	M$
+	jmp	:5898
+
+:5505	lda	SP
+	cmp	#5
+	bne	:5506
+	lda	MO$2
+	cmp	#25
+	bne	:5506
+	@GET_OP	#4
+	bne	:5505_1
+	lda	#4
+	sta	OI
+	jmp	:5540
+:5505_1	lda	#39
+	sta	M$
+	jmp	:5898
+
+:5506	lda	SP
+	cmp	#13
+	bne	:5507
+	lda	MO$2
+	cmp	#72
+	bne	:5507
+	@GET_OP	#14
+	bne	:5507
+	@SET_OP	#14;#13
+	lda	#40
+	sta	M$
+	jmp	:5898
+
+:5507	lda	SP
+	cmp	#13
+	bne	:5508
+	lda	MO$2
+	cmp	#79
+	beq	:5507_1
+	cmp	#34
+	bne	:5508
+:5507_1	lda	#41
+	sta	M$
+	jmp	:5898
+
+:5508	lda	SP
+	cmp	#18
+	bne	:5509
+	lda	MO$2
+	cmp	#86
+	bne	:5509
+	@GET_F	#3
+	beq	:5508_1
+	lda	#42
+	sta	M$
+	jmp	:5898
+:5508_1	lda	#43
+	sta	M$
+	jmp	:5898
+
+:5509	lda	SP
+	cmp	#22
+	bne	:5510
+	lda	MO$2
+	cmp	#13	; ATELIER
+	bne	:5510
+	@GET_OP	#6
+	bne	:5510
+	@SET_OP	#6;#22
+	@SET_OP	#7;#22
+	lda	#44
+	sta	M$
+	jmp	:5898
+
+:5510	lda	SP
+	cmp	#20
+	bne	:5511
+	lda	MO$2
+	cmp	#73
+	bne	:5511
+	lda	#45
+	sta	M$
+	jmp	:5898
+
+:5511	lda	SP
+	cmp	#25
+	bne	:5512
+	lda	MO$2
+	cmp	#87
+	bne	:5512
+	lda	#46
+	sta	M$
+	jmp	:5898
+
+:5512	lda	SP
+	cmp	#26
+	bne	:5513
+	lda	MO$2
+	cmp	#68
+	bne	:5513
+	lda	#25
+	sta	OI
+	jmp	:5540
+
+:5513	lda	SP
+	cmp	#27
+	bne	:5514
+	lda	MO$2
+	cmp	#53
+	bne	:5514
+	lda	#47
+	sta	M$
+	jmp	:5898
+
+:5514	lda	SP
+	cmp	#27
+	bne	:5515
+	lda	MO$2
+	cmp	#91
+	bne	:5515
+	lda	#15
+	sta	OI
+	jmp	:5540
+
+:5515	lda	SP
+	cmp	#28
+	bne	:5516
+	lda	MO$2
+	cmp	#40
+	bne	:5516
+	@GET_OP	#20
+	bne	:5516
+	@SET_OP	#20;#28
+	lda	#48
+	sta	M$
+	jmp	:5898
+
+:5516	lda	SP
+	cmp	#30
+	bne	:5517
+	lda	MO$2
+	cmp	#83
+	bne	:5517
+	lda	#5
+	sta	OI
+	jmp	:5540
+
+:5517	lda	SP
+	cmp	#31
+	bne	:5518
+	lda	MO$2
+	cmp	#48
+	beq	:5517_1
+	cmp	#65
+	bne	:5518
+:5517_1	@GET_OP	#10
+	bne	:5518
+	@SET_OP	#10;#31
+	lda	#49
+	sta	M$
+	jmp	:5898
+
+:5518	lda	SP
+	cmp	#32
+	bne	:5519
+	lda	MO$2
+	cmp	#85
+	bne	:5519
+	@GET_OP	#9
+	bne	:5518_1
+	@SET_OP	#9;#32
+	lda	#50
+	sta	M$
+	jmp	:5898
+:5518_1	lda	#50
+	sta	M$
+	jmp	:5898
+
+:5519	lda	SP
+	cmp	#33
+	bne	:5520
+	lda	MO$2
+	cmp	#90
+	bne	:5520
+	lda	#52
+	sta	M$
+	jmp	:5898
+
+:5520	lda	SP
+	cmp	#34
+	bne	:5521
+	lda	MO$2
+	cmp	#81
+	bne	:5521
+	@GET_OP	#27
+	bne	:5521
+	@SET_OP	#27;#34
+	lda	#53
+	sta	M$
+	jmp	:5898
+
+:5521	lda	SP
+	cmp	#34
+	bne	:5522
+	lda	MO$2
+	cmp	#78
+	bne	:5522
+	lda	#16
+	sta	OI
+	jmp	:5540
+
+:5522	lda	SP
+	cmp	#34
+	bne	:5523
+	lda	MO$2
+	cmp	#77
+	bne	:5523
+	lda	#23
+	sta	OI
+	jmp	:5540
+
+:5523	lda	SP
+	cmp	#41
+	bne	:5524
+	lda	MO$2
+	cmp	#11
+	bne	:5524
+	lda	#21
+	sta	OI
+	jmp	:5540
+
+:5524	lda	SP
+	cmp	#43
+	bne	:5525
+	lda	MO$2
+	cmp	#82
+	bne	:5525
+	lda	#30
+	sta	OI
+	jmp	:5540
+
+:5525	lda	SP
+	cmp	#46
+	bne	:5526
+	lda	MO$2
+	cmp	#23
+	bne	:5526
+	lda	#31
+	sta	OI
+	jmp	:5540
+
+:5526	lda	SP
+	cmp	#49
+	bne	:5527
+	lda	MO$2
+	cmp	#38
+	bne	:5527
+	lda	#32
+	sta	OI
+	jmp	:5540
+
+:5527	lda	SP
+	cmp	#50
+	bne	:5528
+	lda	MO$2
+	cmp	#12
+	bne	:5528
+	lda	#29
+	sta	OI
+	jmp	:5540
+
+:5528	lda	SP
+	cmp	#52
+	bne	:5528_1	; on pourrait sauter à 5529 directement
+	lda	MO$2
+	cmp	#19
+	bne	:5528_1
+	lda	#54
+	sta	M$
+	jmp	:5898
+:5528_1	lda	SP
+	cmp	#52
+	bne	:5529
+	lda	MO$2
+	cmp	#55
+	bne	:5529
+	@GET_F	#35
+	beq	:5529
+	@GET_OP	#11
+	bne	:5529
+	@SET_OP	#11;#52
+	lda	#55
+	sta	M$
+	jmp	:5898
+
+:5529	lda	SP
+	cmp	#53
+	bne	:5530
+	lda	MO$2
+	cmp	#59
+	bne	:5530
+	lda	#56
+	sta	M$
+	jmp	:5898
+
+:5530	lda	SP
+	cmp	#54
+	bne	:5531
+	lda	MO$2
+	cmp	#70
+	bne	:5531
+	lda	#26
+	sta	OI
+	jmp	:5540
+
+:5531	lda	SP
+	cmp	#54
+	bne	:5532
+	lda	MO$2
+	cmp	#15
+	bne	:5532
+	lda	#19
+	sta	OI
+	jmp	:5540
+
+:5532	lda	SP
+	cmp	#10
+	bne	:5533
+	lda	MO$2
+	cmp	#66
+	beq	:5532_1
+	cmp	#60
+	bne	:5533
+:5532_1	@GET_F	#33
+	bne	:5532_2
+	lda	#57
+	sta	M$
+	jmp	:5898
+:5532_2	lda	#58
+	sta	M$
+	jmp	:5898
+	
+:5533	lda	SP
+	cmp	#6
+	bne	:5534
+	lda	MO$2
+	cmp	#75	; SERRURE
+	bne	:5534
+	lda	#59
+	sta	M$
+	jmp	:5898
+
+:5534	lda	SP
+	cmp	#6
+	bne	:5535
+	lda	MO$2
+	cmp	#21	; CABANE
+	bne	:5535
+	@GET_F	#4
+	beq	:5535
+	@GET_OP	#2
+	bne	:5535
+	@SET_OP	#2;#6
+	lda	#60
+	sta	M$
+	jmp	:5898
+
+:5535	lda	SP
+	cmp	#6
+	bne	:5536
+	lda	MO$2
+	cmp	#21	; CABANE
+	bne	:5536
+	lda	#61
+	sta	M$
+	jmp	:5898
+
+:5536	lda	SP
+	cmp	#29
+	bne	:5537
+	lda	MO$2
+	cmp	#24
+	bne	:5537
+	lda	#62
+	sta	M$
+	jmp	:5898
+
+:5537	lda	SP
+	cmp	#25
+	bne	:5538
+	lda	MO$2
+	cmp	#32
+	bne	:5538
+	lda	#18
+	sta	OI
+	jmp	:5540
+
+:5538	lda	SP
+	cmp	#27
+	bne	:5539
+	lda	MO$2
+	cmp	#17
+	bne	:5539
+	lda	#12
+	sta	OI
+	jmp	:5540
+
+:5539	lda	SP
+	cmp	#31
+	bne	:5540
+	lda	MO$2
+	cmp	#14
+	bne	:5540
+	lda	#63
+	sta	M$
+	jmp	:5898
+
+:5540	lda	OI
+	beq	:5541
+	@GET_OP	OI
+	bne	:5541
+	@SET_OP	OI;SP
+	lda	OI
+	sta	I
+	@message	#64	; vous trouvez...
+	ldx	OI
+	jsr	:8050	; UN/UNE
+	jsr	PRINT_ALT	; nom de l'objet
+	@objet	OI
 	rts
+
+:5541	lda	SP
+	cmp	#44
+	bne	:5542
+	lda	MO$2
+	cmp	#41
+	beq	:5541_1
+	cmp	#64
+	bne	:5542
+:5541_1	lda	#65
+	sta	M$
+	jmp	:5898
+
+:5542	lda	SP
+	cmp	#47
+	bne	:5543
+	lda	MO$2
+	cmp	#52
+	bne	:5543
+	lda	#66
+	sta	M$
+	jmp	:5898
+
+:5543	lda	SP
+	cmp	#55
+	bne	:5544
+	lda	MO$2
+	cmp	#43
+	bne	:5544
+	lda	#67
+	sta	M$
+	jmp	:5898
+
+:5544	lda	SP
+	cmp	#35
+	bne	:5544_1
+	lda	MO$2
+	cmp	#14
+	bne	:5544_1
+	lda	#68
+	sta	M$
+	jmp	:5898
+:5544_1	lda	SP
+	cmp	#35
+	bne	:5546
+	lda	MO$2
+	cmp	#71
+	bne	:5546
+	lda	#69
+	sta	M$
+	jmp	:5898
+	
+:5546	lda	SP
+	cmp	#39
+	bne	:5547
+	lda	MO$2
+	cmp	#31
+	bne	:5547
+	lda	#70
+	sta	M$
+	jmp	:5898
+
+:5547	lda	SP
+	cmp	#58
+	bne	:5548
+	lda	MO$2
+	cmp	#63
+	bne	:5548
+	lda	#71
+	sta	M$
+	jmp	:5898
+
+:5548	lda	SP
+	cmp	#60
+	bne	:5549
+	lda	MO$2
+	cmp	#37
+	bne	:5549
+	lda	#72
+	sta	M$
+	jmp	:5898
+
+:5549	lda	SP
+	cmp	#62
+	bne	:5550
+	lda	MO$2
+	cmp	#76
+	bne	:5550
+	lda	#73
+	sta	M$
+	jmp	:5898
 
 :5550	stz	AC
 	rts
@@ -1363,6 +1984,773 @@ levelToDestPoint
 :5600	lda	#-1
 	sta	AC
 
+:5601	lda	SP
+	cmp	#41
+	bne	:5602
+	@INSTR	#TEXTBUFFER;#strCORDE
+	cmp	#TRUE
+	bne	:5602
+	@INSTR	#TEXTBUFFER;#strCROCHET
+	cmp	#TRUE
+	bne	:5602
+	jmp	:5785
+
+:5602	lda	SP
+	cmp	#41
+	bne	:5605
+	@INSTR	#TEXTBUFFER;#strCROCHET
+	cmp	#FALSE
+	beq	:5605
+	@INSTR	#TEXTBUFFER;#strCORDE
+	cmp	#TRUE
+	bne	:5605
+	lda	#74	; avec une corde, ce serait mieux
+	sta	M$
+	jmp	:5898
+
+:5605	lda	SP
+	cmp	#3
+	bne	:5606
+	lda	MO$2
+	cmp	#65	; PLANCHE
+	bne	:5606
+	@GET_OP	#22
+	cmp	#255
+	bne	:5606
+	@SET_F	#22;#-1
+	lda	#75	; le pont semble securise
+	sta	M$
+	jmp	:5898
+
+:5606	lda	SP
+	cmp	#10
+	bne	:5610
+	lda	MO$2
+	cmp	#65	; PLANCHE
+	bne	:5610
+	@GET_OP	#22
+	cmp	#255
+	bne	:5610
+	@SET_F	#33;#-1
+	lda	#22
+	sta	CI
+	jsr	:5480
+	lda	#76	; la passerelle semble securisee
+	sta	M$
+	jmp	:5898
+	
+:5610	lda	SP
+	cmp	#6
+	lda	MO$2
+	cmp	#26	; CLE
+	bne	:5615
+	@GET_OP	#4
+	cmp	#255
+	bne	:5615
+	@SET_F	#4;#-1
+	lda	#4
+	sta	CI
+	jsr	:5480
+	lda	#77	; la porte s'ouvre
+	sta	M$
+	jmp	:5898
+
+:5615	lda	SP
+	cmp	#13
+	bne	:5620
+	lda	MO$1
+	cmp	#40	; REMPLIR
+	lda	MO$2
+	cmp	#44	; GOURDE
+	beq	:5615_1
+	cmp	#34	; EAU
+	bne	:5620
+:5615_1	@GET_OP	#14
+	cmp	#255
+	bne	:5620
+	@SET_F	#34;#-1
+	lda	#78	; la gourde est pleine
+	sta	M$
+	jmp	:5898
+	
+:5620	lda	SP
+	cmp	#14
+	bne	:5625
+	lda	MO$1
+	cmp	#17	; CREUSER
+	lda	MO$2
+	cmp	#61	; PELLE
+	bne	:5625
+	@GET_OP	#1
+	cmp	#255
+	bne	:5625
+	@SET_F	#1;#-1
+	lda	#1
+	sta	CI
+	jsr	:5480
+	lda	#79	; vous degagez le passage vers le sud
+	sta	M$
+	jmp	:5898
+
+:5625	lda	SP
+	cmp	#18
+	bne	:5629
+	lda	MO$2
+	cmp	#28	; CORDE
+	bne	:5629
+	@GET_OP	#3
+	cmp	#255
+	bne	:5629
+	@SET_F	#3;#-1
+	lda	#3
+	sta	CI
+	jsr	:5480
+	lda	#80
+	sta	M$
+	jmp	:5898
+
+:5629	stz	TR
+	lda	MO$1
+	cmp	#42	; TOURNER
+	beq	:5629_1
+	cmp	#44	; UTILISER
+	bne	:5630
+	lda	MO$2
+	cmp	#86	; TREUIL
+	bne	:5630
+:5629_1	lda	#-1
+	sta	TR
+
+:5630	lda	SP
+	cmp	#18
+	bne	:5635
+	lda	TR
+	beq	:5635
+	@GET_F	#3
+	bne	:5635
+	lda	#81	; il manque une corde
+	sta	M$
+	jmp	:5898
+	
+:5635	lda	SP
+	cmp	#18
+	bne	:5640
+	lda	TR
+	beq	:5640
+	@GET_F	#3
+	beq	:5640
+	@GET_OP	#8
+	bne	:5640
+	@SET_OP	#8;#18
+	@SET_OP	#3;#-1
+	lda	#82	; une trappe s'ouvre...
+	sta	M$
+	jmp	:5898
+
+:5640	lda	SP
+	cmp	#20
+	bne	:5645
+	lda	MO$2
+	cmp	#39	; FLUTE
+	bne	:5645
+	@GET_OP	#8
+	cmp	#255
+	bne	:5645
+	@SET_F	#8;#-1
+	lda	#8
+	sta	CI
+	jsr	:5480
+	lda	#83	; un mur vibre...
+	sta	M$
+	jmp	:5898
+
+:5645	lda	SP
+	cmp	#21
+	bne	:5647
+	lda	MO$2
+	cmp	#62	; PIED
+	beq	:5645_1
+	cmp	#16	; BICHE
+	bne	:5647
+:5645_1	@GET_OP	#18
+	cmp	#255
+	bne	:5647
+	@SET_F	#18;#-1
+	lda	#18
+	sta	CI
+	jsr	:5480
+	lda	#84	; la grille s'ouvre...
+	sta	M$
+	jmp	:5898
+
+:5647	lda	SP
+	cmp	#21
+	bne	:5650
+	lda	MO$1
+	cmp	#18	; DESCENDRE
+	bne	:5650
+	@GET_F	#18
+	beq	:5650
+	lda	#29
+	sta	SP
+	lda	#85	; vous descendez vers la chapelle
+	sta	M$
+	jmp	:5898
+	
+:5650	@INSTR	#TEXTBUFFER;#strHUILE
+	cmp	#TRUE
+	bne	:5655
+	@INSTR	#TEXTBUFFER;#strTORCHE
+	cmp	#TRUE
+	bne	:5655
+	@GET_OP	#20
+	cmp	#255
+	bne	:5655
+	@GET_OP	#2
+	cmp	#255
+	bne	:5655
+	@GET_F	#20
+	bne	:5655
+	@SET_F	#20;#-1
+	lda	#20
+	sta	CI
+	jsr	:5480
+	lda	#86	; torche huilée
+	sta	M$
+	jmp	:5898
+
+:5655	lda	SP
+	cmp	#29
+	bne	:5657
+	lda	MO$2
+	cmp	#74	; SCEAU
+	bne	:5657
+	@GET_OP	#25
+	cmp	#255
+	bne	:5657
+	@SET_F	#25;#1
+	lda	#25
+	sta	CI
+	jsr	:5480
+	lda	#87	; une inscription apparaît
+	sta	M$
+	jmp	:5898
+
+:5657	lda	SP
+	cmp	#29
+	bne	:5660
+	lda	MO$1
+	cmp	#28	; LIRE
+	bne	:5660
+	lda	MO$2
+	cmp	#47	; INSCRIPTION
+	bne	:5660
+	@GET_F	#25
+	cmp	#1
+	bne	:5660
+	@SET_F	#25;#1
+	lda	#88
+	sta	M$
+	jmp	:5898
+	
+:5660	lda	SP
+	cmp	#31
+	bne	:5662
+	@INSTR	#TEXTBUFFER;#strMIROIR
+	cmp	#TRUE
+	bne	:5662
+	@INSTR	#TEXTBUFFER;#strAUTEL
+	cmp	#TRUE
+	bne	:5662
+	@GET_OP	#10
+	cmp	#255
+	bne	:5662
+	@SET_F	#10;#-1
+	lda	#10
+	sta	CI
+	jsr	:5480
+	lda	#89	; le reflet vise une tour à l'est
+	sta	M$
+	jmp	:5898
+	
+:5662	lda	SP
+	cmp	#32
+	bne	:5664
+	lda	MO$1
+	cmp	#30	; MONTER
+	bne	:5664
+	@GET_F	#41
+	cmp	#255
+	bne	:5664
+	lda	#90	; vous voyez un passage au nord
+	sta	M$
+	jmp	:5898
+	
+:5664	lda	SP
+	cmp	#33
+	bne	:5670
+	lda	MO$2
+	cmp	#27	; CLOCHETTE
+	bne	:5670
+	@GET_OP	#17
+	cmp	#255
+	bne	:5670
+	@SET_F	#17;#-1
+	lda	#17
+	sta	CI
+	jsr	:5480
+	lda	#91	; un passage vers l'est s'est ouvert
+	sta	M$
+	jmp	:5898
+	
+:5670	lda	SP
+	cmp	#34
+	bne	:5675
+	lda	MO$1
+	cmp	#13	; ASSEMBLER
+	bne	:5675
+	@GET_OP	#15
+	cmp	#255
+	bne	:5675
+	@GET_OP	#27
+	cmp	#255
+	bne	:5675
+	@SET_F	#15;#-1
+	@SET_F	#27;#-1
+	@SET_F	#37;#-1
+	lda	#15
+	sta	CI
+	jsr	:5480
+	lda	#27
+	sta	CI
+	jsr	:5480
+	lda	#94	; plan complet
+	sta	M$
+	jmp	:5898
+
+:5675	lda	SP
+	cmp	#35
+	bne	:5680
+	lda	MO$2
+	cmp	#63	; PIERRE
+	bne	:5680
+	@GET_OP	#23
+	cmp	#255
+	bne	:5680
+	@GET_F	#37
+	bne	:5675_1
+	lda	#95	; le plan n'est pas complet
+	sta	M$
+	jmp	:5898
+:5675_1	@GET_F	#23
+	cmp	#255
+	bne	:5680
+	lda	#23
+	sta	CI
+	jsr	:5480
+	lda	#96	; des rigoles seches apparaissent
+	sta	M$
+	jmp	:5898
+
+:5680	lda	SP
+	cmp	#35
+	bne	:5685
+	lda	MO$2
+	cmp	#44	; GOURDE
+	beq	:5680_1
+	cmp	#34
+	bne	:5685
+:5680_1	@GET_F	#34
+	beq	:5685
+	@GET_F	#23
+	beq	:5685
+	@SET_F	#14;#-1
+	lda	#14
+	sta	CI
+	jsr	:5480
+	lda	#97	; elle dessine une flèche vers l'est
+	sta	M$
+	jmp	:5898
+
+:5685	lda	SP
+	cmp	#36
+	bne	:5690
+	lda	MO$1
+	cmp	#11	; ALLUMER
+	bne	:5690
+	lda	MO$2
+	cmp	#84	; TORCHE
+	bne	:5690
+	@GET_F	#20
+	bne	:5685_1
+	lda	#98	; mets de l'huile
+	sta	M$
+	jmp	:5898
+:5685_1	@SET_F	#2;#-1
+	lda	#2
+	sta	CI
+	jsr	:5480
+	lda	#99	; passage vers le lac est révélé
+	sta	M$
+	jmp	:5898
+	
+:5690	lda	SP
+	cmp	#39
+	bne	:5695
+	lda	MO$2
+	cmp	#56	; MEDAILLE
+	bne	:5695
+	@GET_OP	#12
+	cmp	#255
+	bne	:5695
+	@SET_F	#12;#-1
+	lda	#12
+	sta	CI
+	jsr	:5480
+	lda	#100	; le couloir des os...
+	sta	M$
+	jmp	:5898
+
+:5695	lda	SP
+	cmp	#40
+	bne	:5705
+	lda	MO$2
+	cmp	#26	; CLE
+	bne	:5705
+	@GET_OP	#5
+	cmp	#255
+	bne	:5705
+	@SET_F	#5;#-1
+	lda	#5
+	sta	CI
+	jsr	:5480
+	lda	#101	; la grille s'ouvre vers le sud
+	sta	M$
+	jmp	:5898
+
+:5705	lda	SP
+	cmp	#43
+	bne	:5710
+	lda	MO$1
+	cmp	#35	; PORTER
+	bne	:5710
+	lda	MO$2
+	cmp	#22	; CAPE
+	bne	:5710
+	@GET_OP	#30
+	cmp	#255
+	beq	:5705_1
+	cmp	#30
+	bne	:5710
+:5705_1	@SET_F	#30;#-1
+	lda	#30
+	sta	CI
+	jsr	:5480
+	lda	#102	; votre odeur est masquée
+	sta	M$
+	jmp	:5898
+
+:5710	lda	SP
+	cmp	#44
+	bne	:5711
+	lda	MO$2
+	cmp	#54	; MARTEAU
+	beq	:5710_1
+	cmp	#20	; BURIN
+	bne	:5711
+:5710_1	@GET_OP	#6
+	cmp	#255
+	beq	:5711
+	lda	#103	; il vous manque un marteau
+	sta	M$
+	jmp	:5898
+
+:5711	lda	SP
+	cmp	#44
+	bne	:5712
+	lda	MO$2
+	cmp	#54	; MARTEAU
+	beq	:5711_1
+	cmp	#20	; BURIN
+	bne	:5712
+:5711_1	@GET_OP	#6
+	cmp	#255
+	bne	:5712
+	@GET_OP	#7
+	cmp	#255
+	beq	:5712
+	lda	#104	; il vous manque un burin
+	sta	M$
+	jmp	:5898
+
+:5712	lda	SP
+	cmp	#44
+	bne	:5715
+	lda	MO$2
+	cmp	#20	; BURIN
+	beq	:5712_1
+	cmp	#54	; MARTEAU
+	bne	:5715
+:5712_1	@GET_OP	#6
+	cmp	#255
+	bne	:5715
+	@GET_OP	#7
+	cmp	#255
+	bne	:5715
+	@SET_F	#6;#-1
+	@SET_F	#7;#-1
+	@SET_F	#39;#-1
+	lda	#6
+	sta	CI
+	jsr	:5480
+	lda	#7
+	sta	CI
+	jsr	:5480
+	lda	#105	; le mécanisme libère...
+	sta	M$
+	jmp	:5898
+
+:5715	lda	SP
+	cmp	#48
+	bne	:5720
+	lda	MO$2
+	cmp	#49	; JETON
+	bne	:5720
+	@GET_OP	#31
+	cmp	#255
+	bne	:5720
+	lda	#31
+	sta	CI
+	jsr	:5480
+	lda	#106	; le jeton disparaît...
+	sta	M$
+	jmp	:5898
+
+:5720	lda	SP
+	cmp	#47
+	bne	:5725
+	lda	MO$2
+	cmp	#38	; FLEUR
+	bne	:5725
+	@GET_OP	#32
+	cmp	#255
+	bne	:5725
+	@SET_F	#32;#-1
+	lda	#32
+	sta	CI
+	jsr	:5480
+	@SET_OP	#17;#-1
+	lda	#107	; un passage vers l'ouest et la clochette...
+	sta	M$
+	jmp	:5898
+
+:5725	lda	SP
+	cmp	#51
+	bne	:5730
+	lda	MO$2
+	cmp	#36	; ENCENS
+	bne	:5730
+	@GET_OP	#29
+	cmp	#255
+	bne	:5730
+	@SET_F	#29;#-1
+	lda	#29
+	sta	CI
+	jsr	:5480
+	lda	#108	; les pièges sont maintenant visibles...
+	sta	M$
+	jmp	:5898
+
+:5730	lda	SP
+	cmp	#52
+	bne	:5735
+	lda	MO$1
+	cmp	#22	; ETEINDRE
+	bne	:5735
+	@GET_F	#29
+	beq	:5735
+	@SET_F	#35;#-1
+	lda	#109	; vous désarmez les pièges
+	sta	M$
+	jmp	:5898
+
+:5735	lda	SP
+	cmp	#54
+	bne	:5745
+	lda	MO$2
+	cmp	#51	; LIVRE
+	bne	:5745
+	@GET_OP	#26
+	cmp	#255
+	bne	:5745
+	@SET_F	#26;#-1
+	lda	#26
+	sta	CI
+	jsr	:5480
+	lda	#110	; trois preuves : masque, jade dent
+	sta	M$
+	jmp	:5898
+
+:5745	lda	SP
+	cmp	#55
+	bne	:5750
+	lda	MO$2
+	cmp	#29	; CRAIE
+	bne	:5750
+	@GET_OP	#16
+	cmp	#255
+	bne	:5750
+	@SET_F	#16;#-1
+	lda	#16
+	sta	CI
+	jsr	:5480
+	@SET_OP	#13;#55
+	lda	#111	; une amulette est révélée
+	sta	M$
+	jmp	:5898
+
+:5750	lda	SP
+	cmp	#56
+	bne	:5755
+	lda	MO$2
+	cmp	#55	; MASQUE
+	bne	:5755
+	@GET_OP	#11
+	cmp	#255
+	bne	:5755
+	@SET_F	#11;#-1
+	@SET_F	#38;#-1
+	lda	#11
+	sta	CI
+	jsr	:5480
+	lda	#112	; un passage secret...
+	sta	M$
+	jsr	:5900
+	jmp	:5795
+	
+:5755	lda	SP
+	cmp	#58
+	bne	:5760
+	lda	MO$2
+	cmp	#18	; BOUSSOLE
+	bne	:5760
+	@GET_OP	#9
+	cmp	#255
+	bne	:5760
+	@SET_F	#9;#-1
+	lda	#9
+	sta	CI
+	jsr	:5480
+	lda	#113	; l'une désigne une pierre à l'est
+	sta	M$
+	jmp	:5898
+	
+:5760	lda	SP
+	cmp	#60
+	bne	:5761
+	lda	MO$2
+	cmp	#10	; AMULETTE
+	bne	:5761
+	@GET_OP	#13
+	cmp	#255
+	bne	:5761
+	@SET_F	#13;#-1
+	@SET_F	#19;#-1
+	lda	#13
+	sta	CI
+	jsr	:5480
+	@GET_OP	#19
+	cmp	#255
+	bne	:5761
+	lda	#19
+	sta	CI
+	jsr	:5480
+
+:5761	lda	SP
+	cmp	#60
+	bne	:5765
+	@GET_F	#13
+	beq	:5765
+	lda	#114	; vous découvrez un passage à l'est
+	sta	M$
+	jmp	:5898
+	
+:5765	lda	SP
+	cmp	#62
+	bne	:5767
+	lda	MO$1
+	cmp	#32	; PARLER
+	bne	:5767
+	@GET_OP	#28
+	bne	:5767
+	@SET_OP	#28;#62
+	lda	#115	; il vous tend une cle noire
+	sta	M$
+	jmp	:5898
+
+:5767	lda	SP
+	cmp	#53
+	bne	:5769
+	lda	MO$1
+	cmp	#37	; POUSSER
+	beq	:5767_1
+	cmp	#41	; TIRER
+	bne	:5769
+:5767_1	lda	MO$2
+	cmp	#33	; DENT
+	bne	:5769
+	@GET_OP	#24
+	bne	:5769
+	@SET_OP	#24;#-1
+	lda	#116	; vous avez pris une dent d'ocelot
+	sta	M$
+	jmp	:5898
+
+:5769	lda	SP
+	cmp	#63
+	bne	:5770
+	@GET_OP	#28
+	cmp	#255
+	bne	:5770
+	@GET_F	#24
+	bne	:5770
+	lda	#117	; votre cle a du mal à rentrer...
+	sta	M$
+	jmp	:5898
+
+:5770	lda	SP
+	cmp	#63
+	bne	:5775
+	@GET_OP	#28
+	cmp	#255
+	bne	:5775
+	@GET_F	#24
+	beq	:5775
+	@SET_F	#28;#-1
+	lda	#28
+	sta	CI
+	jsr	:5480
+	lda	#118	; le verrou est débloqué
+	sta	M$
+	jmp	:5898
+
+:5775	lda	SP
+	cmp	#63
+	bne	:5780
+	lda	MO$2
+	cmp	#33	; DENT
+	bne	:5780
+	@GET_OP	#24
+	cmp	#255
+	bne	:5780
+	@SET_F	#24;#-1
+	lda	#24
+	sta	CI
+	jsr	:5480
+	lda	#119	; dent placée
+	sta	M$
+	jmp	:5898
+	
 :5780	lda	SP
 	cmp	#63
 	bne	:5785
@@ -1378,18 +2766,19 @@ levelToDestPoint
 :5785	lda	SP
 	cmp	#41
 	bne	:5790
-	lda	MO$2
-	cmp	#28	; CORDE
-	beq	:5785_OK
-	cmp	#30	; CROCHET
-	bne	:5790
+	@INSTR	#TEXTBUFFER;#strCORDE
+	cmp	#FALSE
+	beq	:5790
+	@INSTR	#TEXTBUFFER;#strCROCHET
+	cmp	#FALSE
+	beq	:5790
 
-:5785_OK	@GET_OP	#3	; a-t-on la corde ?
+	@GET_OP	#3	; a-t-on la corde ?
 	cmp	#255
 	beq	:5786	; oui
 	lda	#120	; il vous manque une corde
 	sta	M$
-	rts
+	jmp	:5898
 
 :5786	@GET_OP	#21	; a-t-on le crochet ?
 	cmp	#255
@@ -1398,7 +2787,7 @@ levelToDestPoint
 	beq	:5787
 	lda	#121	; il vous manque un crochet
 	sta	M$
-	rts
+	jmp	:5898
 
 :5787	@SET_F	#21;#-1
 	lda	#3
@@ -1413,7 +2802,10 @@ levelToDestPoint
 :5790	stz	AC
 	rts
 
-:5795	@INKEY
+* Retour vers la jungle basse, cf. 5750
+
+:5795	@WAIT	#240	; 4 secondes plutôt qu'INKEY
+*	@INKEY
 	lda	#49
 	sta	SP
 	stz	VP
@@ -1799,7 +3191,7 @@ GAGNE
 *-------------------------------
 
 :6700	@CLS	#0
-	@PEN	#0;#3
+	@PEN	#0;#1
 	@LOCATE	#0;#7;#17
 	@message	#153	; voulez-vous quitter ?
 	
@@ -1852,6 +3244,7 @@ GAGNE
 	bne	:7053
 	ldy	tbl11000+2,x
 	lda	F-1,y
+	and	#$ff
 	bne	:7053
 
 	lda	#$0ed0
@@ -1863,9 +3256,10 @@ GAGNE
 	bne	:7054
 	lda	tbl11000+1,x
 	cmp	#2
-	bne	:7053
+	bne	:7054
 	ldy	tbl11000+2,x
 	lda	OP-1,y
+	and	#$ff
 	bne	:7054
 
 	lda	#$0ed0
@@ -2338,7 +3732,23 @@ GETVN_6450	lda	$bdbd,x	; get a char from a list
 	rts
 
 	mx	%00
-	
+
+*-------------------------------
+* DEBUG
+*-------------------------------
+
+showSALLE	lda	SP
+	pha
+	PushLong	#strCOMMANDE
+	PushWord	#2
+	PushWord	#FALSE
+	_Int2Dec
+
+	lda	strCOMMANDE
+	ora	#'00'
+	sta	strCOMMANDE
+	rts
+
 *-------------------------------
 * LES HABITUELLES DONNEES
 *-------------------------------
@@ -2366,6 +3776,7 @@ N3	ds	2
 N4	ds	2
 NX	ds	2
 OI	ds	2
+TR	ds	2
 VP	ds	2
 
 SAVE_IN

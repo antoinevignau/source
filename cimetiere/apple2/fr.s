@@ -26,7 +26,7 @@ tblVERB	str	'N'	;  1 NORD
 	str	'E'	;  4 EST
 	str	'EST'	;  4 EST
 	str	'I'	;  7 INVENTAIRE
-	str	'INV '	;  7 INVENTAIRE
+	str	'INV'	;  7 INVENTAIRE
 	str	'INVE'	;  7 INVENTAIRE
 	str	'ALLE'	; 10 ALLER
 	str	'ALLU'	; 11 ALLUMER
@@ -86,9 +86,10 @@ tblN	dfb	0	; value if not found
 	dfb	30,31,32,33,34,35,36,37,38,39
 	dfb	40,41,42,43,44,45,46,47,48,49
 	dfb	50,51,52,53,54,55,56,57,58,59
-	dfb	60,61,62,63,64,65,65,65,66,67,68,69
+	dfb	60,61,62,63,64,65,66,67,68,69
 	dfb	70,71,72,73,74,75,76,77,78,79
-	dfb	80,81,82,83,84,85,86,87,88,89,90
+	dfb	80,81,82,83,84,85,86,87,88,89
+	dfb	90,91
 
 tblNOUN	str	'N'	;  1 NORD
 	str	'NORD'	;  1 NORD
@@ -156,7 +157,7 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'PLAN'	; 65 PLAN/PLANCHE/PLANTE
 	str	'PONT'	; 66 PONT
 	str	'PORT'	; 67 PORTE
-	str	'PUIT'	; 68 PUIT
+	str	'PUIT'	; 68 PUITS
 	str	'RACI'	; 69 RACINE
 	str	'RAYO'	; 70 RAYON
 	str	'RIGO'	; 71 RIGOLE
@@ -179,6 +180,7 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'BRON'	; 88 CLE DE BRONZE
 	str	'OS'	; 89 CLE D'OS
 	str	'NOIR'	; 90 CLE NOIRE
+	str	'TABL'	; 91 TABLE
 	dfb	chrNULL
 
 *-------------------------------
@@ -187,6 +189,13 @@ tblNOUN	str	'N'	;  1 NORD
 
 refISSUES	asc	'NSOE'
 strISSUES	asc	'N,S,O,E'00
+
+strCORDE	asc	'CORDE'00
+strCROCHET	asc	'CROCHET'00
+strHUILE	asc	'HUILE'00
+strTORCHE	asc	'TORCHE'00
+strMIROIR	asc	'MIROIR'00
+strAUTEL	asc	'AUTEL'00
 
 *-------------------------------
 * MESSAGES
@@ -207,7 +216,7 @@ strMESSAGE	asc	'LE CIMETIERE DES OCELOTS'00				;   1
 	asc	'Pied biche'00					;  13
 	asc	'Touche pour revenir'00				;  14
 *	asc	'Commande > '00					;  15
-	asc	'> '00					;  15
+strCOMMANDE	asc	'00 > '00					;  15
 strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Je ne comprends pas'00				;  17
 	asc	'Vous ne pouvez pas faire '8d'a ici'00			;  18
@@ -284,8 +293,8 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Le reflet vise une tour '88' l'27'est'00			;  89
 	asc	'Vous voyez un passage au nord'00			;  90
 	asc	'Un passage vers l'27'est s'27'est ouvert'00			;  91
-	asc	'Vous voyez un passage au nord'00			;  92
-	asc	'Un passage vers l'27'est s'27'est ouvert'00			;  93
+	asc	'Vous voyez un passage au nord'00			;  92 doublon
+	asc	'Un passage vers l'27'est s'27'est ouvert'00			;  93 doublon
 	asc	'Plan complet : autel, pierre, rigoles'00			;  94
 	asc	'Le plan n'27'est pas complet'00			;  95
 	asc	'Des rigoles s'8f'ches apparaissent'00			;  96
@@ -354,7 +363,7 @@ T$	ds	128					; 155 - multi-purpose string
 * OBJETS
 *-------------------------------
 
-tblOV	dfb	61,83,28,88,89,54,20,39,18,57,55,56,10,44,65,29	; index: object
+tblOV	dfb	61,84,28,88,89,54,20,39,18,57,55,56,10,44,65,29	; index: object
 	dfb	27,62,50,46,30,65,63,33,74,50,81,90,36,22,49,38	; value: vocabulary index
 
 tblMF	asc	'FFFFFMMFFMMFFFMFFMFFMFFFMMMFMFMF'

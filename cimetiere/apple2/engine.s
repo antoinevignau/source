@@ -129,7 +129,7 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 @INSTR	mac
 	lda	]1
 	ldy	]2
-	jsr	
+	jsr	INSTR
 	<<<
 
 @LEFT	mac

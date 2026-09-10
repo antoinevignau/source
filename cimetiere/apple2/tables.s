@@ -8,50 +8,50 @@
 *-------------------------------
 * OBJETS
 *-------------------------------
-
-tblOBJETS	dfb	0	;  1 Clairière de l'Ocelot
-	dfb	0	;  2 Sentier des fougères
-	dfb	23	;  3 Pont de bois
-	dfb	0	;  4
-	dfb	0	;  5
-	dfb	0	;  6
-	dfb	0	;  7
-	dfb	0	;  8
-	dfb	0	;  9
-	dfb	0	; 10
-	dfb	0	; 11
-	dfb	0	; 12
-	dfb	0	; 13
-	dfb	0	; 14
-	dfb	0	; 15
-	dfb	0	; 16
-	dfb	0	; 17
-	dfb	0 	; 18
-	dfb	0	; 19
-	dfb	0	; 20
-	dfb	0	; 21
-	dfb	0	; 22
-	dfb	0	; 23
-	dfb	0	; 24
-	dfb	0	; 25
-	dfb	0	; 26
-	dfb	0	; 27
-	dfb	0	; 28
-	dfb	0	; 29
-	dfb	0	; 30
-	dfb	0	; 31
-	dfb	0	; 32
+			; ID Ro FOUILLER 
+tblOBJETS	dfb	0	;  1  1 FOUILLER STATUE ou OCELOT
+	dfb	0	;  2  6 FOUILLER CABANE
+	dfb	23	;  3 23 UTILISER PIERRE
+	dfb	0	;  4  5 FOUILLER CHENE
+	dfb	0	;  5 30 FOUILLER TOMBE
+	dfb	0	;  6 22 FOUILLER ATELIER
+	dfb	0	;  7 22 FOUILLER ATELIER
+	dfb	0	;  8 18 UTILISER TREUIL
+	dfb	0	;  9 32 FOUILLER TOUR
+	dfb	0	; 10 31 FOUILLER JARDIN ou PLANTE
+	dfb	0	; 11 52 FOUILLER MASQUE
+	dfb	0	; 12 27 FOUILLER BLASON
+	dfb	0	; 13 55 UTILISER CRAIE
+	dfb	0	; 14 13 FOUILLER ROCHER
+	dfb	0	; 15 27 FOUILLER TABLE
+	dfb	0	; 16 34 FOUILLER SOL (POUR LA CRAIE)
+	dfb	0	; 17 33 UTILISER CLOCHETTE
+	dfb	0 	; 18 25 FOUILLER DEBRIS
+	dfb	0	; 19 54 FOUILLER BIBLIOTHEQUE
+	dfb	0	; 20 28 FOUILLER FORGE
+	dfb	0	; 21 41 FOUILLER ANCRE
+	dfb	0	; 22  2 FOUILLER FOUGERE
+	dfb	0	; 23 34 FOUILLER SOCLE
+	dfb	0	; 24 63 PLACER DENT
+	dfb	0	; 25 26 FOUILLER PUITS
+	dfb	0	; 26 54 FOUILLER RAYON
+	dfb	0	; 27 34 FOUILLER STELE (POUR LE FRAGMENT)
+	dfb	0	; 28 62/63 UTILISER CLE
+	dfb	0	; 29 50 FOUILLER ARBRE
+	dfb	0	; 30 43 FOUILLER TOILE
+	dfb	0	; 31 46 FOUILLER CASCADE
+	dfb	0	; 32 49 FOUILLER FLEUR
 
 *-------------------------------
 * DIRECTIONS (N/S/O/E)
 *-------------------------------
 	
-tblDIRECTIONS	dfb	0,9,0,2	; 1 Chemin des Ocelots
-	dfb	0,10,1,3	; 2 Sentier des fougères
-	dfb	0,0,2,4	; 3 Pont de bois
-	dfb	0,12,3,5
-	dfb	0,13,4,6
-	dfb	0,14,5,7
+tblDIRECTIONS	dfb	0,9,0,2	;  1 Chemin des Ocelots
+	dfb	0,10,1,3	;  2 Sentier des fougères
+	dfb	0,0,2,4	;  3 Pont de bois
+	dfb	0,12,3,5	;  4 Ruisseau
+	dfb	0,13,4,6	;  5 Chêne
+	dfb	0,14,5,7	;  6 Cabane abandonnée
 	dfb	0,0,6,8
 	dfb	0,0,7,0
 	dfb	1,0,0,10
@@ -59,7 +59,7 @@ tblDIRECTIONS	dfb	0,9,0,2	; 1 Chemin des Ocelots
 	dfb	0,0,10,12
 	dfb	4,0,11,13
 	dfb	5,0,12,14
-	dfb	6,22,13,15
+	dfb	6,22,13,15	; 14 Chemin des racines
 	dfb	7,0,14,16
 	dfb	8,0,15,0
 	dfb	0,0,0,18
@@ -67,7 +67,7 @@ tblDIRECTIONS	dfb	0,9,0,2	; 1 Chemin des Ocelots
 	dfb	0,0,18,20
 	dfb	0,28,19,21
 	dfb	0,29,20,22
-	dfb	14,0,21,23
+	dfb	14,0,21,23	; 22
 	dfb	0,0,22,24
 	dfb	0,0,23,0
 	dfb	0,33,0,26

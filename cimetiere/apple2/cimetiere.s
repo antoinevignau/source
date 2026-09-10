@@ -230,10 +230,86 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 :3000	lda	SP	; load level then...
 	jsr	loadLEVEL
 
+* DŽcodons les octets
+
+	lda	ptrIMAGE
+	sta	dpTO
+	lda	ptrIMAGE+2
+	sta	dpTO+2
+	
+	ldx	#0
+	txy
+	sep	#$20
+]lp	lda	ptrLEVEL,x
+	and	#%1000_1000	; 00 08 80 88
+	tay
+	lda	tblAMS2IIGS2,y
+	sta	[dpTO]
+	lda	ptrLEVEL,x
+	and	#%0100_0100	; 00 04 40 44
+	tay
+	lda	tblAMS2IIGS1,y
+	ora	[dpTO]
+	sta	[dpTO]
+
+	inc	dpTO
+	bne	:3010
+	inc	dpTO+1
+
+:3010	lda	ptrLEVEL,x
+	and	#%0010_0010	; 00 02 20 22
+	tay
+	lda	tblAMS2IIGS2,y
+	sta	[dpTO]
+	lda	ptrLEVEL,x
+	and	#%0001_0001	; 00 01 10 11
+	tay
+	lda	tblAMS2IIGS1,y
+	ora	[dpTO]
+	sta	[dpTO]
+
+	inc	dpTO
+	bne	:3020
+	inc	dpTO+1
+
+:3020	inx
+	cpx	#48*78
+	bcc	]lp
+	
+	rep	#$20
+	
+*			; 00 01 02 03
+*	and	#%1000_1000	; 00 08 80 88
+*	and	#%0100_0100	; 00 04 40 44
+*	and	#%0010_0010	; 00 02 20 22
+*	and	#%0001_0001	; 00 01 10 11
+*
+	
 	PushLong #levelParamPtr
 	_PaintPixels
 	rts
 
+*---
+
+tblAMS2IIGS1	hex	00,02,02,00,02,00,00,00,02,00,00,00,00,00,00,00
+	hex	01,03,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	01,00,03,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	01,00,00,00,03,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	01,00,00,00,00,00,00,00,03
+
+tblAMS2IIGS2	hex	00,20,20,00,20,00,00,00,20,00,00,00,00,00,00,00
+	hex	10,30,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	10,00,30,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	10,00,00,00,30,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+	hex	10,00,00,00,00,00,00,00,30
 
 *---
 
@@ -246,12 +322,12 @@ levelParamPtr	adrl	levelToSourceLocInfo
 
 levelToSourceLocInfo
 	dw	mode320	; mode 320
-	adrl	ptrLEVEL
-	dw	48	; width in byte
-	dw	0,0,78,96	; 
+	ds	4
+	dw	96	; width in byte
+	dw	0,0,78,192	; 
 
 levelToSourceRect
-	dw	0,0,78,96	; 126
+	dw	0,0,78,192	; 126
 
 levelToDestPoint
 	dw	30,14

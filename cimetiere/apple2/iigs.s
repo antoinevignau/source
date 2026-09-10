@@ -238,9 +238,9 @@ okMEM	sty	ptrUNPACK
 	bcs	koMEM
 	
 	sty	ptrIMAGE
-*	sty	levelToSourceLocInfo+2	; for the level data
+	sty	levelToSourceLocInfo+2	; for the level data
 	stx	ptrIMAGE+2		; from 2-bit to 4-bit
-*	stx	levelToSourceLocInfo+4
+	stx	levelToSourceLocInfo+4
 
 *--- Flush everything
 

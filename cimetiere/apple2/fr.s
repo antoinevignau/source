@@ -226,7 +226,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Vous prenez le fragment'00				;  31
 	asc	'Vous prenez la craie'00				;  32
 	asc	'Vous avez pris '00				;  33
-	asc	'Objet pos'8e00				;  34
+	asc	'Objet pos'8e00					;  34
 	asc	'Vous jetez '00					;  35
 	asc	'Vous trouvez une pelle'00				;  36
 	asc	'J'27'ai l'27'impression qu'27'il y a quelque chose de cach'8e00	;  37

@@ -350,6 +350,10 @@ INPUT	sta	INPUT_P1+1
 	sta	INPUT_P2+1
 	stx	lenMAX
 
+	jsr	setSTREAMXY	; set the XY SHR coordinates
+	jsr	setSTREAMPAPER	; set the background color
+	jsr	setSTREAMPEN	; set the foreground color
+
 	ldx	#0
 INPUT2	stx	lenSTRING
 

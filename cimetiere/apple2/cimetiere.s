@@ -311,7 +311,9 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	sec
 	sbc	1,s
 	lsr
-	tax
+	bne	:3501
+	inc
+:3501	tax
 	pla
 	ldy	#1	; Y = 1
 	lda	#6	; S =  6
@@ -1529,6 +1531,8 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	@LOCATE	#0;#14;#9
 	@message	#141	; vous êtes mort
 
+	@PEN	#0;#1
+
 	lda	M$	; message index
 	jsr	getMESSAGE	; its address in A
 	jsr	LEN	; get string length
@@ -1538,7 +1542,9 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	sec
 	sbc	1,s
 	lsr
-	tax
+	bne	:6501
+	inc
+:6501	tax
 	pla
 	ldy	#12	; Y = 12
 	lda	#0	; S =  0

@@ -193,11 +193,11 @@ strISSUES	asc	'N,S,O,E'00
 *-------------------------------
 
 strMESSAGE	asc	'LE CIMETIERE DES OCELOTS'00				;   1
-	asc	'Inventaire'00					;   2
+	asc	'INVENTAIRE'00					;   2
 	asc	'Ins'8e'rez face a et appuyez entr'8e'e'00			;   3--
 	asc	'Tournez disquette : face b + entr'8e'e'00			;   4--
 	asc	'SORTIE(S):'00					;   5
-	asc	'Vous voyez:'00					;   6
+	asc	'VOUS VOYEZ:'00					;   6
 	asc	'rien'00					;   7
 	asc	'Cl'8e' bronze'00				;   8
 	asc	'M'8e'daille'00					;   9

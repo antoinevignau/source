@@ -9,19 +9,19 @@
 * OBJETS
 *-------------------------------
 
-tblOBJETS	dfb	0	;  1
-	dfb	0	;  2
-	dfb	23	;  3
+tblOBJETS	dfb	0	;  1 Clairière de l'Ocelot
+	dfb	0	;  2 Sentier des fougères
+	dfb	23	;  3 Pont de bois
 	dfb	0	;  4
-	dfb	23	;  5
-	dfb	23	;  6
-	dfb	23	;  7
-	dfb	23	;  8
-	dfb	23	;  9
-	dfb	23	; 10
-	dfb	23	; 11
-	dfb	23	; 12
-	dfb	23	; 13
+	dfb	0	;  5
+	dfb	0	;  6
+	dfb	0	;  7
+	dfb	0	;  8
+	dfb	0	;  9
+	dfb	0	; 10
+	dfb	0	; 11
+	dfb	0	; 12
+	dfb	0	; 13
 	dfb	0	; 14
 	dfb	0	; 15
 	dfb	0	; 16
@@ -46,9 +46,9 @@ tblOBJETS	dfb	0	;  1
 * DIRECTIONS (N/S/O/E)
 *-------------------------------
 	
-tblDIRECTIONS	dfb	0,9,0,2
-	dfb	0,10,1,3
-	dfb	0,0,2,4
+tblDIRECTIONS	dfb	0,9,0,2	; 1 Chemin des Ocelots
+	dfb	0,10,1,3	; 2 Sentier des fougères
+	dfb	0,0,2,4	; 3 Pont de bois
 	dfb	0,12,3,5
 	dfb	0,13,4,6
 	dfb	0,14,5,7

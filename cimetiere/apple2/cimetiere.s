@@ -11,11 +11,11 @@
 * EQUATES
 *-------------------------------
 
-MAX_LEN	=	30
+MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
 LEN_WORD	=	4	; but limit to 4
 
-FIRST_ROOM	=	23
+FIRST_ROOM	=	1
 WIN_ROOM	=	64
 
 MAX_AF	=	41
@@ -134,43 +134,51 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	@DRAW	#632;#2
 	@DRAW	#8;#2
 	@DRAW	#8;#398
+
 	@MOVE	#16;#394
 	@DRAW	#624;#394
 	@DRAW	#624;#352
 	@DRAW	#16;#352
 	@DRAW	#16;#394
+
 	@MOVE	#16;#344
 	@DRAW	#420;#344
 	@DRAW	#420;#184
 	@DRAW	#16;#184
 	@DRAW	#16;#344
+
 	@MOVE	#428;#344
 	@DRAW	#624;#344
 	@DRAW	#624;#184
 	@DRAW	#428;#184
 	@DRAW	#428;#344
+
 	@MOVE	#16;#176
 	@DRAW	#624;#176
-	@DRAW	#624;#144
-	@DRAW	#16;#144
+	@DRAW	#624;#136	; 144
+	@DRAW	#16;#136	; 144
 	@DRAW	#16;#176
+
 	@MOVE	#16;#136
 	@DRAW	#624;#136
 	@DRAW	#624;#92
 	@DRAW	#16;#92
 	@DRAW	#16;#136
+
 	@MOVE	#192;#136
 	@DRAW	#192;#92
-	@MOVE	#16;#84
-	@DRAW	#624;#84
+
+	@MOVE	#16;#92	; 84
+	@DRAW	#624;#92	; 84
 	@DRAW	#624;#40
 	@DRAW	#16;#40
-	@DRAW	#16;#84
-	@MOVE	#16;#32
-	@DRAW	#624;#32
-	@DRAW	#624;#2
-	@DRAW	#16;#2
-	@DRAW	#16;#32
+	@DRAW	#16;#92	; 84
+
+	@MOVE	#16;#40	; ,32
+	@DRAW	#624;#40	; 624,32
+	@DRAW	#624;#8	; ,6
+	@DRAW	#16;#8	; ,2
+	@DRAW	#16;#40	; 32
 
 	@PEN	#0;#1	; blanc
 	@LOCATE	#0;#9;#2
@@ -233,33 +241,39 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	@DRAW	#420;#184
 	@DRAW	#16;#184
 	@DRAW	#16;#344
+
 	@MOVE	#428;#344
 	@DRAW	#624;#344
 	@DRAW	#624;#184
 	@DRAW	#428;#184
 	@DRAW	#428;#344
+
 	@MOVE	#16;#176
 	@DRAW	#624;#176
-	@DRAW	#624;#144
-	@DRAW	#16;#144
+	@DRAW	#624;#136	; 144
+	@DRAW	#16;#136	; 144
 	@DRAW	#16;#176
+
 	@MOVE	#16;#136
 	@DRAW	#624;#136
 	@DRAW	#624;#92
 	@DRAW	#16;#92
 	@DRAW	#16;#136
+
 	@MOVE	#192;#136
 	@DRAW	#192;#92
-	@MOVE	#16;#84
-	@DRAW	#624;#84
+
+	@MOVE	#16;#92	; 84
+	@DRAW	#624;#92	; 84
 	@DRAW	#624;#40
 	@DRAW	#16;#40
-	@DRAW	#16;#84
-	@MOVE	#16;#32
-	@DRAW	#624;#32
-	@DRAW	#624;#2
-	@DRAW	#16;#2
-	@DRAW	#16;#32
+	@DRAW	#16;#92	; 84
+
+	@MOVE	#16;#40	; ,32
+	@DRAW	#624;#40	; 624,32
+	@DRAW	#624;#8	; ,6
+	@DRAW	#16;#8	; ,2
+	@DRAW	#16;#40	; 32
 	rts
 
 :3240	@GFXPEN	#2
@@ -268,16 +282,17 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	@DRAW	#624;#92
 	@DRAW	#16;#92
 	@DRAW	#16;#136
+
 	@MOVE	#192;#136
 	@DRAW	#192;#92
 	rts
 	
 :3250	@GFXPEN	#2
-	@MOVE	#16;#84
-	@DRAW	#624;#84
+	@MOVE	#16;#92	; 84
+	@DRAW	#624;#92	; 84
 	@DRAW	#624;#40
 	@DRAW	#16;#40
-	@DRAW	#16;#84
+	@DRAW	#16;#92	; 84
 	rts
 
 *-------------------------------
@@ -576,7 +591,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	@PEN	#2;#2
 	@LOCATE	#2;#1;#1	; #0;#3;#24
 	@message	#15	; affiche COMMANDE >_
-	@PEN	#0;#1
+	@PEN	#2;#1
 	@INPUT	#TEXTBUFFER;#MAX_LEN
 
 *-------------------------------

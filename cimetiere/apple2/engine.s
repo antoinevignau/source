@@ -370,7 +370,7 @@ INPUT2	stx	lenSTRING
 	beq	doBACK
 	cmp	#chrSPACE	; must not be another control character
 	bcc	]lp
-*	beq	doSPC
+	beq	doSPC
 
 doIT	sep	#$20
 INPUT_P1	sta	$bdbd,x
@@ -393,13 +393,13 @@ INPUT_P2	sta	$bdbd,x
 	ldx	lenSTRING
 	rts
 
-*doSPC	lda	#143
-*	jsr	COUT160
+doSPC	lda	#143
+	jsr	COUT160
 *	dec	textX
 *	jsr	GOTOXY
-*	ldx	lenSTRING
-*	lda	#chrSPACE
-*	bra	doIT
+	ldx	lenSTRING
+	lda	#chrSPACE
+	bra	doIT
 
 doBACK	cpx	#0	; ANTx
 	beq	]lp
@@ -407,7 +407,7 @@ doBACK	cpx	#0	; ANTx
 	lda	#143
 	jsr	COUT160
 	
-	dec	textX
+*	dec	textX
 	dec	textX
 	jsr	GOTOXY
 	
@@ -531,9 +531,8 @@ DRAW	txa
 	sbc	1,s
 	lsr
 	bpl	DRAW_1
-	dec		; -1
+	lda	#0
 DRAW_1	sta	1,s
-	
 	_LineTo
 	rts
 
@@ -545,16 +544,15 @@ DRAW_1	sta	1,s
 MOVE	txa
 	lsr
 	pha
-	
+
 	phy
 	lda	#GFX_HEIGHT
 	sec
 	sbc	1,s
 	lsr
 	bpl	MOVE_1
-	dec		; -1
+	lda	#0
 MOVE_1	sta	1,s
-	
 	_MoveTo
 	rts
 
@@ -829,7 +827,6 @@ LOCATE1	sta	theSTREAM
 	
 	jsr	setSTREAMXY
 	jmp	GOTOXY
-*	rts
 
 *-----------------------------------
 * STRCMP A$,B$
@@ -1417,6 +1414,13 @@ COUT160	sec
 	adc	#8
 	sta	iconToSourceRect+4
 
+	lda	shrY
+	sec
+	sbc	#8
+	sta	iconToDestPoint
+	lda	shrX
+	sta	iconToDestPoint+2
+	
 	PushLong #iconParamPtr
 	_PaintPixels
 	
@@ -1540,158 +1544,158 @@ iconToDestPoint
 
 clsRECT	dw	0,0,200,320
 
-char8F	hex	99999999
+char8F	hex	00000000	; 143
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char90	hex	00000000	; 144
+	hex	00000000
+	hex	00000000
+	hex	00099000
+	hex	00099000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char91	hex	00099000	; 145
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char92	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00099999
+	hex	00099999
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char93	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099999
+	hex	00009999
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char94	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+
+char95	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+
+char96	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00009999
+	hex	00099999
+	hex	00099000
+	hex	00099000
+	hex	00099000
+
+char97	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	00099999
+	hex	00099999
+	hex	00099000
+	hex	00099000
+	hex	00099000
+
+char98	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	99999000
+	hex	99999000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char99	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	99999000
+	hex	99990000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char9A	hex	00000000
+	hex	00000000
+	hex	00000000
 	hex	99999999
 	hex	99999999
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char9B	hex	00099000
+	hex	00099000
+	hex	00099000
 	hex	99999999
 	hex	99999999
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+char9C	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	99990000
+	hex	99999000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+
+char9D	hex	00099000
+	hex	00099000
+	hex	00099000
+	hex	99999000
+	hex	99999000
+	hex	00099000
+	hex	00099000
+	hex	00099000
+
+char9E	hex	00000000
+	hex	00000000
+	hex	00000000
 	hex	99999999
 	hex	99999999
-	hex	99999999
+	hex	00099000
+	hex	00099000
+	hex	00099000
 
-char90	hex	66666666
-	hex	66666666
-	hex	66666666
-	hex	66699666
-	hex	66699666
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char91	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char92	hex	66666666
-	hex	66666666
-	hex	66666666
-	hex	66699999
-	hex	66699999
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char93	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699999
-	hex	66669999
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char94	hex	66666666
-	hex	66666666
-	hex	66666666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-
-char95	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-
-char96	hex	66666666
-	hex	66666666
-	hex	66666666
-	hex	66669999
-	hex	66699999
-	hex	66699666
-	hex	66699666
-	hex	66699666
-
-char97	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	66699999
-	hex	66699999
-	hex	66699666
-	hex	66699666
-	hex	66699666
-
-char98	hex	66666666
-	hex	66666666
-	hex	66666666
-	hex	99999666
-	hex	99999666
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char99	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	99999666
-	hex	99996666
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char9A	hex	66666666
-	hex	66666666
-	hex	66666666
+char9F	hex	00099000
+	hex	00099000
+	hex	00099000
 	hex	99999999
 	hex	99999999
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char9B	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	99999999
-	hex	99999999
-	hex	66666666
-	hex	66666666
-	hex	66666666
-
-char9C	hex	66666666
-	hex	66666666
-	hex	66666666
-	hex	99996666
-	hex	99999666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-
-char9D	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	99999666
-	hex	99999666
-	hex	66699666
-	hex	66699666
-	hex	66699666
-
-char9E	hex	66666666
-	hex	66666666
-	hex	66666666
-	hex	99999999
-	hex	99999999
-	hex	66699666
-	hex	66699666
-	hex	66699666
-
-char9F	hex	66699666
-	hex	66699666
-	hex	66699666
-	hex	99999999
-	hex	99999999
-	hex	66699666
-	hex	66699666
-	hex	66699666
+	hex	00099000
+	hex	00099000
+	hex	00099000
 
 *--- Amstrad palette
 

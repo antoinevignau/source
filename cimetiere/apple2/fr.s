@@ -22,7 +22,7 @@ tblVERB	str	'N'	;  1 NORD
 	str	'S'	;  2 SUD
 	str	'SUD'	;  2 SUD
 	str	'O'	;  3 OUEST
-	str	'OUEST'	;  3 OUEST
+	str	'OUES'	;  3 OUEST
 	str	'E'	;  4 EST
 	str	'EST'	;  4 EST
 	str	'I'	;  7 INVENTAIRE
@@ -95,7 +95,7 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'S'	;  2 SUD
 	str	'SUD'	;  2 SUD
 	str	'O'	;  3 OUEST
-	str	'OUEST'	;  3 OUEST
+	str	'OUES'	;  3 OUEST
 	str	'E'	;  4 EST
 	str	'EST'	;  4 EST
 	str	'AMUL'	; 10 AMULETTE
@@ -206,7 +206,8 @@ strMESSAGE	asc	'LE CIMETIERE DES OCELOTS'00				;   1
 	asc	'Sceau'00					;  12
 	asc	'Pied biche'00					;  13
 	asc	'Touche pour revenir'00				;  14
-	asc	'Commande > '00					;  15
+*	asc	'Commande > '00					;  15
+	asc	'> '00					;  15
 strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Je ne comprends pas'00				;  17
 	asc	'Vous ne pouvez pas faire '8d'a ici'00			;  18

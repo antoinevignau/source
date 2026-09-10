@@ -193,7 +193,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
 	lda	SP
 	cmp	LP
-	beq	:2005
+*	beq	:2005
 
 	jsr	:3000	; load level
 	lda	SP	; save level
@@ -227,8 +227,9 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 * 3000 - CHARGE LE NIVEAU
 *-------------------------------
 
-:3000			; load level then...
-
+:3000	lda	SP	; load level then...
+	jmp	loadLEVEL
+	
 * LOAD LEVEL...
 
 *-------------------------------
@@ -825,16 +826,95 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
 :5257	lda	EC
 	cmp	#4957
+	bne	:5257_1
+	@GET_F	#38
+	bne	:5257_1
+	stz	GA
+	jmp	:5258
+:5257_1	lda	EC
+	cmp	#6263
+	bne	:5257_2
+	lda	SP
+	cmp	#62
+	bne	:5257_2
+	@GET_OP	#28
+	cmp	#255
+	beq	:5257_2
+	stz	GA
+	jmp	:5258
+:5257_2	lda	EC
+	cmp	#6364
 	bne	:5258
+	@GET_F	#40
+	bne	:5258
+	stz	GA
 
 :5258	lda	SP
 	cmp	#47
+	bne	:5258_1
+	lda	NX
+	cmp	#48
+	bne	:5258_1
+	stz	GA
+	jmp	:5259
+:5258_1	lda	SP
+	cmp	#48
 	bne	:5259
+	stz	GA
+	lda	NX
+	cmp	#47
+	bne	:5259
+	@GET_F	#31
+	beq	:5259
+	lda	#-1
+	sta	GA
 
 :5259	lda	EC
 	cmp	#2532
+	bne	:5259_1
+	@GET_F	#41
+	bne	:5259_1
+	stz	GA
+	jmp	:5260
+:5259_1	lda	SP
+	cmp	#47
+	bne	:5259_2
+	lda	NX
+	cmp	#33
+	bne	:5259_2
+	@GET_F	#32
+	bne	:5259_2
+	stz	GA
+	jmp	:5260
+:5259_2	lda	SP
+	cmp	#54
+	bne	:5259_3
+	lda	NX
+	cmp	#41
+	bne	:5259_3
+	@GET_F	#19
+	bne	:5259_3
+	stz	GA
+	jmp	:5260
+:5259_3	lda	SP
+	cmp	#63
+	bne	:5259_4
+	lda	NX
+	cmp	#62
+	bne	:5259_4
+	lda	#-1
+	sta	GA
+	jmp	:5260
+:5259_4	lda	SP
+	cmp	#28
 	bne	:5260
-
+	lda	NX
+	cmp	#29
+	bne	:5260
+	@GET_F	#25
+	bne	:5260
+	stz	GA
+	
 :5260	rts
 
 *-------------------------------

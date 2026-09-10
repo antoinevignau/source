@@ -551,6 +551,65 @@ loadERR99	sec
 	rts
 
 *------------------------------
+* LOAD LEVEL
+*------------------------------
+
+loadLEVEL	pha
+	PushLong	#pLVL
+	PushWord	#2
+	PushWord	#FALSE
+	_Int2Dec
+
+	lda	pLVL
+	ora	#'00'
+	sta	pLEVEL+10
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPENLEVEL
+	bcs	loadlevelKO99
+
+	lda	proOPENLEVEL+2
+	sta	proREADLEVEL+2
+	sta	proCLOSE+2
+	
+	jsl	GSOS
+	dw	$2012
+	adrl	proREADLEVEL
+
+	php
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+
+	plp
+loadlevelKO99	bcs	loadlevelINIT
+	rts
+loadlevelINIT	ldx	#0
+]lp	stz	ptrLEVEL,x
+	inx
+	inx
+	cpx	#3840
+	bcc	]lp
+	clc
+	rts
+
+*---
+
+proOPENLEVEL	dw	2
+	ds	2
+	adrl	pLEVEL
+
+proREADLEVEL	dw	4	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	ptrLEVEL	; 4 - data_buffer
+	adrl	3840	; 8 - request_count
+	ds	4	; C - transfer_count
+
+pLVL	asc	'00'
+pLEVEL	strl	'@/data/L00.BIN'	; +10
+
+*------------------------------
 * LOAD PARTIE
 *------------------------------
 
@@ -739,4 +798,4 @@ INIT_VARIABLES	sep	#$20
 	put	fr.s
 	put	tables.s
 
-ptrLEVEL	putbin	L01.BIN
+ptrLEVEL	ds	3840

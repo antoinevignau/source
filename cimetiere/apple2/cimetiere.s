@@ -13,7 +13,7 @@
 
 MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
-LEN_WORD	=	4	; but limit to 4
+LEN_WORD	=	5	; but limit to 4
 
 FIRST_ROOM	=	1
 WIN_ROOM	=	64
@@ -597,31 +597,29 @@ levelToDestPoint
 	ldy	#2	; on commence ligne 2
 	sty	IY
 
-	ldx	#0
-]lp	phx
-	lda	OP,x
+	ldx	#1
+]lp	stx	I
+	lda	OP-1,x
 	and	#$ff
 	cmp	#255
 	bne	:4515
 	
 	@LOCATE	#3;#1;IY
 
-	pla		; -1 parce qu'index = 0 et non 1
-	pha
+	lda	I
 	ldx	#8	; index pour Clé bronze
-	cmp	#4-1
+	cmp	#4
 	beq	:4509
-	cmp	#12-1
+	cmp	#12
 	beq	:4508
-	cmp	#20-1
+	cmp	#20
 	beq	:4507
-	cmp	#15-1
+	cmp	#15
 	beq	:4506
-	cmp	#25-1
+	cmp	#25
 	beq	:4505
-	cmp	#18-1
+	cmp	#18
 	beq	:4504
-	inc
 	jsr	printOBJET
 	jmp	:4510
 
@@ -635,13 +633,14 @@ levelToDestPoint
 
 :4510	inc	IY	; on finit ligne 9
 	lda	IY
-	cmp	#2+7
+	cmp	#2+8
 	bcs	:4520
 	
-:4515	plx
+:4515	ldx	I
 	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
+	beq	]lp
 
 :4520	rts
 
@@ -657,25 +656,24 @@ levelToDestPoint
 	sta	IX
 	sta	IY
 	
-	ldx	#0
-]lp	phx
-	lda	OP,x
+	ldx	#1
+]lp	stx	I
+	lda	OP-1,x
 	and	#$ff
 	cmp	#255
 	bne	:4530_NEXT
 	
 	@LOCATE	#0;IX;IY
 
-	pla
-	pha
-	inc
+	lda	I
 	jsr	printOBJET
 	inc	IY
 	
-:4530_NEXT	plx
+:4530_NEXT	ldx	I
 	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
+	beq	]lp
 
 	@LOCATE	#0;#11;#23	; #0;#30;#23 in MODE 2
 	@message	#14
@@ -732,29 +730,34 @@ levelToDestPoint
 :5020	lda	MO$1
 	cmp	#93	; QUITTER
 	bne	:5025
-	jmp	:6700
+	jsr	:6700
+	rts
 
 :5025
 :5030	lda	MO$1
 	cmp	#39	; R/REGARDER
 	bne	:5040
 	jsr	:7050
-	jmp	:5900
+	jsr	:5900
+	rts
 
 :5040	lda	MO$1
 	cmp	#7	; I/INVENTAIRE
 	bne	:5050
-	jmp	:4530
+	jsr	:4530
+	rts
 
 :5050	lda	MO$1
 	cmp	#91	; SAUVER/SAVE
 	bne	:5060
-	jmp	:6000
+	jsr	:6000
+	rts
 
 :5060	lda	MO$1
 	cmp	#90	; CHARGER/LOAD
 	bne	:5070
-	jmp	:6200
+	jsr	:6200
+	rts
 
 * Les directions
 
@@ -764,7 +767,7 @@ levelToDestPoint
 	cmp	#5	; une direction directe ?
 	bcs	:5080
 	sta	DR	; oui
-	jmp	:5110
+	bra	:5110
 
 :5080	lda	MO$1
 	cmp	#10	; VA/ALLER ?
@@ -777,19 +780,22 @@ levelToDestPoint
 
 :5110	lda	DR
 	beq	:5120
-	jmp	:5300
+	jsr	:5300
+	rts
 
 * On reprend les actions
 
 :5120	lda	MO$1
 	cmp	#38	; PRENDRE
 	bne	:5122
-	jmp	:5400
+	jsr	:5400
+	rts
 
 :5122	lda	MO$1
 	cmp	#26	; JETTE/JETER
 	bne	:5130
-	jmp	:5482
+	jsr	:5482
+	rts
 
 :5130	lda	MO$1
 	cmp	#23	; EXAMINER
@@ -813,7 +819,8 @@ levelToDestPoint
 :5150	lda	MO$1
 	cmp	#36	; POSER
 	bne	:5155
-	jmp	:5450
+	jsr	:5450
+	rts
 
 :5155	jsr	:5800
 	lda	AC
@@ -823,8 +830,9 @@ levelToDestPoint
 
 :5160	lda	#18	; vous ne pouvez pas faire ca ici
 	sta	M$
-	jmp	:5900
-
+	jsr	:5900
+	rts
+	
 *-------------------------------
 * 5240 - SET DIRECTIONS
 *-------------------------------
@@ -1189,31 +1197,31 @@ levelToDestPoint
 	cmp	#55	; MASQUE
 	bne	:5400_2
 	@GET_F	#35
-	beq	:5400_2
+	bne	:5400_2
 
 	lda	#25	; des dards jaillissent...
 	jmp	:6500
 
 :5400_2	stz	OI
-	ldx	#0	; est-ce que le nom
-]lp	lda	tblOV,x	; est un objet ?
+	ldx	#1	; est-ce que le nom
+]lp	lda	tblOV-1,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
 	bne	:5400_3	; non, continue
-	lda	OP,x
+	lda	OP-1,x
 	and	#$ff	; il est dans la salle ?
 	cmp	SP
 	bne	:5400_3
-	inx		; parce qu'on démarre à 0
-	stx	OI	; alors, c'est good
-	jmp	:5410
+	stx	OI	; oui
+	jmp	:5425	; saute la suite
 	
-:5400_3	inx
+:5400_3	inx		; prochain objet
 	cpx	#MAX_OBJET
 	bcc	]lp
+	beq	]lp
 
 :5410	lda	OI
-	bne	:5410_2
+	bne	:5425
 	lda	SP
 	cmp	#53
 	bne	:5410_2
@@ -1223,34 +1231,32 @@ levelToDestPoint
 	lda	#26	; elle semble bouger
 	sta	M$
 	jmp	:5898
+
 :5410_2	lda	OI
 	bne	:5412
 
 	stz	I
-	ldx	#0	; est-ce que le nom
-]lp	lda	tblOV,x	; est un objet ?
+	ldx	#1	; est-ce que le nom
+]lp	lda	tblOV-1,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
 	bne	:5410_3	; non, continue
-	inc	I
+	inc	I	; oui
 :5410_3	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
-
+	beq	]lp
+	
 :5412	lda	OI
-	bne	:5414
+	bne	:5425
 	lda	I
 	beq	:5412_2
 	lda	#27	; il n'y a pas cela ici
 	sta	M$
-	jmp	:5414
+	jmp	:5898
 :5412_2	lda	#17	; je ne comprends pas
 	sta	M$
-	
-:5414	lda	OI
-	bne	:5425
 	jmp	:5898
-	rts
 
 :5425	lda	OI
 	cmp	#18
@@ -1318,9 +1324,16 @@ levelToDestPoint
 	rts
 
 :5430	@SET_OP	OI;#-1	; on prend l'objet
+
 	lda	OI
 	sta	I
 	
+	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+
 	@message	#33	; vous avez pris
 	ldx	OI
 	jsr	:8050	; UN/UNE
@@ -1335,17 +1348,17 @@ levelToDestPoint
 :5450	jsr	:5390
 
 	stz	OI
-	ldx	#0	; est-ce que le nom
-]lp	lda	tblOV,x	; est un objet ?
+	ldx	#1	; est-ce que le nom
+]lp	lda	tblOV-1,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
 	bne	:5450_1	; non, continue
-	inx		; oui, sors
-	stx	OI
+	stx	OI	; oui, sors
 	jmp	:5460
 :5450_1	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
+	beq	]lp
 
 :5460	lda	OI
 	bne	:5470
@@ -1372,17 +1385,17 @@ levelToDestPoint
 :5482	jsr	:5390
 
 	stz	OI
-	ldx	#0	; est-ce que le nom
+	ldx	#1	; est-ce que le nom
 ]lp	lda	tblOV,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
 	bne	:5482_1	; non, continue
-	inx		; oui, sors
-	stx	OI
+	stx	OI	; oui, sors
 	jmp	:5484
 :5482_1	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
+	beq	]lp
 
 :5484	lda	OI
 	bne	:5486
@@ -1413,14 +1426,14 @@ levelToDestPoint
 	cmp	#1
 	bne	:5502
 	lda	MO$2
-	cmp	#80
+	cmp	#80	; STATUE
 	beq	:5501_1
 	cmp	#59
 	bne	:5502
 :5501_1	@GET_OP	#1
 	bne	:5502
 	@SET_OP	#1;#1
-	lda	#36
+	lda	#36	; vous trouvez une pelle
 	sta	M$
 	jmp	:5898
 
@@ -1441,9 +1454,9 @@ levelToDestPoint
 	cmp	#2
 	bne	:5504
 	lda	MO$2
-	cmp	#42
+	cmp	#42	; FOUGERE
 	bne	:5504
-	lda	#37
+	lda	#37	; j'ai l'impression qu'il y a...
 	sta	M$
 	jmp	:5898
 
@@ -1451,9 +1464,9 @@ levelToDestPoint
 	cmp	#3
 	bne	:5505
 	lda	MO$2
-	cmp	#66
+	cmp	#66	; PONT
 	bne	:5505
-	lda	#38
+	lda	#38	; le pont est fragile
 	sta	M$
 	jmp	:5898
 
@@ -1461,14 +1474,14 @@ levelToDestPoint
 	cmp	#5
 	bne	:5506
 	lda	MO$2
-	cmp	#25
+	cmp	#25	; CHENE
 	bne	:5506
 	@GET_OP	#4
 	bne	:5505_1
 	lda	#4
 	sta	OI
 	jmp	:5540
-:5505_1	lda	#39
+:5505_1	lda	#39	; la cavite est vide
 	sta	M$
 	jmp	:5898
 
@@ -1476,12 +1489,12 @@ levelToDestPoint
 	cmp	#13
 	bne	:5507
 	lda	MO$2
-	cmp	#72
+	cmp	#72	; ROCHER
 	bne	:5507
 	@GET_OP	#14
 	bne	:5507
 	@SET_OP	#14;#13
-	lda	#40
+	lda	#40	; quelqu'un semble avoir oublie sa gourde
 	sta	M$
 	jmp	:5898
 
@@ -1489,11 +1502,11 @@ levelToDestPoint
 	cmp	#13
 	bne	:5508
 	lda	MO$2
-	cmp	#79
+	cmp	#79	; SOURCE
 	beq	:5507_1
 	cmp	#34
 	bne	:5508
-:5507_1	lda	#41
+:5507_1	lda	#41	; l'eau semble suspecte
 	sta	M$
 	jmp	:5898
 
@@ -1501,14 +1514,14 @@ levelToDestPoint
 	cmp	#18
 	bne	:5509
 	lda	MO$2
-	cmp	#86
+	cmp	#86	; TREUIL
 	bne	:5509
 	@GET_F	#3
 	beq	:5508_1
-	lda	#42
+	lda	#42	; la corde est bien fixée
 	sta	M$
 	jmp	:5898
-:5508_1	lda	#43
+:5508_1	lda	#43	; on dirait qu'il manque une corde
 	sta	M$
 	jmp	:5898
 
@@ -1522,7 +1535,7 @@ levelToDestPoint
 	bne	:5510
 	@SET_OP	#6;#22
 	@SET_OP	#7;#22
-	lda	#44
+	lda	#44	; vous trouvez un marteau et un burin
 	sta	M$
 	jmp	:5898
 
@@ -1530,9 +1543,9 @@ levelToDestPoint
 	cmp	#20
 	bne	:5511
 	lda	MO$2
-	cmp	#73
+	cmp	#73	; SALLE
 	bne	:5511
-	lda	#45
+	lda	#45	; la salle résonne, idéal pour jouer de la musique
 	sta	M$
 	jmp	:5898
 
@@ -1540,9 +1553,9 @@ levelToDestPoint
 	cmp	#25
 	bne	:5512
 	lda	MO$2
-	cmp	#87
+	cmp	#87	; VILLAGE
 	bne	:5512
-	lda	#46
+	lda	#46	; c'est plein de débris
 	sta	M$
 	jmp	:5898
 
@@ -1550,7 +1563,7 @@ levelToDestPoint
 	cmp	#26
 	bne	:5513
 	lda	MO$2
-	cmp	#68
+	cmp	#68	; PUITS
 	bne	:5513
 	lda	#25
 	sta	OI
@@ -1560,9 +1573,9 @@ levelToDestPoint
 	cmp	#27
 	bne	:5514
 	lda	MO$2
-	cmp	#53
+	cmp	#53	; MAISON
 	bne	:5514
-	lda	#47
+	lda	#47	; vous voyez un blason et une table
 	sta	M$
 	jmp	:5898
 
@@ -1570,7 +1583,7 @@ levelToDestPoint
 	cmp	#27
 	bne	:5515
 	lda	MO$2
-	cmp	#91
+	cmp	#91	; TABLE
 	bne	:5515
 	lda	#15
 	sta	OI
@@ -1580,12 +1593,12 @@ levelToDestPoint
 	cmp	#28
 	bne	:5516
 	lda	MO$2
-	cmp	#40
+	cmp	#40	; FORGE
 	bne	:5516
 	@GET_OP	#20
 	bne	:5516
 	@SET_OP	#20;#28
-	lda	#48
+	lda	#48	; vous trouvez une fiole d'huile
 	sta	M$
 	jmp	:5898
 
@@ -1593,7 +1606,7 @@ levelToDestPoint
 	cmp	#30
 	bne	:5517
 	lda	MO$2
-	cmp	#83
+	cmp	#83	; TOMBE
 	bne	:5517
 	lda	#5
 	sta	OI
@@ -1603,14 +1616,14 @@ levelToDestPoint
 	cmp	#31
 	bne	:5518
 	lda	MO$2
-	cmp	#48
+	cmp	#48	; JARDIN
 	beq	:5517_1
-	cmp	#65
+	cmp	#65	; PLANTE
 	bne	:5518
 :5517_1	@GET_OP	#10
 	bne	:5518
 	@SET_OP	#10;#31
-	lda	#49
+	lda	#49	; vous voyez un miroir et un autel
 	sta	M$
 	jmp	:5898
 
@@ -1618,15 +1631,15 @@ levelToDestPoint
 	cmp	#32
 	bne	:5519
 	lda	MO$2
-	cmp	#85
+	cmp	#85	; TOUR
 	bne	:5519
 	@GET_OP	#9
 	bne	:5518_1
 	@SET_OP	#9;#32
-	lda	#50
+	lda	#50	; vous voyez une boussole et un escalier qui monte
 	sta	M$
 	jmp	:5898
-:5518_1	lda	#50
+:5518_1	lda	#51	; vous voyez un escalier qui monte
 	sta	M$
 	jmp	:5898
 
@@ -1634,9 +1647,9 @@ levelToDestPoint
 	cmp	#33
 	bne	:5520
 	lda	MO$2
-	cmp	#90
+	cmp	#80	; STATUE
 	bne	:5520
-	lda	#52
+	lda	#52	; elle bloque un passage
 	sta	M$
 	jmp	:5898
 
@@ -1644,12 +1657,12 @@ levelToDestPoint
 	cmp	#34
 	bne	:5521
 	lda	MO$2
-	cmp	#81
+	cmp	#81	; STELE
 	bne	:5521
 	@GET_OP	#27
 	bne	:5521
 	@SET_OP	#27;#34
-	lda	#53
+	lda	#53	; vous trouvez le fragment manquant...
 	sta	M$
 	jmp	:5898
 
@@ -1657,7 +1670,7 @@ levelToDestPoint
 	cmp	#34
 	bne	:5522
 	lda	MO$2
-	cmp	#78
+	cmp	#78	; SOL
 	bne	:5522
 	lda	#16
 	sta	OI
@@ -1667,7 +1680,7 @@ levelToDestPoint
 	cmp	#34
 	bne	:5523
 	lda	MO$2
-	cmp	#77
+	cmp	#77	; SOCLE
 	bne	:5523
 	lda	#23
 	sta	OI
@@ -1677,7 +1690,7 @@ levelToDestPoint
 	cmp	#41
 	bne	:5524
 	lda	MO$2
-	cmp	#11
+	cmp	#11	; ANCRAGE
 	bne	:5524
 	lda	#21
 	sta	OI
@@ -1687,7 +1700,7 @@ levelToDestPoint
 	cmp	#43
 	bne	:5525
 	lda	MO$2
-	cmp	#82
+	cmp	#82	; TOILE
 	bne	:5525
 	lda	#30
 	sta	OI
@@ -1697,7 +1710,7 @@ levelToDestPoint
 	cmp	#46
 	bne	:5526
 	lda	MO$2
-	cmp	#23
+	cmp	#23	; CASCADE
 	bne	:5526
 	lda	#31
 	sta	OI
@@ -1707,7 +1720,7 @@ levelToDestPoint
 	cmp	#49
 	bne	:5527
 	lda	MO$2
-	cmp	#38
+	cmp	#38	; FLEUR
 	bne	:5527
 	lda	#32
 	sta	OI
@@ -1717,7 +1730,7 @@ levelToDestPoint
 	cmp	#50
 	bne	:5528
 	lda	MO$2
-	cmp	#12
+	cmp	#12	; ARBRE
 	bne	:5528
 	lda	#29
 	sta	OI
@@ -1727,23 +1740,23 @@ levelToDestPoint
 	cmp	#52
 	bne	:5528_1	; on pourrait sauter à 5529 directement
 	lda	MO$2
-	cmp	#19
+	cmp	#19	; BRAS
 	bne	:5528_1
-	lda	#54
+	lda	#54	; il semble qu'ils controlent...
 	sta	M$
 	jmp	:5898
 :5528_1	lda	SP
 	cmp	#52
 	bne	:5529
 	lda	MO$2
-	cmp	#55
+	cmp	#55	; MASQUE
 	bne	:5529
 	@GET_F	#35
 	beq	:5529
 	@GET_OP	#11
 	bne	:5529
 	@SET_OP	#11;#52
-	lda	#55
+	lda	#55	; c'est un masque d'ocelot
 	sta	M$
 	jmp	:5898
 
@@ -1751,7 +1764,7 @@ levelToDestPoint
 	cmp	#53
 	bne	:5530
 	lda	MO$2
-	cmp	#59
+	cmp	#59	; OCELOT
 	bne	:5530
 	lda	#56
 	sta	M$
@@ -1761,7 +1774,7 @@ levelToDestPoint
 	cmp	#54
 	bne	:5531
 	lda	MO$2
-	cmp	#70
+	cmp	#70	; RAYON
 	bne	:5531
 	lda	#26
 	sta	OI
@@ -1771,7 +1784,7 @@ levelToDestPoint
 	cmp	#54
 	bne	:5532
 	lda	MO$2
-	cmp	#15
+	cmp	#15	; BIBLIOTHEQUE
 	bne	:5532
 	lda	#19
 	sta	OI
@@ -1781,9 +1794,9 @@ levelToDestPoint
 	cmp	#10
 	bne	:5533
 	lda	MO$2
-	cmp	#66
+	cmp	#66	; PONT
 	beq	:5532_1
-	cmp	#60
+	cmp	#60	; ;PASSERELLE
 	bne	:5533
 :5532_1	@GET_F	#33
 	bne	:5532_2
@@ -1833,7 +1846,7 @@ levelToDestPoint
 	cmp	#29
 	bne	:5537
 	lda	MO$2
-	cmp	#24
+	cmp	#24	; CHAPELLE
 	bne	:5537
 	lda	#62
 	sta	M$
@@ -1843,7 +1856,7 @@ levelToDestPoint
 	cmp	#25
 	bne	:5538
 	lda	MO$2
-	cmp	#32
+	cmp	#32	; DEBRIS
 	bne	:5538
 	lda	#18
 	sta	OI
@@ -1853,7 +1866,7 @@ levelToDestPoint
 	cmp	#27
 	bne	:5539
 	lda	MO$2
-	cmp	#17
+	cmp	#17	; BLASON
 	bne	:5539
 	lda	#12
 	sta	OI
@@ -1863,7 +1876,7 @@ levelToDestPoint
 	cmp	#31
 	bne	:5540
 	lda	MO$2
-	cmp	#14
+	cmp	#14	; AUTEL
 	bne	:5540
 	lda	#63
 	sta	M$
@@ -1879,17 +1892,17 @@ levelToDestPoint
 	@message	#64	; vous trouvez...
 	ldx	OI
 	jsr	:8050	; UN/UNE
-	jsr	PRINT_ALT	; nom de l'objet
-	@objet	OI
+	jsr	PRINT_ALT
+	@objet	OI	; nom de l'objet
 	rts
 
 :5541	lda	SP
 	cmp	#44
 	bne	:5542
 	lda	MO$2
-	cmp	#41
+	cmp	#41	; FOSSE
 	beq	:5541_1
-	cmp	#64
+	cmp	#64	; PIEU
 	bne	:5542
 :5541_1	lda	#65
 	sta	M$
@@ -1899,7 +1912,7 @@ levelToDestPoint
 	cmp	#47
 	bne	:5543
 	lda	MO$2
-	cmp	#52
+	cmp	#52	; LYNX
 	bne	:5543
 	lda	#66
 	sta	M$
@@ -1909,7 +1922,7 @@ levelToDestPoint
 	cmp	#55
 	bne	:5544
 	lda	MO$2
-	cmp	#43
+	cmp	#43	; FRESQUE
 	bne	:5544
 	lda	#67
 	sta	M$
@@ -1919,7 +1932,7 @@ levelToDestPoint
 	cmp	#35
 	bne	:5544_1
 	lda	MO$2
-	cmp	#14
+	cmp	#14	; AUTEL
 	bne	:5544_1
 	lda	#68
 	sta	M$
@@ -1928,7 +1941,7 @@ levelToDestPoint
 	cmp	#35
 	bne	:5546
 	lda	MO$2
-	cmp	#71
+	cmp	#71	; RIGOLE
 	bne	:5546
 	lda	#69
 	sta	M$
@@ -1938,7 +1951,7 @@ levelToDestPoint
 	cmp	#39
 	bne	:5547
 	lda	MO$2
-	cmp	#31
+	cmp	#31	; CRYPTE
 	bne	:5547
 	lda	#70
 	sta	M$
@@ -1948,7 +1961,7 @@ levelToDestPoint
 	cmp	#58
 	bne	:5548
 	lda	MO$2
-	cmp	#63
+	cmp	#63	; PIERRE
 	bne	:5548
 	lda	#71
 	sta	M$
@@ -1958,7 +1971,7 @@ levelToDestPoint
 	cmp	#60
 	bne	:5549
 	lda	MO$2
-	cmp	#37
+	cmp	#37	; ESCALIER
 	bne	:5549
 	lda	#72
 	sta	M$
@@ -1968,7 +1981,7 @@ levelToDestPoint
 	cmp	#62
 	bne	:5550
 	lda	MO$2
-	cmp	#76
+	cmp	#76	; SILHOUETTE
 	bne	:5550
 	lda	#73
 	sta	M$
@@ -2078,10 +2091,11 @@ levelToDestPoint
 	bne	:5625
 	lda	MO$1
 	cmp	#17	; CREUSER
+	beq	:5620_1
 	lda	MO$2
 	cmp	#61	; PELLE
 	bne	:5625
-	@GET_OP	#1
+:5620_1	@GET_OP	#1
 	cmp	#255
 	bne	:5625
 	@SET_F	#1;#-1
@@ -2105,7 +2119,7 @@ levelToDestPoint
 	lda	#3
 	sta	CI
 	jsr	:5480
-	lda	#80
+	lda	#80	; la corde est fixée
 	sta	M$
 	jmp	:5898
 
@@ -2115,10 +2129,10 @@ levelToDestPoint
 	beq	:5629_1
 	cmp	#44	; UTILISER
 	bne	:5630
-	lda	MO$2
+:5629_1	lda	MO$2
 	cmp	#86	; TREUIL
 	bne	:5630
-:5629_1	lda	#-1
+	lda	#-1
 	sta	TR
 
 :5630	lda	SP
@@ -2141,8 +2155,8 @@ levelToDestPoint
 	beq	:5640
 	@GET_OP	#8
 	bne	:5640
-	@SET_OP	#8;#18
-	@SET_OP	#3;#-1
+	@SET_OP	#8;#18	; fait apparaître la flûte
+	@SET_OP	#3;#-1	; récupère la corde
 	lda	#82	; une trappe s'ouvre...
 	sta	M$
 	jmp	:5898
@@ -2279,9 +2293,7 @@ levelToDestPoint
 	lda	MO$1
 	cmp	#30	; MONTER
 	bne	:5664
-	@GET_F	#41
-	cmp	#255
-	bne	:5664
+	@SET_F	#41;#-1
 	lda	#90	; vous voyez un passage au nord
 	sta	M$
 	jmp	:5898
@@ -2432,17 +2444,19 @@ levelToDestPoint
 	cmp	#43
 	bne	:5710
 	lda	MO$1
+	cmp	#44	; UTILISER
+	beq	:5705_1
 	cmp	#35	; PORTER
 	bne	:5710
-	lda	MO$2
+:5705_1	lda	MO$2
 	cmp	#22	; CAPE
 	bne	:5710
 	@GET_OP	#30
 	cmp	#255
-	beq	:5705_1
+	beq	:5705_2
 	cmp	#30
 	bne	:5710
-:5705_1	@SET_F	#30;#-1
+:5705_2	@SET_F	#30;#-1
 	lda	#30
 	sta	CI
 	jsr	:5480
@@ -2753,11 +2767,13 @@ levelToDestPoint
 	
 :5780	lda	SP
 	cmp	#63
-	bne	:5785
+	bne	:5781
 	lda	MO$1
 	cmp	#31	; ouvrir
 	bne	:5785
-	jmp	:6400
+	jsr	:6400
+
+:5781	rts
 
 *-------------------------------
 * 5785 - EXTENSION POUR LA CORDE
@@ -2800,7 +2816,9 @@ levelToDestPoint
 	jmp	:5898
 
 :5790	stz	AC
-	rts
+*	rts
+	lda	#92	; chaîne vide
+	jmp	:5898
 
 * Retour vers la jungle basse, cf. 5750
 
@@ -3019,23 +3037,23 @@ levelToDestPoint
 	lda	MO$2	; on n'a pas précisé de nom
 	beq	:5853	; on sort
 
-	ldx	#0	; est-ce que le nom
-]lp	lda	tblOV,x	; est un objet ?
+	ldx	#1	; est-ce que le nom
+]lp	lda	tblOV-1,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
 	bne	:5851	; non, continue
 	
-	lda	F,x	; a-t-on l'objet ?
+	lda	F-1,x	; a-t-on l'objet ?
 	and	#$ff
 	beq	:5851	; non, continue
-
 	stx	OI	; oui, sort
 	rts
 	
 :5851	inx		; next entry
 	cpx	#MAX_OBJET
 	bcc	]lp
-	
+	beq	]lp
+
 :5853	rts
 
 *-------------------------------
@@ -3313,12 +3331,13 @@ initALL
 	cpx	#DATA_OUT
 	bcc	]lp
 
-	ldx	#0	; copie la table
-]lp	lda	tblOBJETS,x	; des objets
-	sta	OP,x
+	ldx	#1	; copie la table
+]lp	lda	tblOBJETS-1,x	; des objets
+	sta	OP-1,x
 	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
+	beq	]lp
 
 	rep	#$20
 	
@@ -3340,7 +3359,8 @@ initALL
 	rts
 :8051	lda	#strUN	; UN_
 	rts
-:8052	lda	#0	; rien
+:8052	brk	$bd
+	lda	#strVIDE	; rien
 	rts
 	
 *-------------------------------

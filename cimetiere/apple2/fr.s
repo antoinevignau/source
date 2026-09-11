@@ -11,10 +11,10 @@
 
 tblV	dfb	0	; value if not found
 	dfb	1,1,2,2,3,3,4,4,7,7,7
-	dfb	10,11,12,13,14,15,16,17,18,19
-	dfb	20,21,22,23,24,25,26,27,28,29
-	dfb	30,31,32,33,34,35,36,37,38,39,39
-	dfb	40,41,42,43,44,45,46,10,28
+	dfb	10,11,12,13,14,15,15,16,17,18,19
+	dfb	20,21,22,23,24,25,26,26,27,28,29,29
+	dfb	30,31,31,32,33,34,35,36,37,38,39,39
+	dfb	40,41,41,42,43,44,45,46,10,28
 	dfb	90,90,91,91,92,93
 	
 tblVERB	str	'N'	;  1 NORD
@@ -26,54 +26,59 @@ tblVERB	str	'N'	;  1 NORD
 	str	'E'	;  4 EST
 	str	'EST'	;  4 EST
 	str	'I'	;  7 INVENTAIRE
-	str	'INV'	;  7 INVENTAIRE
 	str	'INVE'	;  7 INVENTAIRE
-	str	'ALLE'	; 10 ALLER
-	str	'ALLU'	; 11 ALLUMER
-	str	'ARRA'	; 12 ARRACHER
-	str	'ASSE'	; 13 ASSEMBLER
-	str	'ATTA'	; 14 ATTACHER
-	str	'BOI'	; 15 BOIS/BOIRE
-	str	'CHER'	; 16 CHERCHER
-	str	'CREU'	; 17 CREUSER
-	str	'DESC'	; 18 DESCENDRE
-	str	'DONN'	; 19 DONNER
-	str	'ECOU'	; 20 ECOUTER
-	str	'ENTR'	; 21 ENTRER
-	str	'ETEI'	; 22 ETEINDRE
-	str	'EXAM'	; 23 EXAMINER
-	str	'FOUI'	; 24 FOUILLER
-	str	'FRAP'	; 25 FRAPPER
-	str	'JET'	; 26 JETTE
-	str	'JOUE'	; 27 JOUER
+	str	'INVEN'	;  7 INVENTAIRE
+	str	'ALLER'	; 10 ALLER
+	str	'ALLUM'	; 11 ALLUMER
+	str	'ARRAC'	; 12 ARRACHER
+	str	'ASSEM'	; 13 ASSEMBLER
+	str	'ATTAC'	; 14 ATTACHER
+	str	'BOIRE'	; 15 BOIS/BOIRE
+	str	'BOIS'	; 15 BOIS/BOIRE
+	str	'CHERC'	; 16 CHERCHER
+	str	'CREUS'	; 17 CREUSER
+	str	'DESCE'	; 18 DESCENDRE
+	str	'DONNE'	; 19 DONNER
+	str	'ECOUT'	; 20 ECOUTER
+	str	'ENTRE'	; 21 ENTRER
+	str	'ETEIN'	; 22 ETEINDRE
+	str	'EXAMI'	; 23 EXAMINER
+	str	'FOUIL'	; 24 FOUILLER
+	str	'FRAPP'	; 25 FRAPPER
+	str	'JETER'	; 26 JETTE
+	str	'JETTE'	; 26 JETTE
+	str	'JOUER'	; 27 JOUER
 	str	'LIRE'	; 28 LIRE
-	str	'MET'	; 29 METS/METTRE
-	str	'MONT'	; 30 MONTER
-	str	'OUVR'	; 31 OUVRIR
-	str	'PARL'	; 32 PARLER
-	str	'PASS'	; 33 PASSER
-	str	'PLAC'	; 34 PLACER
-	str	'PORT'	; 35 PORTER
-	str	'POSE'	; 36 POSER
-	str	'POUS'	; 37 POUSSER
-	str	'PREN'	; 38 PRENDRE
+	str	'METS'	; 29 METS/METTRE
+	str	'METTR'	; 29 METS/METTRE
+	str	'MONTE'	; 30 MONTER
+	str	'OUVRE'	; 31 OUVRIR
+	str	'OUVRI'	; 31 OUVRIR
+	str	'PARLE'	; 32 PARLER
+	str	'PASSE'	; 33 PASSER
+	str	'PLACE'	; 34 PLACER
+	str	'PORTE'	; 35 PORTER
+	str	'POSER'	; 36 POSER
+	str	'POUSS'	; 37 POUSSER
+	str	'PREND'	; 38 PRENDRE
 	str	'R'	; 39 R
-	str	'REGA'	; 39 REGARDER
-	str	'REMP'	; 40 REMPLIR
+	str	'REGAR'	; 39 REGARDER
+	str	'REMPL'	; 40 REMPLIR
 	str	'TIRE'	; 41 TIRER
-	str	'TOUR'	; 42 TOURNER
-	str	'TRAV'	; 43 TRAVERSER
-	str	'UTIL'	; 44 UTILISER
-	str	'VERS'	; 45 VERSER
-	str	'AVAN'	; 46 AVANCER
+	str	'TIRER'	; 41 TIRER
+	str	'TOURN'	; 42 TOURNER
+	str	'TRAVE'	; 43 TRAVERSER
+	str	'UTILI'	; 44 UTILISER
+	str	'VERSE'	; 45 VERSER
+	str	'AVANC'	; 46 AVANCER
 	str	'VA'	; 10 ALLER
 	str	'LIS'	; 28 LIRE
-	str	'CHAR'	; 90 CHARGER
+	str	'CHARG'	; 90 CHARGER
 	str	'LOAD'	; 90 LOAD
-	str	'SAUV'	; 91 SAUVER
+	str	'SAUVE'	; 91 SAUVER
 	str	'SAVE'	; 91 SAVE
-	str	'RECO'	; 92 RECOMMENCER
-	str	'QUIT'	; 93 QUITTER
+	str	'RECOM'	; 92 RECOMMENCER
+	str	'QUITT'	; 93 QUITTER
 
 *-------------------------------
 * NOMS
@@ -89,98 +94,101 @@ tblN	dfb	0	; value if not found
 	dfb	60,61,62,63,64,65,66,67,68,69
 	dfb	70,71,72,73,74,75,76,77,78,79
 	dfb	80,81,82,83,84,85,86,87,88,89
-	dfb	90,91
+	dfb	90,91,92,93,94
 
 tblNOUN	str	'N'	;  1 NORD
 	str	'NORD'	;  1 NORD
 	str	'S'	;  2 SUD
 	str	'SUD'	;  2 SUD
 	str	'O'	;  3 OUEST
-	str	'OUES'	;  3 OUEST
+	str	'OUEST'	;  3 OUEST
 	str	'E'	;  4 EST
 	str	'EST'	;  4 EST
-	str	'AMUL'	; 10 AMULETTE
-	str	'ANCR'	; 11 ANCRE
-	str	'ARBR'	; 12 ARBRE
-	str	'ATEL'	; 13 ATELIER
-	str	'AUTE'	; 14 AUTEL
-	str	'BIBL'	; 15 BIBLIOTHEQUE
-	str	'BICH'	; 16 BICHE
-	str	'BLAS'	; 17 BLASON
-	str	'BOUS'	; 18 BOUSSOLE
-	str	'BRAS'	; 19 BRAS
-	str	'BURI'	; 20 BURIN
-	str	'CABA'	; 21 CABANE
+	str	'AMULE'	; 10 AMULETTE
+	str	'ANCRA'	; 11 ANCRAGE
+	str	'ARBRE'	; 12 ARBRE
+	str	'ATELI'	; 13 ATELIER
+	str	'AUTEL'	; 14 AUTEL
+	str	'BIBLI'	; 15 BIBLIOTHEQUE
+	str	'BICHE'	; 16 BICHE
+	str	'BLASO'	; 17 BLASON
+	str	'BOUSS'	; 18 BOUSSOLE
+	str	'BRASE'	; 19 BRASERO
+	str	'BURIN'	; 20 BURIN
+	str	'CABAN'	; 21 CABANE
 	str	'CAPE'	; 22 CAPE
-	str	'CASC'	; 23 CASCADE
-	str	'CHAP'	; 24 CHAPELLE
-	str	'CHEN'	; 25 CHENE
+	str	'CASCA'	; 23 CASCADE
+	str	'CHAPE'	; 24 CHAPELLE
+	str	'CHENE'	; 25 CHENE
 	str	'CLE'	; 26 CLE
-	str	'CLOC'	; 27 CLOCHETTE
-	str	'CORD'	; 28 CORDE
-	str	'CRAI'	; 29 CRAIE
-	str	'CROC'	; 30 CROCHET
-	str	'CRYP'	; 31 CRYPTE
-	str	'DEBR'	; 32 DEBRIS
+	str	'CLOCH'	; 27 CLOCHETTE
+	str	'CORDE'	; 28 CORDE
+	str	'CRAIE'	; 29 CRAIE
+	str	'CROCH'	; 30 CROCHET
+	str	'CRYPT'	; 31 CRYPTE
+	str	'DEBRI'	; 32 DEBRIS
 	str	'DENT'	; 33 DENT
 	str	'EAU' 	; 34 EAU
 	str	'ECHO'	; 35 ECHO
-	str	'ENCE'	; 36 ENCENS
-	str	'ESCA'	; 37 ESCALIER
-	str	'FLEU'	; 38 FLEUR
-	str	'FLUT'	; 39 FLUTE
-	str	'FORG'	; 40 FORGE
-	str	'FOSS'	; 41 FOSSE
-	str	'FOUG'	; 42 FOUGERE
-	str	'FRES'	; 43 FRESQUE
-	str	'GOUR'	; 44 GOURDE
-	str	'GRIL'	; 45 GRILLE
-	str	'HUIL'	; 46 HUILE
-	str	'INSC'	; 47 INSCRIPTION
-	str	'JARD'	; 48 JARDIN
-	str	'JETO'	; 49 JETON
-	str	'LANT'	; 50 LANTERNE
-	str	'LIVR'	; 51 LIVRE
+	str	'ENCEN'	; 36 ENCENS
+	str	'ESCAL'	; 37 ESCALIER
+	str	'FLEUR'	; 38 FLEUR
+	str	'FLUTE'	; 39 FLUTE
+	str	'FORGE'	; 40 FORGE
+	str	'FOSSE'	; 41 FOSSE
+	str	'FOUGE'	; 42 FOUGERE
+	str	'FRESQ'	; 43 FRESQUE
+	str	'GOURD'	; 44 GOURDE
+	str	'GRILL'	; 45 GRILLE
+	str	'HUILE'	; 46 HUILE
+	str	'INSCR'	; 47 INSCRIPTION
+	str	'JARDI'	; 48 JARDIN
+	str	'JETON'	; 49 JETON
+	str	'LANTE'	; 50 LANTERNE
+	str	'LIVRE'	; 51 LIVRE
 	str	'LYNX'	; 52 LYNX
-	str	'MAIS'	; 53 MAISON
-	str	'MART'	; 54 MARTEAU
-	str	'MASQ'	; 55 MASQUE
-	str	'MEDA'	; 56 MEDAILLE
-	str	'MIRO'	; 57 MIROIR
+	str	'MAISO'	; 53 MAISON
+	str	'MARTE'	; 54 MARTEAU
+	str	'MASQU'	; 55 MASQUE
+	str	'MEDAI'	; 56 MEDAILLE
+	str	'MIROI'	; 57 MIROIR
 	str	'MUR'	; 58 MUR
-	str	'OCEL'	; 59 OCELOT
-	str	'PASS'	; 60 PASSERELLE
-	str	'PELL'	; 61 PELLE
+	str	'OCELO'	; 59 OCELOT
+	str	'PASSE'	; 60 PASSERELLE
+	str	'PELLE'	; 61 PELLE
 	str	'PIED'	; 62 PIED
-	str	'PIER'	; 63 PIERRE
+	str	'PIERR'	; 63 PIERRE
 	str	'PIEU'	; 64 PIEU
 	str	'PLAN'	; 65 PLAN/PLANCHE/PLANTE
 	str	'PONT'	; 66 PONT
-	str	'PORT'	; 67 PORTE
-	str	'PUIT'	; 68 PUITS
-	str	'RACI'	; 69 RACINE
-	str	'RAYO'	; 70 RAYON
-	str	'RIGO'	; 71 RIGOLE
-	str	'ROCH'	; 72 ROCHER
-	str	'SALL'	; 73 SALLE
-	str	'SCEA'	; 74 SCEAU
-	str	'SERR'	; 75 SERRURE
-	str	'SILH'	; 76 SILHOUETTE
-	str	'SOCL'	; 77 SOCLE
+	str	'PORTE'	; 67 PORTE
+	str	'PUITS'	; 68 PUITS
+	str	'RACIN'	; 69 RACINE
+	str	'RAYON'	; 70 RAYON
+	str	'RIGOL'	; 71 RIGOLE
+	str	'ROCHE'	; 72 ROCHER
+	str	'SALLE'	; 73 SALLE
+	str	'SCEAU'	; 74 SCEAU
+	str	'SERRU'	; 75 SERRURE
+	str	'SILHO'	; 76 SILHOUETTE
+	str	'SOCLE'	; 77 SOCLE
 	str	'SOL' 	; 78 SOL
-	str	'SOUR'	; 79 SOURCE
-	str	'STAT'	; 80 STATUE
-	str	'STEL'	; 81 STELE
-	str	'TOIL'	; 82 TOILE
-	str	'TOMB'	; 83 TOMBE
-	str	'TORC'	; 84 TORCHE
+	str	'SOURC'	; 79 SOURCE
+	str	'STATU'	; 80 STATUE
+	str	'STELE'	; 81 STELE
+	str	'TOILE'	; 82 TOILE
+	str	'TOMBE'	; 83 TOMBE
+	str	'TORCH'	; 84 TORCHE
 	str	'TOUR'	; 85 TOUR
-	str	'TREU'	; 86 TREUIL
-	str	'VILL'	; 87 VILLAGE
-	str	'BRON'	; 88 CLE DE BRONZE
+	str	'TREUI'	; 86 TREUIL
+	str	'VILLA'	; 87 VILLAGE
+	str	'BRONZ'	; 88 CLE DE BRONZE
 	str	'OS'	; 89 CLE D'OS
 	str	'NOIR'	; 90 CLE NOIRE
-	str	'TABL'	; 91 TABLE
+	str	'TABLE'	; 91 TABLE
+	str	'PLANC'	; 92 PLANCHE
+	str	'PLANT'	; 93 PLANTE
+	str	'FIOLE'	; 94 FIOLE
 	dfb	chrNULL
 
 *-------------------------------
@@ -232,8 +240,8 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Tr'8f's utile pour le puits sec'00			;  28
 	asc	'Une porte s'27'ouvre '88' l'27'est'00			;  29
 	asc	'Vous prenez la lanterne qui d'8e'voile un passage secret'00		;  30
-	asc	'Vous prenez le fragment'00				;  31
-	asc	'Vous prenez la craie'00				;  32
+	asc	'Vous prenez le fragment. '00				;  31
+	asc	'Vous prenez la craie. '00				;  32
 	asc	'Vous avez pris '00				;  33
 	asc	'Objet pos'8e00					;  34
 	asc	'Vous jetez '00					;  35
@@ -289,11 +297,11 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Vous descendez vers la chapelle'00			;  85
 	asc	'Torche huil'8e'e'00				;  86
 	asc	'Une inscription appara'94't'00				;  87
-	asc	'F'8e'lins : faites tinter le m'8e'tal'00			;  88
+	asc	d2'F'8e'lins : faites tinter le m'8e'tal'd300			;  88
 	asc	'Le reflet vise une tour '88' l'27'est'00			;  89
 	asc	'Vous voyez un passage au nord'00			;  90
 	asc	'Un passage vers l'27'est s'27'est ouvert'00			;  91
-	asc	'Vous voyez un passage au nord'00			;  92 doublon
+	asc	''00					;  92 doublon
 	asc	'Un passage vers l'27'est s'27'est ouvert'00			;  93 doublon
 	asc	'Plan complet : autel, pierre, rigoles'00			;  94
 	asc	'Le plan n'27'est pas complet'00			;  95
@@ -364,12 +372,13 @@ T$	ds	128					; 155 - multi-purpose string
 *-------------------------------
 
 tblOV	dfb	61,84,28,88,89,54,20,39,18,57,55,56,10,44,65,29	; index: object
-	dfb	27,62,50,46,30,65,63,33,74,50,81,90,36,22,49,38	; value: vocabulary index
+	dfb	27,62,50,46,30,65,63,33,74,51,81,90,36,22,49,38	; value: vocabulary index
 
 tblMF	asc	'FFFFFMMFFMMFFFMFFMFFMFFFMMMFMFMF'
 
 strUN	asc	'un '00
 strUNE	asc	'une '00
+strVIDE	asc	''00
 strVIRGULE	asc	', '00
 
 *				   # V#
@@ -398,10 +407,10 @@ strOBJET	asc	'Pelle'00		;  1 61
 	asc	'Pierre grav'8e'e'00	; 23 63
 	asc	'Dent'00		; 24 33 *
 	asc	'Sceau de cire'00	; 25 74
-	asc	'Livre humide'00	; 26 50
+	asc	'Livre humide'00	; 26 51
 	asc	'Fragment de st'8f'le'00	; 27 81
 	asc	'Cl'8e' noire'00	; 28 90
-	asc	'B"89"ton d'27'encens'00	; 29 36
+	asc	'B'89'ton d'27'encens'00	; 29 36
 	asc	'Cape de braconnier'00	; 30 22
 	asc	'Jeton'00		; 31 49
 	asc	'Fleur nocturne'00	; 32 38

@@ -1203,19 +1203,23 @@ levelToDestPoint
 
 	lda	SP
 	cmp	#52
-	bne	:5400_2
+	bne	:5400_1
 	lda	MO$2
 	cmp	#55	; MASQUE
-	bne	:5400_2
+	bne	:5400_1
 	@GET_F	#35
-	bne	:5400_2
+	bne	:5400_1
 
 	lda	#25	; des dards jaillissent...
 	jmp	:6500
 
-:5400_2	stz	OI
+:5400_1	stz	OI
 	ldx	#1	; est-ce que le nom
-]lp	lda	tblOV-1,x	; est un objet ?
+]lp	lda	tblOV1-1,x	; est un objet ?
+	and	#$ff
+	cmp	MO$2
+	beq	:5400_2
+	lda	tblOV2-1,x
 	and	#$ff
 	cmp	MO$2
 	bne	:5400_3	; non, continue
@@ -1223,7 +1227,7 @@ levelToDestPoint
 	and	#$ff	; il est dans la salle ?
 	cmp	SP
 	bne	:5400_3
-	stx	OI	; oui
+:5400_2	stx	OI	; oui
 	jmp	:5425	; saute la suite
 	
 :5400_3	inx		; prochain objet
@@ -1235,24 +1239,28 @@ levelToDestPoint
 	bne	:5425
 	lda	SP
 	cmp	#53
-	bne	:5410_2
+	bne	:5410_1
 	lda	MO$2
 	cmp	#33	; DENT
-	bne	:5410_2
+	bne	:5410_1
 	lda	#26	; elle semble bouger
 	sta	M$
 	jmp	:5898
 
-:5410_2	lda	OI
+:5410_1	lda	OI
 	bne	:5412
 
 	stz	I
 	ldx	#1	; est-ce que le nom
-]lp	lda	tblOV-1,x	; est un objet ?
+]lp	lda	tblOV1-1,x	; est un objet ?
+	and	#$ff
+	cmp	MO$2
+	beq	:5410_2
+	lda	tblOV2-1,x
 	and	#$ff
 	cmp	MO$2
 	bne	:5410_3	; non, continue
-	inc	I	; oui
+:5410_2	inc	I	; oui
 :5410_3	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
@@ -1354,13 +1362,17 @@ levelToDestPoint
 
 	stz	OI
 	ldx	#1	; est-ce que le nom
-]lp	lda	tblOV-1,x	; est un objet ?
+]lp	lda	tblOV1-1,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
-	bne	:5450_1	; non, continue
-	stx	OI	; oui, sors
+	beq	:5450_1
+	lda	tblOV2-1,x
+	and	#$ff
+	cmp	MO$2
+	bne	:5450_2	; non, continue
+:5450_1	stx	OI	; oui, sors
 	jmp	:5460
-:5450_1	inx
+:5450_2	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
 	beq	]lp
@@ -1378,7 +1390,7 @@ levelToDestPoint
 	jmp	:5900
 
 *-------------------------------
-* MALCHANCE
+* ADIEU OBJET
 *-------------------------------
 
 :5480	@SET_OP	CI;#-2
@@ -1392,13 +1404,17 @@ levelToDestPoint
 
 	stz	OI
 	ldx	#1	; est-ce que le nom
-]lp	lda	tblOV,x	; est un objet ?
+]lp	lda	tblOV1-1,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
-	bne	:5482_1	; non, continue
-	stx	OI	; oui, sors
+	beq	:5402_1
+	lda	tblOV2-1,x
+	and	#$ff
+	cmp	MO$2
+	bne	:5482_2	; non, continue
+:5402_1	stx	OI	; oui, sors
 	jmp	:5484
-:5482_1	inx
+:5482_2	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
 	beq	]lp
@@ -1663,9 +1679,11 @@ levelToDestPoint
 	cmp	#34
 	bne	:5521
 	lda	MO$2
+	cmp	#95	; FRAGMENT
+	beq	:5520_1
 	cmp	#81	; STELE
 	bne	:5521
-	@GET_OP	#27
+:5520_1	@GET_OP	#27
 	bne	:5521
 	@SET_OP	#27;#34
 	lda	#53	; vous trouvez le fragment manquant...
@@ -2031,7 +2049,7 @@ levelToDestPoint
 	cmp	#3
 	bne	:5606
 	lda	MO$2
-	cmp	#65	; PLANCHE
+	cmp	#92	; PLANCHE
 	bne	:5606
 	@GET_OP	#22
 	cmp	#255
@@ -2570,9 +2588,11 @@ levelToDestPoint
 	cmp	#51
 	bne	:5730
 	lda	MO$2
+	cmp	#96	; BATON
+	beq	:5725_1
 	cmp	#36	; ENCENS
 	bne	:5730
-	@GET_OP	#29
+:5725_1	@GET_OP	#29
 	cmp	#255
 	bne	:5730
 	@SET_F	#29;#-1
@@ -3053,18 +3073,22 @@ levelToDestPoint
 	beq	:5853	; on sort
 
 	ldx	#1	; est-ce que le nom
-]lp	lda	tblOV-1,x	; est un objet ?
+]lp	lda	tblOV1-1,x	; est un objet ?
 	and	#$ff
 	cmp	MO$2
-	bne	:5851	; non, continue
-	
-	lda	F-1,x	; a-t-on l'objet ?
+	beq	:5851
+	lda	tblOV2-1,x
 	and	#$ff
-	beq	:5851	; non, continue
+	cmp	MO$2
+	bne	:5852	; non, continue
+	
+:5851	lda	F-1,x	; a-t-on l'objet ?
+	and	#$ff
+	beq	:5852	; non, continue
 	stx	OI	; oui, sort
 	rts
 	
-:5851	inx		; next entry
+:5852	inx		; next entry
 	cpx	#MAX_OBJET
 	bcc	]lp
 	beq	]lp

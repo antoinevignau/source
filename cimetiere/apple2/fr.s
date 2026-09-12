@@ -95,7 +95,7 @@ tblN	dfb	0	; value if not found
 	dfb	60,61,62,63,64,65,66,67,68,69
 	dfb	70,71,72,73,74,75,76,77,78,79
 	dfb	80,81,82,83,84,85,86,87,88,89
-	dfb	90,91,92,93,94
+	dfb	90,91,92,93,94,95,96
 
 tblNOUN	str	'N'	;  1 NORD
 	str	'NORD'	;  1 NORD
@@ -190,6 +190,8 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'PLANC'	; 92 PLANCHE
 	str	'PLANT'	; 93 PLANTE
 	str	'FIOLE'	; 94 FIOLE
+	str	'FRAGM'	; 95 FRAGMENT
+	str	'BATON'	; 96 BATON
 	dfb	chrNULL
 
 *-------------------------------
@@ -372,8 +374,11 @@ T$	ds	128					; 155 - multi-purpose string
 * OBJETS
 *-------------------------------
 
-tblOV	dfb	61,84,28,88,89,54,20,39,18,57,55,56,10,44,65,29	; index: object
-	dfb	27,62,50,46,30,65,63,33,74,51,81,90,36,22,49,38	; value: vocabulary index
+tblOV1	dfb	61,84,28,88,89,54,20,39,18,57,55,56,10,44,65,29	; index: object
+	dfb	27,62,50,94,30,92,63,33,74,51,95,26,96,22,49,38	; value: vocabulary index
+
+tblOV2	dfb	61,84,28,26,26,54,20,39,18,57,55,56,10,44,65,29	; index: object
+	dfb	27,16,50,46,30,92,63,33,74,51,81,90,36,22,49,38	; value: vocabulary index
 
 tblMF	asc	'FFFFFMMFFMMFFFMFFMFFMFFFMMMFMFMF'
 
@@ -386,8 +391,8 @@ strVIRGULE	asc	', '00
 strOBJET	asc	'Pelle'00		;  1 61
 	asc	'Torche'00		;  2 83
 	asc	'Corde'00		;  3 28
-	asc	'Cl'8e' de bronze'00	;  4 88
-	asc	'Cl'8e' d'27'os'00	;  5 89
+	asc	'Cl'8e' de bronze'00	;  4 88 26
+	asc	'Cl'8e' d'27'os'00	;  5 89 26
 	asc	'Marteau'00		;  6 54
 	asc	'Burin'00		;  7 20
 	asc	'Fl'9e'te'00		;  8 39
@@ -400,18 +405,18 @@ strOBJET	asc	'Pelle'00		;  1 61
 	asc	'Plan d'8e'chir'8e00	; 15 65
 	asc	'Craie'00		; 16 29
 	asc	'Clochette'00		; 17 27
-	asc	'Pied de biche'00	; 18 62
+	asc	'Pied de biche'00	; 18 62 16
 	asc	'Lanterne'00		; 19 50
-	asc	'Fiole d'27'huile'00	; 20 46
+	asc	'Fiole d'27'huile'00	; 20 94 46
 	asc	'Crochet'00		; 21 30
 	asc	'Planche'00		; 22 65
 	asc	'Pierre grav'8e'e'00	; 23 63
 	asc	'Dent'00		; 24 33 *
 	asc	'Sceau de cire'00	; 25 74
 	asc	'Livre humide'00	; 26 51
-	asc	'Fragment de st'8f'le'00	; 27 81
-	asc	'Cl'8e' noire'00	; 28 90
-	asc	'B'89'ton d'27'encens'00	; 29 36
+	asc	'Fragment de st'8f'le'00	; 27 95 81
+	asc	'Cl'8e' noire'00	; 28 26 90
+	asc	'B'89'ton d'27'encens'00	; 29 96 36
 	asc	'Cape de braconnier'00	; 30 22
 	asc	'Jeton'00		; 31 49
 	asc	'Fleur nocturne'00	; 32 38

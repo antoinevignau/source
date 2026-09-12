@@ -268,7 +268,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Vous trouvez le fragment manquant '88' votre plan'00		;  53
 	asc	'Il semble qu'27'ils contr'99'lent un m'8e'canisme'00		;  54
 	asc	'C'27'est un masque d'27'ocelot'00			;  55
-	asc	'Une dent rouge'00				;  56
+	asc	'Une dent bouge'00				;  56
 	asc	'La passerelle est fragile'00				;  57
 	asc	'La passerelle semble s'8e'curis'8e'e'00			;  58
 	asc	'Elle semble faite de bronze'00				;  59
@@ -357,7 +357,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Recommencer ? o/n '00				; 142
 	asc	'Face a + entr'8e'e'00				; 143--
 	asc	'Face b + entr'8e'e'00				; 144--
-	asc	27'BRAVO !'2700					; 145
+	asc	d2'BRAVO !'d300					; 145
 	asc	'Vous avez trouv'8e' le cimeti'8f're'00			; 146
 	asc	'des Ocelots et son tr'8e'sor'00			; 147
 	asc	'Appuyez sur une touche pour'00				; 148

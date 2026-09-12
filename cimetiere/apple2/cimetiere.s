@@ -548,7 +548,7 @@ levelToDestPoint
 
 * Ajout des objets
 
-:4030	phx		; save X
+:4030	stx	IX	; save X
 
 	bit	I	; si on a trouve un objet,
 	bpl	:4040	; doit-on mettre une virgule ?
@@ -556,18 +556,18 @@ levelToDestPoint
 	lda	#strVIRGULE	; ajoute ", "
 	jsr	:4070
 
-:4040
-*	jsr	:8050	; A contient @article
+:4040	ldx	IX
+	jsr	:8050	; A contient @article
 	jsr	:4070	; ajoute "Un " ou "Une "
 	dec	I	; on aura besoin d'une virgule
 
-	phy		; sauve Y
-	txa		; index = objet
+	sty	IY	; sauve Y
+	lda	IX	; index = objet
 	jsr	getOBJET	; A contient @objet
-	ply		; restaure Y
+	ldy	IY	; restaure Y
 	jsr	:4070	; ajoute à la chaîne
 
-	plx		; restore X
+	ldx	IX	; restore X
 	cpy	#128
 	bcs	:4060	; 128 = longueur maxi de la chaîne T$
 	rts
@@ -576,8 +576,7 @@ levelToDestPoint
 
 * Ajoute à la chaîne
 
-:4070	phx
-	tax
+:4070	tax
 	sep	#$20
 ]lp	lda	|$0000,x
 	sta	T$,y
@@ -586,7 +585,6 @@ levelToDestPoint
 	iny
 	bne	]lp
 :4080	rep	#$20
-	plx
 	rts
 	
 *-------------------------------
@@ -815,6 +813,7 @@ levelToDestPoint
 	beq	:5130_OK
 	cmp	#24	; FOUILLER
 	bne	:5140
+
 :5130_OK	jsr	:5500
 	lda	AC
 	cmp	#-1
@@ -1208,6 +1207,7 @@ levelToDestPoint
 	cmp	#55	; MASQUE
 	bne	:5400_1
 	@GET_F	#35
+	cmp	#0
 	bne	:5400_1
 
 	lda	#25	; des dards jaillissent...
@@ -1453,6 +1453,7 @@ levelToDestPoint
 	cmp	#59
 	bne	:5502
 :5501_1	@GET_OP	#1
+	cmp	#0
 	bne	:5502
 	@SET_OP	#1;#1
 	lda	#36	; vous trouvez une pelle
@@ -1499,6 +1500,7 @@ levelToDestPoint
 	cmp	#25	; CHENE
 	bne	:5506
 	@GET_OP	#4
+	cmp	#0
 	bne	:5505_1
 	lda	#4
 	sta	OI
@@ -1514,6 +1516,7 @@ levelToDestPoint
 	cmp	#72	; ROCHER
 	bne	:5507
 	@GET_OP	#14
+	cmp	#0
 	bne	:5507
 	@SET_OP	#14;#13
 	lda	#40	; quelqu'un semble avoir oublie sa gourde
@@ -1539,6 +1542,7 @@ levelToDestPoint
 	cmp	#86	; TREUIL
 	bne	:5509
 	@GET_F	#3
+	cmp	#0
 	beq	:5508_1
 	lda	#42	; la corde est bien fixée
 	sta	M$
@@ -1554,6 +1558,7 @@ levelToDestPoint
 	cmp	#13	; ATELIER
 	bne	:5510
 	@GET_OP	#6
+	cmp	#0
 	bne	:5510
 	@SET_OP	#6;#22
 	@SET_OP	#7;#22
@@ -1618,6 +1623,7 @@ levelToDestPoint
 	cmp	#40	; FORGE
 	bne	:5516
 	@GET_OP	#20
+	cmp	#0
 	bne	:5516
 	@SET_OP	#20;#28
 	lda	#48	; vous trouvez une fiole d'huile
@@ -1643,6 +1649,7 @@ levelToDestPoint
 	cmp	#65	; PLANTE
 	bne	:5518
 :5517_1	@GET_OP	#10
+	cmp	#0
 	bne	:5518
 	@SET_OP	#10;#31
 	lda	#49	; vous voyez un miroir et un autel
@@ -1656,6 +1663,7 @@ levelToDestPoint
 	cmp	#85	; TOUR
 	bne	:5519
 	@GET_OP	#9
+	cmp	#0
 	bne	:5518_1
 	@SET_OP	#9;#32
 	lda	#50	; vous voyez une boussole et un escalier qui monte
@@ -1684,6 +1692,7 @@ levelToDestPoint
 	cmp	#81	; STELE
 	bne	:5521
 :5520_1	@GET_OP	#27
+	cmp	#0
 	bne	:5521
 	@SET_OP	#27;#34
 	lda	#53	; vous trouvez le fragment manquant...
@@ -1776,8 +1785,10 @@ levelToDestPoint
 	cmp	#55	; MASQUE
 	bne	:5529
 	@GET_F	#35
+	cmp	#0
 	beq	:5529
 	@GET_OP	#11
+	cmp	#0
 	bne	:5529
 	@SET_OP	#11;#52
 	lda	#55	; c'est un masque d'ocelot
@@ -1790,7 +1801,10 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#59	; OCELOT
 	bne	:5530
-	lda	#56
+	@GET_OP	#24
+	cmp	#0
+	bne	:5530
+	lda	#56	; une dent bouge
 	sta	M$
 	jmp	:5898
 
@@ -1820,14 +1834,15 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#66	; PONT
 	beq	:5532_1
-	cmp	#60	; ;PASSERELLE
+	cmp	#60	; PASSERELLE
 	bne	:5533
 :5532_1	@GET_F	#33
+	cmp	#0
 	bne	:5532_2
-	lda	#57
+	lda	#57	; la passerelle est fragile
 	sta	M$
 	jmp	:5898
-:5532_2	lda	#58
+:5532_2	lda	#58	; la passerelle semble sécurisée
 	sta	M$
 	jmp	:5898
 	
@@ -1837,7 +1852,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#75	; SERRURE
 	bne	:5534
-	lda	#59
+	lda	#59	; elle semble faite de bronze
 	sta	M$
 	jmp	:5898
 
@@ -1848,11 +1863,13 @@ levelToDestPoint
 	cmp	#21	; CABANE
 	bne	:5535
 	@GET_F	#4
+	cmp	#0
 	beq	:5535
 	@GET_OP	#2
+	cmp	#0
 	bne	:5535
 	@SET_OP	#2;#6
-	lda	#60
+	lda	#60	; vous trouvez une torche
 	sta	M$
 	jmp	:5898
 
@@ -1862,7 +1879,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#21	; CABANE
 	bne	:5536
-	lda	#61
+	lda	#61	; vous ne voyez rien de spécial
 	sta	M$
 	jmp	:5898
 
@@ -1872,7 +1889,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#24	; CHAPELLE
 	bne	:5537
-	lda	#62
+	lda	#62	; il semble qu'un sceau a été arraché
 	sta	M$
 	jmp	:5898
 
@@ -1902,13 +1919,15 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#14	; AUTEL
 	bne	:5540
-	lda	#63
+	lda	#63	; avec un miroir vous y verrez mieux
 	sta	M$
 	jmp	:5898
 
 :5540	lda	OI
+	cmp	#0
 	beq	:5541
 	@GET_OP	OI
+	cmp	#0
 	bne	:5541
 	@SET_OP	OI;SP
 	lda	OI
@@ -1928,7 +1947,7 @@ levelToDestPoint
 	beq	:5541_1
 	cmp	#64	; PIEU
 	bne	:5542
-:5541_1	lda	#65
+:5541_1	lda	#65	; ah si j'avais un marteau...
 	sta	M$
 	jmp	:5898
 
@@ -1938,7 +1957,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#52	; LYNX
 	bne	:5543
-	lda	#66
+	lda	#66	; il semble attiré par une offrande qui sent bon
 	sta	M$
 	jmp	:5898
 
@@ -1948,7 +1967,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#43	; FRESQUE
 	bne	:5544
-	lda	#67
+	lda	#67	; ces traits effacés pourraient être retracés
 	sta	M$
 	jmp	:5898
 
@@ -2063,7 +2082,7 @@ levelToDestPoint
 	cmp	#10
 	bne	:5610
 	lda	MO$2
-	cmp	#65	; PLANCHE
+	cmp	#92	; PLANCHE
 	bne	:5610
 	@GET_OP	#22
 	cmp	#255
@@ -2078,6 +2097,7 @@ levelToDestPoint
 	
 :5610	lda	SP
 	cmp	#6
+	bne	:5615
 	lda	MO$2
 	cmp	#26	; CLE
 	bne	:5615
@@ -2166,6 +2186,7 @@ levelToDestPoint
 	lda	TR
 	beq	:5635
 	@GET_F	#3
+	cmp	#0
 	bne	:5635
 	lda	#81	; il manque une corde
 	sta	M$
@@ -2175,10 +2196,13 @@ levelToDestPoint
 	cmp	#18
 	bne	:5640
 	lda	TR
+	cmp	#0
 	beq	:5640
 	@GET_F	#3
+	cmp	#0
 	beq	:5640
 	@GET_OP	#8
+	cmp	#0
 	bne	:5640
 	@SET_OP	#8;#18	; fait apparaître la flûte
 	@SET_OP	#3;#-1	; récupère la corde
@@ -2229,6 +2253,7 @@ levelToDestPoint
 	cmp	#18	; DESCENDRE
 	bne	:5650
 	@GET_F	#18
+	cmp	#0
 	beq	:5650
 	lda	#29
 	sta	SP
@@ -2249,6 +2274,7 @@ levelToDestPoint
 	cmp	#255
 	bne	:5655
 	@GET_F	#20
+	cmp	#0
 	bne	:5655
 	@SET_F	#20;#-1
 	lda	#20
@@ -2375,6 +2401,7 @@ levelToDestPoint
 	cmp	#255
 	bne	:5680
 	@GET_F	#37
+	cmp	#0
 	bne	:5675_1
 	lda	#95	; le plan n'est pas complet
 	sta	M$
@@ -2396,8 +2423,10 @@ levelToDestPoint
 	cmp	#34	; EAU
 	bne	:5685
 :5680_1	@GET_F	#34
+	cmp	#0
 	beq	:5685
 	@GET_F	#23
+	cmp	#0
 	beq	:5685
 	@SET_F	#14;#-1
 	lda	#14
@@ -2414,13 +2443,14 @@ levelToDestPoint
 	cmp	#44	; UTILISER
 	beq	:5685_1
 	cmp	#11	; ALLUMER
-	beq	:5690
+	bne	:5690
 :5685_1	lda	MO$2
 	cmp	#84	; TORCHE
 	bne	:5690
 	@GET_F	#20
+	cmp	#0
 	bne	:5685_2
-	lda	#98	; mets de l'huile
+	lda	#98	; ...mets de l'huile
 	sta	M$
 	jmp	:5898
 :5685_2	@SET_F	#2;#-1
@@ -2610,6 +2640,7 @@ levelToDestPoint
 	cmp	#22	; ETEINDRE
 	bne	:5735
 	@GET_F	#29
+	cmp	#0
 	beq	:5735
 	@SET_F	#35;#-1
 	lda	#109	; vous désarmez les pièges
@@ -2712,6 +2743,7 @@ levelToDestPoint
 	cmp	#60
 	bne	:5765
 	@GET_F	#13
+	cmp	#0
 	beq	:5765
 	lda	#114	; vous découvrez un passage à l'est
 	sta	M$
@@ -2724,6 +2756,7 @@ levelToDestPoint
 	cmp	#32	; PARLER
 	bne	:5767
 	@GET_OP	#28
+	cmp	#0
 	bne	:5767
 	@SET_OP	#28;#62
 	lda	#115	; il vous tend une cle noire
@@ -2742,6 +2775,7 @@ levelToDestPoint
 	cmp	#33	; DENT
 	bne	:5769
 	@GET_OP	#24
+	cmp	#0
 	bne	:5769
 	@SET_OP	#24;#-1
 	lda	#116	; vous avez pris une dent d'ocelot
@@ -2758,6 +2792,7 @@ levelToDestPoint
 	cmp	#255
 	bne	:5770
 	@GET_F	#24
+	cmp	#0
 	bne	:5770
 	lda	#117	; votre cle a du mal à rentrer...
 	sta	M$
@@ -2773,6 +2808,7 @@ levelToDestPoint
 	cmp	#255
 	bne	:5775
 	@GET_F	#24
+	cmp	#0
 	beq	:5775
 	@SET_F	#28;#-1
 	lda	#28
@@ -2805,9 +2841,10 @@ levelToDestPoint
 	lda	MO$1
 	cmp	#31	; OUVRIR
 	bne	:5785
-	jsr	:6400
+	jmp	:6400	; vérifie la résolution des énigmes
 
-:5781	rts
+:5781	stz	AC
+	rts
 
 *-------------------------------
 * 5785 - EXTENSION POUR LA CORDE
@@ -2855,7 +2892,7 @@ levelToDestPoint
 
 * Retour vers la jungle basse, cf. 5750
 
-:5795	@WAIT	#240	; 4 secondes plutôt qu'INKEY
+:5795	@WAIT	#180	; 3 secondes plutôt qu'INKEY
 *	@INKEY
 	lda	#49
 	sta	SP
@@ -2869,7 +2906,6 @@ levelToDestPoint
 
 :5800	lda	#-1
 	sta	AC
-	stz	M$
 
 :5801	lda	SP
 	cmp	#3
@@ -2880,6 +2916,7 @@ levelToDestPoint
 	cmp	#33	; PASSER
 	bne	:5803
 :5801_OK	@GET_F	#22
+	cmp	#0
 	bne	:5803
 	lda	#123	; le pont cedera sans planche
 	sta	M$
@@ -2890,13 +2927,16 @@ levelToDestPoint
 	bne	:5804
 	lda	MO$1
 	cmp	#21	; ENTRER
-	beq	:5803_OK
+	beq	:5803_1
 	cmp	#31	; OUVRIR
 	bne	:5804
-:5803_OK	lda	MO$2
+:5803_1	lda	MO$2
+	cmp	#21	; CABANE
+	beq	:5803_2
 	cmp	#67	; PORTE
 	bne	:5804
-	@GET_F	#4
+:5803_2	@GET_F	#4
+	cmp	#0	
 	bne	:5804
 	lda	#124	; elle est fermee a cle
 	sta	M$
@@ -2911,7 +2951,8 @@ levelToDestPoint
 	cmp	#31	; OUVRIR
 	bne	:5805
 :5804_OK	@GET_F	#4
-	beq	:5805
+	cmp	#255
+	bne	:5805
 	lda	#125	; la porte est ouverte
 	sta	M$
 	jmp	:5898
@@ -2954,6 +2995,7 @@ levelToDestPoint
 	cmp	#69	; RACINE
 	bne	:5808
 	@GET_F	#1
+	cmp	#0
 	bne	:5808
 	lda	#128	; une pelle degagerait les racines
 	sta	M$
@@ -2988,6 +3030,7 @@ levelToDestPoint
 	cmp	#72	; SALLE
 	bne	:5810
 :5809_OK2	@GET_F	#8
+	cmp	#0
 	bne	:5810
 	lda	#130	; la salle resonne
 	sta	M$
@@ -3005,12 +3048,12 @@ levelToDestPoint
 	cmp	#45	; GRILLE
 	bne	:5811
 :5810_OK	@GET_F	#18
+	cmp	#0
 	bne	:5811
 	lda	#131	; la grille necessite un pied de biche
 	jmp	:5898
 
-:5811	jsr	showBORDER
-	lda	MO$1
+:5811	lda	MO$1
 	cmp	#28	; LIRE
 	bne	:5812
 	lda	MO$2
@@ -3193,7 +3236,8 @@ slotGAME_ERR	rep	#$20
 :6430	@SET_F	#40;#-1
 	lda	#140	; la porte grince...
 	sta	M$
-	jmp	:5900
+	jsr	:5900
+	rts
 
 *-------------------------------
 * 6500 - MORT
@@ -3239,15 +3283,13 @@ slotGAME_ERR	rep	#$20
 * 6530 - ATTENTE FACE A
 *-------------------------------
 
-:6530
-	rts
+:6530	rts
 
 *-------------------------------
 * 6580 - ATTENTE FACE B
 *-------------------------------
 
-:6580
-			; va dessous...
+:6580	rts
 
 *-------------------------------
 * 6600 - GAGNE
@@ -3257,17 +3299,17 @@ GAGNE
 :6600	@MODE	#1
 	@CLS	#0
 	@PEN	#0;#3
-	@LOCATE	#0;#17;#6
+	@LOCATE	#0;#15;#6
 	@message	#145	; Bravo
 	@PEN	#0;#1
-	@LOCATE	#0;#6;#10
+	@LOCATE	#0;#5;#10
 	@message	#146	; Vous avez trouve le cimetiere
-	@LOCATE	#0;#8;#12
+	@LOCATE	#0;#7;#12
 	@message	#147	; des Ocelots et son tresor
 	@PEN	#0;#2
-	@LOCATE	#0;#5;#18
+	@LOCATE	#0;#6;#18
 	@message	#148	; Appuyez sur une touche pour
-	@LOCATE	#0;#9;#20
+	@LOCATE	#0;#10;#20
 	@message	#149	; entrer dans la salle
 	@INKEY
 
@@ -3445,8 +3487,7 @@ initALL
 	rts
 :8051	lda	#strUN	; UN_
 	rts
-:8052	brk	$bd
-	lda	#strVIDE	; rien
+:8052	lda	#strVIDE	; rien
 	rts
 	
 *-------------------------------

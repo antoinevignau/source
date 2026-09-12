@@ -447,38 +447,53 @@ levelToDestPoint
 
 	stz	I	; flag pour la virgule
 	
-	lda	SP	; adresse des directions
-	beq	:3540
-	dec
-	asl		; de la salle
-	asl
-	clc
-	adc	#tblDIRECTIONS
-	sta	dpFROM
-	
-	ldx	#0	; cherche une direction valable
-	txy
-	sep	#$20
-]lp	lda	(dpFROM),y
-	beq	:3530	; pas de direction valable
-	
+*	lda	SP	; adresse des directions
+*	beq	:3540
+*	dec
+*	asl		; de la salle
+*	asl
+*	clc
+*	adc	#tblDIRECTIONS
+*	sta	dpFROM
+*	
+*	ldx	#0	; cherche une direction valable
+*	txy
+*	sep	#$20
+*]lp	lda	(dpFROM),y
+*	beq	:3530	; pas de direction valable
+
+	lda	#1
+	sta	DR
+	sta	IX
+
+]lp	jsr	:5250
+
+	ldx	IX
+	ldy	DR
+
+	lda	GA
+	beq	:3530
+
 	bit	I	; une direction trouvee
 	bpl	:3520	; doit-on mettre une virgule ?
 
 	lda	#chrCOMMA
-	sta	strISSUES,x
+	sta	strISSUES-1,x
 	inx
-:3520	lda	refISSUES,y	; met la lettre de la direction
-	sta	strISSUES,x
+:3520	lda	refISSUES-1,y	; met la lettre de la direction
+	sta	strISSUES-1,x
 	dec	I	; on devra mettre une virgule
 	inx
-	
-:3530	iny
-	cpy	#4
+	stx	IX
+
+:3530	inc	DR
+	lda	DR
+	cmp	#4
 	bcc	]lp
+	beq	]lp
 
 	lda	#chrNULL	; put a trailing zero
-	sta	strISSUES,x
+	sta	strISSUES-1,x
 
 *---
 
@@ -849,19 +864,19 @@ levelToDestPoint
 
 :5240	lda	SP
 	beq	:5245
-	dec
+	dec		; -1
 	asl
-	asl
+	asl		; *4
 	clc
-	adc	DR
+	adc	DR	; +1
 	tax
 	lda	tblDIRECTIONS-1,x	; b/c DR is 1..4
 	and	#$ff
-	sta	NX
-:5245	rts
+:5245	sta	NX
+	rts
 
 *-------------------------------
-* 5250 - LA CHANCE
+* 5250 - LES OUVERTURES CACHEES
 *-------------------------------
 
 :5250	lda	#-1
@@ -870,7 +885,7 @@ levelToDestPoint
 	
 	lda	NX
 	bne	:5251
-	sta	GA
+	stz	GA
 	rts
 
 * EC = MIN(SP,NX) * 100 + MAX (SP,NX)
@@ -919,8 +934,7 @@ levelToDestPoint
 	beq	:5252
 
 	stz	GA
-	lda	#14
-	sta	G
+	rts		; G=14 means end of FOR, ie. exit
 
 :5252	inx
 	inx
@@ -1125,6 +1139,7 @@ levelToDestPoint
 	cmp	#4
 	bne	:5302
 	@GET_F	#22
+	cmp	#0
 	bne	:5302
 	lda	#20	; vous tombez dans le ravin
 	jmp	:6500
@@ -1136,6 +1151,7 @@ levelToDestPoint
 	cmp	#4
 	bne	:5303
 	@GET_F	#33
+	cmp	#0
 	bne	:5303
 	lda	#21	; la passerelle cede sous vos pieds
 	jmp	:6500
@@ -1158,6 +1174,7 @@ levelToDestPoint
 	cmp	#4
 	bne	:5304
 	@GET_F	#29
+	cmp	#0
 	bne	:5304
 	lda	#23	; les pieges du temple vous sont fatals
 	jmp	:6500
@@ -1169,11 +1186,11 @@ levelToDestPoint
 	cmp	#1
 	bne	:5304_2
 	@GET_F	#41
+	cmp	#0
 	beq	:5304_2
 	lda	#25
 	sta	SP
 	rts
-
 :5304_2	jsr	:5250
 	lda	GA
 	bne	:5305
@@ -3931,7 +3948,6 @@ CI	ds	2
 DD	ds	2	; Majuscule
 DR	ds	2
 EC	ds	2
-G	ds	2
 GA	ds	2
 GE	ds	2
 GF	ds	2
@@ -3940,10 +3956,6 @@ IX	ds	2
 IY	ds	2
 LP	ds	2
 M$	ds	2	; numero du message
-N1	ds	2
-N2	ds	2
-N3	ds	2
-N4	ds	2
 NX	ds	2
 OI	ds	2
 TR	ds	2

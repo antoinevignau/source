@@ -13,7 +13,7 @@ tblV	dfb	0	; value if not found
 	dfb	1,1,2,2,3,3,4,4,7,7,7
 	dfb	10,11,12,13,14,15,15,16,17,18,19
 	dfb	20,21,22,23,24,25,26,26,27,28,29,29
-	dfb	30,31,31,32,33,34,35,36,37,38,39,39
+	dfb	30,31,31,32,33,34,35,36,36,37,38,39,39
 	dfb	40,41,41,42,43,44,45,46,10,28
 	dfb	90,90,91,91,92,93
 	
@@ -58,6 +58,7 @@ tblVERB	str	'N'	;  1 NORD
 	str	'PASSE'	; 33 PASSER
 	str	'PLACE'	; 34 PLACER
 	str	'PORTE'	; 35 PORTER
+	str	'POSE'	; 36 POSER
 	str	'POSER'	; 36 POSER
 	str	'POUSS'	; 37 POUSSER
 	str	'PREND'	; 38 PRENDRE
@@ -224,7 +225,7 @@ strMESSAGE	asc	'LE CIMETIERE DES OCELOTS'00				;   1
 	asc	'Pied biche'00					;  13
 	asc	'Touche pour revenir'00				;  14
 *	asc	'Commande > '00					;  15
-strCOMMANDE	asc	'00 > '00					;  15
+strCOMMANDE	asc	'00 00 00 > '00					;  15
 strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Je ne comprends pas'00				;  17
 	asc	'Vous ne pouvez pas faire '8d'a ici'00			;  18
@@ -301,8 +302,8 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Le reflet vise une tour '88' l'27'est'00			;  89
 	asc	'Vous voyez un passage au nord'00			;  90
 	asc	'Un passage vers l'27'est s'27'est ouvert'00			;  91
-	asc	''00					;  92 doublon
-	asc	'Un passage vers l'27'est s'27'est ouvert'00			;  93 doublon
+	asc	'Commande non r'8e'alis'8e'e'00				;  92 cha”ne vide
+	asc	'Voulez-vous recommencer ? o/n'00			;  93
 	asc	'Plan complet : autel, pierre, rigoles'00			;  94
 	asc	'Le plan n'27'est pas complet'00			;  95
 	asc	'Des rigoles s'8f'ches apparaissent'00			;  96
@@ -342,7 +343,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'La salle r'8e'sonne, id'8e'al pour jouer de la musique'00		; 130
 	asc	'La grille n'8e'cessite un pied de biche'00			; 131
 	asc	'Il manque un fragment'00				; 132
-	asc	'Les ombres ne s'27'effacent que devant le reflet vert de ton amulette'00	; 133
+	asc	d2'Les ombres ne s'27'effacent que devant le reflet vert de ton amulette'd300	; 133
 	asc	' ne sert '88' rien ici'00				; 134
 	asc	'Vous ne voyez rien de sp'8e'cial'00			; 135
 	asc	'Inserez face a puis entr'8e'e'00			; 136
@@ -362,7 +363,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Le puits a d'8e'j'88' '8e't'8e' fouill'8e'.'00			; 150
 	asc	'Les pi'8f'ges sont maintenant visibles.'00			; 151
 	asc	'Le passage au sud est ouvert.'00			; 152
-	asc	'Voulez-vous quitter ? o/n '00				; 153
+	asc	'Voulez-vous quitter ? o/n'00				; 153
 strDESCRIPTION	ds	48					; 154 - long level description string
 T$	ds	128					; 155 - multi-purpose string
 	dfb	chrNULL

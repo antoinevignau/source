@@ -708,7 +708,7 @@ proWRITEGAME
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
-pGAME	strl	'@/partie'
+pGAME	strl	'@/partie0'
 
 *-------------------------------
 * DATA

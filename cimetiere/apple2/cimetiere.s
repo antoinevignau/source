@@ -74,7 +74,12 @@ MAX_OBJET	=	32
 * THE GAME
 *-------------------------------
 
-GAME	@MODE	#1	; 320x200
+GAME	lda	#SP
+	stal	$300
+	lda	#^SP
+	stal	$302
+
+	@MODE	#1	; 320x200
 	@BORDER	#0;#0
 	@INK	#0;#0	; noir
 	@INK	#1;#26	; blanc
@@ -755,8 +760,14 @@ levelToDestPoint
 
 :5060	lda	MO$1
 	cmp	#90	; CHARGER/LOAD
-	bne	:5070
+	bne	:5065
 	jsr	:6200
+	rts
+
+:5065	lda	MO$1
+	cmp	#92	; RECOMMENCER
+	bne	:5070
+	jsr	:6800
 	rts
 
 * Les directions
@@ -1328,12 +1339,6 @@ levelToDestPoint
 	lda	OI
 	sta	I
 	
-	sep	#$20
-	ldal	$c034
-	inc
-	stal	$c034
-	rep	#$20
-
 	@message	#33	; vous avez pris
 	ldx	OI
 	jsr	:8050	; UN/UNE
@@ -1367,6 +1372,7 @@ levelToDestPoint
 	jmp	:5900
 	
 :5470	@SET_OP	OI;SP
+
 	lda	#34	; objet pose
 	sta	M$
 	jmp	:5900
@@ -1934,7 +1940,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#14	; AUTEL
 	bne	:5544_1
-	lda	#68
+	lda	#68	; il semble attendre une pierre
 	sta	M$
 	jmp	:5898
 :5544_1	lda	SP
@@ -1943,7 +1949,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#71	; RIGOLE
 	bne	:5546
-	lda	#69
+	lda	#69	; elles devaient contenir de l'eau
 	sta	M$
 	jmp	:5898
 	
@@ -1953,7 +1959,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#31	; CRYPTE
 	bne	:5547
-	lda	#70
+	lda	#70	; une empreinte ronde semble attendre...
 	sta	M$
 	jmp	:5898
 
@@ -1963,7 +1969,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#63	; PIERRE
 	bne	:5548
-	lda	#71
+	lda	#71	; elles ont l'air d'avoir perdu le nord
 	sta	M$
 	jmp	:5898
 
@@ -1973,7 +1979,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#37	; ESCALIER
 	bne	:5549
-	lda	#72
+	lda	#72	; vous voyez une inscription
 	sta	M$
 	jmp	:5898
 
@@ -1983,7 +1989,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#76	; SILHOUETTE
 	bne	:5550
-	lda	#73
+	lda	#73	; le gardien semble vouloir vous parler
 	sta	M$
 	jmp	:5898
 
@@ -2073,6 +2079,7 @@ levelToDestPoint
 	bne	:5620
 	lda	MO$1
 	cmp	#40	; REMPLIR
+	bne	:5620
 	lda	MO$2
 	cmp	#44	; GOURDE
 	beq	:5615_1
@@ -2262,8 +2269,8 @@ levelToDestPoint
 	@GET_F	#25
 	cmp	#1
 	bne	:5660
-	@SET_F	#25;#1
-	lda	#88
+	@SET_F	#25;#-1
+	lda	#88	; félins : faites tinter le métal
 	sta	M$
 	jmp	:5898
 	
@@ -2354,9 +2361,7 @@ levelToDestPoint
 	lda	#95	; le plan n'est pas complet
 	sta	M$
 	jmp	:5898
-:5675_1	@GET_F	#23
-	cmp	#255
-	bne	:5680
+:5675_1	@SET_F	#23;#-1
 	lda	#23
 	sta	CI
 	jsr	:5480
@@ -2370,7 +2375,7 @@ levelToDestPoint
 	lda	MO$2
 	cmp	#44	; GOURDE
 	beq	:5680_1
-	cmp	#34
+	cmp	#34	; EAU
 	bne	:5685
 :5680_1	@GET_F	#34
 	beq	:5685
@@ -2388,17 +2393,19 @@ levelToDestPoint
 	cmp	#36
 	bne	:5690
 	lda	MO$1
+	cmp	#44	; UTILISER
+	beq	:5685_1
 	cmp	#11	; ALLUMER
-	bne	:5690
-	lda	MO$2
+	beq	:5690
+:5685_1	lda	MO$2
 	cmp	#84	; TORCHE
 	bne	:5690
 	@GET_F	#20
-	bne	:5685_1
+	bne	:5685_2
 	lda	#98	; mets de l'huile
 	sta	M$
 	jmp	:5898
-:5685_1	@SET_F	#2;#-1
+:5685_2	@SET_F	#2;#-1
 	lda	#2
 	sta	CI
 	jsr	:5480
@@ -2533,6 +2540,7 @@ levelToDestPoint
 	@GET_OP	#31
 	cmp	#255
 	bne	:5720
+	@SET_F	#31;#-1
 	lda	#31
 	sta	CI
 	jsr	:5480
@@ -2723,6 +2731,9 @@ levelToDestPoint
 :5769	lda	SP
 	cmp	#63
 	bne	:5770
+	lda	MO$2
+	cmp	#26	; CLE
+	bne	:5770
 	@GET_OP	#28
 	cmp	#255
 	bne	:5770
@@ -2734,6 +2745,9 @@ levelToDestPoint
 
 :5770	lda	SP
 	cmp	#63
+	bne	:5775
+	lda	MO$2
+	cmp	#26	; CLE
 	bne	:5775
 	@GET_OP	#28
 	cmp	#255
@@ -2769,7 +2783,7 @@ levelToDestPoint
 	cmp	#63
 	bne	:5781
 	lda	MO$1
-	cmp	#31	; ouvrir
+	cmp	#31	; OUVRIR
 	bne	:5785
 	jsr	:6400
 
@@ -2816,7 +2830,6 @@ levelToDestPoint
 	jmp	:5898
 
 :5790	stz	AC
-*	rts
 	lda	#92	; chaîne vide
 	jmp	:5898
 
@@ -2976,7 +2989,8 @@ levelToDestPoint
 	lda	#131	; la grille necessite un pied de biche
 	jmp	:5898
 
-:5811	lda	MO$1
+:5811	jsr	showBORDER
+	lda	MO$1
 	cmp	#28	; LIRE
 	bne	:5812
 	lda	MO$2
@@ -2984,7 +2998,7 @@ levelToDestPoint
 	bne	:5812
 	@GET_OP	#15
 	cmp	#255
-	beq	:5812
+	bne	:5812
 	lda	#132	; il manque un fragment
 	sta	M$
 	jmp	:5898
@@ -2999,6 +3013,7 @@ levelToDestPoint
 	cmp	#47	; INSCRIPTION
 	bne	:5841
 	lda	#133	; les inscriptions ne s'effacent...
+	sta	M$
 	jmp	:5898
 	
 :5841	lda	MO$1
@@ -3073,9 +3088,14 @@ levelToDestPoint
 * 6000 - SAVE GAME
 *-------------------------------
 
-:6000	jsr	saveGAME
+:6000	jsr	slotGAME
+	bcs	:6005
+	jsr	saveGAME
 	bcc	:6010
-	rts
+
+:6005	lda	#92
+	sta	M$
+	jmp	:5900
 
 :6010	lda	#137
 	sta	M$
@@ -3085,9 +3105,14 @@ levelToDestPoint
 * 6200 - LOAD GAME
 *-------------------------------
 
-:6200	jsr	loadGAME
+:6200	jsr	slotGAME
+	bcs	:6205
+	jsr	loadGAME
 	bcc	:6210
-	rts
+
+:6205	lda	#92
+	sta	M$
+	jmp	:5900
 
 :6210	stz	LP
 	stz	VP
@@ -3096,14 +3121,35 @@ levelToDestPoint
 	sta	M$
 	jmp	:5900
 
+*---------------
+
+slotGAME	sep	#$20	; mets le slot de la partie 0..9
+	lda	X$2
+	cmp	#1	; a-t-on mis un caractère ?
+	bne	slotGAME_ERR
+	stz	X$2
+
+	lda	X$2+1	; est-ce un chiffre ?
+	cmp	#'1'
+	bcc	slotGAME_ERR
+	cmp	#'9'+1
+	bcs	slotGAME_ERR
+	sta	pGAME+10
+	rep	#$20
+	clc
+	rts
+slotGAME_ERR	rep	#$20
+	sec
+	rts
+
 *-------------------------------
 * 6400 - VERIFICATION ENIGMES
 *-------------------------------
 
-:6400	ldy	#-1
+:6400	ldy	#0
 	
-	ldx	#0
-]lp	lda	F,x
+	ldx	#1
+]lp	lda	F-1,x
 	and	#$ff
 	bne	:6405
 	tay		; pas realise
@@ -3111,9 +3157,10 @@ levelToDestPoint
 :6405	inx
 	cpx	#MAX_ENIGME
 	bcc	]lp
+	beq	]lp
 
 :6410	cpy	#0	; des manquements ?
-	bne	:6430	; non
+	beq	:6430	; non
 	
 	lda	#139	; il reste des objets ou...
 	sta	M$
@@ -3215,9 +3262,24 @@ GAGNE
 	
 	@INKEY
 	cmp	#chrYES
-	bne	:6520
+	bne	:6710
 	jmp	QUIT
-:6520	jmp	REPLAY
+:6710	jmp	REPLAY
+
+*-------------------------------
+* 6800 - RECOMMENCER
+*-------------------------------
+
+:6800	@CLS	#0
+	@PEN	#0;#1
+	@LOCATE	#0;#7;#17
+	@message	#93	; voulez-vous recommencer ?
+	
+	@INKEY
+	cmp	#chrYES
+	beq	:6810
+	jmp	QUIT
+:6810	jmp	REPLAY
 
 *-------------------------------
 * 7050 - SCENE DESCRIPTION
@@ -3758,15 +3820,38 @@ GETVN_6450	lda	$bdbd,x	; get a char from a list
 *-------------------------------
 
 showSALLE	lda	SP
-	pha
-	PushLong	#strCOMMANDE
+	jsr	getDEBUG
+	sta	strCOMMANDE
+
+	lda	MO$1
+	jsr	getDEBUG
+	sta	strCOMMANDE+3
+	lda	MO$2
+	jsr	getDEBUG
+	sta	strCOMMANDE+6
+	rts
+	
+getDEBUG	pha
+	PushLong	#strDEBUG
 	PushWord	#2
 	PushWord	#FALSE
 	_Int2Dec
 
-	lda	strCOMMANDE
+	lda	strDEBUG
 	ora	#'00'
-	sta	strCOMMANDE
+	rts
+
+*--- Data
+
+strDEBUG	ds	2
+
+*---------------
+
+showBORDER	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
 	rts
 
 *-------------------------------

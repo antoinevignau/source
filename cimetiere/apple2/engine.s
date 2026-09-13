@@ -380,8 +380,6 @@ INPUT_P2	sta	$bdbd,x
 
 doSPC	lda	#143
 	jsr	COUT160
-*	dec	textX
-*	jsr	GOTOXY
 	ldx	lenSTRING
 	lda	#chrSPACE
 	bra	doIT
@@ -392,7 +390,6 @@ doBACK	cpx	#0	; ANTx
 	lda	#143
 	jsr	COUT160
 	
-*	dec	textX
 	dec	textX
 	jsr	GOTOXY
 	
@@ -986,9 +983,6 @@ setSTREAMXY	lda	theSTREAM
 	lda	tblWINDOW,y	; X1
 	dec
 	sta	marginX	; set left X
-*	clc
-*	adc	tblWINDOW+8,y	; + locate X
-*	dec		; -1
 	lda	tblWINDOW+8,y	; new
 	sta	textX
 
@@ -996,9 +990,6 @@ setSTREAMXY	lda	theSTREAM
 	lda	tblWINDOW+4,y	; Y1
 	dec
 	sta	marginY	; set top Y
-*	clc
-*	adc	tblWINDOW+10,y	; + locate Y
-*	dec		; -1
 	lda	tblWINDOW+10,y	; new
 	sta	textY
 
@@ -1187,13 +1178,12 @@ rewriteSTR3	rep	#$20
 LEN	sta	Debut
 
 	ldy	#0
-	sep	#$30
+	sep	#$20
 ]lp	lda	(Debut),y
-	and	#$ff
 	beq	lenEND
 	iny
 	bne	]lp
-lenEND	rep	#$30
+lenEND	rep	#$20
 	tya
 	rts
 
@@ -1239,11 +1229,10 @@ PRINT	sta             theSTREAM
 	stx	GET_CHAR+3
 	rep	#$10
 
-*	PushWord #$0800
-*	PushWord #32768		; Amstrad.8
-*	PushWord #0
+*	PushWord	#$0800
+*	PushWord	#32768		; Amstrad.8
+*	PushWord	#0
 *	_InstallFont
-
 *	PushWord	#modeOr
 *	_SetTextMode
 
@@ -1359,7 +1348,6 @@ COUT0	inc	textX
 *----------- next Y position
 	
 COUT1	clc
-*	lda	marginX	; a new line
 	lda	#DFT_X	; new
 	sta	textX
 
@@ -1377,7 +1365,6 @@ COUT1_1	inc	textY
 *----------- upper left position
 
 COUT2	clc
-*	lda	marginY
 	lda	#DFT_Y	; new
 	sta	textY
 

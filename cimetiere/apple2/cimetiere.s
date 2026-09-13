@@ -192,16 +192,16 @@ REPLAY	@CLS	#0
 
 *---
 
-tblWINDOW1	dw	3,39,21,22	; dialogue
-tblWINDOW2	dw	3,39,24,24	; commande
-tblWINDOW3	dw	29
-	dw	32768+39
+tblWINDOW1	dw	3,38,21,22	; dialogue
+tblWINDOW2	dw	3,38,24,24	; commande
+tblWINDOW3	dw	29	; inventaire plateau
+	dw	32768+38
 	dw	5
-	dw	13	; inventaire plateau
-tblWINDOW4	dw	14
+	dw	13
+tblWINDOW4	dw	14	; objets de la salle
 	dw	39
 	dw	18
-	dw	32768+19	; objets de la salle
+	dw	32768+19
 tblWINDOW5	dw	3,12,18,19	; directions de la salle
 tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
@@ -525,21 +525,6 @@ levelToDestPoint
 
 	stz	I	; flag pour la virgule
 	
-*	lda	SP	; adresse des directions
-*	beq	:3540
-*	dec
-*	asl		; de la salle
-*	asl
-*	clc
-*	adc	#tblDIRECTIONS
-*	sta	dpFROM
-*	
-*	ldx	#0	; cherche une direction valable
-*	txy
-*	sep	#$20
-*]lp	lda	(dpFROM),y
-*	beq	:3530	; pas de direction valable
-
 	lda	#1
 	sta	DR
 	sta	IX

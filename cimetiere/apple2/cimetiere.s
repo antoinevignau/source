@@ -18,7 +18,7 @@ MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
 LEN_WORD	=	5	; but limit to 4
 
-FIRST_ROOM	=	1
+FIRST_ROOM	=	3
 WIN_ROOM	=	64
 
 MAX_AF	=	41
@@ -31,6 +31,11 @@ MAX_OBJET	=	32
 * MACROS
 *-------------------------------
 
+@getmessage	mac
+	lda	]1
+	jsr	getMESSAGE
+	<<<
+	
 @getobjet	mac
 	lda	]1
 	jsr	getOBJET
@@ -294,11 +299,7 @@ tblWINDOW6	dw	3,39,16,16	; nom de la salle
 	
 	@CLS	#1
 	jsr	:7050	; prend la description
-
-	lda	#1	; affiche la
-	sta	DD
-	jsr	:5900
-	stz	DD
+	jsr	:5900	; affiche la
 	
 	lda	SP	; on a changŽ de salle
 	sta	VP
@@ -641,9 +642,8 @@ levelToDestPoint
 	jsr	:4070	; ajoute "Un " ou "Une "
 	dec	I	; on aura besoin d'une virgule
 
-	sty	IY	; sauve Y
-	lda	IX	; index = objet
-	jsr	getOBJET	; A contient @objet
+	sty	IY	; sauve Y, index = objet
+	@getobjet	IX	; A contient @objet
 	ldy	IY	; restaure Y
 	jsr	:4070	; ajoute ˆ la cha”ne
 
@@ -762,11 +762,13 @@ levelToDestPoint
 *-------------------------------
 
 :4530	@CLS	#0
-	@LOCATE	#0;#15;#1	; #0;#35;#1 in MODE 2
+	@LOCATE	#0;#15;#2	; #0;#35;#1 in MODE 2
 	@message	#2
 
 	lda	#3
 	sta	IX
+	
+	lda	#5
 	sta	IY
 	
 	ldx	#1
@@ -775,7 +777,7 @@ levelToDestPoint
 	and	#$ff
 	cmp	#255
 	bne	:4530_NEXT
-	
+
 	@LOCATE	#0;IX;IY
 
 	jsr	:4535
@@ -783,14 +785,22 @@ levelToDestPoint
 	lda	I
 	jsr	printOBJET
 	inc	IY
+	lda	IY
+	cmp	#5+16
+	bcc	:4530_NEXT
 	
+	lda	#5
+	sta	IY
+	lda	#21
+	sta	IX
+
 :4530_NEXT	ldx	I
 	inx
 	cpx	#MAX_OBJET
 	bcc	]lp
 	beq	]lp
 
-	@LOCATE	#0;#11;#23	; #0;#30;#23 in MODE 2
+	@LOCATE	#0;#11;#24	; #0;#30;#23 in MODE 2
 	@message	#14
 	@INKEY
 	
@@ -1478,10 +1488,7 @@ levelToDestPoint
 :5429_1	jsr	:5900
 	@WAIT	#60	; 1 seconde
 	jsr	:7050
-	lda	#1
-	sta	DD
 	jsr	:5900
-	stz	DD
 	rts
 
 :5430	@SET_OP	OI;#-1	; on prend l'objet
@@ -2090,7 +2097,13 @@ levelToDestPoint
 	ldx	OI
 	jsr	:8050	; UN/UNE
 	jsr	PRINT_ALT
-	@objet	OI	; nom de l'objet
+	@getobjet	OI
+	tax		; source string
+	lda	#U$	; destination string
+	jsr	LET	; put source string in U$
+	@LOWER	#U$
+	lda	#U$
+	jsr	PRINT_ALT
 	rts
 
 :5541	lda	SP
@@ -3293,17 +3306,90 @@ levelToDestPoint
 :5853	rts
 
 *-------------------------------
-* 5900 - AFFICHAGE CENTRE
+* 5900 - AFFICHAGE AVEC CESURE
 *-------------------------------
 
-:5898
+widthWINDOW	=	36
 
-:5900	lda	DD
-	bne	:5901
+:5898			; TOINET
+:5900	@PEN	#1;#3
+*	@message	M$
 
-:5901	@PEN	#1;#3
-	@message	M$
+	@getmessage	M$
+	jsr	LEN
+	cmp	#widthWINDOW
+	bcs	:5910
+	@message	M$	; message court, affichage standard
 	rts
+
+:5910	@getmessage	M$	; pointeur
+	tax
+	lda	#T$
+	jsr	LET	; copy vers T$
+	@LEN	#T$	; sauve la...
+
+	lda	#1
+	sta	IY
+	stz	strINDEX
+
+nextLINE	lda	#1
+	sta	IX
+
+	@LOCATE	#1;IX;IY
+	
+nextWORD	ldx	strINDEX
+	jsr	getWORDLENGTH
+	tya
+	clc
+	adc	IX
+	cmp	#widthWINDOW
+	bcc	sameLINE
+	beq	sameLINE
+
+*	lda	#strRETURN	; next line
+*	jsr	PRINT_ALT
+	
+	inc	IY
+	bne	nextLINE
+endofLINE	rts
+
+sameLINE	ldx	strINDEX
+	lda	T$,x
+	and	#$ff
+	sta	strLETTER
+	beq	endofLINE
+	
+	lda	#strLETTER
+	jsr	PRINT_ALT
+	
+	inc	IX
+	inc	strINDEX
+
+	lda	strLETTER
+	and	#$ff
+	cmp	#chrSPACE
+	beq	nextWORD
+	bne	sameLINE
+
+*---
+
+getWORDLENGTH	sep	#$20
+	ldy	#0
+]lp	lda	T$,x
+	cmp	#chrNULL
+	beq	getWL_1
+	cmp	#chrSPACE
+	beq	getWL_1
+	iny
+	inx
+	bne	]lp
+getWL_1	rep	#$20
+	rts
+
+*---
+
+strINDEX	ds	2
+strLETTER	asc	' '00
 
 *-------------------------------
 * 6000 - SAVE GAME
@@ -3744,7 +3830,7 @@ printMESSAGE_1	ldy	#strMESSAGE
 	
 printMESSAGE_9	ldx	#^strMESSAGE
 	lda	theSTREAM
-	jmp	PRINT	; patched JMP/RTS
+	jmp	PRINT
 
 *-------------------------------
 * GET OBJET ADDRESS
@@ -4090,7 +4176,6 @@ DATA_IN
 AC	ds	2
 AD	ds	2	; Pointeur de texte
 CI	ds	2
-DD	ds	2	; Majuscule
 DR	ds	2
 EC	ds	2
 GA	ds	2

@@ -1466,7 +1466,7 @@ STREAM	sta	theSTREAM	; CLS #s is another option
 
 *--- Default strings
 
-strCR	asc	0d00
+strRETURN	asc	0d00
 
 *--- Amstrad
 

@@ -18,7 +18,7 @@ MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
 LEN_WORD	=	5	; but limit to 4
 
-FIRST_ROOM	=	3
+FIRST_ROOM	=	1
 WIN_ROOM	=	64
 
 MAX_AF	=	41
@@ -197,7 +197,10 @@ REPLAY	@CLS	#0
 
 *---
 
-tblWINDOW1	dw	3,38,21,22	; dialogue
+tblWINDOW1	dw	3
+	dw	38
+	dw	21
+	dw	32768+22	; dialogue
 tblWINDOW2	dw	3,38,24,24	; commande
 tblWINDOW3	dw	29	; inventaire plateau
 	dw	32768+38
@@ -845,7 +848,7 @@ levelToDestPoint
 	@PEN	#2;#2
 	@LOCATE	#2;#1;#1	; #0;#3;#24
 	
-	jsr	showSALLE	; oh le vilain debug
+*	jsr	showSALLE	; oh le vilain debug
 
 	@message	#15	; affiche COMMANDE >_
 	@PEN	#2;#1
@@ -1486,7 +1489,8 @@ levelToDestPoint
 	cmp	#16
 	bne	:5430
 :5429_1	jsr	:5900
-	@WAIT	#60	; 1 seconde
+	@WAIT	#120	; 2 secondes
+	@CLS	#1
 	jsr	:7050
 	jsr	:5900
 	rts
@@ -3309,9 +3313,9 @@ levelToDestPoint
 * 5900 - AFFICHAGE AVEC CESURE
 *-------------------------------
 
-widthWINDOW	=	36
+widthWINDOW	=	37
 
-:5898			; TOINET
+:5898
 :5900	@PEN	#1;#3
 *	@message	M$
 
@@ -3346,11 +3350,10 @@ nextWORD	ldx	strINDEX
 	bcc	sameLINE
 	beq	sameLINE
 
-*	lda	#strRETURN	; next line
-*	jsr	PRINT_ALT
-	
 	inc	IY
-	bne	nextLINE
+	lda	IY
+	cmp	#1+2
+	bcc	nextLINE
 endofLINE	rts
 
 sameLINE	ldx	strINDEX
@@ -3554,8 +3557,7 @@ GAGNE
 
 	@SHOWPIC	#picFIN
 	@INKEY
-
-	rts
+	jmp	QUIT
 
 *-------------------------------
 * 6700 - QUITTER

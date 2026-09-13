@@ -227,7 +227,7 @@ strMESSAGE	asc	'LE CIMETIERE DES OCELOTS'00				;   1
 	asc	'Pied biche'00					;  13
 	asc	'Touche pour revenir'00				;  14
 *	asc	'Commande > '00					;  15
-strCOMMANDE	asc	'00 00 00 > '00					;  15
+strCOMMANDE	asc	'> '00					;  15
 strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Je ne comprends pas'00				;  17
 	asc	'Vous ne pouvez pas faire '8d'a ici'00			;  18

@@ -423,9 +423,9 @@ midiSETMARK	dw	3
 
 *--- GS/OS Strings
 
-pSEQ	strl	'@/data/Music.seq'
-pWAV	strl	'@/data/MIDI.wav'
-pBNK	strl	'@/data/MIDI.bnk'
+pSEQ	strl	'@/data/Ambient06.seq'
+pWAV	strl	'@/data/Piano.wav'
+pBNK	strl	'@/data/Piano.bnk'
 
 *--- Memory
 

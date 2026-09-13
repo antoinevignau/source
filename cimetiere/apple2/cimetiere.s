@@ -1489,7 +1489,7 @@ levelToDestPoint
 	cmp	#16
 	bne	:5430
 :5429_1	jsr	:5900
-	@WAIT	#120	; 2 secondes
+	@WAIT	#60	; 1 seconde
 	@CLS	#1
 	jsr	:7050
 	jsr	:5900

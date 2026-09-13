@@ -31,6 +31,11 @@ MAX_OBJET	=	32
 * MACROS
 *-------------------------------
 
+@getobjet	mac
+	lda	]1
+	jsr	getOBJET
+	<<<
+	
 @getvn	mac
 	lda	]1
 	jsr	GETVN
@@ -83,6 +88,7 @@ INTRO	@MODE	#1	; 320x200
 	@INK	#1;#26	; blanc
 	@INK	#2;#9	; vert
 	@INK	#3;#15	; orange
+
 	@WINDOW	#7;#tblWINDOW7
 	@PAPER	#7;#0
 	@PEN	#7;#1
@@ -153,7 +159,6 @@ REPLAY	@CLS	#0
 	@INK	#1;#26	; blanc
 	@INK	#2;#9	; vert
 	@INK	#3;#15	; orange
-	@WINDOW	#7;#tblWINDOW7
 	@PAPER	#0;#0
 	@PEN	#0;#1
 	
@@ -189,8 +194,14 @@ REPLAY	@CLS	#0
 
 tblWINDOW1	dw	3,39,21,22	; dialogue
 tblWINDOW2	dw	3,39,24,24	; commande
-tblWINDOW3	dw	29,39,5,13	; inventaire plateau
-tblWINDOW4	dw	14,39,18,19	; objets de la salle
+tblWINDOW3	dw	29
+	dw	32768+39
+	dw	5
+	dw	13	; inventaire plateau
+tblWINDOW4	dw	14
+	dw	39
+	dw	18
+	dw	32768+19	; objets de la salle
 tblWINDOW5	dw	3,12,18,19	; directions de la salle
 tblWINDOW6	dw	3,39,16,16	; nom de la salle
 
@@ -625,7 +636,9 @@ levelToDestPoint
 	@message	#6	; vous voyez
 	@PEN	#4;#1
 	@LOCATE	#4;#13;#1	; affiche la cha”ne des objets
-	@PRINT	#4;#T$	; print les objets de la salle
+	@LET	#U$;#T$	; LET U$ = T$
+	@LOWER	#U$
+	@PRINT	#4;#U$	; print les objets de la salle
 	rts
 
 * Ajout des objets
@@ -1495,7 +1508,13 @@ levelToDestPoint
 	ldx	OI
 	jsr	:8050	; UN/UNE
 	jsr	PRINT_ALT	; nom de l'objet
-	@objet	OI
+	@getobjet	OI
+	tax		; source string
+	lda	#U$	; destination string
+	jsr	LET	; put source string in U$
+	@LOWER	#U$
+	lda	#U$
+	jsr	PRINT_ALT
 	rts
 
 *-------------------------------
@@ -1577,7 +1596,13 @@ levelToDestPoint
 	ldx	OI
 	jsr	:8050	; UN/UNE
 	jsr	PRINT_ALT	; nom de l'objet
-	@objet	OI
+	@getobjet	OI
+	tax		; source string
+	lda	#U$	; destination string
+	jsr	LET	; put source string in U$
+	@LOWER	#U$
+	lda	#U$
+	jsr	PRINT_ALT
 	rts
 
 *-------------------------------
@@ -3832,6 +3857,8 @@ GETVN	sta	GETVN_6400+1	; pointeur vers le buffer
 
 	ldx	#0	; cherche le premier caractere
 ]lp	jsr	GETVN_6400
+	cmp	#chrNULL
+	beq	:6021
 	cmp	#chrRETURN
 	beq	:6021
 	cmp	#chrSPACE
@@ -3846,6 +3873,8 @@ GETVN	sta	GETVN_6400+1	; pointeur vers le buffer
 
 :6022	ldy	#1	; longueur du mot
 ]lp	jsr	GETVN_6400
+	cmp	#chrNULL
+	beq	:6024
 	cmp	#chrRETURN
 	beq	:6024
 	cmp	#chrSPACE	; 0 1 B 1 2
@@ -3865,6 +3894,8 @@ GETVN	sta	GETVN_6400+1	; pointeur vers le buffer
 * 3. cherche le second non espace
 
 ]lp	jsr	GETVN_6400
+	cmp	#chrNULL
+	beq	:6100
 	cmp	#chrRETURN
 	beq	:6100
 	cmp	#chrSPACE
@@ -3878,6 +3909,8 @@ GETVN	sta	GETVN_6400+1	; pointeur vers le buffer
 
 :6032	ldy	#1
 ]lp	jsr	GETVN_6400
+	cmp	#chrNULL
+	beq	:6034
 	cmp	#chrRETURN
 	beq	:6034
 	cmp	#chrSPACE

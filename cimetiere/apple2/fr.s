@@ -368,6 +368,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Voulez-vous quitter ? o/n'00				; 153
 strDESCRIPTION	ds	48					; 154 - long level description string
 T$	ds	128					; 155 - multi-purpose string
+U$	ds	128					; 156 - multi-purpose string
 	dfb	chrNULL
 
 *-------------------------------

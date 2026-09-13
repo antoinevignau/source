@@ -157,6 +157,11 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 	jsr	LOCATE
 	<<<
 	
+@LOWER	mac
+	lda	]1
+	jsr	LOWER
+	<<<
+
 @MODE	mac
 	lda	]1
 	jsr	MODE
@@ -362,7 +367,7 @@ doNEXT	ldx	lenSTRING
 	bcc	INPUT2
 
 doEXIT	sep	#$20
-	lda	#chrRETURN	; put a final return
+	lda	#chrNULL	; put a final \0
 INPUT_P2	sta	$bdbd,x
 	rep	#$20
 	stx	lenSTRING
@@ -660,14 +665,14 @@ LEFT_END	rep	#$20	; 16-bit A
 LET	stx	LET_1+1	; source variable
 	sta	LET_2+1	; destination variable
 
-	sep	#$30	; full 8-bit
+	sep	#$20	; full 8-bit
 	ldx	#0	; copy string
 LET_1	lda	$bdbd,x
 LET_2	sta	$bdbd,x
 	beq	LET_END	; and its final zero
 	inx
 	bne	LET_1	; loop mod 256
-LET_END	rep	#$30	; return in 16-bits
+LET_END	rep	#$20	; return in 16-bits
 	rts
 	
 *-------------------------------
@@ -998,9 +1003,21 @@ setSTREAMXY	lda	theSTREAM
 	sta	textY
 
 	lda	tblWINDOW+2,y	; set max X/Y
+	and	#%01111111_11111111
 	sta	maxX
 	lda	tblWINDOW+6,y
+	and	#%01111111_11111111
 	sta	maxY
+
+* If flagX is set, we exit the PRINT routine at the right of the window
+* If flagY is set, we exit the PRINT routine at the bottom of the window
+
+	lda	tblWINDOW+2,y	; set flag X/Y
+	and	#%10000000_00000000
+	sta	flagX
+	lda	tblWINDOW+6,y
+	and	#%10000000_00000000
+	sta	flagY
 	rts
 
 *-----------------------------------
@@ -1146,15 +1163,21 @@ PEN	asl	; *16
 UPPER	sta	rewriteSTR1+1	; save pointer
 	sta	rewriteSTR2+1
 	
-	sep	#$30	; from lower to upper
+	sep	#$20	; from lower to upper
 	ldx	#0
-rewriteSTR1	ldy	$bdbd,x
-	lda	tblKEY,y
+rewriteSTR1	lda	$bdbd,x
+	cmp	#'a'
+	bcc	rewriteSTR2
+	cmp	#'z'+1
+	bcs	rewriteSTR2
+	sec
+	sbc	#' '
 rewriteSTR2	sta	$bdbd,x	; auto-mod code :-(
+	cmp	#chrNULL
+	beq	rewriteSTR3
 	inx
-	cpx	lenSTRING
-	bcc	rewriteSTR1
-	rep	#$30
+	bra	rewriteSTR1
+rewriteSTR3	rep	#$20
 	rts
 
 *-----------------------------------
@@ -1172,6 +1195,30 @@ LEN	sta	Debut
 	bne	]lp
 lenEND	rep	#$30
 	tya
+	rts
+
+*-----------------------------------
+* LOWER str1,str2
+* Makes a string lowercase
+
+LOWER	sta	lowerSTR1+1	; save pointer
+	sta	lowerSTR2+1
+	
+	sep	#$20	; from upper to lower
+	ldx	#0
+lowerSTR1	lda	$bdbd,x
+	cmp	#'A'
+	bcc	lowerSTR2
+	cmp	#'Z'+1
+	bcs	lowerSTR2
+	clc
+	adc	#' '
+lowerSTR2	sta	$bdbd,x	; auto-mod code :-(
+	cmp	#chrNULL
+	beq	lowerSTR3
+	inx
+	bra	lowerSTR1
+lowerSTR3	rep	#$20
 	rts
 
 *-----------------------------------
@@ -1207,11 +1254,12 @@ PRINT_INNER	jsr	setSTREAMPAPER	; set the background color
 PRINT_LOOP	jsr	GET_CHAR	; get a character
 	cmp	#eEOD
 	bne	PRINT1	; end of string
-	rts
+PRINT_EXIT	rts
 
 PRINT1	cmp	#chrRET	; >$0d, print char
 	bcc	PRINT_FN
 	jsr	COUT	; print character
+	bcs	PRINT_EXIT	; if flagX or flagY is met
 	bra	PRINT_LOOP	; and loop
 
 PRINT_FN	cmp	#eINK	; handle INK change
@@ -1305,34 +1353,45 @@ COUT0	inc	textX
 	clc		; new
 	adc	marginX	; new
 	cmp	maxX
-	bcc	COUT3
-	beq	COUT3
+	bcc	COUT3_CONT
+	beq	COUT3_CONT
 
 *----------- next Y position
 	
-COUT1
+COUT1	clc
 *	lda	marginX	; a new line
 	lda	#DFT_X	; new
 	sta	textX
 
-	inc	textY
+	lda	flagX	; flagX is active and we're
+	bmi	COUT3_END	; at the end of a line...
+
+COUT1_1	inc	textY
 	lda	textY
 	clc		; new
 	adc	marginY	; new
 	cmp	maxY
-	bcc	COUT3
-	beq	COUT3
+	bcc	COUT3_CONT
+	beq	COUT3_CONT
 
 *----------- upper left position
 
-COUT2
+COUT2	clc
 *	lda	marginY
 	lda	#DFT_Y	; new
 	sta	textY
 
+	lda	flagY	; flagY is active and we're
+	bpl	COUT3_CONT	; at the end of a line..
+
 *----------- update cursor location
 
-COUT3	lda	theSTREAM
+COUT3_END	sec
+	hex	24
+COUT3_CONT	clc
+
+	php
+	lda	theSTREAM
 	asl
 	asl
 	asl
@@ -1342,6 +1401,7 @@ COUT3	lda	theSTREAM
 	sta	tblWINDOW+8,y
 	lda	textY
 	sta	tblWINDOW+10,y
+	plp
 	rts
 
 *-------------------------------
@@ -1465,6 +1525,8 @@ marginY         ds              2
 shrX	ds	2	; x-pixel cursor location
 shrY	ds	2	; y-pixel cursor location
 theFULLCOLOR	ds	2	; 16-bit color index for screen cleaning
+flagX	ds	2	; bit 15 set exits display
+flagY	ds	2	; bit 15 set exits display
 
 maxX	ds	2	; 20/40/80
 maxY	ds	2	; 25
@@ -1475,25 +1537,6 @@ theIIGSWIDTH	ds	2	; 320/320/640
 theIIGSMODE	ds	2	; 320/640
 charWIDTH	dw	DFT_CHAR_WIDTH	; column increment in pixels
 charHEIGHT	dw	DFT_CHAR_HEIGHT	; line increment in pixels
-
-*---
-
-tblKEY	hex	00,01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F
-	hex	10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F
-	hex	20,21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F
-	hex	30,31,32,33,34,35,36,37,38,39,3A,3B,3C,3D,3E,3F
-	hex	40,41,42,43,44,45,46,47,48,49,4A,4B,4C,4D,4E,4F
-	hex	50,51,52,53,54,55,56,57,58,59,5A,5B,5C,5D,5E,5F
-	hex	60,41,42,43,44,45,46,47,48,49,4A,4B,4C,4D,4E,4F
-	hex	50,51,52,53,54,55,56,57,58,59,5A,7B,7C,7D,7E,7F
-	hex	80,81,82,83,84,85,86,87,41,41,41,8B,8C,43,45,45
-	hex	45,45,92,93,49,49,96,97,98,4F,9A,9B,9C,55,55,9F
-	hex	A0,A1,A2,A3,A4,A5,A6,A7,A8,A9,AA,AB,AC,AD,AE,AF
-	hex	B0,B1,B2,B3,B4,B5,B6,B7,B8,B9,BA,BB,BC,BD,BE,BF
-	hex	C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
-	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,DB,DC,DD,DE,DF
-	hex	E0,C1,C2,C3,C4,C5,C6,C7,C8,C9,CA,CB,CC,CD,CE,CF
-	hex	D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,DA,FB,FC,FD,FE,FF
 
 *--- Amstrad fake font 160
 

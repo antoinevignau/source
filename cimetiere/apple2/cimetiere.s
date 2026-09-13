@@ -86,7 +86,7 @@ INTRO	@MODE	#1	; 320x200
 	@WINDOW	#7;#tblWINDOW7
 	@PAPER	#7;#0
 	@PEN	#7;#1
-
+	
 	@SHOWPIC	#picTITRE
 
 	stz	IX
@@ -111,6 +111,8 @@ INTRO_2	tax
 	lda	#7	; S =  6
 	jsr	LOCATE
 	
+	@INKEY_TRUE
+	bcc	INTRO_END2
 	
 	ldx	IY
 	ldy	tblINTRO,x
@@ -118,9 +120,10 @@ INTRO_2	tax
 	lda	#7
 	jsr	PRINT
 	@WAIT	#120
-	@INKEY_TRUE
-	bcc	INTRO_END
 
+	@INKEY_TRUE
+	bcc	INTRO_END2
+	
 	inc	IY
 	inc	IY
 	lda	IY
@@ -133,7 +136,7 @@ INTRO_2	tax
 	bcc	]lp
 
 INTRO_END	@WAIT	#120
-	rts
+INTRO_END2	rts
 
 *---
 
@@ -688,7 +691,9 @@ levelToDestPoint
 	
 	@LOCATE	#3;#1;IY
 
-	lda	I
+	jsr	:4525	; mets la bonne couleur
+	
+:4502	lda	I
 	ldx	#8	; index pour Clé bronze
 	cmp	#4
 	beq	:4509
@@ -726,6 +731,34 @@ levelToDestPoint
 
 :4520	rts
 
+* Couleur du PEN
+
+:4525	@PEN	#3;#1	; par défaut en blanc sauf si...
+
+	@GET_F	#26	; le drapeau 26 est activé et...
+	cmp	#255
+	bne	:4528
+
+	@GET_OP	#11	; qu'on possède... masque
+	cmp	#255
+	beq	:4526
+	@GET_OP	#13	; ou amulette...
+	cmp	#255
+	beq	:4526
+	@GET_OP	#24	; ou dent
+	cmp	#255
+	bne	:4528
+
+:4526	lda	I	; est-on sur l'index de l'objet ?
+	cmp	#11
+	beq	:4527
+	cmp	#13
+	beq	:4527
+	cmp	#24
+	bne	:4528
+:4527	@PEN	#3;#3	; oui, mets en orange
+:4528	rts
+	
 *-------------------------------
 * 4530 - INVENTAIRE (COMMANDE)
 *-------------------------------
@@ -747,6 +780,8 @@ levelToDestPoint
 	
 	@LOCATE	#0;IX;IY
 
+	jsr	:4535
+	
 	lda	I
 	jsr	printOBJET
 	inc	IY
@@ -765,6 +800,34 @@ levelToDestPoint
 	stz	LP
 	stz	VP
 	rts
+
+* Couleur du PEN
+
+:4535	@PEN	#0;#1	; par défaut en blanc sauf si...
+
+	@GET_F	#26	; le drapeau 26 est activé et...
+	cmp	#255
+	bne	:4538
+
+	@GET_OP	#11	; qu'on possède... masque
+	cmp	#255
+	beq	:4536
+	@GET_OP	#13	; ou amulette...
+	cmp	#255
+	beq	:4536
+	@GET_OP	#24	; ou dent
+	cmp	#255
+	bne	:4538
+
+:4536	lda	I	; est-on sur l'index de l'objet ?
+	cmp	#11
+	beq	:4537
+	cmp	#13
+	beq	:4537
+	cmp	#24
+	bne	:4538
+:4537	@PEN	#0;#3	; oui, mets en orange
+:4538	rts
 
 *-------------------------------
 * 5000 - SAISIE DE LA COMMANDE
@@ -1304,11 +1367,11 @@ levelToDestPoint
 	and	#$ff
 	cmp	MO$2
 	bne	:5400_3	; non, continue
-	lda	OP-1,x
+:5400_2	lda	OP-1,x
 	and	#$ff	; il est dans la salle ?
 	cmp	SP
-	bne	:5400_3
-:5400_2	stx	OI	; oui
+	bne	:5400_3	; non
+	stx	OI	; oui
 	jmp	:5425	; saute la suite
 	
 :5400_3	inx		; prochain objet
@@ -1328,10 +1391,10 @@ levelToDestPoint
 	sta	M$
 	jmp	:5898
 
-:5410_1	lda	OI
-	bne	:5412
+:5410_1	lda	OI	; on n'a pas trouvé l'objet
+	bne	:5412	; dans la salle...
 
-	stz	I
+	stz	I	; il faut le dire...
 	ldx	#1	; est-ce que le nom
 ]lp	lda	tblOV1-1,x	; est un objet ?
 	and	#$ff
@@ -2737,7 +2800,7 @@ levelToDestPoint
 	@GET_OP	#26
 	cmp	#255
 	bne	:5745
-	@SET_F	#26;#-1
+	@SET_F	#26;#-1	; force l'inventaire en orange
 	lda	#26
 	sta	CI
 	jsr	:5480

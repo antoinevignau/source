@@ -398,9 +398,9 @@ strOBJET	asc	'Pelle'00		;  1 61
 	asc	'Fl'9e'te'00		;  8 39
 	asc	'Boussole'00		;  9 18
 	asc	'Miroir'00		; 10 57
-	asc	'Masque'00		; 11 55 *
+	asc	'Masque'00		; 11 55 *	-> orange
 	asc	'M'8e'daille de garde'00	; 12 56
-	asc	'Amulette'00		; 13 10 *
+	asc	'Amulette'00		; 13 10 *	-> orange
 	asc	'Gourde'00		; 14 44
 	asc	'Plan d'8e'chir'8e00	; 15 65
 	asc	'Craie'00		; 16 29
@@ -411,7 +411,7 @@ strOBJET	asc	'Pelle'00		;  1 61
 	asc	'Crochet'00		; 21 30
 	asc	'Planche'00		; 22 65
 	asc	'Pierre grav'8e'e'00	; 23 63
-	asc	'Dent'00		; 24 33 *
+	asc	'Dent'00		; 24 33 *	-> orange
 	asc	'Sceau de cire'00	; 25 74
 	asc	'Livre humide'00	; 26 51
 	asc	'Fragment de st'8f'le'00	; 27 95 81

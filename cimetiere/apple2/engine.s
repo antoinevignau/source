@@ -470,7 +470,7 @@ INKEY_TRUE_A$	sta	saveDUMMY_ADR+1
 
 	lda	taskREC
 	cmp	#keyDownEvt
-	beq	INKEY_FALSE
+	bne	INKEY_FALSE
 
 	lda	taskMESSAGE
 	jsr	saveDUMMY

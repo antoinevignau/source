@@ -217,7 +217,7 @@ okSOUND
 	PushLong	#117117
 	_SetRandSeed
 
-*--- Ask for 2*64K
+*--- Ask for 64K
 
 	jsr	make64KB
 	bcc	okMEM
@@ -231,13 +231,7 @@ koMEM	pha
 	pla
 	bra	QUIT
 
-okMEM	sty	ptrUNPACK
-	stx	ptrUNPACK+2
-
-	jsr	make64KB
-	bcs	koMEM
-	
-	sty	ptrIMAGE
+okMEM	sty	ptrIMAGE
 	sty	levelToSourceLocInfo+2	; for the level data
 	stx	ptrIMAGE+2		; from 2-bit to 4-bit
 	stx	levelToSourceLocInfo+4
@@ -262,8 +256,8 @@ okMEM	sty	ptrUNPACK
 
 	jsr	initMIDI
 	jsr	doMUSIK
-
-REPLAY	jmp	GAME
+	jsr	INTRO
+	jmp	GAME
 	
 *--- THE EXIT
 
@@ -362,153 +356,6 @@ make64KB	pha
 	pla		; we do not keep track of the handle
 	pla
 	rts
-
-*------------------------------
-* UNPACK LZ4 FILE
-*------------------------------
-
-* unpackLZ4
-*  Unpacks a LZ4 file
-*  Uses the two pointers:
-*   - ptrUNPACK: packed img (MUST BE AT $0000)
-*   - ptrIMAGE: temp unpack zone
-*
-* Entry:
-*  A: packed data size
-* XY: points to destination address
-*     if 0, keep ptrIMAGE
-*
-* Exit:
-*  lenDATA: unpacked data size
-*
-
-unpackLZ4	sta	LZ4_Limit+1
-	sty	LZ4_pointer
-	stx	LZ4_pointer+2
-	sep	#$20
-
-	lda	ptrUNPACK+2		; Source
-	sta	LZ4_Literal_3+2
-	sta	LZ4_ReadToken+3
-	sta	LZ4_Match_1+3
-	sta	LZ4_GetLength_1+3
-
-	lda	ptrIMAGE+2		; Destination
-	sta	LZ4_Literal_3+1
-	sta	LZ4_Match_5+1
-	sta	LZ4_Match_5+2
-
-	rep	#$20
-
-*--
-
-	ldy	#0	; Init Target unpacked Data offset
-	ldx	#16	; Offset after header
-
-LZ4_ReadToken	LDAL	$AA0000,X	; Read Token Byte
-	INX
-	STA	LZ4_Match_2+1
-	
-*----------------
-
-LZ4_Literal	AND	#$00F0	; >>> Process Literal Bytes <<<
-	BEQ	LZ4_Limit	; No Literal
-	CMP	#$00F0
-	BNE	LZ4_Literal_1
-	JSR	LZ4_GetLengthLit	; Compute Literal Length with next bytes
-	BRA	LZ4_Literal_2
-LZ4_Literal_1	LSR		; Literal Length use the 4 bit
-	LSR
-	LSR
-	LSR
-
-LZ4_Literal_2	DEC		; Copy A+1 Bytes
-LZ4_Literal_3	MVN	$AA,$BB	; Copy Literal Bytes from packed data buffer
-	PHK		; X and Y are auto incremented
-	PLB
-
-*----------------
-
-LZ4_Limit	CPX	#$AAAA	; End Of Packed Data buffer ?
-	BEQ	LZ4_End
-
-*----------------
-
-LZ4_Match	TYA		; >>> Process Match Bytes <<<
-	SEC
-LZ4_Match_1	SBCL	$AA0000,X	; Match Offset
-	INX
-	INX
-	STA	LZ4_Match_4+1
-
-LZ4_Match_2	LDA	#$0000	; Current Token Value
-	AND	#$000F
-	CMP	#$000F
-	BNE	LZ4_Match_3
-	JSR	LZ4_GetLengthMat	; Compute Match Length with next bytes
-LZ4_Match_3	CLC
-	ADC	#$0003	; Minimum Match Length is 4 (-1 for the MVN)
-	PHX
-LZ4_Match_4	LDX	#$AAAA	; Match Byte Offset
-LZ4_Match_5	MVN	$BB,$BB	; Copy Match Bytes from unpacked data buffer
-	PHK		; X and Y are auto incremented
-	PLB
-	PLX
-	BRA	LZ4_ReadToken
-
-*----------------
-
-LZ4_GetLengthLit
-	LDA	#$000F	; Compute Variable Length (Literal or Match)
-LZ4_GetLengthMat
-	STA	LZ4_GetLength_2+1
-LZ4_GetLength_1
-	LDAL	$AA0000,X	; Read Length Byte
-	INX
-	AND	#$00FF
-	CMP	#$00FF
-	BNE	LZ4_GetLength_3
-	CLC
-LZ4_GetLength_2
-	ADC	#$000F
-	STA	LZ4_GetLength_2+1
-	BRA	LZ4_GetLength_1
-LZ4_GetLength_3
-	ADC	LZ4_GetLength_2+1
-	RTS
-
-*----------------
-
-LZ4_End	sty	LZ4_length	; Y = length of unpacked data
-
-*--- Patch for color 2...
-
-	lda	ptrIMAGE
-	sta	Debut
-	lda	ptrIMAGE+2
-	sta	Debut+2
-	
-	ldy	#$7e04	; color 2 of palette 0
-	lda	#$0800	; new brown
-	sta	[Debut],y
-
-*--- pas bien le patch en dur...
-
-	lda	LZ4_pointer
-	ora	LZ4_pointer+2
-	bne	LZ4_copy
-	rts
-
-LZ4_copy	PushLong	ptrIMAGE	; the best place
-	PushLong	LZ4_pointer	; to save picture
-	PushLong	LZ4_length
-	_BlockMove
-	rts
-
-*--- Data
-
-LZ4_pointer	ds	4
-LZ4_length	ds	4
 
 *------------------------------
 * LOAD FILE
@@ -724,7 +571,6 @@ bramBORDER	ds	2
 firmBORDER	ds	2
 fgSOUND	ds	2
 
-ptrUNPACK	ds	4
 ptrIMAGE	ds	4
 ptrSCREEN	adrl	ptr012000
 
@@ -776,19 +622,6 @@ proCLOSE	dw	1	; pcount
 proQUIT	dw	2	; pcount
 	ds	4	; pathname
 	ds	2	; flags
-
-*-------------------------------
-* OTHER CODE
-*-------------------------------
-
-INIT_VARIABLES	sep	#$20
-	ldx	#DATA_IN
-]lp	stz	|$0000,x
-	inx
-	cpx	#DATA_OUT
-	bcc	]lp
-	rep	#$20
-	rts
 
 *-------------------------------
 * OTHER FILES

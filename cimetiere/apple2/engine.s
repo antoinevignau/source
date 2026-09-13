@@ -150,11 +150,6 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 	jsr	LET
 	<<<
 
-@LOAD	mac
-	lda	]1
-	jsr	LOAD
-	<<<
-
 @LOCATE	mac
 	lda	]1
 	ldx	]2
@@ -260,34 +255,14 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 	<<<
 	
 @SHOWPIC	mac
+                ldx             #^]1
+	ldy	#]1
 	jsr	SHOWPIC
 	<<<
 
 *-------------------------------
 * ENGINE
 *-------------------------------
-
-LOAD	ldx	ptrUNPACK+2
-	ldy	ptrUNPACK
-	jsr	loadFILE
-	bcc	LOAD1
-	
-	@PRINT	#0;strLOADERR
-	rts
-
-LOAD1	lda	proEOF
-	ldx	#0
-	txy
-	jmp	unpackLZ4
-
-*---
-
-strLOADERR	dfb	eINK,0,0
-	dfb	eINK,2,6
-	dfb	eCLS
-	dfb	ePEN,2
-	asc	'Erreur de chargement'
-	dfb	eEOD
 
 *-------------------------------
 * SOUND G,H,I
@@ -336,7 +311,8 @@ waveVOLUME	dw	255	; volSetting
 * SHOWPIC
 * Displays a SHR picture
 
-SHOWPIC	PushLong	ptrIMAGE
+SHOWPIC	phx
+	phy
 	PushLong	ptrSCREEN
 	PushLong	#32768
 	_BlockMove

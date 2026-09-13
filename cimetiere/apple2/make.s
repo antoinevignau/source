@@ -9,6 +9,10 @@
 
 	ASM	iigs.s
 	KND	$0000
-	SNA	LeCimetiereDesOcelots
+	SNA	LeCimetiere
+
+	ASM	images.s
+	KND	$0000
+	SNA	DesOcelots
 
 * END

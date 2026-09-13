@@ -11,6 +11,9 @@
 * EQUATES
 *-------------------------------
 
+	ext	picTITRE
+	ext	picFIN
+	
 MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
 LEN_WORD	=	5	; but limit to 4
@@ -71,25 +74,86 @@ MAX_OBJET	=	32
 	<<<
 
 *-------------------------------
-* THE GAME
+* THE INTRO
 *-------------------------------
 
-GAME	lda	#SP
-	stal	$300
-	lda	#^SP
-	stal	$302
-
-	@MODE	#1	; 320x200
+INTRO	@MODE	#1	; 320x200
 	@BORDER	#0;#0
 	@INK	#0;#0	; noir
 	@INK	#1;#26	; blanc
 	@INK	#2;#9	; vert
 	@INK	#3;#15	; orange
+	@WINDOW	#7;#tblWINDOW7
+	@PAPER	#7;#0
+	@PEN	#7;#1
+
+	@SHOWPIC	#picTITRE
+
+	stz	IX
+]lp	stz	IY
+
+INTRO_1	ldx	IY
+	lda	tblINTRO,x
+	jsr	LEN	; get string length
+	pha
 	
+	@CLS	#7
+
+	lda	#DFT_WIDTH	; X = (WIDTH - LEN) / 2
+	sec
+	sbc	1,s
+	lsr
+	bne	INTRO_2
+	inc
+INTRO_2	tax
+	pla
+	ldy	#1	; Y = 1
+	lda	#7	; S =  6
+	jsr	LOCATE
+	
+	
+	ldx	IY
+	ldy	tblINTRO,x
+	ldx	#^tblINTRO
+	lda	#7
+	jsr	PRINT
+	@WAIT	#120
+	@INKEY_TRUE
+	bcc	INTRO_END
+
+	inc	IY
+	inc	IY
+	lda	IY
+	cmp	#5*2
+	bcc	INTRO_1
+	
+	inc	IX
+	lda	IX
+	cmp	#3
+	bcc	]lp
+
+INTRO_END	@WAIT	#120
+	rts
+
+*---
+
+tblWINDOW7	dw	1,40,25,25
+	
+*-------------------------------
+* THE GAME
+*-------------------------------
+
+GAME
+REPLAY	@CLS	#0
+	@MODE	#1
+	@INK	#0;#0	; noir
+	@INK	#1;#26	; blanc
+	@INK	#2;#9	; vert
+	@INK	#3;#15	; orange
+	@WINDOW	#7;#tblWINDOW7
 	@PAPER	#0;#0
 	@PEN	#0;#1
-	@CLS	#0
-
+	
 	@WINDOW	#1;#tblWINDOW1	; pour les dialogues
 	@PAPER	#1;#0
 	@PEN	#1;#1
@@ -3313,8 +3377,7 @@ slotGAME_ERR	rep	#$20
 *-------------------------------
 
 GAGNE
-:6600	@MODE	#1
-	@CLS	#0
+:6600	@CLS	#0
 	@PEN	#0;#3
 	@LOCATE	#0;#15;#6
 	@message	#145	; Bravo
@@ -3330,7 +3393,8 @@ GAGNE
 	@message	#149	; entrer dans la salle
 	@INKEY
 
-* Load FIN.SCR
+	@SHOWPIC	#picFIN
+	@INKEY
 
 	rts
 

@@ -491,3 +491,14 @@ strLIEU	asc	'Clairi'8f're de l'27'Ocelot'00	;  1
 	asc	'Porte des F'8e'lins'00	; 63
 	asc	'Cim'8f'tiere des Ocelots'00	; 64
 	dfb	chrNULL
+
+*--- Introduction
+
+tblINTRO	da	strINTRO1,strINTRO2,strINTRO3,strINTRO4,strINTRO5
+*	asc	'1234567890123456789012345678901234567890'
+strINTRO1	asc	'Le Cimeti'8f're des Ocelots'00
+strINTRO2	asc	'd'27'apr'8f's une id'8e'e originale de Turk182!'00
+strINTRO3	asc	'Version Apple IIgs'00
+strINTRO4	asc	'Antoine Vignau & Olivier Zardini'00
+strINTRO5	asc	'(c) 2026, Brutal Deluxe Software'00
+	

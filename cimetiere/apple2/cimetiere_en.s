@@ -157,7 +157,7 @@ tblWINDOW7	dw	1,40,25,25
 * THE GAME
 *-------------------------------
 
-GAME
+GAME	
 REPLAY	@CLS	#0
 	@MODE	#1
 	@INK	#0;#0	; noir
@@ -848,7 +848,7 @@ levelToDestPoint
 	@PEN	#2;#2
 	@LOCATE	#2;#1;#1	; #0;#3;#24
 	
-	jsr	showSALLE	; oh le vilain debug
+*	jsr	showSALLE	; oh le vilain debug
 
 	@message	#15	; affiche COMMANDE >_
 	@PEN	#2;#1
@@ -3676,7 +3676,7 @@ GAGNE
 	cmp	#255
 	beq	:7054_3
 	@GET_F	#16
-	beq	:7054_4
+	beq	:7060
 :7054_3	lda	#152	; le passage au sud est ouvert
 	sta	M$
 :7054_4	rts
@@ -3691,7 +3691,7 @@ GAGNE
 	iny
 	cpy	#48
 	bcc	]lp
-	
+
 	lda	#154	; description ˆ afficher
 	sta	M$
 	rts

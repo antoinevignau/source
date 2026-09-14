@@ -919,7 +919,7 @@
  1133 |  2 cimetiere.s    111 | Code        | 00 |         |    3 | 00/04F0 : A9 07 00    |                       lda          #7                   
  1134 |  2 cimetiere.s    111 | Code        | 00 |  2      |    3 | 00/04F3 : 20 0A 33    |                       jsr          CLS                  
  1135 |  2 cimetiere.s    112 | Empty       | 00 |         |    0 | 00/04F6               |                                                         
- 1136 |  2 cimetiere.s    113 | Code        | 00 |         |    3 | 00/04F6 : A9 28 00    |                       lda          #{40}                ; X = (WIDTH - LEN) / 2
+ 1136 |  2 cimetiere.s    113 | Code        | 00 |         |    3 | 00/04F6 : A9 28 00    |                       lda          #{40}                ; X = (WIDTH - LEN) / 2 + 1
  1137 |  2 cimetiere.s    114 | Code        | 00 |         |    1 | 00/04F9 : 38          |                       sec                               
  1138 |  2 cimetiere.s    115 | Code        | 00 |         |    2 | 00/04FA : E3 01       |                       sbc          1,s                  
  1139 |  2 cimetiere.s    116 | Code        | 00 |         |    1 | 00/04FC : 4A          |                       lsr                               
@@ -5669,7 +5669,7 @@
  5841 |  2 cimetiere.s   3670 | Macro       | 00 |         |    0 | 00/2D3B               |                       @GET_F       #16                  
  5842 |  2 cimetiere.s   3670 | Code        | 00 |         |    3 | 00/2D3B : A2 10 00    |                       ldx          #16                  
  5843 |  2 cimetiere.s   3670 | Code        | 00 |  2      |    3 | 00/2D3E : 20 73 2E    |                       jsr          GET_F                
- 5844 |  2 cimetiere.s   3671 | Code        | 00 |         |    2 | 00/2D41 : F0 06       |                       beq          _7054_4              
+ 5844 |  2 cimetiere.s   3671 | Code        | 00 |         |    2 | 00/2D41 : F0 07       |                       beq          _7060                
  5845 |  2 cimetiere.s   3672 | Code        | 00 |         |    3 | 00/2D43 : A9 98 00    | _7054_3               lda          #152                 ; le passage au sud est ouvert
  5846 |  2 cimetiere.s   3673 | Code        | 00 |  2      |    3 | 00/2D46 : 8D 64 30    |                       sta          M$                   
  5847 |  2 cimetiere.s   3674 | Code        | 00 |         |    1 | 00/2D49 : 60          | _7054_4               rts                               

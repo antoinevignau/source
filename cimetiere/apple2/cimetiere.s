@@ -110,7 +110,7 @@ INTRO_1	ldx	IY
 	
 	@CLS	#7
 
-	lda	#DFT_WIDTH	; X = (WIDTH - LEN) / 2
+	lda	#DFT_WIDTH	; X = (WIDTH - LEN) / 2 + 1
 	sec
 	sbc	1,s
 	lsr
@@ -3668,7 +3668,7 @@ GAGNE
 	cmp	#255
 	beq	:7054_3
 	@GET_F	#16
-	beq	:7054_4
+	beq	:7060
 :7054_3	lda	#152	; le passage au sud est ouvert
 	sta	M$
 :7054_4	rts

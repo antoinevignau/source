@@ -93,7 +93,7 @@ tblN	dfb	0	; value if not found
 	dfb	40,41,42,42,43,44,45,46,47,48,49
 	dfb	50,51,52,53,54,55,56,57,58,59
 	dfb	60,61,62,63,64,65,66,67,68,69
-	dfb	70,71,72,73,74,75,76,77,78,79
+	dfb	70,70,71,72,73,73,74,75,76,77,78,79
 	dfb	80,81,82,83,84,85,86,87,88,89
 	dfb	90,91,92,93,94,95,96
 
@@ -139,7 +139,7 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'PIT'	; 41 FOSSE
 	str	'FERN'	; 42 FOUGERE
 	str	'FERNS'	; 42 FOUGERES
-	str	'FRECO'	; 43 FRESQUE
+	str	'FRESC'	; 43 FRESQUE
 	str	'FLASK'	; 44 GOURDE
 	str	'GRATE'	; 45 GRILLE
 	str	'OIL'	; 46 HUILE
@@ -161,15 +161,17 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'BAR'	; 62 PIED (PIED DE BICHE)
 	str	'STONE'	; 63 PIERRE
 	str	'STAKE'	; 64 PIEU
-	str	'PLAN'	; 65 PLAN/PLANCHE/PLANTE
+	str	'MAP'	; 65 PLAN
 	str	'BRIDG'	; 66 PONT
 	str	'DOOR'	; 67 PORTE
 	str	'WELL'	; 68 PUITS
 	str	'ROOT'	; 69 RACINE
 	str	'SHELF'	; 70 RAYON
+	str	'SHELV'	; 70 RAYONS
 	str	'GUTTE'	; 71 RIGOLE
 	str	'BOULD'	; 72 ROCHER
 	str	'ROOM'	; 73 SALLE
+	str	'CHAMB'	; 73 SALLE
 	str	'SEAL'	; 74 SCEAU
 	str	'LOCK'	; 75 SERRURE
 	str	'SILHO'	; 76 SILHOUETTE
@@ -224,11 +226,11 @@ strMESSAGE	asc	'THE OCELOT CEMETERY'00				;   1
 	asc	'Stone'00					;   9
 	asc	'Fragment'00					;  10
 	asc	'Stick'00					;  11
-	asc	'Cloak'00					;  12
+	asc	'Cape'00					;  12
 	asc	'Flower'00					;  13
 	asc	'Press a key to return'00				;  14
 *	asc	'Command > '00					;  15
-strCOMMANDE	asc	'00 00 00 > '00					;  15
+strCOMMANDE	asc	'> '00					;  15
 strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'I don'27't understand'00				;  17
 	asc	'You can'27't do that here'00			;  18
@@ -237,7 +239,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'The footbridge gives way beneath your feet'00			;  21
 	asc	'The predator has picked up your scent'00		;  22
 	asc	'The temple'27's traps prove fatal'00			;  23
-	asc	'Passage blocked. Examinez the area'00			;  24
+	asc	'The passage is blocked. Examine the area'00			;  24
 	asc	'Darts shoot out from the walls'00			;  25
 	asc	'It seems to be moving'00				;  26
 	asc	'There is nothing like that here'00				;  27
@@ -307,8 +309,8 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'A passage to the east has opened'00			;  91
 	asc	'Command cancelled'00				;  92 chaine vide
 	asc	'Do you want to restart? Y/N'00			;  93
-	asc	'Complete plan: altar, stone, gutters'00			; 94
-	asc	'The plan is not complete'00			; 95
+	asc	'Complete map: altar, stone, gutters'00			; 94
+	asc	'The map is not complete'00			; 95
 	asc	'Dry gutters appear'00			; 96
 	asc	'It traces an arrow pointing east'00			; 97
 	asc	'As the song went: add some oil!'00		; 98
@@ -367,7 +369,7 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'The traps are now visible'00			; 151
 	asc	'The passage to the south is open'00			; 152
 	asc	'Do you want to quit? Y/N'00				; 153
-strDESCRIPTION	ds	49					; 154 - long level description string
+strDESCRIPTION	ds	48					; 154 - long level description string
 	dfb	chrNULL
 
 *-------------------------------
@@ -414,8 +416,8 @@ strOBJET	asc	'Shovel'00		;  1 61
 	asc	'Small bell'00		; 17 27
 	asc	'Crowbar'00		; 18 62 16
 	asc	'Lantern'00		; 19 50
-	asc	'Oil flask'00		; 20 94 46
-	asc	'Lockpick'00		; 21 30
+	asc	'Oil vial'00		; 20 94 46
+	asc	'Hook'00		; 21 30
 	asc	'Plank'00		; 22 65
 	asc	'Engraved stone'00	; 23 63	xx
 	asc	'Tooth'00		; 24 33 *	-> orange
@@ -424,7 +426,7 @@ strOBJET	asc	'Shovel'00		;  1 61
 	asc	'Stele fragment'00	; 27 95 81	xx
 	asc	'Black key'00		; 28 26 90
 	asc	'Incense stick'00	; 29 96 36	xx
-	asc	'Poacher'27's cloak'00	; 30 22	xx
+	asc	'Poacher'27's cape'00	; 30 22	xx
 	asc	'Token'00		; 31 49
 	asc	'Night flower'00	; 32 38	xx
 	dfb	chrNULL

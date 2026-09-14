@@ -173,7 +173,7 @@ tblNOUN	str	'N'	;  1 NORD
 	str	'SEAL'	; 74 SCEAU
 	str	'LOCK'	; 75 SERRURE
 	str	'SILHO'	; 76 SILHOUETTE
-	str	'PEDES'	; 77 SOCLE
+	str	'PLINT'	; 77 SOCLE
 	str	'GROUN' 	; 78 SOL
 	str	'SPRIN'	; 79 SOURCE
 	str	'STATU'	; 80 STATUE
@@ -360,14 +360,14 @@ strCHEAT	asc	'TURK182! THE BEST'00				;  16
 	asc	'Face b + entree'00				; 144--
 	asc	d2'CONGRATULATIONS!'d300				; 145 with "" d2 d3
 	asc	'You have found the ocelot'00			; 146
-	asc	'cimetery and its treasure'00			; 147
+	asc	'cemetery and its treasure'00			; 147
 	asc	'Press any key to enter'00				; 148
 	asc	'the room'00				; 149
 	asc	'The well has already been searched'00			; 150
 	asc	'The traps are now visible'00			; 151
 	asc	'The passage to the south is open'00			; 152
 	asc	'Do you want to quit? Y/N'00				; 153
-strDESCRIPTION	ds	48					; 154 - long level description string
+strDESCRIPTION	ds	49					; 154 - long level description string
 	dfb	chrNULL
 
 *-------------------------------

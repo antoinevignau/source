@@ -456,7 +456,7 @@ proREADLEVEL	dw	4	; 0 - pcount
 	ds	4	; C - transfer_count
 
 pLVL	asc	'00'
-pLEVEL	strl	'@/data/L00.BIN'	; +10
+pLEVEL	strl	'@/date/L00.BIN'	; +10
 
 *------------------------------
 * LOAD PARTIE

@@ -1,0 +1,1899 @@
+   10         ORG  #92D0
+   15 DRAP:   EQU  #83E6
+   20 SUJET:  EQU  #7E20
+   30 VERBE:  EQU  #B10
+   40 COD:    EQU  #DD0
+   50 ADJ:    EQU  #91D0
+   60 SALLE:  EQU  #83E3
+   70 PAINT1: EQU  #A280
+   80 NBOBJ:  EQU  #84AE
+   90 ATTRIB: EQU  #7DB0
+  100 ARTICL: EQU  #9250
+  110 DESSOM: EQU  #85A4
+  120 DEBUT:  LD   A,1
+  130         CALL #BC0E
+  131         LD   A,(#BB5A)
+  132         CP   #C3
+  133         JR   Z,DEJADO
+  135         LD   HL,(#BB5B)
+  136         LD   (PR+1),HL
+  140 DEJADO: LD   (#83C2),SP
+  142         LD   A,#C3
+  143         LD   (#BB5A),A
+  144         LD   HL,PRINT
+  145         LD   (#BB5B),HL
+  146         LD   A,(#BB58)
+  147         CP   78
+  148         JR   Z,CPC664
+  149         LD   HL,#BBF6
+  150         JR   MODIFD
+  151 CPC664: LD   HL,#7C0
+  152 MODIFD: LD   (MODRAW+1),HL
+  159         LD   A,0
+  160         LD   BC,0
+  170         CALL #BC32
+  180         LD   A,1
+  190         LD   BC,#1111
+  200         CALL #BC32
+  210         LD   A,2
+  220         LD   BC,#606
+  230         CALL #BC32
+  240         LD   BC,0
+  250         CALL #BC38
+  260         XOR  A
+  270         CALL #BBB4
+  280         LD   HL,#101
+  290         LD   DE,#2605
+  300         CALL #BB66
+  310         LD   A,1
+  320         CALL #BBB4
+  330         LD   HL,#1A07
+  340         LD   DE,#2611
+  350         CALL #BB66
+  360         LD   A,2
+  370         CALL #BBB4
+  380         LD   HL,#1A13
+  390         LD   DE,#2617
+  400         CALL #BB66
+  410         LD   A,3
+  420         CALL #BBB4
+  430         LD   HL,#107
+  440         LD   DE,#1807
+  450         CALL #BB66
+  460         CALL PRESEN
+  470         CALL INIT
+  480         CALL RIRE
+  490 DEPA1:  LD   HL,#83C3
+  500         LD   A,(SALLE)
+  510         LD   B,15
+  520 NOSOM:  INC  HL
+  530         CP   (HL)
+  540         JR   Z,SOMBR
+  550         DJNZ NOSOM
+  560 CALCUL: LD   B,0
+  570         LD   A,(SALLE)
+  580         DEC  A
+  590 CALC1:  INC  B
+  600         SUB  5
+  610         JR   NC,CALC1
+  620         LD   A,(#84AF)
+  630         CP   B
+  640         JR   Z,DESSIN
+  650 LOADES: LD   L,"D"
+  660         LD   A,64
+  670         ADD  A,B
+  680         LD   H,A
+  690         LD   (#84B1),HL
+  700         LD   DE,#4160
+  710         PUSH BC
+  720         CALL CHARGE
+  730         POP  AF
+  740         LD   (#84AF),A
+  750 DESSIN: LD   HL,#8980
+  760         LD   A,(SALLE)
+  770         LD   C,A
+  780         CALL CHERC
+  790         CALL AFFIC3
+  800         CALL GRAPHE
+  810         LD   A,0
+  820         LD   (#81E1),A
+  825         CALL ISSUE
+  830         JR   DEPA2
+  840 SOMBR:  LD   HL,SALLE
+  850         LD   A,(#8196)
+  860         CP   (HL)
+  870         JR   Z,CALCUL
+  880         CP   255
+  890         JR   Z,CALCUL
+  900         LD   A,(#819E)
+  910         CP   (HL)
+  920         JR   Z,CALCUL
+  930         CP   255
+  940         JR   Z,CALCUL
+  950         LD   A,(#81B1)
+  960         CP   (HL)
+  970         JR   NZ,SOMBRE
+  980         LD   A,(#81BC)
+  990         CP   6
+ 1000         JR   Z,CALCUL
+ 1010         CP   14
+ 1020         JR   Z,CALCUL
+ 1030 SOMBRE: LD   A,3
+ 1040         CALL CLEARF
+ 1050         LD   A,1
+ 1060         LD   (#81E1),A
+ 1065         CALL CLEARF
+ 1070         LD   A,2
+ 1080         CALL CLEARF
+ 1090         LD   A,3
+ 1100         CALL CLEARF
+ 1110         LD   HL,DESSOM
+ 1120         CALL GRAPH1-3
+ 1130 DEPA2:  CALL VERIFI
+ 1140         LD   A,(#81E1)
+ 1150         CP   1
+ 1160         JR   Z,DEPA3
+ 1170         LD   A,1
+ 1180         CALL CLEARF
+ 1190         LD   HL,#7F3B
+ 1200         CALL AFFIC1
+ 1210         LD   A,10
+ 1220         CALL #BB5A
+ 1230         LD   A,(SALLE)
+ 1240         CALL LISTE
+ 1250         LD   A,2
+ 1260         CALL CLEARF
+ 1270         LD   HL,#7FA8
+ 1280         CALL AFFIC2
+ 1290         LD   A,10
+ 1300         CALL #BB5A
+ 1310         LD   A,(SALLE)
+ 1320         LD   (MODF+1),A
+ 1330         LD   A,3
+ 1340         LD   B,9
+ 1350         LD   E,0
+ 1360 PERSO:  LD   C,B
+ 1370         LD   HL,#81B0
+ 1380         LD   B,0
+ 1390         ADD  HL,BC
+ 1400         LD   D,A
+ 1410         LD   A,(HL)
+ 1420 MODF:   CP   255
+ 1430         CALL Z,IMPRM
+ 1440         LD   B,C
+ 1450         LD   A,D
+ 1460         DJNZ PERSO
+ 1470         LD   A,E
+ 1480         CP   0
+ 1490         CALL Z,NESSUN
+ 1500         LD   A,D
+ 1510         CP   0
+ 1520         CALL NZ,SCRO
+ 1530         JR   DEPA3
+ 1540 NESSUN: LD   HL,#7F36
+ 1550         PUSH DE
+ 1560         CALL AFFIC2
+ 1570         POP  DE
+ 1580         CP   0
+ 1590         RET  Z
+ 1600         DEC  D
+ 1610         RET
+ 1620 IMPRM:  LD   A,D
+ 1630         CP   0
+ 1640         JR   Z,NODEC
+ 1650         DEC  D
+ 1660 NODEC:  LD   E,1
+ 1670         LD   HL,#8223
+ 1680         PUSH BC
+ 1690         PUSH DE
+ 1700         CALL CHERC
+ 1710         CALL AFFIC2
+ 1720         POP  DE
+ 1730         POP  BC
+ 1740         RET
+ 1750 SCRO:   LD   B,A
+ 1760         LD   A,10
+ 1770 SCRO1:  CALL #BB5A
+ 1780         DJNZ SCRO1
+ 1790         RET
+ 1800 DEPA3:  CALL GETCOM
+ 1810         CALL DCRIPT
+ 1820         LD   IX,#84A9
+ 1830         LD   A,(IX+0)
+ 1840         CP   0
+ 1850         JR   NZ,DEPA31
+ 1860         LD   A,(IX+1)
+ 1870         CP   0
+ 1880         JR   Z,DEPA32
+ 1890         CP   12
+ 1900         JR   Z,DEPA32
+ 1910         JR   DEPA31
+ 1920 DEPA32: LD   A,(IX+3)
+ 1930         CP   0
+ 1940         JR   Z,DEPA31
+ 1950         CALL MVT
+ 1960 DEPA31: CALL ANALYS
+ 1970         JP   DEPA2
+ 1980 REJOU:  LD   HL,#7FB5
+ 1990         CALL AFFIC0
+ 2000 ATTEN:  CALL #BB18
+ 2010         CP   "O"
+ 2020         JP   Z,DEBUT
+ 2030         CP   "N"
+ 2040         JR   NZ,ATTEN
+ 2050         RET
+ 2060 MORT:   LD   A,10
+ 2070         CALL #BB5A
+ 2080         LD   DE,#4160
+ 2090         LD   HL,#5844
+ 2100         LD   (#84B1),HL
+ 2110         CALL CHARGE
+ 2120         LD   A,24
+ 2130         LD   (#84AF),A
+ 2140         LD   A,1
+ 2150         CALL CLEARF
+ 2160         LD   A,2
+ 2170         CALL CLEARF
+ 2180         LD   A,3
+ 2190         CALL CLEARF
+ 2200         LD   HL,19848
+ 2210         CALL GRAPH1-3
+ 2215         CALL RIRE
+ 2220         CALL MUSMORT
+ 2230         JR   REJOU
+ 2240 MVT:    LD   HL,#7BC5
+ 2250         LD   A,(SALLE)
+ 2260         LD   C,A
+ 2270 MVT1:   LD   A,(HL)
+ 2280         INC  HL
+ 2290         CP   0
+ 2300         JR   NZ,MVT1
+ 2310         DEC  C
+ 2320         JR   NZ,MVT1
+ 2330         LD   IX,#84AC
+ 2340 MVT2:   LD   A,(HL)
+ 2350         CP   (IX+0)
+ 2360         JR   Z,MVT3
+ 2370         CP   0
+ 2380         RET  Z
+ 2390         INC  HL
+ 2400         INC  HL
+ 2410         JR   MVT2
+ 2420 MVT3:   INC  HL
+ 2430         LD   A,(HL)
+ 2440         LD   (SALLE),A
+ 2450         POP  HL
+ 2460         JP   DEPA1
+ 2470 CHERC:  LD   A,(HL)
+ 2480         INC  HL
+ 2490         SLA  A
+ 2500         JR   NC,CHERC
+ 2510         DEC  C
+ 2520         JR   NZ,CHERC
+ 2530         RET
+ 2540 NOOBJ:  LD   HL,#7EB2
+ 2550 NOO1:   CALL AFFIC0
+ 2560         SCF
+ 2570         LD   DE,DEPA2
+ 2580         RET
+ 2590 TROOBJ: LD   HL,#7EDD
+ 2600         JR   NOO1
+ 2610 DEJOBJ: LD   HL,#7EF7
+ 2620         JR   NOO1
+ 2630 DEJAUN: LD   HL,#7F07
+ 2640         JR   NOO1
+ 2650 PASOBJ: LD   HL,#7F26
+ 2660         JR   NOO1
+ 2662 AIDEJA: LD   HL,#7FE1
+ 2664         JR   NOO1
+ 2670 FINDMO: LD   DE,5
+ 2680         LD   BC,#849E
+ 2690 FIND1:  LD   A,(BC)
+ 2700         CP   (HL)
+ 2710         JR   NZ,FIND2
+ 2720         INC  BC
+ 2730         INC  HL
+ 2740         DEC  E
+ 2750         JR   NZ,FIND1
+ 2760         LD   A,(HL)
+ 2770         RET
+ 2780 FIND2:  INC  HL
+ 2790         ADD  HL,DE
+ 2800         LD   A,(HL)
+ 2810         CP   255
+ 2820         JR   NZ,FINDMO
+ 2830         XOR  A
+ 2840         RET
+ 2850 FENETR: LD   HL,CODFEN
+ 2860         LD   A,1
+ 2870         CALL #BBDE
+ 2880         LD   B,5
+ 2890 FENET1: PUSH BC
+ 2900         CALL FENET3
+ 2910         PUSH HL
+ 2920         PUSH BC
+ 2930         POP  HL
+ 2940         CALL #BBEA
+ 2950         POP  HL
+ 2960         LD   B,4
+ 2970 FENET2: PUSH BC
+ 2980         CALL FENET3
+ 2990         PUSH HL
+ 3000         PUSH BC
+ 3010         POP  HL
+ 3020         CALL #BBF6
+ 3030         POP  HL
+ 3040         POP  BC
+ 3050         DJNZ FENET2
+ 3060         POP  BC
+ 3070         DJNZ FENET1
+ 3080         RET
+ 3090 CODFEN: DEFW 0,0
+ 3100         DEFW 0,262
+ 3110         DEFW 406,262
+ 3120         DEFW 406,0
+ 3130         DEFW 0,0
+ 3140         DEFW 0,268
+ 3150         DEFW 406,268
+ 3160         DEFW 406,290
+ 3170         DEFW 0,290
+ 3180         DEFW 0,268
+ 3190         DEFW 0,296
+ 3200         DEFW 0,398
+ 3210         DEFW 638,398
+ 3220         DEFW 638,296
+ 3230         DEFW 0,296
+ 3240         DEFW 412,290
+ 3250         DEFW 638,290
+ 3260         DEFW 638,106
+ 3270         DEFW 412,106
+ 3280         DEFW 412,290
+ 3290         DEFW 412,100
+ 3300         DEFW 638,100
+ 3310         DEFW 638,0
+ 3320         DEFW 412,0
+ 3330         DEFW 412,100
+ 3340 FENET3: LD   E,(HL)
+ 3350         INC  HL
+ 3360         LD   D,(HL)
+ 3370         INC  HL
+ 3380         LD   C,(HL)
+ 3390         INC  HL
+ 3400         LD   B,(HL)
+ 3410         INC  HL
+ 3420         RET
+ 3430 VERIFI: LD   HL,#73F0
+ 3440         LD   IX,#84A9
+ 3450         LD   IY,SALLE
+ 3460 VERIF1: LD   DE,#8190
+ 3470         LD   A,(HL)
+ 3480         CP   97
+ 3490         JP   P,VERIF3
+ 3500         INC  HL
+ 3510         LD   C,(HL)
+ 3520         CALL TESTCO
+ 3530         JR   NZ,VERIF2
+ 3540         INC  HL
+ 3550         JR   VERIF1
+ 3560 VERIF2: INC  HL
+ 3570         LD   A,(HL)
+ 3580         CP   255
+ 3590         JR   NZ,VERIF2
+ 3600 VERIF4: INC  HL
+ 3610         LD   A,254
+ 3620         CP   (HL)
+ 3630         JR   NZ,VERIF1
+ 3640         RET
+ 3650 VERIF3: INC  HL
+ 3660         LD   C,(HL)
+ 3670         PUSH HL
+ 3680         LD   B,0
+ 3690         CALL TESTAC
+ 3700         POP  HL
+ 3710         JR   NC,VERIF5
+ 3720         POP  HL
+ 3730         EX   DE,HL
+ 3740         JP   (HL)
+ 3750 VERIF5: INC  HL
+ 3760         LD   A,(HL)
+ 3770         CP   255
+ 3780         JR   NZ,VERIF3
+ 3790         JR   VERIF4
+ 3800 RETROU: LD   HL,SUJET
+ 3810         CALL FINDMO
+ 3820         LD   B,1
+ 3830         CP   0
+ 3840         RET  NZ
+ 3850         LD   HL,ADJ
+ 3860         CALL FINDMO
+ 3870         LD   B,4
+ 3880         CP   0
+ 3890         RET  NZ
+ 3900         LD   HL,COD
+ 3910         CALL FINDMO
+ 3920         LD   B,3
+ 3930         CP   0
+ 3940         RET  NZ
+ 3950         LD   HL,VERBE
+ 3960         CALL FINDMO
+ 3970         LD   B,2
+ 3980         CP   0
+ 3990         RET  NZ
+ 4000         LD   HL,ATTRIB
+ 4010         CALL FINDMO
+ 4020         LD   B,5
+ 4030         CP   0
+ 4040         RET  NZ
+ 4050         LD   HL,ARTICL
+ 4060         CALL FINDMO
+ 4070         LD   B,6
+ 4080         RET
+ 4090 TEST:   LD   A,(IY+4)
+ 4100         CP   0
+ 4110         RET  NZ
+ 4120         POP  HL
+ 4130         JP   DEPA3
+ 4140 DCRIP9: LD   A,(HL)
+ 4150         CP   32
+ 4160         JR   Z,DCRIP1
+ 4170         INC  HL
+ 4180         CP   39
+ 4190         JR   Z,DCRIP1
+ 4200         JR   DCRIP9
+ 4210 ZERO:   LD   HL,#84A4
+ 4220         LD   B,10
+ 4230         XOR  A
+ 4240 ZERO1:  LD   (HL),A
+ 4250         INC  HL
+ 4260         DJNZ ZERO1
+ 4270         RET
+ 4280 SPACE:  LD   HL,#849E
+ 4290         LD   B,5
+ 4300 SPACE1: LD   (HL),32
+ 4310         INC  HL
+ 4320         DJNZ SPACE1
+ 4330         RET
+ 4340 DCRIPT: CALL ZERO
+ 4350         LD   IY,#84A4
+ 4360         LD   HL,#846C
+ 4370 DCRIP1: PUSH HL
+ 4380         LD   IX,#849E
+ 4390         CALL SPACE
+ 4400         POP  HL
+ 4410         CALL NEXTMO
+ 4420         LD   A,(IY+2)
+ 4430         CP   1
+ 4440         JR   Z,TEST
+ 4450         LD   B,5
+ 4460 DCRIP2: LD   A,(HL)
+ 4470         CP   0
+ 4480         JR   NZ,DCRIP3
+ 4490         LD   (IY+2),1
+ 4500         JR   TESTMO
+ 4510 DCRIP3: LD   (IX+0),A
+ 4520         CP   39
+ 4530         JR   Z,TESTMO
+ 4540         CP   32
+ 4550         JR   Z,TESTMO
+ 4560         INC  HL
+ 4570         INC  IX
+ 4580         DJNZ DCRIP2
+ 4590         DEC  HL
+ 4600 TESTMO: PUSH DE
+ 4610         PUSH HL
+ 4620         CALL RETROU
+ 4630         POP  HL
+ 4640         POP  DE
+ 4650         CP   0
+ 4660         JP   Z,PACAPI
+ 4670         LD   C,A
+ 4680         LD   A,B
+ 4690         INC  (IY+4)
+ 4700         CP   6
+ 4710         JR   NZ,DCRIP4
+ 4720         LD   A,1
+ 4730         CP   (IY+2)
+ 4740         JR   NZ,DCRIP9
+ 4750         JP   SYNERR
+ 4760 DCRIP4: CP   5
+ 4770         JR   NZ,DCRIP5
+ 4780         LD   A,1
+ 4790         CP   (IY+2)
+ 4800         JR   Z,SYNERR
+ 4810         CP   (IY+1)
+ 4820         JR   Z,SYNERR
+ 4830         LD   (IY+1),A
+ 4840         JP   DCRIP9
+ 4850 DCRIP5: CP   2
+ 4860         JR   NZ,DCRIP6
+ 4870         LD   A,1
+ 4880         CP   (IY+1)
+ 4890         JR   Z,SYNERR
+ 4900         LD   A,(IY+6)
+ 4910         CP   0
+ 4920         JR   NZ,SYNERR
+ 4930         LD   (IY+6),C
+ 4940 DCRFIN: LD   A,1
+ 4950         CP   (IY+2)
+ 4960         JP   NZ,DCRIP9
+ 4970         RET
+ 4980 DCRIP6: CP   4
+ 4990         JR   NZ,DCRIP7
+ 5000         LD   A,(IY+9)
+ 5010         CP   0
+ 5020         JR   NZ,SYNERR
+ 5030         LD   (IY+9),C
+ 5040         JR   DCRFIN
+ 5050 DCRIP7: CP   3
+ 5060         JR   NZ,DCRIP8
+ 5070         LD   A,(IY+1)
+ 5080         CP   1
+ 5090         JR   NZ,DCRCOD
+ 5100 DCRCA:  LD   A,(IY+7)
+ 5110         CP   0
+ 5120         JR   NZ,SYNERR
+ 5130         LD   (IY+7),C
+ 5140         LD   (IY+1),0
+ 5150         JR   DCRFIN
+ 5160 DCRCOD: LD   A,(IY+8)
+ 5170         CP   0
+ 5180         JR   NZ,SYNERR
+ 5190         LD   (IY+8),C
+ 5200         JR   DCRFIN
+ 5210 DCRIP8: CP   (IY+4)
+ 5220         JR   Z,DCRSUJ
+ 5230         CP   (IY+1)
+ 5240         JR   NZ,DCRCOD
+ 5250         JR   DCRCA
+ 5260 DCRSUJ: LD   A,(IY+5)
+ 5270         CP   0
+ 5280         JR   NZ,SYNERR
+ 5290         LD   (IY+5),C
+ 5300         JR   DCRFIN
+ 5310 SYNERR: LD   HL,#7F70
+ 5320         CALL AFFIC0
+ 5330         POP  HL
+ 5340         JP   DEPA3
+ 5350 NEXTMO: LD   A,(HL)
+ 5360         CP   0
+ 5370         JR   NZ,NOFIN
+ 5380         LD   (IY+2),1
+ 5390         RET
+ 5400 NOFIN:  CP   32
+ 5410         JR   Z,CONTMO
+ 5420         PUSH HL
+ 5430         POP  DE
+ 5440         RET
+ 5450 CONTMO: INC  HL
+ 5460         JR   NEXTMO
+ 5470 PACAPI: PUSH DE
+ 5480         LD   HL,#7F83
+ 5490         CALL AFFIC0
+ 5500         POP  DE
+ 5510         PUSH DE
+ 5520         EX   DE,HL
+ 5530         LD   B,0
+ 5540 PACAP1: INC  B
+ 5550         LD   A,(HL)
+ 5560         CP   0
+ 5570         JR   Z,PACAP3
+ 5580         CP   32
+ 5590         JR   Z,PACAP2
+ 5600         LD   A,B
+ 5610         CP   15
+ 5620         JR   Z,PACAP2
+ 5630         INC  HL
+ 5640         JR   PACAP1
+ 5650 PACAP2: LD   (HL),160
+ 5660         POP  HL
+ 5670         LD   B,21
+ 5680         CALL AFF12
+ 5690         POP  HL
+ 5700         JP   DEPA3
+ 5710 PACAP3: LD   A,32
+ 5720         JR   PACAP2
+ 5730 INIT:   LD   HL,#81C6
+ 5740         LD   B,91
+ 5750 INI1:   LD   (HL),0
+ 5760         INC  HL
+ 5770         DJNZ INI1
+ 5780         LD   HL,#83AB
+ 5790         LD   DE,#81B0
+ 5800         LD   BC,22
+ 5810         LDIR
+ 5820         LD   HL,#84B3
+ 5830         LD   DE,#82BA
+ 5840         LD   BC,240
+ 5850         LDIR
+ 5860         LD   HL,#844C
+ 5870         LD   DE,#8190
+ 5880         LD   BC,32
+ 5890         LDIR
+ 5900         LD   A,1
+ 5910         LD   (SALLE),A
+ 5920         XOR  A
+ 5930         LD   (NBOBJ),A
+ 5940         RET
+ 5950 PRESEN: LD   A,(#84AF)
+ 5960         CP   24
+ 5970         JR   Z,PRE1
+ 5980         LD   DE,#4160
+ 5990         LD   HL,#5844
+ 6000         LD   (#84B1),HL
+ 6010         CALL CHARGE
+ 6020         LD   A,24
+ 6030         LD   (#84AF),A
+ 6040 PRE1:   LD   A,1
+ 6050         CALL CLEARF
+ 6060         LD   A,2
+ 6070         CALL CLEARF
+ 6080         LD   A,3
+ 6090         CALL CLEARF
+ 6100         XOR  A
+ 6110         CALL CLEARF
+ 6120         LD   HL,16746
+ 6130         CALL GRAPH1-3
+ 6140         LD   HL,#7910
+ 6150         LD   C,1
+ 6160         PUSH HL
+ 6170         CALL AFFIC6
+ 6180         POP  HL
+ 6190         LD   A,#10
+ 6200         CALL #BB5A
+ 6210         LD   C,2
+ 6220         PUSH HL
+ 6230         CALL AFFIC6
+ 6240         POP  HL
+ 6250         LD   C,3
+ 6260         PUSH HL
+ 6270         CALL AFFIC6
+ 6280         POP  HL
+ 6290         LD   C,4
+ 6295         PUSH HL
+ 6300         CALL AFFIC6
+ 6310         POP  HL
+ 6320         LD   C,5
+ 6330         PUSH HL
+ 6340         CALL AFFIC5
+ 6350         POP  HL
+ 6360         LD   C,6
+ 6370         PUSH HL
+ 6380         CALL AFFIC5
+ 6390         LD   A,10
+ 6400         CALL #BB5A
+ 6410         POP  HL
+ 6420         LD   C,7
+ 6430         PUSH HL
+ 6440         CALL AFFIC4
+ 6450         LD   A,10
+ 6460         CALL #BB5A
+ 6470         LD   C,8
+ 6480         POP  HL
+ 6490         PUSH HL
+ 6500         CALL AFFIC5
+ 6510         POP  HL
+ 6520         LD   C,9
+ 6530         PUSH HL
+ 6540         CALL AFFIC4
+ 6550         POP  HL
+ 6560         LD   C,10
+ 6570         PUSH HL
+ 6580         CALL AFFIC5
+ 6590         POP  HL
+ 6600         PUSH HL
+ 6610         LD   C,11
+ 6620         CALL AFFIC4
+ 6630         POP  HL
+ 6640         PUSH HL
+ 6650         LD   C,12
+ 6660         CALL AFFIC5
+ 6670         LD   C,13
+ 6680         POP  HL
+ 6690         CALL AFFIC4
+ 6700         CALL SONINI
+ 6710         CALL MUSPRE
+ 6715         CALL #BB18
+ 6720         XOR  A
+ 6730         CALL CLEARF
+ 6740         RET
+ 6750 AFFIC4: CALL CHERC
+ 6760         LD   A,2
+ 6770         LD   (AFF13+1),A
+ 6780         CALL AFFIC1
+ 6790         LD   A,1
+ 6800         LD   (AFF13+1),A
+ 6810         RET
+ 6820 AFFIC5: CALL CHERC
+ 6830         JP   AFFIC1
+ 6840 AFFIC6: CALL CHERC
+ 6850         JP   AFFIC0
+ 6860 VICTOI: LD   A,1
+ 6870         CALL CLEARF
+ 6880         LD   A,2
+ 6890         CALL CLEARF
+ 6900         LD   A,3
+ 6910         CALL CLEARF
+ 6920         LD   DE,#4160
+ 6930         LD   HL,#5844
+ 6940         LD   (#84B1),HL
+ 6950         CALL CHARGE
+ 6960         LD   A,24
+ 6970         LD   (#84AF),A
+ 6980         LD   HL,18621
+ 6990         CALL GRAPH1-3
+ 7000         CALL MUSVIC
+ 7010         LD   A,10
+ 7020         CALL #BB5A
+ 7030         JP   REJOU
+ 7040 GETCOM: XOR  A
+ 7050         CALL #BBB4
+ 7060         LD   A,6
+ 7070         CALL #BB72
+ 7080         LD   A,10
+ 7090         CALL #BB5A
+ 7100         LD   A,1
+ 7110         CALL #BBDE
+ 7120         LD   DE,16
+ 7130         LD   HL,318
+ 7140         CALL #BBC0
+ 7150         LD   A,">"
+ 7160         CALL WRCHAR
+ 7170         LD   HL,#849D
+ 7180         LD   B,49
+ 7190 GET1:   LD   (HL),32
+ 7200         DEC  HL
+ 7210         DJNZ GET1
+ 7220         LD   C,0
+ 7230 GET2:   LD   A,63
+ 7240         CALL WRCHAR
+ 7250         PUSH HL
+ 7260         PUSH BC
+ 7270         LD   DE,-12
+ 7280         LD   HL,0
+ 7290         CALL #BBC3
+ 7300         POP  BC
+ 7310         POP  HL
+ 7320 GET5:   CALL #BB18
+ 7330         CP   127
+ 7340         JR   Z,DEL
+ 7350         JP   P,GET2
+ 7360         CP   32
+ 7370         JP   M,GET3
+ 7380         LD   B,A
+ 7390         LD   A,C
+ 7400         CP   49
+ 7410         JP   P,GET2
+ 7420         INC  C
+ 7430         LD   A,B
+ 7440         CALL WRCHAR
+ 7450         LD   (HL),B
+ 7460         INC  HL
+ 7470         JR   GET2
+ 7480 DEL:    LD   A,C
+ 7490         CP   0
+ 7500         JR   Z,GET5
+ 7510         LD   A,32
+ 7520         CALL WRCHAR
+ 7530         CALL GET4
+ 7540         CALL GET4
+ 7550         LD   A,32
+ 7560         CALL WRCHAR
+ 7570         CALL GET4
+ 7580         DEC  HL
+ 7590         DEC  C
+ 7600         LD   (HL),32
+ 7610         JR   GET2
+ 7620 GET3:   CP   13
+ 7630         JR   NZ,GET5
+ 7640         LD   (HL),0
+ 7650         LD   A,32
+ 7660         CALL WRCHAR
+ 7670         RET
+ 7680 GET4:   LD   DE,-12
+ 7690         PUSH BC
+ 7700         PUSH HL
+ 7710         LD   HL,0
+ 7720         CALL #BBC3
+ 7730         POP  HL
+ 7740         POP  BC
+ 7750         RET
+ 7760 WRCHAR: PUSH BC
+ 7770         PUSH HL
+ 7780         CALL #BBFC
+ 7790         LD   DE,-4
+ 7800         LD   HL,0
+ 7810         CALL #BBC3
+ 7820         POP  HL
+ 7830         POP  BC
+ 7840         RET
+ 7850 GRAPHE: LD   A,(SALLE)
+ 7860         ADD  A,A
+ 7870         LD   C,A
+ 7880         LD   B,0
+ 7890         LD   HL,#82B8
+ 7900         ADD  HL,BC
+ 7910         LD   E,(HL)
+ 7920         INC  HL
+ 7930         LD   D,(HL)
+ 7940         EX   DE,HL
+ 7950         CALL CLEARW
+ 7960 GRAPH1: LD   A,(HL)
+ 7970         CP   0
+ 7980         RET  Z
+ 7990 GRAPH7: LD   B,A
+ 8000         AND  192
+ 8010         CP   192
+ 8020         JR   Z,GRAPH2
+ 8030         LD   A,B
+ 8040 DRAW:   CALL GRAPH3
+ 8050         PUSH BC
+ 8060 MODRAW: CALL #BBF6
+ 8070 GRAPH4: POP  HL
+ 8080 GRAPH6: INC  HL
+ 8090         JR   GRAPH1
+ 8100 GRAPH2: LD   A,B
+ 8110         AND  3
+ 8120         CP   0
+ 8130         JR   Z,PLOT
+ 8140         CP   2
+ 8150         JR   Z,INK
+ 8160         CP   3
+ 8170         JP   Z,ECRIT
+ 8180 PAINT:  INC  HL
+ 8190         LD   A,199
+ 8200         LD   C,(HL)
+ 8210         SUB  C
+ 8220         LD   C,A
+ 8230         LD   A,B
+ 8240         INC  HL
+ 8250         AND  12
+ 8260         SRL  A
+ 8270         SRL  A
+ 8280         CALL PAINT2
+ 8290         LD   E,A
+ 8300         LD   A,B
+ 8310         AND  48
+ 8320         SRL  A
+ 8330         SRL  A
+ 8340         SRL  A
+ 8350         SRL  A
+ 8360         CALL PAINT2
+ 8370         LD   D,A
+ 8380         LD   B,C
+ 8390         LD   C,(HL)
+ 8400         PUSH HL
+ 8410         DI
+ 8420         CALL PAINT1
+ 8430         EI
+ 8440         JR   GRAPH4
+ 8450 PAINT2: CP   1
+ 8460         JR   NZ,E8
+ 8470         LD   A,#E4
+ 8480         RET
+ 8490 E8:     CP   2
+ 8500         JR   NZ,F4
+ 8510         LD   A,#E8
+ 8520         RET
+ 8530 F4:     LD   A,#F4
+ 8540         RET
+ 8550 PLOT:   LD   A,B
+ 8560         SRL  A
+ 8570         SRL  A
+ 8580         CALL #BBDE
+ 8590         INC  HL
+ 8600         CALL GRAPH3
+ 8610         PUSH BC
+ 8620         CALL #BBEA
+ 8630         JR   GRAPH4
+ 8640 GRAPH3: PUSH HL
+ 8650         LD   L,(HL)
+ 8660         LD   H,0
+ 8670         ADD  HL,HL
+ 8680         EX   DE,HL
+ 8690         POP  HL
+ 8700         INC  HL
+ 8710         PUSH HL
+ 8720         LD   L,(HL)
+ 8730         LD   H,0
+ 8740         ADD  HL,HL
+ 8750         EX   DE,HL
+ 8760         POP  BC
+ 8770         RET
+ 8780 GRAPH5: INC  HL
+ 8790         PUSH HL
+ 8800         LD   B,(HL)
+ 8810         LD   C,B
+ 8820         CALL #BC32
+ 8830         POP  HL
+ 8840         RET
+ 8850 INK:    XOR  A
+ 8860         CALL GRAPH5
+ 8870         LD   B,(HL)
+ 8880         LD   C,B
+ 8890         PUSH HL
+ 8900         CALL #BC38
+ 8910         POP  HL
+ 8920         LD   A,1
+ 8930         CALL GRAPH5
+ 8940         LD   A,2
+ 8950         CALL GRAPH5
+ 8960         LD   A,3
+ 8970         CALL GRAPH5
+ 8980         JP   GRAPH6
+ 8990 ECRIT:  PUSH BC
+ 9000         INC  HL
+ 9010         CALL GRAPH3
+ 9020         PUSH BC
+ 9030         CALL #BBC0
+ 9040         POP  HL
+ 9050         POP  AF
+ 9060         PUSH AF
+ 9070         SRL  A
+ 9080         SRL  A
+ 9090         SRL  A
+ 9100         SRL  A
+ 9110         CALL #BBDE
+ 9120         POP  AF
+ 9130         AND  12
+ 9140         LD   C,A
+ 9150         LD   B,0
+ 9160 ECRIT1: INC  HL
+ 9170         LD   A,(HL)
+ 9180         CP   #FF
+ 9190         JR   NZ,ECRIT2
+ 9200         JP   GRAPH6
+ 9210 ECRIT2: CALL WRCHAR
+ 9220         PUSH BC
+ 9230         POP  DE
+ 9240         PUSH BC
+ 9250         PUSH HL
+ 9260         LD   HL,0
+ 9270         CALL #BBC3
+ 9280         POP  HL
+ 9290         POP  BC
+ 9300         JR   ECRIT1
+ 9310 CLEARW: PUSH HL
+ 9320         LD   DE,2
+ 9330         LD   HL,404
+ 9340         CALL #BBCF
+ 9350         LD   DE,2
+ 9360         LD   HL,262
+ 9370         CALL #BBD2
+ 9380         CALL #BBDB
+ 9390         CALL #BBBA
+ 9400         CALL FENETR
+ 9410         POP  HL
+ 9420         RET
+ 9430 ANALYS: LD   HL,#56A0
+ 9440         LD   IX,#84A9
+ 9450         LD   IY,SALLE
+ 9460         LD   (IX-2),0
+ 9470 MOTS:   LD   A,(HL)
+ 9480         CP   (IX+0)
+ 9490         JR   Z,MOT2
+ 9500         CP   99
+ 9510         JR   NZ,NOUVEL
+ 9520 MOT2:   INC  HL
+ 9530         LD   A,(HL)
+ 9540         CP   (IX+1)
+ 9550         JR   Z,MOT3
+ 9560         CP   99
+ 9570         JR   NZ,NOUVEL
+ 9580 MOT3:   INC  HL
+ 9590         LD   A,(HL)
+ 9600         CP   (IX+2)
+ 9610         JR   Z,MOT4
+ 9620         CP   99
+ 9630         JR   NZ,NOUVEL
+ 9640 MOT4:   INC  HL
+ 9650         LD   A,(HL)
+ 9660         CP   (IX+3)
+ 9670         JR   Z,MOT5
+ 9680         CP   99
+ 9690         JR   NZ,NOUVEL
+ 9700 MOT5:   INC  HL
+ 9710         LD   A,(HL)
+ 9720         CP   (IX+4)
+ 9730         JR   Z,CONDIT
+ 9740         CP   99
+ 9750         JR   Z,CONDIT
+ 9760         LD   (IX-2),1
+ 9770 NOUVEL: INC  HL
+ 9780         LD   A,(HL)
+ 9790         CP   255
+ 9800         JR   NZ,NOUVEL
+ 9810 FIN:    INC  HL
+ 9820         LD   A,254
+ 9830         CP   (HL)
+ 9840         JR   NZ,MOTS
+ 9850 IMPOSS: LD   HL,#7EA0
+ 9860         LD   A,1
+ 9870         CP   (IX-2)
+ 9880         JP   NZ,AFFIC0
+ 9890         XOR  A
+ 9900         CP   (IX+1)
+ 9910         JP   Z,AFFIC0
+ 9920         LD   HL,#7F97
+ 9930         JP   AFFIC0
+ 9940 CONDIT: LD   DE,#8190
+ 9945         LD   (IX-2),0
+ 9950         INC  HL
+ 9960         LD   A,(HL)
+ 9970         CP   97
+ 9980         JP   P,ACTION
+ 9990         INC  HL
+10000         LD   C,(HL)
+10010         CALL TESTCO
+10020         JR   NZ,NOUVEL
+10030         JR   CONDIT
+10040 TESTCO: CP   "A"
+10050         JR   Z,CONDA
+10060         CP   "B"
+10070         JR   Z,CONDB
+10080         CP   "C"
+10090         JR   Z,CONDC
+10100         CP   "D"
+10110         JR   Z,CONDD
+10120         CP   "E"
+10130         JR   Z,CONDE
+10140         CP   "F"
+10150         JR   Z,CONDF
+10160         CP   "G"
+10170         JR   Z,CONDG
+10180         CP   "H"
+10190         JR   Z,CONDH
+10200         CP   "I"
+10210         JP   Z,CONDI
+10220         CP   "J"
+10230         JP   Z,CONDJ
+10240         CP   "K"
+10250         JP   Z,CONDK
+10260         CP   "L"
+10270         JP   Z,CONDL
+10280 CONDM:  PUSH HL
+10290         LD   HL,#81BB
+10300         LD   B,0
+10310         ADD  HL,BC
+10320         LD   A,(HL)
+10330         POP  HL
+10340         INC  HL
+10350         CP   (HL)
+10360         JR   INVERZ
+10370 CONDA:  LD   A,C
+10380         CP   (IY+0)
+10390         RET
+10400 CONDB:  EX   DE,HL
+10410         LD   B,0
+10420         ADD  HL,BC
+10430         LD   A,(HL)
+10440         EX   DE,HL
+10450         CP   (IY+0)
+10460         RET  Z
+10470         CP   255
+10480         RET
+10490 CONDC:  EX   DE,HL
+10500         LD   B,0
+10510         ADD  HL,BC
+10520         LD   A,(HL)
+10530         EX   DE,HL
+10540         CP   255
+10550         CALL INVERZ
+10560         RET  NZ
+10570         CP   (IY+0)
+10580 INVERZ: PUSH AF
+10590         POP  DE
+10600         LD   A,E
+10610         XOR  64
+10620         LD   E,A
+10630         PUSH DE
+10640         POP  AF
+10650         RET
+10660 CONDD:  EX   DE,HL
+10670         LD   B,0
+10680         ADD  HL,BC
+10690         LD   A,(HL)
+10700         EX   DE,HL
+10710         CP   255
+10720         RET
+10730 CONDE:  PUSH HL
+10740         LD   HL,#81E0
+10750         LD   B,0
+10760         ADD  HL,BC
+10770         LD   A,(HL)
+10780         POP  HL
+10790         CP   1
+10800         RET
+10810 CONDF:  PUSH HL
+10820         LD   HL,#81E0
+10830         LD   B,0
+10840         ADD  HL,BC
+10850         LD   A,(HL)
+10860         POP  HL
+10870         CP   0
+10880         RET
+10890 CONDG:  PUSH HL
+10900         LD   HL,#81C6
+10910         LD   B,0
+10920         ADD  HL,BC
+10930         LD   A,(HL)
+10940         POP  HL
+10950         CP   1
+10960         RET
+10970 CONDH:  LD   A,(#B1FD)
+10980         AND  15
+10990         SLA  A
+11000         CP   C
+11010         JP   P,MAUVAI
+11020 BON:    XOR  A
+11030         RET
+11040 MAUVAI: INC  A
+11050         RET  NZ
+11060         JR   MAUVAIS
+11070 CONDI:  LD   A,C
+11080         CP   (IY+0)
+11090         JR   INVERZ
+11100 CONDJ:  PUSH HL
+11110         LD   B,0
+11120         LD   HL,#81B0
+11130         ADD  HL,BC
+11140         LD   A,(HL)
+11150         POP  HL
+11160         CP   (IY+0)
+11170         RET
+11180 CONDK:  PUSH HL
+11190         LD   B,0
+11200         LD   HL,#81B0
+11210         ADD  HL,BC
+11220         LD   A,(HL)
+11230         POP  HL
+11240         CP   (IY+0)
+11250         JR   INVERZ
+11260 CONDL:  PUSH HL
+11270         LD   B,0
+11280         LD   HL,#81BB
+11290         ADD  HL,BC
+11300         LD   A,(HL)
+11310         POP  HL
+11320         INC  HL
+11330         CP   (HL)
+11340         RET
+11350 AFFICH: PUSH HL
+11360         CALL #BBB4
+11370         LD   A,B
+11380         CALL #BB72
+11390         POP  HL
+11400 AFF13:  LD   A,1
+11410         CALL #BBDE
+11420 AFF11:  LD   A,10
+11430         CALL #BB5A
+11440         PUSH HL
+11450         PUSH BC
+11460 AFFIX:  LD   DE,16
+11470 AFFIY:  LD   HL,318
+11480         CALL #BBC0
+11490         POP  BC
+11500         POP  HL
+11510         LD   B,0
+11520 AFF12:  INC  B
+11530         LD   A,(HL)
+11540         AND  127
+11550         CALL WRCHAR
+11560         LD   A,(HL)
+11570         SLA  A
+11580         RET  C
+11590         INC  HL
+11600         LD   A,B
+11610         CP   C
+11620         JR   Z,AFF11
+11630         JR   AFF12
+11640 AFFIC0: XOR  A
+11650         LD   BC,#632
+11660         LD   DE,16
+11670         LD   (AFFIX+1),DE
+11680         LD   DE,318
+11690 AFF:    LD   (AFFIY+1),DE
+11700         JR   AFFICH
+11710 AFFIC1: LD   A,1
+11720         LD   BC,#C11
+11730         LD   DE,416
+11740         LD   (AFFIX+1),DE
+11750         LD   DE,126
+11760         JR   AFF
+11770 AFFIC2: LD   A,2
+11780         LD   BC,#611
+11790         LD   DE,416
+11800         LD   (AFFIX+1),DE
+11810         LD   DE,30
+11820         JR   AFF
+11830 AFFIC3: LD   A,3
+11840         LD   BC,#220
+11850         LD   DE,16
+11860         LD   (AFFIX+1),DE
+11870         LD   DE,286
+11880         JR   AFF
+11890 CLEARF: CALL #BBB4
+11900         JP   #BB6C
+11910 ACTION: INC  HL
+11920         LD   C,(HL)
+11930         PUSH HL
+11940         LD   B,0
+11950         CALL TESTAC
+11960         POP  HL
+11970         JR   NC,NEXTAC
+11980         POP  HL
+11990         EX   DE,HL
+12000         JP   (HL)
+12010 NEXTAC: INC  HL
+12020         LD   A,(HL)
+12030         JR   ACTION
+12040 TESTAC: CP   "a"
+12050         JP   Z,ACTIOa
+12060         CP   "b"
+12070         JP   Z,ACTIOb
+12080         CP   "c"
+12090         JP   Z,ACTIOc
+12100         CP   "d"
+12110         JP   Z,ACTIOd
+12120         CP   "e"
+12130         JP   Z,ACTIOe
+12140         CP   "f"
+12150         JP   Z,ACTIOf
+12160         CP   "g"
+12170         JP   Z,ACTIOg
+12180         CP   "h"
+12190         JP   Z,ACTIOh
+12200         CP   "i"
+12210         JP   Z,ACTIOi
+12220         CP   "z"
+12230         JP   Z,ACTIOz
+12240         CP   "{"
+12250         JP   Z,ACTIO0
+12260         CP   "j"
+12270         JP   Z,ACTIOj
+12280         CP   "k"
+12290         JP   Z,ACTIOk
+12300         CP   "w"
+12310         JP   Z,ACTIOw
+12320         CP   "x"
+12330         JP   Z,ACTIOx
+12340         CP   "l"
+12350         JP   Z,ACTIOl
+12360         CP   "v"
+12370         JP   Z,ACTIOv
+12380         CP   "m"
+12390         JP   Z,ACTIOm
+12400         CP   "y"
+12410         JP   Z,ACTIOy
+12420         CP   "n"
+12430         JP   Z,ACTIOn
+12440         CP   "o"
+12450         JP   Z,ACTIOo
+12460         CP   "p"
+12470         JP   Z,ACTIOp
+12480         CP   "t"
+12490         JP   Z,ACTIOt
+12500         CP   "q"
+12510         JP   Z,ACTIOq
+12520         CP   "u"
+12530         JP   Z,ACTIOu
+12540         CP   "r"
+12550         JP   Z,ACTIOr
+12560 ACTIOs: LD   HL,#81BB
+12570         ADD  HL,BC
+12580         LD   A,(HL)
+12590         CP   0
+12600         JP   Z,PASOBJ
+12610         LD   (HL),0
+12620         LD   C,A
+12630         LD   A,(SALLE)
+12640         LD   HL,#8190
+12650         ADD  HL,BC
+12660         LD   (HL),A
+12670         AND  A
+12680         RET
+12690 ACTIOb: LD   HL,#8190
+12700         ADD  HL,BC
+12710         LD   A,(HL)
+12720         CP   255
+12730         JP   Z,DEJOBJ
+12740         CP   (IY+0)
+12750         JP   NZ,PASICI
+12760         LD   A,(NBOBJ)
+12770         CP   6
+12780         JP   P,TROOBJ
+12790         LD   (HL),255
+12800         LD   HL,NBOBJ
+12810         INC  (HL)
+12820         CALL RETOBJ
+12830         AND  A
+12840         RET
+12850 ACTIOc: LD   HL,#8190
+12860         ADD  HL,BC
+12870         LD   A,(HL)
+12880         CP   255
+12890         JP   NZ,NOOBJ
+12900         LD   A,(SALLE)
+12910         LD   (HL),A
+12920         LD   HL,NBOBJ
+12930         DEC  (HL)
+12940         AND  A
+12950         RET
+12960 ACTIOd: CALL ONDISC
+12970         LD   HL,#192D
+12980         CALL CHERC
+12990         CALL AFFIC0
+13000         AND  A
+13010         RET
+13020 ACTIOe: LD   HL,#81E0
+13030         ADD  HL,BC
+13040         LD   (HL),1
+13050         AND  A
+13060         RET
+13070 ACTIOf: LD   HL,#81E0
+13080         ADD  HL,BC
+13090         LD   (HL),0
+13100         AND  A
+13110         RET
+13120 ACTIOg: POP  DE
+13130         POP  HL
+13140         INC  HL
+13150         PUSH HL
+13160         PUSH DE
+13170         LD   D,(HL)
+13180         LD   HL,#81C6
+13190         ADD  HL,BC
+13200         LD   (HL),D
+13210         AND  A
+13220         RET
+13230 ACTIOh: LD   HL,#8190
+13240         ADD  HL,BC
+13250         LD   (HL),0
+13260         CALL RETOBJ
+13270         AND  A
+13280         RET
+13290 ACTIOi: LD   A,C
+13300         LD   (SALLE),A
+13310         AND  A
+13320         RET
+13330 ACTIOk: SCF
+13340         LD   DE,DEPA2
+13350         RET
+13360 ACTIOj: LD   HL,#7EAA
+13370         CALL AFFIC0
+13380         JR   ACTIOk
+13390 ACTIOl: SCF
+13400         LD   DE,DEPA3
+13410         RET
+13420 ACTIOm: SCF
+13430         LD   DE,DEPA1
+13440         RET
+13450 ACTIOn: SCF
+13460         LD   DE,MORT
+13470         RET
+13480 ACTIOo: LD   HL,#8190
+13490 ACTIo1: ADD  HL,BC
+13500         LD   A,(SALLE)
+13510         LD   (HL),A
+13520         AND  A
+13530         RET
+13540 ACTIOp: LD   HL,#81B0
+13550         CALL ACTIo1
+13560         LD   HL,#81BB
+13570         ADD  HL,BC
+13580         LD   C,(HL)
+13590         JR   ACTIOo
+13600 ACTIOq: LD   HL,#81B0
+13610         ADD  HL,BC
+13620         LD   (HL),0
+13630         LD   HL,#81BB
+13640         ADD  HL,BC
+13650         LD   (HL),0
+13660         AND  A
+13670         RET
+13680 ACTIOr: LD   HL,#81BB
+13690         ADD  HL,BC
+13700         LD   A,(HL)
+13701         EX   DE,HL
+13702         POP  BC
+13703         POP  HL
+13704         INC  HL
+13705         PUSH HL
+13706         PUSH BC
+13707         LD   C,(HL)
+13708         CP   C
+13709         JP   Z,AIDEJA
+13710         CP   0
+13720         JP   NZ,DEJAUN
+13740         LD   HL,#8190
+13745         LD   B,0
+13750         ADD  HL,BC
+13755         LD   (#83E4),HL
+13760         LD   A,(HL)
+13770         CP   (IY+0)
+13780         JR   Z,ACTIr1
+13790         CP   255
+13800         JP   NZ,PASICI
+13801         LD   HL,NBOBJ
+13802         DEC  (HL)
+13900 ACTIr1: EX   DE,HL
+13910         LD   (HL),C
+13920         LD   A,(IY+0)
+13940         LD   HL,(#83E4)
+13950         LD   (HL),A
+13960         AND  A
+13970         RET
+13980 ACTIOa: LD   A,1
+13990         CALL CLEARF
+14000         LD   HL,#7F4C
+14010         CALL AFFIC1
+14020         LD   A,10
+14030         CALL #BB5A
+14040         LD   A,255
+14050 LISTE:  LD   (MODIF+1),A
+14060         LD   A,9
+14070         LD   B,31
+14080         LD   E,0
+14090 ACTa:   LD   C,B
+14100         LD   HL,#8190
+14110         LD   B,0
+14120         ADD  HL,BC
+14130         LD   D,A
+14140         LD   A,(HL)
+14150 MODIF:  CP   255
+14160         CALL Z,IMPRIM
+14170         LD   B,C
+14180         LD   A,D
+14190         DJNZ ACTa
+14200         LD   A,E
+14210         CP   0
+14220         CALL Z,AUCUN
+14230         LD   A,D
+14240         CP   0
+14250         CALL NZ,SCROOL
+14260         SCF
+14270         LD   DE,DEPA3
+14280         RET
+14290 AUCUN:  LD   HL,#7F36
+14300         PUSH DE
+14310         CALL AFFIC1
+14320         POP  DE
+14330         CP   0
+14340         RET  Z
+14350         DEC  D
+14360         RET
+14370 IMPRIM: LD   A,D
+14380         CP   0
+14390         JR   Z,NODECR
+14400         DEC  D
+14410 NODECR: LD   E,1
+14420         LD   HL,#7A50
+14430         PUSH BC
+14440         PUSH DE
+14450         CALL CHERC
+14460         CALL AFFIC1
+14470         POP  DE
+14480         POP  BC
+14490         RET
+14500 SCROOL: LD   B,A
+14510         LD   A,10
+14520 SCROO1: CALL #BB5A
+14530         DJNZ SCROO1
+14540         RET
+14550 ICIOBJ: LD   A,1
+14560         CALL CLEARF
+14570         LD   HL,#7F3B
+14580         CALL AFFIC1
+14590         LD   A,10
+14600         CALL #BB5A
+14610         LD   A,(SALLE)
+14620         JR   LISTE
+14630 ACTIOt: CALL #BB18
+14640         CALL SAUVE
+14650         LD   DE,DEPA2
+14660         SCF
+14670         RET
+14680 ACTIOu: CALL #BB18
+14690         LD   HL,#4150
+14700         LD   (#84B1),HL
+14710         LD   DE,#8190
+14720         CALL CHARGE
+14725         CALL #BB18
+14730         XOR  A
+14740         LD   (#84AF),A
+14750         LD   DE,DEPA1
+14760         SCF
+14770         RET
+14780 ACTIOv: LD   HL,#81C6
+14790         ADD  HL,BC
+14800         LD   A,(HL)
+14810         CP   2
+14820         JP   P,ACTIv1
+14830         AND  A
+14840         RET
+14850 ACTIv1: DEC  (HL)
+14860         AND  A
+14870         RET
+14880 CHARGE: LD   HL,#84B1
+14890         LD   B,2
+14900         CALL #BC77
+14910         JR   C,CHARG1
+14920 ERREUR: LD   HL,#7F5C
+14930         CALL AFFIC0
+14940         CALL #BB18
+14950         LD   SP,(#83C2)
+14960         JP   DEBUT
+14970 CHARG1: EX   DE,HL
+14980         CALL #BC83
+14990         JR   NC,ERREUR
+15000         CALL #BC7A
+15010         JR   NC,ERREUR
+15020         RET
+15030 SAUVE:  LD   HL,#4150
+15040         LD   (#84B1),HL
+15050         LD   HL,#84B1
+15060         LD   DE,#8190
+15070         LD   B,2
+15080         CALL #BC8C
+15090         JR   NC,ERREUR
+15100         LD   HL,#8190
+15110         LD   BC,0
+15120         LD   A,2
+15130         LD   DE,#500
+15140         CALL #BC98
+15150         JR   NC,ERREUR
+15160         CALL #BC8F
+15170         JR   NC,ERREUR
+15180         RET
+15190 ONDISC: PUSH BC
+15200         LD   A,1
+15210 ONDIS2: LD   HL,#84B0
+15220         CP   (HL)
+15230         JR   Z,ONDIS3
+15240         LD   (HL),A
+15250         LD   HL,#3150
+15260         LD   (#84B1),HL
+15270         LD   DE,#192D
+15280         CALL CHARGE
+15290 ONDIS3: POP  BC
+15300         RET
+15310 SONINI: CALL #BCA7
+15320         LD   HL,ENV1
+15330         LD   A,1
+15340         CALL #BCBC
+15350         LD   HL,ENV2
+15360         LD   A,2
+15370         CALL #BCBC
+15380         LD   HL,ENV3
+15390         LD   A,3
+15400         CALL #BCBC
+15410         LD   HL,ENV4
+15420         LD   A,4
+15430         CALL #BCBC
+15440         LD   HL,ENV5
+15450         LD   A,5
+15460         CALL #BCBC
+15470         LD   HL,ENT1
+15480         LD   A,1
+15490         CALL #BCBF
+15500         LD   HL,ENT2
+15510         LD   A,2
+15520         CALL #BCBF
+15530         LD   HL,ENV6
+15540         LD   A,6
+15550         CALL #BCBC
+15560         LD   HL,ENV7
+15570         LD   A,7
+15580         CALL #BCBC
+15590         LD   HL,ENV8
+15600         LD   A,8
+15610         CALL #BCBC
+15620         RET
+15630 ENV1:   DEFB 1,15,15,12
+15640 ENV2:   DEFB 1,15,15,8
+15650 ENV3:   DEFB 1,15,15,10
+15660 ENV4:   DEFB 1,15,15,5
+15670 ENV5:   DEFB 1,10,15,13
+15680 ENT1:   DEFB 1,127,-5,1
+15690 ENT2:   DEFB 1,44,5,3
+15700 ENV6:   DEFB 2,3,15,4
+15710         DEFB 12,15,50
+15720 ENV7:   DEFB 1,10,15,4
+15730 ENV8:   DEFB 1,11,15,8
+15740 ACTIOx: LD   A,C
+15750         CP   1
+15760         JR   Z,BRUIT1
+15770         CP   2
+15780         JR   Z,BRUIT2
+15790         CP   3
+15800         JR   Z,BRUIT3
+15810 BRUIT4: LD   HL,CODE4
+15820         CALL #BCAA
+15830         LD   HL,CODE41
+15840 FINx:   CALL #BCAA
+15850         AND  A
+15860         RET
+15870 BRUIT3: LD   HL,CODE3
+15880         JR   FINx
+15890 BRUIT2: LD   HL,CODE2
+15900         JR   FINx
+15910 BRUIT1: LD   HL,CODE1
+15920         JR   FINx
+15930 CODE1:  DEFB 7,1,0
+15940         DEFB 0,0,19,0
+15950         DEFB 0,0
+15960 CODE2:  DEFB 7,2,0
+15970         DEFB 33,0,0,15
+15980         DEFB 0,0
+15990 CODE3:  DEFB 7,3,1
+16000         DEFB 154,2,0,15
+16010         DEFB 120,0
+16020 CODE4:  DEFB 7,5,2
+16030         DEFB 80,0,0,10
+16040         DEFB 0,0
+16050 CODE41: DEFB 7,4,0
+16060         DEFB 184,11,0,15
+16070         DEFB 0,0
+16080 ACTIOw: LD   A,48
+16090         ADD  A,C
+16100         LD   H,A
+16110         LD   L,"S"
+16120         LD   (#84B1),HL
+16130         XOR  A
+16140         LD   (#84B0),A
+16150         LD   DE,#1960
+16160         CALL CHARGE
+16170 SYNT0:  LD   A,255
+16180         LD   HL,SYNT8
+16190 SYNT1:  INC  A
+16200         LD   C,(HL)
+16210         INC  HL
+16220         PUSH AF
+16230         CALL #BD34
+16240         POP  AF
+16250         CP   13
+16260         JR   NZ,SYNT1
+16270 S1:     LD   HL,#1960
+16280         DI
+16290 SYNT2:  LD   A,(HL)
+16300         SLA  A
+16310         JR   C,SYNT3
+16320         LD   D,0
+16330         JR   SYNT4
+16340 SYNT3:  LD   D,15
+16350 SYNT4:  LD   BC,#F6C0
+16360         OUT  (C),C
+16370         LD   BC,#F40A
+16380         OUT  (C),C
+16390         LD   BC,#F680
+16400         OUT  (C),C
+16410         LD   B,#F4
+16420         OUT  (C),D
+16430         LD   BC,#F600
+16440         OUT  (C),C
+16450         SRL  A
+16460 SYNT5:  CALL SYNT6
+16470         DEC  A
+16480         JR   NZ,SYNT5
+16490         INC  HL
+16500 S0:     LD   A,#41
+16510         CP   H
+16520         JR   NZ,SYNT2
+16530         EI
+16540         AND  A
+16550         RET
+16560 SYNT6:  LD   E,2
+16570 SYNT7:  DEC  E
+16580         JR   NZ,SYNT7
+16590         RET
+16600 SYNT8:  DEFB 0,0,0,0
+16610         DEFB 0,0,0,56
+16620         DEFB 0,0,0
+16630         DEFB 0,0,0
+16640 ACTIOy: POP  DE
+16650         POP  HL
+16660         INC  HL
+16670         PUSH HL
+16680         PUSH DE
+16690         LD   D,(HL)
+16700         LD   B,0
+16710         LD   HL,#82B8
+16720         SLA  C
+16730         ADD  HL,BC
+16740         LD   (ACTy1+1),HL
+16750         LD   (ACTy2+2),HL
+16760         LD   C,D
+16770         SLA  C
+16780         LD   HL,#82B8
+16790         ADD  HL,BC
+16800         LD   (ACTy3+2),HL
+16810         LD   (ACTy4+1),HL
+16820 ACTy1:  LD   HL,(#8888)
+16830 ACTy3:  LD   DE,(#9999)
+16840 ACTy2:  LD   (#8888),DE
+16850 ACTy4:  LD   (#9999),HL
+16860         AND  A
+16870         RET
+16880 PASICI: LD   HL,#7FCA
+16890         JP   NOO1
+16900 RETOBJ: LD   HL,#81BB
+16910         LD   B,0
+16920 RETOB2: LD   A,(HL)
+16930         CP   C
+16940         JR   Z,RETOB1
+16950         INC  HL
+16960         INC  B
+16970         LD   A,8
+16980         CP   B
+16990         JR   NZ,RETOB2
+17000         RET
+17010 RETOB1: LD   (HL),0
+17020         RET
+17030 ACTIOz: LD   DE,VICTOI
+17040         SCF
+17050         RET
+17060 ACTIO0: CALL #BB18
+17070         LD   BC,#BC03
+17080         OUT  (C),C
+17090         LD   BC,#BD01
+17100         OUT  (C),C
+17110         CALL #BB18
+17120         CALL #BB18
+17130         LD   BC,#BC03
+17140         OUT  (C),C
+17150         LD   BC,#BD8E
+17160         OUT  (C),C
+17170         AND  A
+17180         RET
+17190 MUSMOR: LD   HL,#1760
+17200         LD   BC,#706
+17210         LD   DE,#A0F
+17220         LD   A,80
+17230         JR   MUSIC
+17240 MUSVIC: LD   HL,#1090
+17250         LD   BC,0
+17260         LD   DE,#606
+17270         LD   A,196
+17280         JR   MUSIC
+17290 MUSPRE: LD   HL,#13A0
+17300         LD   BC,#808
+17310         LD   DE,#C0C
+17320         LD   A,239
+17330 MUSIC:  PUSH AF
+17335         PUSH HL
+17340         LD   A,B
+17350         LD   (M1+3),A
+17360         LD   A,C
+17370         LD   (M2+3),A
+17380         LD   A,D
+17390         LD   (M1+7),A
+17400         LD   A,E
+17410         LD   (M2+7),A
+17420         LD   IX,#83D4
+17423         CALL #BB03
+17427         POP  HL
+17430         POP  AF
+17440         LD   B,A
+17450 MUSIC1: CALL #BB1B
+17460         JR   NC,MUSIC2
+17470         JP   #BCA7
+17480 MUSIC2: PUSH HL
+17490         POP  IY
+17500         LD   (IX+2),0
+17510         LD   (IX+5),0
+17520         LD   (IX+8),0
+17530         LD   A,(IY+1)
+17540         LD   (IX+3),A
+17550         LD   A,(IY+3)
+17560         LD   (IX+7),A
+17570         LD   A,(IY+2)
+17580         LD   (IX+4),A
+17590         LD   A,(IY+0)
+17600         LD   (IX+0),A
+17610         SRL  A
+17620         JR   NC,M2
+17630 M1:     LD   (IX+1),0
+17640         LD   (IX+6),0
+17650         JR   MUSIC3
+17660 M2:     LD   (IX+1),0
+17670         LD   (IX+6),0
+17680 MUSIC3: PUSH HL
+17690         PUSH BC
+17700         PUSH IX
+17710         LD   HL,#83D4
+17720         CALL #BCAA
+17730         POP  IX
+17740         POP  BC
+17750         POP  HL
+17760         JR   NC,MUSIC1
+17770         LD   DE,4
+17780         ADD  HL,DE
+17790         DJNZ MUSIC1
+17800         RET
+17900 RIRE:   LD   HL,#3B40
+17910         LD   (S1+1),HL
+17940         CALL SYNT0
+17950         LD   HL,#1960
+17960         LD   (S1+1),HL
+17985         XOR  A
+17987         LD   (#84B0),A
+17990         RET
+18000 ISSUE:  LD   HL,#7FED
+18010         CALL AFFIC0
+18013         LD   A,0
+18014         LD   (DRAP),A
+18020         LD   BC,(SALLE)
+18030         LD   B,0
+18040         LD   HL,#18AC
+18050         ADD  HL,BC
+18060         LD   A,(HL)
+18070         CP   0
+18080         JR   NZ,IS1
+18090         LD   HL,#801F
+18100         LD   B,24
+18110         JP   AFF12
+18120 IS1:    SLA  A
+18130         CALL C,NORD
+18140         SLA  A
+18150         CALL C,SUD
+18160         SLA  A
+18170         CALL C,EST
+18180         SLA  A
+18190         CALL C,OUEST
+18200         SLA  A
+18210         CALL C,HAUT
+18220         SLA  A
+18230         CALL C,BAS
+18240         SLA  A
+18250         CALL C,ENTREE
+18260         SLA  A
+18270         RET  NC
+18280 SORTI:  PUSH AF
+18290         CALL VIRG
+18300         LD   HL,#8015
+18310         JR   AFA
+18320 ENTREE: PUSH AF
+18330         CALL VIRG
+18340         LD   HL,#800B
+18350         JR   AFA
+18360 NORD:   PUSH AF
+18370         CALL VIRG
+18380         LD   HL,#8005
+18390         JR   AFA
+18400 SUD:    PUSH AF
+18410         CALL VIRG
+18420         LD   HL,#8006
+18430         JR   AFA
+18440 EST:    PUSH AF
+18450         CALL VIRG
+18460         LD   HL,#8007
+18470         JR   AFA
+18480 OUEST:  PUSH AF
+18490         CALL VIRG
+18500         LD   HL,#8008
+18510         JR   AFA
+18520 HAUT:   PUSH AF
+18530         CALL VIRG
+18540         LD   HL,#8009
+18550         JR   AFA
+18560 BAS:    PUSH AF
+18570         CALL VIRG
+18580         LD   HL,#800A
+18590 AFA:    LD   BC,#3215
+18600         CALL AFF12
+18610         POP  AF
+18620         RET
+18630 VIRG:   LD   A,(DRAP)
+18640         CP   0
+18650         JR   Z,VIR
+18660         LD   A,","
+18670         CALL WRCHAR
+18680 VIR:    LD   A,1
+18690         LD   (DRAP),A
+18700         RET
+18800 PRINT:  CP   96
+18803         JP   M,PR
+18805         RES  5,A
+18810 PR:     RST  8
+18820         NOP
+18830         SUB  H
+19000 ZZZ:

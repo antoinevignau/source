@@ -1,0 +1,240 @@
+   10         ORG  41000
+   11 SUJET:  EQU  #400
+   12 VERBE:  EQU  #448
+   13 COD:    EQU  #A00
+   14 ADJ:    EQU  #D00
+   15 SALLE:  EQU  #8590
+   16 PAINT1: EQU  #A280
+   17 NBOBJ:  EQU  #84AE
+   18 ATTRIB: EQU  #300
+   19 ARTICL: EQU  #370
+10190 FENETR: LD   HL,CODFEN
+10200         LD   A,1
+10205         CALL #BBDE
+10208         LD   B,5
+10210 FENET1: PUSH BC
+10211         CALL FENET3
+10212         PUSH HL
+10214         PUSH BC
+10216         POP  HL
+10218         CALL #BBEA
+10220         POP  HL
+10222         LD   B,4
+10224 FENET2: PUSH BC
+10226         CALL FENET3
+10228         PUSH HL
+10230         PUSH BC
+10232         POP  HL
+10234         CALL #BBF6
+10236         POP  HL
+10238         POP  BC
+10240         DJNZ FENET2
+10242         POP  BC
+10244         DJNZ FENET1
+10246         RET
+10249 CODFEN: DEFW 0,0
+10250         DEFW 0,262
+10251         DEFW 406,262
+10256         DEFW 406,0
+10261         DEFW 0,0
+10266         DEFW 0,268
+10271         DEFW 406,268
+10276         DEFW 406,290
+10281         DEFW 0,290
+10286         DEFW 0,268
+10291         DEFW 0,296
+10296         DEFW 0,398
+10301         DEFW 638,398
+10306         DEFW 638,296
+10311         DEFW 0,296
+10315         DEFW 412,290
+10320         DEFW 638,290
+10325         DEFW 638,106
+10330         DEFW 412,106
+10335         DEFW 412,290
+10340         DEFW 412,100
+10345         DEFW 638,100
+10350         DEFW 638,0
+10355         DEFW 412,0
+10360         DEFW 412,100
+10370 FENET3: LD   E,(HL)
+10375         INC  HL
+10380         LD   D,(HL)
+10385         INC  HL
+10390         LD   C,(HL)
+10395         INC  HL
+10400         LD   B,(HL)
+10405         INC  HL
+10410         RET
+20250 WRCHAR: PUSH BC
+20252         PUSH HL
+20253         CALL #BBFC
+20255         LD   DE,-4
+20260         LD   HL,0
+20265         CALL #BBC3
+20266         POP  HL
+20267         POP  BC
+20270         RET
+20300 GRAPHE: LD   A,(SALLE)
+20305         ADD  A,A
+20310         LD   C,A
+20315         LD   B,0
+20320         LD   HL,#82B8
+20325         ADD  HL,BC
+20330         LD   E,(HL)
+20335         INC  HL
+20340         LD   D,(HL)
+20345         EX   DE,HL
+20347         CALL CLEARW
+20350 GRAPH1: LD   A,(HL)
+20355         CP   0
+20360         RET  Z
+20365 GRAPH7: LD   B,A
+20366         AND  192
+20368         CP   192
+20370         JR   Z,GRAPH2
+20375         LD   A,B
+20380 DRAW:   CALL GRAPH3
+20390         PUSH BC
+20430         CALL #BBF6
+20432 GRAPH4: POP  HL
+20433 GRAPH6: INC  HL
+20435         JR   GRAPH1
+20438 GRAPH2: LD   A,B
+20440         AND  3
+20445         CP   0
+20450         JR   Z,PLOT
+20455         CP   2
+20460         JR   Z,INK
+20465         CP   3
+20470         JP   Z,ECRIT
+20475 PAINT:  INC  HL
+20477         LD   A,199
+20480         LD   C,(HL)
+20482         SUB  C
+20483         LD   C,A
+20485         LD   A,B
+20487         INC  HL
+20490         AND  12
+20495         SRL  A
+20500         SRL  A
+20502         CALL PAINT2
+20505         LD   E,A
+20510         LD   A,B
+20515         AND  48
+20520         SRL  A
+20525         SRL  A
+20530         SRL  A
+20535         SRL  A
+20537         CALL PAINT2
+20540         LD   D,A
+20541         LD   B,C
+20542         LD   C,(HL)
+20545         PUSH HL
+20547         DI
+20550         CALL PAINT1
+20552         EI
+20555         JR   GRAPH4
+20557 PAINT2: CP   1
+20559         JR   NZ,E8
+20561         LD   A,#E4
+20563         RET
+20564 E8:     CP   2
+20565         JR   NZ,F4
+20566         LD   A,#E8
+20567         RET
+20568 F4:     LD   A,#F4
+20569         RET
+20570 PLOT:   LD   A,B
+20575         SRL  A
+20580         SRL  A
+20585         CALL #BBDE
+20590         INC  HL
+20595         CALL GRAPH3
+20597         PUSH BC
+20600         CALL #BBEA
+20605         JR   GRAPH4
+20610 GRAPH3: PUSH HL
+20615         LD   L,(HL)
+20620         LD   H,0
+20625         ADD  HL,HL
+20630         EX   DE,HL
+20635         POP  HL
+20640         INC  HL
+20645         PUSH HL
+20650         LD   L,(HL)
+20655         LD   H,0
+20660         ADD  HL,HL
+20665         EX   DE,HL
+20666         POP  BC
+20670         RET
+20675 GRAPH5: INC  HL
+20685         PUSH HL
+20690         LD   B,(HL)
+20695         LD   C,B
+20698         CALL #BC32
+20700         POP  HL
+20703         RET
+20705 INK:    XOR  A
+20715         CALL GRAPH5
+20730         LD   B,(HL)
+20735         LD   C,B
+20737         PUSH HL
+20740         CALL #BC38
+20742         POP  HL
+20745         LD   A,1
+20750         CALL GRAPH5
+20755         LD   A,2
+20760         CALL GRAPH5
+20765         LD   A,3
+20770         CALL GRAPH5
+20775         JP   GRAPH6
+20780 ECRIT:  PUSH BC
+20785         INC  HL
+20790         CALL GRAPH3
+20792         PUSH BC
+20795         CALL #BBC0
+20800         POP  HL
+20805         POP  AF
+20810         PUSH AF
+20815         SRL  A
+20820         SRL  A
+20825         SRL  A
+20830         SRL  A
+20835         CALL #BBDE
+20840         POP  AF
+20855         AND  12
+20870         LD   C,A
+20875         LD   B,0
+20880 ECRIT1: INC  HL
+20885         LD   A,(HL)
+20891         CP   #FF
+20895         JR   NZ,ECRIT2
+20896         JP   GRAPH6
+20900 ECRIT2: CALL WRCHAR
+20905         PUSH BC
+20910         POP  DE
+20915         PUSH BC
+20920         PUSH HL
+20925         LD   HL,0
+20930         CALL #BBC3
+20935         POP  HL
+20940         POP  BC
+20945         JR   ECRIT1
+20950 CLEARW: PUSH HL
+20955         LD   DE,2
+20960         LD   HL,404
+20965         CALL #BBCF
+20970         LD   DE,2
+20975         LD   HL,262
+20980         CALL #BBD2
+20985         CALL #BBDB
+20990         CALL #BBBA
+20992         CALL FENETR
+20995         POP  HL
+20997         RET
+21000 DESSIN: LD   HL,#6000
+21010         JP   GRAPH1-3
+21020 FILL:   LD   DE,(#102)
+21030         LD   BC,(#100)
+21040         JP   PAINT1

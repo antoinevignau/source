@@ -1,0 +1,524 @@
+   10         ORG  #7200
+   20         PUSH HL
+   30         PUSH DE
+   40         CALL L161A
+   50         LD   (#B342),DE
+   60         LD   (#B344),HL
+   70         POP  DE
+   80         POP  HL
+   90         CALL L161D
+  100         PUSH HL
+  110         LD   HL,(#B342)
+  120         OR   A
+  130         SBC  HL,DE
+  140         LD   B,H
+  150         LD   C,L
+  160         JP   M,L1869
+  170 L1859:  LD   HL,(#B342)
+  180         EX   DE,HL
+  190         LD   (#B342),HL
+  200         LD   HL,(#B344)
+  210         EX   (SP),HL
+  220         LD   (#B344),HL
+  230         JR   L1871
+  240 L1869:  LD   HL,0
+  250         OR   A
+  260         SBC  HL,BC
+  270         LD   B,H
+  280         LD   C,L
+  290 L1871:  POP  DE
+  300         LD   HL,(#B344)
+  310         OR   A
+  320         SBC  HL,DE
+  330         EX   DE,HL
+  340         JP   P,L188E
+  350         LD   HL,0
+  360         OR   A
+  370         SBC  HL,DE
+  380         LD   D,H
+  390         LD   E,L
+  400         OR   A
+  410         SBC  HL,BC
+  420         LD   HL,1
+  430         JR   NC,L18B3
+  440         JR   L1898
+  450 L188E:  LD   H,D
+  460         LD   L,E
+  470         OR   A
+  480         SBC  HL,BC
+  490         LD   HL,#FFFF
+  500         JR   NC,L18A1
+  510 L1898:  LD   (#B33A),HL
+  520         LD   H,B
+  530         LD   L,C
+  540         LD   A,#FF
+  550         JR   L18BA
+  560 L18A1:  PUSH HL
+  570         LD   HL,(#B342)
+  580         ADD  HL,BC
+  590         LD   (#B342),HL
+  600         LD   HL,(#B344)
+  610         OR   A
+  620         SBC  HL,DE
+  630         LD   (#B344),HL
+  640         POP  HL
+  650 L18B3:  LD   (#B33A),HL
+  660         LD   H,B
+  670         LD   L,C
+  680         EX   DE,HL
+  690         XOR  A
+  700 L18BA:  LD   (#B346),A
+  710         INC  DE
+  720         LD   (#B340),DE
+  730         INC  HL
+  740         CALL L378C
+  750         LD   (#B33C),HL
+  760         LD   (#B33E),DE
+  770         LD   BC,(#B340)
+  780         LD   D,B
+  790         LD   E,C
+  800         SRL  D
+  810         RR   E
+  820 L18D7:  PUSH BC
+  830         LD   BC,(#B33C)
+  840         LD   HL,(#B33E)
+  850         ADD  HL,DE
+  860         EX   DE,HL
+  870         LD   HL,(#B340)
+  880         OR   A
+  890         SBC  HL,DE
+  900         JR   NC,L18F0
+  910         ADD  HL,DE
+  920         EX   DE,HL
+  930         OR   A
+  940         SBC  HL,DE
+  950         EX   DE,HL
+  960         INC  BC
+  970 L18F0:  PUSH DE
+  980         LD   A,(#B346)
+  990         OR   A
+ 1000         JR   Z,L191A
+ 1010         LD   HL,(#B342)
+ 1020         LD   D,H
+ 1030         LD   E,L
+ 1040         ADD  HL,BC
+ 1050         LD   (#B342),HL
+ 1060         LD   B,H
+ 1070         LD   C,L
+ 1080         DEC  BC
+ 1090         LD   HL,(#B344)
+ 1100         PUSH HL
+ 1105         CALL L16B0
+ 1120         LD   A,(#B338)
+ 1130         CALL C,LFC4
+ 1140         POP  DE
+ 1150         LD   HL,(#B33A)
+ 1160         ADD  HL,DE
+ 1170         LD   (#B344),HL
+ 1180         JR   L193D
+ 1190 L191A:  LD   HL,(#B344)
+ 1200         LD   D,H
+ 1210         LD   E,L
+ 1220         ADD  HL,BC
+ 1230         LD   (#B344),HL
+ 1240         LD   B,H
+ 1250         LD   C,L
+ 1260         DEC  BC
+ 1270         EX   DE,HL
+ 1280         LD   DE,(#B342)
+ 1290         PUSH DE
+ 1295         CALL L1664
+ 1310         LD   A,(#B338)
+ 1320         CALL C,L102F
+ 1330         POP  DE
+ 1340         LD   HL,(#B33A)
+ 1350         ADD  HL,DE
+ 1360         LD   (#B342),HL
+ 1370 L193D:  POP  DE
+ 1380         POP  BC
+ 1390         DEC  BC
+ 1400         LD   A,B
+ 1410         OR   C
+ 1420         JR   NZ,L18D7
+ 1430         RET
+ 1440 L15F4:  LD   (#B32C),DE
+ 1450         LD   (#B32E),HL
+ 1460         RET
+ 1470 L15FC:  LD   DE,(#B32C)
+ 1480         LD   HL,(#B32E)
+ 1490         RET
+ 1500 L161A:  CALL L15FC
+ 1510 L161D:  CALL L15F4
+ 1520         PUSH HL
+ 1530         CALL LAEC
+ 1535         CPL
+ 1540         ADD  A,1
+ 1550         ADC  A,2
+ 1560         LD   H,0
+ 1570         LD   L,A
+ 1580         BIT  7,D
+ 1590         JR   Z,L1633
+ 1600         EX   DE,HL
+ 1610         ADD  HL,DE
+ 1620         EX   DE,HL
+ 1630 L1633:  CPL
+ 1640         AND  E
+ 1650         LD   E,A
+ 1660         LD   A,L
+ 1670         LD   HL,(#B328)
+ 1680         ADD  HL,DE
+ 1690         RRCA
+ 1700         CALL C,L1774
+ 1710         RRCA
+ 1720         CALL C,L1774
+ 1730         POP  DE
+ 1740         PUSH HL
+ 1750         LD   A,D
+ 1760         RLCA
+ 1770         JR   NC,L164A
+ 1780         INC  DE
+ 1790 L164A:  LD   A,E
+ 1800         AND  #FE
+ 1810         LD   E,A
+ 1820         LD   HL,(#B32A)
+ 1830         ADD  HL,DE
+ 1840         CALL L1774
+ 1850         POP  DE
+ 1860         RET
+ 1870 L1774:  SRA  H
+ 1880         RR   L
+ 1890         RET
+ 1900 L378C:  LD   A,D
+ 1910         OR   E
+ 1920         RET  Z
+ 1930         PUSH BC
+ 1940         EX   DE,HL
+ 1950         LD   B,1
+ 1960         LD   A,H
+ 1970         OR   A
+ 1980         JR   NZ,L37A0
+ 1990         LD   A,D
+ 2000         CP   L
+ 2010         JR   C,L37A0
+ 2020         LD   H,L
+ 2030         LD   L,0
+ 2040         LD   B,9
+ 2050 L37A0:  LD   A,E
+ 2060         SUB  L
+ 2070         LD   A,D
+ 2080         SBC  A,H
+ 2090         JR   C,L37AB
+ 2100         INC  B
+ 2110         ADD  HL,HL
+ 2120         JR   NC,L37A0
+ 2130         CCF
+ 2140 L37AB:  CCF
+ 2150         LD   A,B
+ 2160         LD   B,H
+ 2170         LD   C,L
+ 2180         LD   HL,0
+ 2190         DEC  A
+ 2200         JR   NZ,L37B8
+ 2210         JR   L37CE
+ 2220 L37B7:  ADD  HL,HL
+ 2230 L37B8:  PUSH AF
+ 2240         LD   A,B
+ 2250         RRA
+ 2260         LD   B,A
+ 2270         LD   A,C
+ 2280         RRA
+ 2290         LD   C,A
+ 2300         LD   A,E
+ 2310         SUB  C
+ 2320         LD   A,D
+ 2330         SBC  A,B
+ 2340         JR   C,L37CA
+ 2350         LD   D,A
+ 2360         LD   A,E
+ 2370         SUB  C
+ 2380         LD   E,A
+ 2390         INC  L
+ 2400 L37CA:  POP  AF
+ 2410         DEC  A
+ 2420         JR   NZ,L37B7
+ 2430 L37CE:  SCF
+ 2440         POP  BC
+ 2450         RET
+ 2460 MB1CF:  DEFB 136,68,34,17
+ 2465         DEFB #AA,#55,#7C,#E6
+ 2470 LBDE8:  LD   A,(HL)
+ 2480         XOR  B
+ 2490         OR   C
+ 2500         XOR  C
+ 2510         XOR  B
+ 2520         LD   (HL),A
+ 2530         RET
+ 2540 LFC4:   PUSH AF
+ 2550         PUSH HL
+ 2560         LD   A,D
+ 2570         CPL
+ 2580         LD   H,A
+ 2590         LD   A,E
+ 2600         CPL
+ 2610         LD   L,A
+ 2620         INC  HL
+ 2630         ADD  HL,BC
+ 2640         INC  HL
+ 2650         EX   (SP),HL
+ 2660         XOR  A
+ 2670         SUB  E
+ 2680         PUSH AF
+ 2690         CALL LBA9
+ 2700         PUSH HL
+ 2710         LD   A,B
+ 2720         CPL
+ 2730         LD   L,A
+ 2740         LD   H,#FF
+ 2750         LD   (#B207),HL
+ 2760         POP  HL
+ 2770         POP  AF
+ 2780         AND  B
+ 2790         LD   B,A
+ 2800         JR   Z,L102A
+ 2810         EX   (SP),HL
+ 2820         JR   LFEB
+ 2830 LFE8:   LD   A,(DE)
+ 2840         OR   C
+ 2850         LD   C,A
+ 2860 LFEB:   DEC  HL
+ 2870         LD   A,H
+ 2880         OR   L
+ 2890         JR   Z,L1024
+ 2900         INC  DE
+ 2910         DJNZ LFE8
+ 2920         EX   DE,HL
+ 2930         POP  HL
+ 2940         POP  AF
+ 2950         LD   B,A
+ 2960         CALL LBDE8
+ 2970         CALL LBF9
+ 2980 LFFD:   PUSH HL
+ 2990         LD   HL,(#B207)
+ 3000         ADD  HL,DE
+ 3010         JR   NC,L1010
+ 3020         EX   DE,HL
+ 3030         POP  HL
+ 3040         LD   C,#FF
+ 3050         CALL LBDE8
+ 3060         CALL LBF9
+ 3070         JR   LFFD
+ 3080 L1010:  LD   A,E
+ 3090         OR   A
+ 3100         JR   Z,L1022
+ 3110         XOR  A
+ 3120         LD   HL,#B1CF
+ 3130 L1018:  OR   (HL)
+ 3140         INC  HL
+ 3150         DEC  E
+ 3160         JR   NZ,L1018
+ 3170         LD   C,A
+ 3180         POP  HL
+ 3190         JP   LBDE8
+ 3200 L1022:  POP  HL
+ 3210         RET
+ 3220 L1024:  POP  HL
+ 3230         POP  AF
+ 3240         LD   B,A
+ 3250         JP   LBDE8
+ 3260 L102A:  POP  DE
+ 3270         POP  AF
+ 3280         LD   B,A
+ 3290         JR   LFFD
+ 3300 L102F:  PUSH AF
+ 3310         PUSH HL
+ 3320         LD   A,H
+ 3330         CPL
+ 3340         LD   H,A
+ 3350         LD   A,L
+ 3360         CPL
+ 3370         LD   L,A
+ 3380         INC  HL
+ 3390         ADD  HL,BC
+ 3400         INC  HL
+ 3410         EX   (SP),HL
+ 3420         CALL LBA9
+ 3430         POP  DE
+ 3440         POP  AF
+ 3450         LD   B,A
+ 3460 L1041:  CALL LBDE8
+ 3470         CALL LC2D
+ 3480         DEC  DE
+ 3490         LD   A,D
+ 3500         OR   E
+ 3510         JR   NZ,L1041
+ 3520         RET
+ 3530 LC2D:   LD   A,H
+ 3540         SUB  8
+ 3550         LD   H,A
+ 3560         AND  #38
+ 3570         CP   #38
+ 3580         RET  NZ
+ 3590         LD   A,H
+ 3600         ADD  A,#40
+ 3610         LD   H,A
+ 3620         LD   A,L
+ 3630         SUB  #50
+ 3640         LD   L,A
+ 3650         RET  NC
+ 3660         LD   A,H
+ 3670         DEC  H
+ 3680         AND  7
+ 3690         RET  NZ
+ 3700         LD   A,H
+ 3710         ADD  A,8
+ 3720         LD   H,A
+ 3730         RET
+ 3740 LBA9:   PUSH DE
+ 3750         EX   DE,HL
+ 3760         LD   HL,#C7
+ 3770         OR   A
+ 3780         SBC  HL,DE
+ 3790         LD   A,L
+ 3800         AND  7
+ 3810         ADD  A,A
+ 3820         ADD  A,A
+ 3830         ADD  A,A
+ 3840         LD   C,A
+ 3850         LD   A,L
+ 3860         AND  #F8
+ 3870         LD   L,A
+ 3880         LD   D,H
+ 3890         LD   E,L
+ 3900         ADD  HL,HL
+ 3910         ADD  HL,HL
+ 3920         ADD  HL,DE
+ 3930         ADD  HL,HL
+ 3940         POP  DE
+ 3950         CALL LAEC
+ 3970         LD   B,1
+ 3980         JR   C,LBD0
+ 3990         LD   B,3
+ 4000         JR   Z,LBD0
+ 4010         LD   B,7
+ 4020 LBD0:   LD   A,B
+ 4030         AND  E
+ 4040         PUSH AF
+ 4050         LD   A,B
+ 4060         RRCA
+ 4070 LBD5:   SRL  D
+ 4080         RR   E
+ 4090         RRCA
+ 4100         JR   C,LBD5
+ 4110         ADD  HL,DE
+ 4120         LD   DE,(#B1C9)
+ 4130         LD   A,H
+ 4140         AND  7
+ 4150         LD   H,A
+ 4160         LD   A,(#B1CB)
+ 4170         ADD  A,H
+ 4180         ADD  A,C
+ 4190         LD   H,A
+ 4200         POP  AF
+ 4210         PUSH HL
+ 4220         LD   D,0
+ 4230         LD   E,A
+ 4240         LD   HL,#B1CF
+ 4250         ADD  HL,DE
+ 4260         LD   C,(HL)
+ 4270         EX   DE,HL
+ 4280         POP  HL
+ 4290         RET
+ 4300 LBF9:   INC  L
+ 4310         RET  NZ
+ 4320         INC  H
+ 4330         LD   A,H
+ 4340         AND  7
+ 4350         RET  NZ
+ 4360         LD   A,H
+ 4370         SUB  8
+ 4380         LD   H,A
+ 4390         RET
+ 4400 1664:   PUSH DE
+ 4410         PUSH HL
+ 4420         LD   HL,(#B330)
+ 4430         DEC  HL
+ 4440         OR   A
+ 4450         SBC  HL,DE
+ 4460         JP   P,L16AC
+ 4470         LD   HL,(#B332)
+ 4480         OR   A
+ 4490         SBC  HL,DE
+ 4500         JP   M,L16AC
+ 4510         POP  DE
+ 4520         LD   HL,(#B334)
+ 4530         OR   A
+ 4540         SBC  HL,DE
+ 4550         JP   M,L16AD
+ 4560         LD   HL,(#B336)
+ 4570         DEC  HL
+ 4580         OR   A
+ 4590         SBC  HL,DE
+ 4600         JP   M,L1691
+ 4610         LD   DE,(#B336)
+ 4620 L1691:  LD   HL,(#B336)
+ 4630         DEC  HL
+ 4640         OR   A
+ 4650         SBC  HL,BC
+ 4660         JP   P,L16AD
+ 4670         LD   HL,(#B334)
+ 4680         OR   A
+ 4690         SBC  HL,BC
+ 4700         JP   P,L16A8
+ 4710         LD   BC,(#B334)
+ 4720 L16A8:  EX   DE,HL
+ 4730         POP  DE
+ 4740         SCF
+ 4750         RET
+ 4760 L16AC:  POP  HL
+ 4770 L16AD:  POP  DE
+ 4780         OR   A
+ 4790         RET
+ 4800 L16B0:  PUSH HL
+ 4810         PUSH DE
+ 4820         EX   DE,HL
+ 4830         LD   HL,(#B336)
+ 4840         DEC  HL
+ 4850         OR   A
+ 4860         SBC  HL,DE
+ 4870         JP   P,L16F8
+ 4880         LD   HL,(#B334)
+ 4890         OR   A
+ 4900         SBC  HL,DE
+ 4910         JP   M,L16F8
+ 4920         POP  DE
+ 4930         LD   HL,(#B332)
+ 4940         OR   A
+ 4950         SBC  HL,DE
+ 4960         JP   M,L16F9
+ 4970         LD   HL,(#B330)
+ 4980         DEC  HL
+ 4990         OR   A
+ 5000         SBC  HL,DE
+ 5010         JP   M,L16DE
+ 5020         LD   DE,(#B330)
+ 5030 L16DE:  LD   HL,(#B330)
+ 5040         DEC  HL
+ 5050         OR   A
+ 5060         SBC  HL,BC
+ 5070         JP   P,L16F9
+ 5080         LD   HL,(#B332)
+ 5090         OR   A
+ 5100         SBC  HL,BC
+ 5110         JP   P,L16F5
+ 5120         LD   BC,(#B332)
+ 5130 L16F5:  POP  HL
+ 5140         SCF
+ 5150         RET
+ 5160 L16F8:  POP  DE
+ 5170 L16F9:  POP  HL
+ 5180         OR   A
+ 5190         RET
+ 5200 LAEC:   LD   A,(#B1C8)
+ 5210         CP   1
+ 5220         RET
+ 6000 ZZZ:

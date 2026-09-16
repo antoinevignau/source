@@ -1,0 +1,51 @@
+   10 LECTUR: LD   A,255
+   15         LD   HL,SYNT8
+   20 SYNT1:  INC  A
+   25         LD   C,(HL)
+   30         INC  HL
+   35         PUSH AF
+   40         CALL #BD34
+   45         POP  AF
+   50         CP   13
+   55         JR   NZ,SYNT1
+   60         LD   HL,#2E30
+   65         DI
+   70 SYNT2:  LD   A,(HL)
+   75         SLA  A
+   80         JR   C,SYNT3
+   85         LD   D,0
+   90         JR   SYNT4
+   95 SYNT3:  LD   D,15
+  100 SYNT4:  LD   BC,#F6C0
+  105         OUT  (C),C
+  110         LD   BC,#F40A
+  115         OUT  (C),C
+  120         LD   BC,#F680
+  125         OUT  (C),C
+  130         LD   B,#F4
+  135         OUT  (C),D
+  140         LD   BC,#F600
+  145         OUT  (C),C
+  150         SRL  A
+  155 SYNT5:  CALL SYNT6
+  160         DEC  A
+  165         JR   NZ,SYNT5
+  170         INC  HL
+  175         LD   A,#A5
+  180         CP   H
+  185         JR   NZ,SYNT2
+  190         EI
+  195         AND  A
+  200         RET
+  205 SYNT6:  LD   E,2
+  210 SYNT7:  DEC  E
+  211         NOP
+  212         NOP
+  213         NOP
+  214         NOP
+  215         JR   NZ,SYNT7
+  220         RET
+  225 SYNT8:  DEFB 0,0,0,0
+  230         DEFB 0,0,0,56
+  235         DEFB 0,0,0
+  240         DEFB 0,0,0

@@ -1,0 +1,19 @@
+var supportPageOffset = window.pageXOffset !== undefined;
+var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
+function boutonTop()
+{
+	var y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+	var hauteur = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	if (y < hauteur)
+	{
+		//hide
+		document.getElementById("afftop").style.display = 'none';
+	}
+	else
+	{
+		//show
+		document.getElementById("afftop").style.display = 'block';
+	}
+	/*document.getElementById("infos").innerHTML = "y="+y+" ; hauteur="+hauteur;*/
+	setTimeout("boutonTop()",1000);
+}

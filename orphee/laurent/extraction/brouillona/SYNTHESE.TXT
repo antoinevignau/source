@@ -1,0 +1,79 @@
+    2         ORG  #A555
+    3 ENRE:   LD   HL,#2500
+    4         DI
+    5         LD   BC,#F610
+    6         OUT  (C),C
+    7         DEC  B
+    8         LD   DE,0
+    9         LD   IX,#100
+   10 DE1:    IN   A,(C)
+   11         AND  #80
+   12         LD   (IX+0),A
+   13 TE1:    IN   A,(C)
+   14         AND  #80
+   15         CP   (IX+0)
+   16         JR   Z,AJOU
+   17 PREP:   LD   A,(IX+0)
+   18         OR   D
+   19         LD   (HL),A
+   20         LD   D,0
+   21         INC  HL
+   22         LD   A,#A5
+   23         CP   H
+   24         JR   NZ,DE1
+   25         LD   BC,#F600
+   26         OUT  (C),C
+   27         EI
+   28         RET
+   29 AJOU:   INC  D
+   30         LD   A,D
+   31         CP   127
+   32         JR   NZ,TE1
+   33         JR   PREP
+   34 LECTUR: LD   A,255
+   35         LD   HL,SYNT8
+   36 SYNT1:  INC  A
+   37         LD   C,(HL)
+   38         INC  HL
+   39         PUSH AF
+   40         CALL #BD34
+   41         POP  AF
+   42         CP   13
+   43         JR   NZ,SYNT1
+   44         LD   HL,#2500
+   45         DI
+   46 SYNT2:  LD   A,(HL)
+   47         SLA  A
+   48         JR   C,SYNT3
+   49         LD   D,0
+   50         JR   SYNT4
+   51 SYNT3:  LD   D,15
+   52 SYNT4:  LD   BC,#F6C0
+   53         OUT  (C),C
+   54         LD   BC,#F40A
+   55         OUT  (C),C
+   56         LD   BC,#F680
+   57         OUT  (C),C
+   58         LD   B,#F4
+   59         OUT  (C),D
+   60         LD   BC,#F600
+   61         OUT  (C),C
+   62         SRL  A
+   63 SYNT5:  CALL SYNT6
+   64         DEC  A
+   65         JR   NZ,SYNT5
+   66         INC  HL
+   67         LD   A,#A5
+   68         CP   H
+   69         JR   NZ,SYNT2
+   70         EI
+   71         AND  A
+   72         RET
+   73 SYNT6:  LD   E,2
+   74 SYNT7:  DEC  E
+   75         JR   NZ,SYNT7
+   76         RET
+   77 SYNT8:  DEFB 0,0,0,0
+   78         DEFB 0,0,0,56
+   79         DEFB 0,0,0
+   80         DEFB 0,0,0

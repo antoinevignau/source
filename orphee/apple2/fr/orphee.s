@@ -82,40 +82,36 @@ iARTICLE	=	6	;
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
-PLAY	jsr	PRESENT
-	jsr	INIT
-	jsr	RIRE
-
-REPLAY	@CLS	#0
+PLAY	@CLS	#0
 	@MODE	#1
-	@INK	#0;#26	; blanc
-	@INK	#1;#0	; noir
+	@INK	#0;#0	; noir
+	@INK	#1;#26	; blanc
 	@INK	#2;#9	; vert
 	@INK	#3;#15	; orange
-	@PAPER	#0;#0	; blanc
-	@PEN	#0;#1	; noir
+	@PAPER	#0;#0	; noir
+	@PEN	#0;#1	; blanc
 	
 	@WINDOW	#1;#tblWINDOW1	; pour les descriptions
 	@PAPER	#1;#0
 	@PEN	#1;#1
-*	@CLS	#1
 
 	@WINDOW	#2;#tblWINDOW2	; pour la salle
 	@PAPER	#2;#0
 	@PEN	#2;#1
-*	@CLS	#2
 	
 	@WINDOW	#3;#tblWINDOW3	; pour l'inventaire
 	@PAPER	#3;#0
 	@PEN	#3;#1
-*	@CLS	#3
 	
 	@WINDOW	#4;#tblWINDOW4	; pour les personnages
 	@PAPER	#4;#0
 	@PEN	#4;#1
-*	@CLS	#4
 
-*	stz	SALLE
+REPLAY	jsr	PRESENT
+	jsr	INIT
+	jsr	RIRE
+
+REPLAY*	stz	SALLE
 *loopME	inc	SALLE
 *	lda	SALLE
 *	cmp	#NBSALLE+1
@@ -204,7 +200,8 @@ DEPA22	@gotoxy2	#26*8;#63
 
 DEPA3	jsr	GETCOM	; saisie des caracteres
 	jsr	DCRIPT	; déchiffre la chaîne saisie
-
+	jsr	showSALLE
+	
 	lda	SUJET
 	bne	DEPA31
 	lda	VERBE
@@ -426,8 +423,8 @@ CODFEN	dw	0,0	; les coordonnées des fenetres
 
 tblWINDOW1	dw	2,39,2,6
 tblWINDOW2	dw	2,25,8,8
-tblWINDOW3	dw	27,39,8,18
-tblWINDOW4	dw	27,39,20,24
+tblWINDOW3	dw	27,40,8,18
+tblWINDOW4	dw	27,40,20,24
 
 windowTEXTE
 	dw	0,0
@@ -449,6 +446,53 @@ windowPERSONNAGE
 	dw	149,206
 	dw	200,320
 
+*-------------------------------
+* DEBUG
+*-------------------------------
+
+showSALLE	lda	SUJET
+	jsr	getDEBUG
+	sta	strCOMMANDE+0
+	lda	VERBE
+	jsr	getDEBUG
+	sta	strCOMMANDE+2
+	lda	ARTICLE
+	jsr	getDEBUG
+	sta	strCOMMANDE+4
+	lda	COD
+	jsr	getDEBUG
+	sta	strCOMMANDE+6
+	lda	ADJECTIF
+	jsr	getDEBUG
+	sta	strCOMMANDE+8
+	lda	ATTRIBUT
+	jsr	getDEBUG
+	sta	strCOMMANDE+10
+	rts
+	
+getDEBUG	pha
+	PushLong	#strDEBUG
+	PushWord	#2
+	PushWord	#FALSE
+	_Int2Dec
+
+	lda	strDEBUG
+	ora	#'00'
+	rts
+
+*--- Data
+
+strDEBUG	ds	2
+
+*---------------
+
+showBORDER	sep	#$20
+	ldal	$c034
+	inc
+	stal	$c034
+	rep	#$20
+	rts
+
 *-----------------------------------
 * VERIFI
 *-----------------------------------
@@ -460,7 +504,10 @@ VERIFI
 * RETROU
 *-----------------------------------
 
-RETROU	lda	#SUJET$	; cherche WORDBUFFER
+RETROU	@PRINT	#3;#WORDBUFFER
+	@PRINT	#3;#strRETURN
+	
+	lda	#SUJET$	; cherche WORDBUFFER
 	jsr	FINDMO	; dans les différentes listes...
 	cmp	#chrNULL
 	beq	RETROU_1
@@ -506,15 +553,14 @@ TEST
 * ZERO
 *-----------------------------------
 
-ZERO	sep	#$20	; efface l'index des mots
-	ldx	#1
-]lp	stz	MOT-1,x
-	stz	DEJA-1,x
-	inx
-	cpx	#LEN_WORD
-	bcc	]lp
-	beq	]lp
-	rep	#$20
+ZERO	stz	SUJET	; efface l'index des mots
+	stz	COD	; 2 en une fois
+	stz	ATTRIBUT	; itou
+	
+	stz	DEJA
+	stz	DEJA+2
+	stz	DEJA+4
+	
 	stz	TEXT_X	; index courant dans TEXTBUFFER
 	rts
 
@@ -540,14 +586,12 @@ DCRIPT	jsr	ZERO
 
 DCRIPT_1	jsr	SPACE	; efface la zone du mot cible
 	jsr	NEXTMO	; cherche un mot, recopie-le
+	bcs	DCRIPT_2	; plus de mots
 	jsr	TESTMO	; est-il dans les tables ?
 
 	lda	TEXT_X	; si zero, on n'a plus
 	bne	DCRIPT_1	; de mot à chercher
-
-	lda	#MOT
-	brk	$bd
-	rts
+DCRIPT_2	rts
 
 *-----------------------------------
 * TESTMO
@@ -599,6 +643,8 @@ NEXTMO_2	ldy	#0
 	beq	NEXTMO_4
 	sta	WORDBUFFER,y
 	inx
+	cmp	#chrGUILLEMET
+	beq	NEXTMO_4
 	cpx	lenSTRING
 	bcs	NEXTMO_4
 	iny
@@ -632,52 +678,24 @@ PACAPI
 * PRESENT
 *-----------------------------------
 
-PRESENT	@MODE	#1	; 320x200
-	@BORDER	#0;#0
-	@INK	#0;#0	; noir
-	@INK	#1;#26	; blanc
-	@INK	#2;#9	; vert
-	@INK	#3;#15	; orange
+PRESENT	jsr	FENETR
 
-	@PAPER	#0;#0	; noir
-	@PEN	#0;#1	; blanc
-	@CLS	#0
+	@CLS	#1
+	@LOCATE	#1;#1;#1
+	@PRINT	#1;#phrase01
+	@CLS	#3
+	@LOCATE	#3;#1;#1
+	@PRINT	#3;#phrase05
 
-	jsr	FENETR
-	
-	rts
-	
 	ldal	HORIZCNT	; affiche image 119 ou 120
 	and	#%00000001
 	clc
 	adc	#picVOYAGE
 	jsr	showPIC
 
-	@center	#10;#phrase01
-	@center	#26;#phrase02
-	@center	#34;#phrase03
-	@center	#42;#phrase04
-
-	@gotoxy	#30*8;#6
-	@print	#phrase05
-	@gotoxy	#30*8;#7
-	@print	#phrase06
-	@gotoxy	#28*8;#8
-	@print	#phrase07
-	@gotoxy	#29*8;#9
-	@print	#phrase08
-	@gotoxy	#26*8;#10
-	@print	#phrase09
-	@gotoxy	#28*8;#11
-	@print	#phrase10
-	@gotoxy	#28*8;#12
-	@print	#phrase11
-	@gotoxy	#27*8;#13
-	@print	#phrase12
-	@gotoxy	#26*8;#14
-	@print	#phrase13
-
 	@INKEY
+	@CLS	#1
+	@CLS	#3
 	rts
 
 *-----------------------------------
@@ -1987,7 +2005,7 @@ spLOOP	ldy	#0
 	cmp	#192	; commande %11xx_xxxx
 	bcs	spOTHER
 
-	lda	#maxY
+	lda	#GFX_MAX_Y
 	sec
 	sbc	theA
 	sta	theY	; <192 alors DRAW
@@ -2023,7 +2041,7 @@ spOTHER	lda	theA
 
 spPAINT	lda	theC
 	sta	fillX
-	lda	#maxY
+	lda	#GFX_MAX_Y
 	sec
 	sbc	theB
 	sta	fillY
@@ -2032,7 +2050,7 @@ spPAINT	lda	theC
 
 spPLOT	lda	theC
 	sta	theX
-	lda	#maxY
+	lda	#GFX_MAX_Y
 	sec
 	sbc	theB
 	sta	theY
@@ -2055,7 +2073,7 @@ spINK	lda	theB
 
 spECRIT	lda	theC
 	pha
-	lda	#maxY+8
+	lda	#GFX_MAX_Y+8
 	sec
 	sbc	theB
 	pha
@@ -2152,6 +2170,19 @@ FILL_O	ldx	theA1	; sets the pattern to use
 
 theSTEP	ds	2	; pas courant
 maxSTEPS	ds	2	; nombre de pas dans un image
+
+theA	ds	2
+theA1	ds	2
+theA2	ds	2
+theA3	ds	2
+theB	ds	2
+theC	ds	2
+theX	ds	2
+theY	ds	2
+theINK0	ds	2
+theINK1	ds	2
+theINK2	ds	2
+theINK3	ds	2
 
 *----------- FILL
 
@@ -2443,10 +2474,10 @@ IZ	ds	2
 MOT
 SUJET	ds	1
 VERBE	ds	1
-ARTICLE	ds	1
 COD	ds	1
 ADJECTIF	ds	1
 ATTRIBUT	ds	1
+ARTICLE	ds	1
 
 DEJA	ds	6	; 0 si pas trouvé, -1 sinon
 
@@ -2464,19 +2495,6 @@ SALLE	ds	2
 NBOBJ	ds	2
 DRAP	ds	2
 T	ds	2
-
-theA	ds	2
-theA1	ds	2
-theA2	ds	2
-theA3	ds	2
-theB	ds	2
-theC	ds	2
-theX	ds	2
-theY	ds	2
-theINK0	ds	2
-theINK1	ds	2
-theINK2	ds	2
-theINK3	ds	2
 
 C	ds	32
 P	ds	32

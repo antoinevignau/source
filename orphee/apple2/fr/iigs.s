@@ -69,6 +69,9 @@ screen160	=	160
 screen320	=	320
 screen640	=	640
 
+GFX_MAX_X	=	320
+GFX_MAX_Y	=	200
+
 ptr012000	=	$012000
 ptrE12000	=	$e12000
 
@@ -84,6 +87,7 @@ chrRETURN	=	$0d
 chrRA	=	$15
 chrESCAPE	=	$1b
 chrSPACE	=	$20
+chrGUILLEMET	=	$27
 chrCOMMA	=	$2c
 chrDELETE	=	$7f
 chrEOT	=	$fe

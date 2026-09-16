@@ -15,7 +15,7 @@ txtREF	=	*	; reference to text data
 * Les chaines diverses
 *
 
-strCOMMANDE	asc	'>'00
+strCOMMANDE	asc	'000000000000 >'00
 strIMPOSSIBLE	asc	'IMPOSSIBLE'00
 strDACCORD	asc	'D'27'ACCORD'00
 strNOTOWNED	asc	'VOUS NE POUVEZ POSER CE QUE VOUS N'27'AVEZ PAS'00
@@ -1389,19 +1389,25 @@ ARTICLE$	@asc	01;'L'27'   '
 NBPHRASE	=	13
 
 PHRASE$
-phrase01	asc	'COPYRIGHT LORICIELS ... AOUT 1985'00
-phrase02	asc	'REPRODUCTIONS INTERDITES, LOI DU 11 MARS 1957'00
-phrase03	asc	'TOUS DROITS DE REPRODUCTION, TRADUCTION, LOCATION'00
-phrase04	asc	'ET D'27'ADAPTATION RESERVES POUR TOUS PAYS'00
-phrase05	asc	'PROGRAMME'00
-phrase06	asc	'CONCU PAR'00
-phrase07	asc	'LAURENT BENES'00
-phrase08	asc	'ASSISTE DE:'00
-phrase09	asc	'DIDIER BERCHIATTI'00
-phrase10	asc	'GRAPHISME DE:'00
-phrase11	asc	'ROGER NICOLLE'00
-phrase12	asc	'REMERCIEMENTS A'00
-phrase13	asc	'PATRICE GUERLAIS'00
+*		'12345678901234567890123456789012345678'
+*		'--------------------------------------'
+phrase01	asc	'Copyright LORICIELS ... ao'9e't 1985'0d
+	asc	'Reproduction interdite, loi du 11 mars'
+	asc	'1957 - Tous droits de reproduction,'0d
+	asc	'traduction, location et d'27'adaptation'0d
+	asc	'r'8e'serv'8e's pour tous pays.'00
+
+*		'1234567890123'
+*		'-------------'
+phrase05	asc	'  Programme'0d
+phrase06	asc	'  con'8d'u par'0d0d
+phrase07	asc	'   L. BENES'0d0d
+phrase08	asc	' Assist'8e' de:'0d
+phrase09	asc	'D. BERCHIATTI'
+phrase10	asc	' Graphisme:'0d
+phrase11	asc	' R. NICOLLE'0d
+phrase12	asc	'Remerciements'
+phrase13	asc	' P. GUERLAIS'00
 
 *
 * Les descriptions

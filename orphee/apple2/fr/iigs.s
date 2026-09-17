@@ -95,8 +95,8 @@ chrEOT	=	$fe
 chrYES	=	'O'	; FR
 chrNO	=	'N'
 
-TRUE	=	1
-FALSE	=	0
+TRUE	=	$ffff
+FALSE	=	$0000
 
 *----------------------- Color index
 
@@ -171,11 +171,6 @@ ICI	phk
 	ora	#$0100
 	sta	myID
 
-	lda	#showPIC
-	stal	$300
-	lda	#^showPIC
-	stal	$302
-	
 *-----------------------------------
 * MEMORY...
 *-----------------------------------
@@ -259,15 +254,15 @@ okTOOL	_HideMenuBar
 	PushLong	#117117
 	_SetRandSeed
 
-	PushWord	#0
+	PushWord	#indexWHITE
 	_SetBackColor
-	PushWord	#15
+	PushWord	#indexBLACK
 	_SetForeColor
 
 	PushLong	#whitePATTERN	; white pattern
 	_SetPenPat
 
-	PushWord	#0
+	PushWord	#$ffff
 	_ClearScreen
 
 	PushWord	#0

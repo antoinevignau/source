@@ -7,19 +7,25 @@
 
 	mx	%00
 
-	use	4/Desk.Macs
+*-----------------------------------
+* MACROS
+*-----------------------------------
+
 	use	4/Event.Macs
 	use	4/Font.Macs
 	use	4/Int.Macs
 	use	4/Locator.Macs
 	use	4/Mem.Macs
+	use	4/Menu.Macs
 	use	4/MidiSyn.Macs
 	use	4/Misc.Macs
-	use	4/Qd.Macs
-	use	4/QdAux.Macs
+	use	4/QD.Macs
+	use	4/QDAux.Macs
 	use	4/Sound.Macs
+	use	4/Std.Macs
 	use	4/Util.Macs
-
+	use	4/Window.Macs
+	
 *-------------------------------
 * EQUATES
 *-------------------------------
@@ -48,6 +54,11 @@ screen640	=	640
 
 ptr012000	=	$012000
 ptrE12000	=	$e12000
+
+
+refIsPointer	=	$0
+refIsHandle	=	$1
+refIsResource	=	$2
 
 *---
 
@@ -144,17 +155,6 @@ GSOS	=	$e100a8
 	ora	#$0100
 	sta	myID
 
-	_MTStartUp
-
-	lda	myDP
-	clc
-	adc	#256*1
-	pha
-	PushWord	#mode320
-	PushWord	#0
-	PushWord	myID
-	_QDStartUp
-	
 *--- Get the border
 
 	PushWord	#0
@@ -172,50 +172,7 @@ GSOS	=	$e100a8
 	sta	ptrSCREEN+2
 	sta	iconToDestLocInfo+4
 	
-okSHADOW	_DeskStartUp
-	
-	lda	myDP
-	clc
-	adc	#256*4
-	pha
-	PushWord	#0
-	PushWord	#0
-	PushWord	#screen320
-	PushWord	#0
-	PushWord	#200
-	PushWord	myID
-	_EMStartUp
-
-	_GrafOn
-	_IMStartUp
-	_QDAuxStartUp
-
-*--- Font Tool Set
-
-	PushWord	myID
-	lda	myDP
-	clc
-	adc	#256*5
-	pha
-	_FMStartUp
-	
-*--- Sound Tool Set
-
-	lda	myDP
-	clc
-	adc	#256*6
-	pha
-	_SoundStartUp
-	bcc	okSOUND
-
-	inc	fgSOUND	; no sound
-
-okSOUND
-
-*--- Randomize me`
-
-	PushLong	#117117
-	_SetRandSeed
+okSHADOW
 
 *--- Ask for 64K
 
@@ -229,14 +186,38 @@ koMEM	pha
 	PushLong	#errSTR2
 	_TLTextMountVolume
 	pla
-	bra	QUIT
+	brl	meQUIT
 
 okMEM	sty	ptrIMAGE
 	sty	levelToSourceLocInfo+2	; for the level data
 	stx	ptrIMAGE+2		; from 2-bit to 4-bit
 	stx	levelToSourceLocInfo+4
 
-*--- Flush everything
+*-----------------------------------
+* DESKTOP MODE
+*-----------------------------------
+
+	pha
+	pha
+	PushWord	myID
+	PushWord	#refIsResource
+	PushLong	#1
+	_StartUpTools
+	PullLong	ssREC
+	bcc	okTOOL
+
+	pha
+	PushLong	#tolSTR1
+	PushLong	#errSTR2
+	PushLong	#errSTR1
+	PushLong	#errSTR2
+	_TLTextMountVolume
+	pla
+	brl	meQUIT
+
+okTOOL	_HideMenuBar
+	_InitCursor
+	_HideCursor
 
 	PushWord	#0
 	PushWord	#%11111111_11111111
@@ -244,13 +225,23 @@ okMEM	sty	ptrIMAGE
 	_FlushEvents
 	pla
 
-	pha
-	pha
+	PushLong	#0
+	PushWord	#5	; SetDeskPat
+	PushWord	#$4000
+	PushWord	#$0000
+	_Desktop
+	pla
+	pla
+
+	PushLong	#0
 	_GetPort
 	PullLong	mainPORT
-
+	
 	PushLong	mainPORT
 	_SetPort
+
+	PushLong	#117117
+	_SetRandSeed
 
 *--- THE GAME
 
@@ -261,19 +252,12 @@ okMEM	sty	ptrIMAGE
 	
 *--- THE EXIT
 
-QUIT	lda	fgSOUND
-	bne	QUIT1
-	_SoundShutDown
+QUIT	jsr	stopMIDI
 
-QUIT1	jsr	stopMIDI
+meQUIT	PushWord	#refIsHandle
+	PushLong	ssREC
+	_ShutDownTools
 
-	_FMShutDown
-	_QDAuxShutDown
-	_IMShutDown
-	_EMShutDown
-	_DeskShutDown
-	_QDShutDown
-	
 	sep	#$20
 	ldal	CLOCKCTL
 	and	#$F0
@@ -581,6 +565,10 @@ memSTR1	str	'Cannot allocate memory'
 filSTR1	str	'Cannot load file'
 errSTR1	str	'Quit'
 errSTR2	str	''
+
+*----------------------------------- Tool Locator
+
+ssREC	ds	4
 
 *-------------------------------
 

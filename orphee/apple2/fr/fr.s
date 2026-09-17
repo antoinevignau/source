@@ -16,26 +16,27 @@ txtREF	=	*	; reference to text data
 *
 
 strCOMMANDE	asc	'000000000000 >'00
-strIMPOSSIBLE	asc	'IMPOSSIBLE'00
-strDACCORD	asc	'D'27'ACCORD'00
-strNOTOWNED	asc	'VOUS NE POUVEZ POSER CE QUE VOUS N'27'AVEZ PAS'00
-	asc	'VOUS NE POUVEZ PORTER TANT'00
-strVOUSLAVEZ	asc	'VOUS L'27'AVEZ DEJA'00
-	asc	'JE NE PORTE PAS PLUS D'27'UN OBJET'00
-strVOUSRIEN	asc	'JE NE PORTE RIEN'00
+strIMPOSSIBLE	asc	'Impossible'00
+strDACCORD	asc	'D'27'accord'00
+strNOTOWNED	asc	'Vous ne pouvez pas porter ce que vous n'27'avez pas'00
+strTROPPORTER	asc	'Vous ne pouvez porter tant'00
+strVOUSLAVEZ	asc	'Vous l'27'avez d'8e'j'8800
+strPASPLUS	asc	'Je ne porte pas plus d'27'un objet'00
+strPORTERIEN	asc	'Je ne porte rien'00
 strAUCUN	asc	'AUCUN'00
-strILYA	asc	'OBJETS PRESENTS :'00
-strVOUSDETENEZ	asc	'OBJETS PORTES : '00
+strOBJETSPRESENTS asc	'OBJETS PRESENTS :'00
+strOBJETSPORTES	asc	'OBJETS PORTES :'0d00
 	asc	'ERREUR DE CHARGEMENT'00
 	asc	'ERREUR GRAMMATICALE'00
 strJENECOMPRENDSPAS
-	asc	'JE NE COMPRENDS PAS '00
-	asc	'SOYEZ PLUS PRECIS'00
-strPERSONNAGES	asc	'PERSONNAGES :'00
-strREJOUER	asc	'VOULEZ-VOUS REJOUER ? '00
-	asc	'JE NE VOIS PAS CELA ICI'00
-	asc	'JE L'27'AI DEJA'00
-strISSUES	asc	'ISSUE(S) PRINCIPALE(S): '00
+	asc	'Je ne comprends pas'00
+	asc	'Soyez plus pr'8e'cis'00
+strPERSONNAGES	asc	'PERSONNAGES :'0d00
+strREJOUER	asc	'Voulez-vous rejouer ? '00
+	asc	'Je ne vois pas cela ici'00
+strAIDEJA	asc	'Je l'27'ai d'8e'j'8800
+
+strISSUES	asc	'Issue(s) principale(s): '00
 strNORD	asc	'N'00
 strSUD	asc	'S'00
 strEST	asc	'E'00
@@ -766,7 +767,7 @@ SALSOMB	dfb	32,33,34,35,60,59,56,57,50,49,48,47,78,77,76
 
 NBISSUE	=	115
 
-ISSUE$	dfb	%10110000
+TBLISSUE	dfb	%10110000
 	dfb	%11000000
 	dfb	%00100000
 	dfb	%10110000
@@ -1389,35 +1390,35 @@ ARTICLE$	@asc	01;'L'27'   '
 NBPHRASE	=	13
 
 PHRASE$
-*		'12345678901234567890123456789012345678'
+*		'         1         2         3         4         5
+*		'1234567890123456789012345678901234567890123456789012'
 *		'--------------------------------------'
-phrase01	asc	'Copyright LORICIELS ... ao'9e't 1985'0d
-	asc	'Reproduction interdite, loi du 11 mars'
-	asc	'1957 - Tous droits de reproduction,'0d
-	asc	'traduction, location et d'27'adaptation'0d
-	asc	'r'8e'serv'8e's pour tous pays.'00
+phrase01	asc	'        Copyright LORICIELS ... ao'9e't 1985'0d0d
+	asc	'  Reproduction interdite, loi du 11 mars 1957'0d
+	asc	'Tous droits de reproduction, traduction, location'0d
+	asc	'     et d'27'adaptation r'8e'serv'8e's pour tous pays.'00
 
-*		'1234567890123'
-*		'-------------'
-phrase05	asc	'  Programme'0d
-phrase06	asc	'  con'8d'u par'0d0d
-phrase07	asc	'   L. BENES'0d0d
-phrase08	asc	' Assist'8e' de:'0d
-phrase09	asc	'D. BERCHIATTI'
-phrase10	asc	' Graphisme:'0d
-phrase11	asc	' R. NICOLLE'0d
-phrase12	asc	'Remerciements'
-phrase13	asc	' P. GUERLAIS'00
+*		'12345678901234567'
+*		'-----------------'
+phrase05	asc	'    Programme'0d
+phrase06	asc	'    con'8d'u par'0d0d
+phrase07	asc	'  LAURENT BENES'0d0d
+phrase08	asc	'   Assist'8e' de:'0d
+phrase09	asc	'DIDIER BERCHIATTI'
+phrase10	asc	'  Graphisme de:'0d
+phrase11	asc	'  Roger NICOLLE'0d
+phrase12	asc	' Remerciements '880d
+phrase13	asc	'PATRICE GUERLAIS'00
 
 *
 * Les descriptions
 *
 
-NBDESCRIPTION	=	115
+NBSALLE	=	115
 
-tblDESCRIPTION	da	DE$1,DE$2
+tblSALLE	da	DE$1,DE$2
 
-DESCRIPTION$
+SALLE$
 DE$1	asc	'L'27'ENTREE DES ENFERS'00
 DE$2	asc	'DANS LA FORET'00
 DE$3	asc	'CHEZ LA SORCIERE'00
@@ -1533,46 +1534,11 @@ DE$112	asc	'L'27'ENTREE D'27'UN TEMPLE!'00
 DE$113	asc	'LA VICTOIRE APPROCHE'00
 DE$114	asc	'COINCE DANS LE TEMPLE'00
 DE$115	asc	'OUF! UNE SORTIE A L'27'OUEST'00
+	dfb	chrNULL
 
 *
-* Les reponses
+* Les messages ˆ afficher
 *
-
-*		'0         1         2         3         '00
-*		'0123456789012345678901234567890123456789'00
-*		'----------------------------------------'00
-
-	cpx	#NBREPONSE
-	bcc	repOK
-	beq	repOK
-	rts
-
-repOK	lda	#<REPONSE$
-	sta	Debut
-	lda	#>REPONSE$
-	sta	Debut+1
-	
-]lp	lda	(Debut)
-	bmi	repEOL
-	inc	Debut
-	bne	]lp
-	inc	Debut+1
-	bne	]lp
-
-repEOL	dex
-	bne	]lp
-
-	inc	Debut
-	bne	repEOL1
-	inc	Debut+1
-
-repEOL1	rep	#$30
-	lda	#^REPONSE$
-	pha
-	pei	Debut
-	_DrawString
-	rts
-	
 
 NBREPONSE	=	229
 
@@ -1806,5 +1772,6 @@ RE$226	asc	'VOUS CASSEZ VOTRE HACHE SUR LE TRONC!'00
 RE$227	asc	'LE GARDIEN VOUS PARLE DANS SA LANGUE :            '27'KDLE IYRJC DKJAS JSAERS DSFK'27''00
 RE$228	asc	'VOUS APERCEVEZ YURK QUI ATTEND DERRIERE LA PORTE.'00
 RE$229	asc	'VOTRE GOURDE VOUS ECHAPPE, ELLE TOMBE AU FOND     DU PUITS.'00
-	
+	dfb	chrNULL
+
 *--- Que de lignes, que de lignes !

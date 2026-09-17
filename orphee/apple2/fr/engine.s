@@ -36,8 +36,13 @@ eSOUND	=	9
 GFX_WIDTH	=	639	; **always**
 GFX_HEIGHT	=	399	; **always**
 
-DFT_WIDTH	=	40
-DFT_HEIGHT	=	25
+DFT_CHAR_WIDTH	=	6	; default character width
+DFT_CHAR_HEIGHT	=	8	; default character height
+
+*DFT_WIDTH	=	40
+DFT_WIDTH	=	320/DFT_CHAR_WIDTH
+*DFT_HEIGHT	=	25
+DFT_HEIGHT	=	200/DFT_CHAR_HEIGHT
 
 DFT_X	=	1
 DFT_Y	=	1
@@ -46,9 +51,6 @@ DFT_PEN	=	indexYELLOW
 MAX_WINDOW	=	8
 MAX_LINES	=	30	; we know it is 25
 MAX_COLUMNS	=	100	; we know it is 80
-
-DFT_CHAR_WIDTH	=	8	; default character width
-DFT_CHAR_HEIGHT	=	8	; default character height
 
 *--- Les accents
 
@@ -188,7 +190,7 @@ DFT_CHAR_HEIGHT	=	8	; default character height
 @PRINT	mac
 	lda	#]1
                 ldx             #^]2
-	ldy	#]2
+	ldy	]2
 	jsr	PRINT
 	<<<
 
@@ -615,15 +617,25 @@ CLS_DIFFY	asl
 	lda	#DFT_Y
 	sta	tblWINDOW+10,y
 
-	lda	tblWINDOW+12,y	; PAPER
-	asl
-	tax
-	lda	tblFULLCOLOR,x
+*	lda	tblWINDOW+12,y	; PAPER
+*	asl
+*	tax
+*	lda	tblFULLCOLOR,x
 	
 	PushLong	#clsRECT	; and finally, clear the window
+*	pha
+*	pha
+	PushWord	#^blackPATTERN
+	lda	tblWINDOW+12,y
+	asl
+	asl
+	asl
+	asl
+	asl
+	clc
+	adc	#blackPATTERN
 	pha
-	pha
-	_SpecialRect
+	_FillRect
 	rts
 
 *-------------------------------
@@ -1012,7 +1024,7 @@ setSTREAMXY	lda	theSTREAM
 	rts
 
 *-----------------------------------
-* GOTOXY
+* GOTOXY 
 * Set the SHR X/Y from text X/Y
 
 GOTOXY	lda	textX
@@ -1112,7 +1124,6 @@ MODE_960	ldy	#MAX_COLUMNS
 	inx
 	dey
 	bne	]lp
-
 	rts
 
 *-----------------------------------
@@ -1347,7 +1358,8 @@ COUT0	inc	textX
 
 *----------- next Y position
 	
-COUT1	clc
+COUT1
+*	clc
 	lda	#DFT_X	; new
 	sta	textX
 
@@ -1364,13 +1376,14 @@ COUT1_1	inc	textY
 
 *----------- upper left position
 
-COUT2	clc
-	lda	#DFT_Y	; new
-	sta	textY
+COUT2	lda	flagY	; flagY is active and we're
+	bmi	COUT3_END	; at the bottom of the window...
 
-	lda	flagY	; flagY is active and we're
-	bpl	COUT3_CONT	; at the end of a line..
+	dec	textY	; last line
+	jsr	scrollWINDOW
 
+	hex	ad	; LDA the next two bytes
+	
 *----------- update cursor location
 
 COUT3_END	sec
@@ -1390,6 +1403,59 @@ COUT3_CONT	clc
 	sta	tblWINDOW+10,y
 	plp
 	rts
+
+*-------------------------------
+
+scrollWINDOW	lda	theSTREAM	; set rectangle size
+	asl
+	asl
+	asl
+	asl
+	tay
+	lda	tblWINDOW,y	; X1
+	asl
+	tax
+	lda	tblX,x
+	sta	scrollRECT+2
+	
+	lda	tblWINDOW+2,y	; X2
+	asl
+	tax
+	lda	tblX,x
+	clc
+	adc	charWIDTH
+	sta	scrollRECT+6
+
+	lda	tblWINDOW+4,y	; Y1
+	asl
+	tax
+	lda	tblY,x
+	sta	scrollRECT
+
+	lda	tblWINDOW+6,y	; Y2
+	asl
+	tax
+	lda	tblY,x
+	clc
+	adc	charHEIGHT
+	sta	scrollRECT+4
+
+*--- and scroll the window
+
+	PushLong	#scrollRECT	; scroll rect and reset background
+	PushWord	#0	; dH
+*	PushWord	#-8	; dV
+	lda	charHEIGHT	; complŽment ˆ 2
+	eor	#-1
+	inc
+	pha
+	PushLong	#0	; updateRgnHandle
+	_ScrollRect
+	rts
+
+*--- Data
+
+scrollRECT	dw	0,0,200,320
 
 *-------------------------------
 
@@ -1488,15 +1554,15 @@ tblMODE	da	tblMODE0,tblMODE1,tblMODE2
 
 tblMODE0	dw	20,25,16,screen160,200	; 160
 	dw	screen320,mode320,16,8
-tblMODE1	dw	40,25,16,screen320,200	; 320
-	dw	screen320,mode320,8,8
+tblMODE1	dw	DFT_WIDTH,DFT_HEIGHT,16,screen320,200	; 320
+	dw	screen320,mode320,DFT_CHAR_WIDTH,DFT_CHAR_HEIGHT
 tblMODE2	dw	80,25,16,screen640,200	; 640
 	dw	screen640,mode640,8,8
 
 *--- 
 
-tblX	ds	2*128	; up to 128 columns
-tblY	ds	2*32	; and 32 rows
+tblX	ds	2*MAX_COLUMNS
+tblY	ds	2*MAX_LINES
 
 tblFULLCOLOR	dw	$0000,$1111,$2222,$3333
 	dw	$4444,$5555,$6666,$7777

@@ -14,8 +14,6 @@
 
 LINNUM	=	$50	; result from GETADR
 
-NBSALLE	=	115
-
 picSALSOM	=	116	; salle obscure
 picMORT	=	117	; mort
 picVICTOIRE	=	118	; victoire
@@ -33,6 +31,11 @@ iADJECTIF	=	4	;
 iATTRIBUT	=	5	; 
 iARTICLE	=	6	; 
 
+wINVENTAIRE	=	1
+wPERSONNAGE	=	2
+wSALLE	=	3
+wMESSAGE	=	4
+
 *-----------------------------------
 * MACROS
 *-----------------------------------
@@ -49,7 +52,7 @@ iARTICLE	=	6	;
 @gotoxy	mac
 	jsr	RETURN
 	<<<
-	
+
 @print	mac
 	jsr	RETURN
 	<<<
@@ -59,7 +62,7 @@ iARTICLE	=	6	;
 	<<<
 
 @draw	mac
-	jsr	showPIC
+	jsr	GRAPHE
 	<<<
 
 @cout	mac
@@ -82,40 +85,35 @@ iARTICLE	=	6	;
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
-PLAY	@CLS	#0
-	@MODE	#1
-	@INK	#0;#0	; noir
-	@INK	#1;#26	; blanc
+PLAY	@MODE	#1
+	@INK	#0;#26	; blanc
+	@INK	#1;#0	; noir
 	@INK	#2;#9	; vert
 	@INK	#3;#15	; orange
-	@PAPER	#0;#0	; noir
-	@PEN	#0;#1	; blanc
+	@PAPER	#0;#0	; blanc
+	@PEN	#0;#1	; noir
 	
-	@WINDOW	#1;#tblWINDOW1	; pour les descriptions
-	@PAPER	#1;#0
-	@PEN	#1;#1
+	@CLS	#0
 
-	@WINDOW	#2;#tblWINDOW2	; pour la salle
-	@PAPER	#2;#0
-	@PEN	#2;#1
+	@WINDOW	#wINVENTAIRE;#tblWINDOW1	; pour l'inventaire
+	@PAPER	#wINVENTAIRE;#0
+	@PEN	#wINVENTAIRE;#1
 	
-	@WINDOW	#3;#tblWINDOW3	; pour l'inventaire
-	@PAPER	#3;#0
-	@PEN	#3;#1
+	@WINDOW	#wPERSONNAGE;#tblWINDOW2	; pour les personnages
+	@PAPER	#wPERSONNAGE;#0
+	@PEN	#wPERSONNAGE;#1
+
+	@WINDOW	#wSALLE;#tblWINDOW3	; pour la salle
+	@PAPER	#wSALLE;#0
+	@PEN	#wSALLE;#1
 	
-	@WINDOW	#4;#tblWINDOW4	; pour les personnages
-	@PAPER	#4;#0
-	@PEN	#4;#1
+	@WINDOW	#wMESSAGE;#tblWINDOW4	; pour les messages
+	@PAPER	#wMESSAGE;#0
+	@PEN	#wMESSAGE;#1
 
 REPLAY	jsr	PRESENT
-	jsr	INIT
+	jsr	INIT_ALL
 	jsr	RIRE
-
-REPLAY*	stz	SALLE
-*loopME	inc	SALLE
-*	lda	SALLE
-*	cmp	#NBSALLE+1
-*	bcs	theEND
 
 *-----------------------------------
 * MAIN LOOP
@@ -131,11 +129,13 @@ DEPA1	ldx	#1	; est-on dans une salle sombre ?
 	bcc	]lp
 	beq	]lp
 	
-CALCUL	jsr	FENETR
-	jsr	NOMSALLE
+CALCUL			; inutile
 	
-	lda	SALLE
-	jsr	showPIC
+DESSIN	lda	SALLE
+	ldy	#SALLE$
+	jsr	CHERC
+	jsr	AFFIC3
+	jsr	GRAPHE
 	jsr	ISSUE
 	jmp	DEPA2
 
@@ -171,30 +171,33 @@ SOMBR	ldx	#6
 
 *-----------------------------------
 
-SOMBRE	jsr	FENETR	; affiche DESSOM (DESSIN SOMBRE)
-
-	@draw	#picSALSOM
-
-	lda	#TRUE
+SOMBRE	lda	#TRUE
 	sta	fgSOMBRE
+
+	@CLS	#wINVENTAIRE
+	@CLS	#wPERSONNAGE
+	@CLS	#wSALLE
+	
+	@draw	#picSALSOM
 
 *-----------------------------------
 
 DEPA2	jsr	VERIFI
 
 	lda	fgSOMBRE
-	cmp	#FALSE
-	beq	DEPA22
+	cmp	#TRUE
+	bne	DEPA2_1
 	jmp	DEPA3
 
-DEPA22	@gotoxy2	#26*8;#63
-	@print	#strILYA
+DEPA2_1	@CLS	#wINVENTAIRE
+	@PRINT	#wINVENTAIRE;#strOBJETSPRESENTS
 	jsr	LISTE
+	
+	@CLS	#wPERSONNAGE
+	@PRINT	#wPERSONNAGE;#strPERSONNAGES
+	jmp	DEPA3
 
-	@gotoxy2	#26*8;#158
-	@print	#strPERSONNAGES
-	@gotoxy2	#26*8;#178
-	@print	#strAUCUN
+NESSUN	@PRINT	#wPERSONNAGE;#strAUCUN
 
 *-----------------------------------
 
@@ -225,28 +228,28 @@ RETURN	rts		; ne fait rien
 * REJOU
 *-----------------------------------
 
-REJOU	@gotoxy	#1;#1
-	@print	#strREJOUER
-	@INKEY
-	cmp	#chrNO
-	beq	REJOU_2
-	cmp	#chrYES
-	bne	REJOU
-	jmp	PLAY
-REJOU_2	jmp	QUIT	; return to the IIgs
+REJOU	@PRINT	#wMESSAGE;#strREJOUER
 	
 *-----------------------------------
 * ATTEN
 *-----------------------------------
 
-ATTEN
-	rts
+ATTEN	@INKEY
+	cmp	#chrYES
+	beq	ATTEN_1
+	cmp	#chrNO
+	bne	ATTEN
+	jmp	QUIT
+ATTEN_1	jmp	REPLAY	; return to the IIgs
 
 *-----------------------------------
 * MORT
 *-----------------------------------
 
-MORT	jsr	FENETR
+MORT	@PRINT	#wMESSAGE;#strRETURN
+	@CLS	#wINVENTAIRE
+	@CLS	#wPERSONNAGE
+	@CLS	#wSALLE
 	@draw	#picMORT
 	jsr	RIRE
 	jsr	MUSMORT
@@ -262,49 +265,73 @@ MVT
 *-----------------------------------
 * CHERC
 *-----------------------------------
+* A: index cherchŽe
+* Y: pointeur vers table
 
-CHERC
+CHERC	cmp	#0
+	bne	CHERC_1
+	rts
+
+CHERC_1	dec
+	beq	CHERC_2
+	tax		; number of entries 
+]lp	iny
+	lda	|$0000,y
+	and	#$ff
+	bne	]lp	; loop until \0
+	dex		; entries--
+	bne	]lp	; loop if non-zero
+	iny		; found it, pointer++
+	
+CHERC_2	tya		; return the pointer
 	rts
 
 *-----------------------------------
 * NOOBJ
 *-----------------------------------
+* Vous ne pouvez pas poser ce que vous n'avez pas
 
+NOOBJ	@PRINT	#wMESSAGE;#strNOTOWNED
 	rts
 
 *-----------------------------------
 * TROOBJ
 *-----------------------------------
+* Vous ne pouvez pas porter tant
 
-TROOBJ
+TROOBJ	@PRINT	#wMESSAGE;#strTROPPORTER
 	rts
 
 *-----------------------------------
 * DEJOBJ
 *-----------------------------------
+* Vous l'avez dŽjˆ
 
-DEJOBJ
+DEJOBJ	@PRINT	#wMESSAGE;#strVOUSLAVEZ
 	rts
 
 *-----------------------------------
 * DEJAUN
 *-----------------------------------
+* Je ne porte pas plus d'un objet
 
-DEJAUN
+DEJAUN	@PRINT	#wMESSAGE;#strPASPLUS
 	rts
 
 *-----------------------------------
 * PASOBJ
 *-----------------------------------
+* Je ne porte rien
 
-PASOBJ
+PASOBJ	@PRINT	#wMESSAGE;#strPORTERIEN
 	rts
 
 *-----------------------------------
 * AIDEJA
 *-----------------------------------
+* Je l'ai dŽjˆ
 
-AIDEJA
+AIDEJA	@PRINT	#wMESSAGE;#strAIDEJA
 	rts
 
 *-----------------------------------
@@ -348,7 +375,7 @@ FINDMO_4	lda	#chrNULL
 * FENETR
 *-----------------------------------
 
-FENETR	@GFXPEN	#1
+FENETR	@GFXPEN	#1	; noir
 
 	stz	IX
 	
@@ -421,10 +448,10 @@ CODFEN	dw	0,0	; les coordonnŽes des fenetres
 
 *---
 
-tblWINDOW1	dw	2,39,2,6
-tblWINDOW2	dw	2,25,8,8
-tblWINDOW3	dw	27,40,8,18
-tblWINDOW4	dw	27,40,20,24
+tblWINDOW1	dw	36,52,8,18
+tblWINDOW2	dw	36,52,20,24
+tblWINDOW3	dw	2,34,8,8
+tblWINDOW4	dw	2,52,2,6
 
 windowTEXTE
 	dw	0,0
@@ -680,29 +707,31 @@ PACAPI
 
 PRESENT	jsr	FENETR
 
-	@CLS	#1
-	@LOCATE	#1;#1;#1
-	@PRINT	#1;#phrase01
-	@CLS	#3
-	@LOCATE	#3;#1;#1
-	@PRINT	#3;#phrase05
+	@CLS	#wMESSAGE
+	@LOCATE	#wMESSAGE;#1;#5
+	@PRINT	#wMESSAGE;#phrase01
+	@CLS	#wINVENTAIRE
+	@LOCATE	#wINVENTAIRE;#1;#11
+	@PRINT	#wINVENTAIRE;#phrase05
 
 	ldal	HORIZCNT	; affiche image 119 ou 120
 	and	#%00000001
 	clc
 	adc	#picVOYAGE
-	jsr	showPIC
+	jsr	GRAPHE
 
 	@INKEY
-	@CLS	#1
-	@CLS	#3
+	@CLS	#wMESSAGE
+	@CLS	#wINVENTAIRE
 	rts
 
 *-----------------------------------
 * VICTOI
 *-----------------------------------
 
-VICTOI	jsr	FENETR
+VICTOI	@CLS	#wINVENTAIRE
+	@CLS	#wPERSONNAGE
+	@CLS	#wSALLE
 	@draw	#picVICTOIRE
 	jsr	MUSVIC
 	jmp	REJOU
@@ -711,18 +740,267 @@ VICTOI	jsr	FENETR
 * GETCOM
 *-----------------------------------
 
-GETCOM	@LOCATE	#1;#1;#5
-	@PRINT	#1;#strCOMMANDE
+GETCOM	@LOCATE	#wMESSAGE;#1;#5
+	@PRINT	#wMESSAGE;#strCOMMANDE
 	@INPUT	#TEXTBUFFER;#MAX_LEN
 	stx	lenSTRING
 	rts
 
 *-----------------------------------
+* TOTO
+*-----------------------------------
+* IF A<192 THEN
+*  DRAW B,A +2
+* ELSE
+*  0 : PLOT C,B,A2 +3
+*  1 : PAINT +3
+*  2 : BORDER/INK0/INK1/INK2/INK3 +5
+*  3 : PRINT (A STRING UNTIL FF) +n
+*
+	
+GRAPHE	jsr	loadPIC	; charge une image (16-bits)
+	bcc	GRAPHEOK
+	rts
+	
+GRAPHEOK	lda	#bufIMAGE
+	sta	dpFROM
+
+	ldy	#2	; nombre de pas dans une image
+	lda	(dpFROM),y
+	sta	maxSTEPS
+	stz	theSTEP
+	
+	lda	dpFROM	; on se met au dŽbut des images
+	clc
+	adc	#4
+	sta	dpFROM
+	
+	PushLong	#windowIMAGE
+	PushWord	#-1
+	PushWord	#0
+	_SpecialRect
+
+*--- Boucle principale
+
+spLOOP	ldy	#0
+	lda	(dpFROM),y
+	and	#$ff
+	sta	theA
+	iny
+	lda	(dpFROM),y
+	and	#$ff
+	sta	theB
+	iny
+	lda	(dpFROM),y
+	and	#$ff
+	sta	theC
+
+	lda	theA
+	cmp	#192	; commande %11xx_xxxx
+	bcs	spOTHER
+
+	lda	#GFX_MAX_Y
+	sec
+	sbc	theA
+	sta	theY	; <192 alors DRAW
+	lda	theB
+	sta	theX
+	jsr	DRAW_O
+	jmp	skip2
+
+*--- Gre les autres cas
+
+spOTHER	lda	theA
+	and	#%00110000
+	lsr
+	lsr
+	lsr
+	lsr
+	sta	theA1
+
+	lda	theA
+	and	#%00001100
+	lsr
+	lsr
+	sta	theA2
+	
+	lda	theA
+	and	#%00000011
+	sta	theA3
+	beq	spPLOT
+	cmp	#2
+	beq	spINK
+	cmp	#3
+	beq	spECRIT
+
+spPAINT	lda	theC
+	sta	fillX
+	lda	#GFX_MAX_Y
+	sec
+	sbc	theB
+	sta	fillY
+	jsr	FILL_O
+	jmp	skip3
+
+spPLOT	lda	theC
+	sta	theX
+	lda	#GFX_MAX_Y
+	sec
+	sbc	theB
+	sta	theY
+	jsr	PLOT_O
+	jmp	skip3
+
+spINK	lda	theB
+	sta	theINK0
+	lda	theC
+	sta	theINK1
+	iny
+	lda	(dpFROM),y
+	and	#$ff
+	sta	theINK2
+	iny
+	lda	(dpFROM),y
+	and	#$ff
+	sta	theINK3
+	jmp	skip5
+
+spECRIT	lda	theC
+	pha
+	lda	#GFX_MAX_Y+8
+	sec
+	sbc	theB
+	pha
+	_MoveTo
+	
+	PushWord	#0
+	_GetTextMode
+
+	PushWord	#modeForeCopy
+	_SetTextMode
+
+	ldy	#3
+]lp	lda	(dpFROM),y
+	and	#$ff
+	cmp	#$ff
+	beq	L94B9
+	phy
+	pha
+	_DrawChar
+	ply
+	iny
+	bne	]lp
+L94B9	tya
+	clc
+	adc	dpFROM
+	sta	dpFROM
+
+	_SetTextMode
+
+	jmp	skip1
+
+*--- Next one, please...
+
+skip5	inc	dpFROM
+skip4	inc	dpFROM
+skip3	inc	dpFROM
+skip2	inc	dpFROM
+skip1	inc	dpFROM
+
+	inc	theSTEP
+	lda	theSTEP
+	cmp	maxSTEPS
+	bcs	drawEXIT
+	jmp	spLOOP
+
+drawEXIT	rts
+
+*-----------------------------------
+
+PLOT_O	PushWord	theX	; On dŽplace le curseur seulement
+	PushWord	theY
+	_MoveTo
+	PushWord	theX	; On trace un point
+	PushWord	theY
+	_LineTo
+	rts
+
+*-----------------------------------
+
+DRAW_O	PushWord	theX	; On trace une ligne
+	PushWord	theY
+	_LineTo
+	rts
+
+*-----------------------------------
+
+resMode	=	%0001_0000000000_10
+
+FILL_O	ldx	theA1	; sets the pattern to use
+	lda	a2gsCOLOR,x
+	and	#$ff
+	asl
+	asl
+	asl
+	asl
+	asl
+	clc
+	adc	#blackPATTERN
+	sta	patternPtr
+
+	PushLong	#srcLocInfoPtr
+	PushLong	#srcRect
+	PushLong	#srcLocInfoPtr
+	PushLong	#srcRect
+	PushWord	fillX
+	PushWord	fillY
+	PushWord	#resMode
+	PushLong	patternPtr
+	PushLong	#leakTblPtr
+	_SeedFill
+	rts
+
+*----------- DATA
+
+theSTEP	ds	2	; pas courant
+maxSTEPS	ds	2	; nombre de pas dans un image
+
+theA	ds	2
+theA1	ds	2
+theA2	ds	2
+theA3	ds	2
+theB	ds	2
+theC	ds	2
+theX	ds	2
+theY	ds	2
+theINK0	ds	2
+theINK1	ds	2
+theINK2	ds	2
+theINK3	ds	2
+
+*----------- FILL
+
+fillX	ds	2
+fillY	ds	2
+fillCOLOR	ds	2
+
+srcLocInfoPtr	dw	mode320	; mode 320
+	adrl	ptr012000
+	dw	160
+	dw	68,0,200,204
+
+srcRect	dw	68,0,200,204
+
+patternPtr	adrl	blackPATTERN ; pointer to pattern
+
+leakTblPtr	dw	1
+	dw	$0000	; color 0 is concerned
+	
+*-----------------------------------
 * CLEARW
 *-----------------------------------
 
-CLEARW
-	rts
+CLEARW	rts
 
 *-----------------------------------
 * ANALYS
@@ -822,39 +1100,43 @@ AFFICH
 	rts
 
 *-----------------------------------
-* AFFIC0
+* AFFIC0 - message
 *-----------------------------------
 
-AFFIC0	
+AFFIC0	sta	N
+	@PRINT	#wMESSAGE;N
 	rts
 
 *-----------------------------------
-* AFFIC1
+* AFFIC1 - inventaire
 *-----------------------------------
 
-AFFIC1
+AFFIC1	sta	N
+	@PRINT	#wINVENTAIRE;N
 	rts
 
 *-----------------------------------
-* AFFIC2
+* AFFIC2 - personnage
 *-----------------------------------
 
-AFFIC2	
+AFFIC2	sta	N
+	@PRINT	#wPERSONNAGE;N	
 	rts
 
 *-----------------------------------
-* AFFIC3
+* AFFIC3 - salle
 *-----------------------------------
 
-AFFIC3	
+AFFIC3	sta	N
+	@CLS	#wSALLE
+	@PRINT	#wSALLE;N
 	rts
 
 *-----------------------------------
 * CLEARF
 *-----------------------------------
 
-CLEARF
-	rts
+CLEARF	rts
 
 *-----------------------------------
 * ACTION
@@ -876,10 +1158,12 @@ TESTAC
 
 *---------- A - 
 
-ACTIONA	rts
+ACTIONA	@CLS	#wINVENTAIRE
+	@PRINT	#wINVENTAIRE;#strOBJETSPORTES
 
-LISTE	@gotoxy2	#26*8;#78
-	@print	#strAUCUN
+LISTE	rts
+
+AUCUN	@PRINT	#wINVENTAIRE;#strAUCUN
 	rts
 
 *---------- B - 
@@ -1017,89 +1301,93 @@ RIRE	rts
 * GESTION DES ISSUES
 *-----------------------------------
 	
-ISSUE	lda	SALLE
-	cmp	#NBISSUE
-	bcc	ISSUE1
-	beq	ISSUE1
+ISSUE	@PRINT	#wMESSAGE;#strISSUES
+
+	lda	SALLE	; >0
+	bne	ISSUE_1
+	rts
+ISSUE_1	cmp	#NBISSUE	; <= nb salle
+	bcc	ISSUE_2
+	beq	ISSUE_2
 	rts
 
-ISSUE1	@gotoxy2	#8;#38
-	@print	#strISSUES
+ISSUE_2	tax		; get the data
+	lda	TBLISSUE-1,x
+	and	#$ff
+	bne	ISSUE_3
 
-	ldx	SALLE
-	lda	ISSUE$,x
-	bne	ISSUE2
-
-	@print	#strAUCUNE
+	@PRINT	#wMESSAGE;#strAUCUNE
 	rts
 
-ISSUE2	stz	DRAP	; pour la virgule
+ISSUE_3	xba
+	stz	DRAP	; pour la virgule
 
-	asl
+IS_N	asl
 	bcc	IS_S
 	pha
 	jsr	VIRG
-	@print	#strNORD
+	@PRINT	#wMESSAGE;#strNORD
 	pla
 
 IS_S	asl
 	bcc	IS_E
 	pha
 	jsr	VIRG
-	@print	#strSUD
+	@PRINT	#wMESSAGE;#strSUD
 	pla
 	
 IS_E	asl
 	bcc	IS_O
 	pha
 	jsr	VIRG
-	@print	#strEST
+	@PRINT	#wMESSAGE;#strEST
 	pla
 	
 IS_O	asl
 	bcc	IS_H
 	pha
 	jsr	VIRG
-	@print	#strOUEST
+	@PRINT	#wMESSAGE;#strOUEST
 	pla
 
 IS_H	asl
 	bcc	IS_B
 	pha
 	jsr	VIRG
-	@print	#strHAUT
+	@PRINT	#wMESSAGE;#strHAUT
 	pla
 
 IS_B	asl
 	bcc	IS_ENTREE
 	pha
 	jsr	VIRG
-	@print	#strBAS
+	@PRINT	#wMESSAGE;#strBAS
 	pla
 
 IS_ENTREE	asl
 	bcc	IS_SORTIE
 	pha
 	jsr	VIRG
-	@print	#strENTREE
+	@PRINT	#wMESSAGE;#strENTREE
 	pla
 
 IS_SORTIE	asl
 	bcc	IS_FIN
 
 	jsr	VIRG
-	@print	#strSORTIE
+	@PRINT	#wMESSAGE;#strSORTIE
 
 IS_FIN	rts
 
 *---------- Affiche une virgule de sŽparation
 
-VIRG	lda	DRAP
-	beq	VIR
+VIRG	bit	DRAP
+	bpl	VIR
 
-	@print	#strCOMMA
+	@PRINT	#wMESSAGE;#strCOMMA
 	
-VIR	inc	DRAP
+VIR	lda	#TRUE
+	sta	DRAP
 	rts
 
 *-----------------------------------
@@ -1850,54 +2138,17 @@ tbl4000
 *	da	:4800,:4810,:4820,:4830,:4840,:4850,:4860,:4870,:4880,:4890
 *	da	:4900,:4910,:4920
 *	
-*--------
-
-*-----------------------------------
-* GESTION DU NOM DES SALLES
-*-----------------------------------
-
-NOMSALLE	lda	SALLE
-	cmp	#NBDESCRIPTION
-	bcc	NOMSALLE1
-	beq	NOMSALLE1
-	rts
-
-NOMSALLE1	RTS
-
-	PushLong	#windowLIEU
-	PushWord	#-1
-	PushWord	#0
-	_SpecialRect
-	
-	@gotoxy2	#8;#63
-
-	lda	SALLE
-	asl
-	tax
-	lda	tblDESCRIPTION,x
-	sta	dpFROM
-	lda	tblDESCRIPTION+1,x
-	sta	dpFROM+1
-	
-	lda	(dpFROM)
-	and	#$ff
-	cmp	#'^'
-	bne	NOMSALLE2
-	rts
-
-NOMSALLE2	RTS
-*	jmp	printSTRING2	; b/c dpFROM is set
 
 *-----------------------------------
 * INIT
 *-----------------------------------
 
-INIT	ldx	#FIN_DATA-DEBUT_DATA
+INIT_ALL	sep	#$20
+
+	ldx	#FIN_DATA-DEBUT_DATA
 ]lp	stz	A1-1,x
 	dex
 	bne	]lp
-
-*---
 
 	ldx	#NBOBJET	; reset OBJET table
 ]lp	lda	refOBJSAL-1,x
@@ -1917,8 +2168,7 @@ INIT	ldx	#FIN_DATA-DEBUT_DATA
 	dex
 	bne	]lp
 
-
-*---
+	rep	#$20
 
 	lda	#1
 	sta	SALLE
@@ -1951,257 +2201,6 @@ INIT	ldx	#FIN_DATA-DEBUT_DATA
 * CODE SPECIFIQUE
 *-----------------------------------
 
-*-----------------------------------
-* AFFICHE UNE IMAGE - ORPHEE
-*-----------------------------------
-*
-* IF A<192 THEN
-*  DRAW B,A +2
-* ELSE
-*  0 : PLOT C,B,A2 +3
-*  1 : PAINT +3
-*  2 : BORDER/INK0/INK1/INK2/INK3 +5
-*  3 : PRINT (A STRING UNTIL FF) +n
-*
-	
-showPIC	jsr	loadPIC	; charge une image (16-bits)
-	bcc	showPICOK
-	rts
-	
-showPICOK	lda	#bufIMAGE
-	sta	dpFROM
-
-	ldy	#2	; nombre de pas dans une image
-	lda	(dpFROM),y
-	sta	maxSTEPS
-	stz	theSTEP
-	
-	lda	dpFROM	; on se met au dŽbut des images
-	clc
-	adc	#4
-	sta	dpFROM
-	
-	PushLong	#windowIMAGE
-	PushWord	#-1
-	PushWord	#0
-	_SpecialRect
-
-*--- Boucle principale
-
-spLOOP	ldy	#0
-	lda	(dpFROM),y
-	and	#$ff
-	sta	theA
-	iny
-	lda	(dpFROM),y
-	and	#$ff
-	sta	theB
-	iny
-	lda	(dpFROM),y
-	and	#$ff
-	sta	theC
-
-	lda	theA
-	cmp	#192	; commande %11xx_xxxx
-	bcs	spOTHER
-
-	lda	#GFX_MAX_Y
-	sec
-	sbc	theA
-	sta	theY	; <192 alors DRAW
-	lda	theB
-	sta	theX
-	jsr	DRAW_O
-	jmp	skip2
-
-*--- Gre les autres cas
-
-spOTHER	lda	theA
-	and	#%00110000
-	lsr
-	lsr
-	lsr
-	lsr
-	sta	theA1
-
-	lda	theA
-	and	#%00001100
-	lsr
-	lsr
-	sta	theA2
-	
-	lda	theA
-	and	#%00000011
-	sta	theA3
-	beq	spPLOT
-	cmp	#2
-	beq	spINK
-	cmp	#3
-	beq	spECRIT
-
-spPAINT	lda	theC
-	sta	fillX
-	lda	#GFX_MAX_Y
-	sec
-	sbc	theB
-	sta	fillY
-	jsr	FILL_O
-	jmp	skip3
-
-spPLOT	lda	theC
-	sta	theX
-	lda	#GFX_MAX_Y
-	sec
-	sbc	theB
-	sta	theY
-	jsr	PLOT_O
-	jmp	skip3
-
-spINK	lda	theB
-	sta	theINK0
-	lda	theC
-	sta	theINK1
-	iny
-	lda	(dpFROM),y
-	and	#$ff
-	sta	theINK2
-	iny
-	lda	(dpFROM),y
-	and	#$ff
-	sta	theINK3
-	jmp	skip5
-
-spECRIT	lda	theC
-	pha
-	lda	#GFX_MAX_Y+8
-	sec
-	sbc	theB
-	pha
-	_MoveTo
-	
-	PushWord	#0
-	_GetTextMode
-
-	PushWord	#modeForeCopy
-	_SetTextMode
-
-	ldy	#3
-]lp	lda	(dpFROM),y
-	and	#$ff
-	cmp	#$ff
-	beq	L94B9
-	phy
-	pha
-	_DrawChar
-	ply
-	iny
-	bne	]lp
-L94B9	tya
-	clc
-	adc	dpFROM
-	sta	dpFROM
-
-	_SetTextMode
-
-	jmp	skip1
-
-*--- Next one, please...
-
-skip5	inc	dpFROM
-skip4	inc	dpFROM
-skip3	inc	dpFROM
-skip2	inc	dpFROM
-skip1	inc	dpFROM
-
-	inc	theSTEP
-	lda	theSTEP
-	cmp	maxSTEPS
-	bcs	drawEXIT
-	jmp	spLOOP
-
-drawEXIT	rts
-
-*-----------------------------------
-
-PLOT_O	PushWord	theX	; On dŽplace le curseur seulement
-	PushWord	theY
-	_MoveTo
-	PushWord	theX	; On trace un point
-	PushWord	theY
-	_LineTo
-	rts
-
-*-----------------------------------
-
-DRAW_O	PushWord	theX	; On trace une ligne
-	PushWord	theY
-	_LineTo
-	rts
-
-*-----------------------------------
-
-resMode	=	%0001_0000000000_10
-
-FILL_O	ldx	theA1	; sets the pattern to use
-	lda	a2gsCOLOR,x
-	and	#$ff
-	asl
-	asl
-	asl
-	asl
-	asl
-	clc
-	adc	#blackPATTERN
-	sta	patternPtr
-
-	PushLong	#srcLocInfoPtr
-	PushLong	#srcRect
-	PushLong	#srcLocInfoPtr
-	PushLong	#srcRect
-	PushWord	fillX
-	PushWord	fillY
-	PushWord	#resMode
-	PushLong	patternPtr
-	PushLong	#leakTblPtr
-	_SeedFill
-	rts
-
-*----------- DATA
-
-theSTEP	ds	2	; pas courant
-maxSTEPS	ds	2	; nombre de pas dans un image
-
-theA	ds	2
-theA1	ds	2
-theA2	ds	2
-theA3	ds	2
-theB	ds	2
-theC	ds	2
-theX	ds	2
-theY	ds	2
-theINK0	ds	2
-theINK1	ds	2
-theINK2	ds	2
-theINK3	ds	2
-
-*----------- FILL
-
-fillX	ds	2
-fillY	ds	2
-fillCOLOR	ds	2
-
-srcLocInfoPtr	dw	mode320	; mode 320
-	adrl	ptr012000
-	dw	160
-	dw	68,0,200,204
-
-srcRect	dw	68,0,200,204
-
-patternPtr	adrl	blackPATTERN ; pointer to pattern
-
-leakTblPtr	dw	1
-	dw	$0000	; color 0 is concerned
-	
 *-----------------------------------
 * CHARGE UNE IMAGE
 *-----------------------------------

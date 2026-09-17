@@ -1,0 +1,1293 @@
+   10         ORG  #92D0
+   30 VERBE:       #B10	VERBES.BIN
+   40 COD:         #DD0	COD.BIN
+      ISS:         #18AD	ISS.BIN
+      REPONSE:     #192D	REP.BIN
+      ACT          #56A0        ACT.BIN
+      COND:        #73F0	COND.BIN
+      PHRASE:      #7910	PHR.BIN - Copyright Loriciels...
+      OBJNOM:      #7A50	OBJNOM.BIN
+      MVT:         #7BC5	MVT.BIN
+   90 ATTRIB:      #7DB0	C-A.BIN
+   20 SUJET:       #7E20	SUJ.BIN
+      DIV:         #7EA0	DIV.BIN
+      OBJSAL:      #8190	OBJSAL.BIN - Numéro de salle où se trouve l'objet d'index X
+      PERSSALOBJ:  #81B0	PERSSAL.BIN - charge en #81B1
+      PERSOBJ:     #81BB	PERSOBJ.BIN
+      PERSNOM:     #8223	PERSNOM.BIN / PERS.BIN
+      ADR:         #82BA	ADR.BIN - charge en #82B8
+      PERSAL:      #83AB	PERSSAL.BIN - commence par 00 00
+      PERSOBJ:     #83B6	PERSOBJ.BIN
+      SALSOMB:     #83C4	SALSOMB.BIN - Salle sombre
+   60 SALLE:  EQU  #83E3
+   15 DRAP:   EQU  #83E6
+      SVC          #84A9	#84A9..#84AD - sujet, verbe, article, COD, adjectif
+   80 NBOBJ:  EQU  #84AE	word
+  110 DESSOM:      #85A4	DESSOM.BIN - Dessin sombre
+      DESCRIPTION: #8980	DESCRIPT.BIN
+   50 ADJ:         #91D0	ADJ.BIN
+  100 ARTICL:      #9250	ART.BIN
+   70 PAINT1: EQU  #A280
+
+* Boucle principale
+
+  490 DEPA1:  LD   HL,#83C3	; est-on
+  500         LD   A,(SALLE)	; dans une salle sombre
+  510         LD   B,15
+  520 NOSOM:  INC  HL
+  530         CP   (HL)
+  540         JR   Z,SOMBR	; oui
+  550         DJNZ NOSOM
+  560 CALCUL: LD   B,0		; calcule le numéro de l'image à charger
+  570         LD   A,(SALLE)
+  580         DEC  A
+  590 CALC1:  INC  B
+  600         SUB  5
+  610         JR   NC,CALC1
+  620         LD   A,(#84AF)	; a-t-on l'image déjà chargée ?
+  630         CP   B
+  640         JR   Z,DESSIN	; oui, la dessine
+  650 LOADES: LD   L,"D"	; non, définit Dxxx
+  660         LD   A,64
+  670         ADD  A,B
+  680         LD   H,A
+  690         LD   (#84B1),HL	; nom de fichier
+  700         LD   DE,#4160
+  710         PUSH BC
+  720         CALL CHARGE	; charge l'image
+  730         POP  AF
+  740         LD   (#84AF),A	; sauve la réf de l'image
+
+  750 DESSIN: LD   HL,#8980	; table des pointeurs des noms des salles
+  760         LD   A,(SALLE)
+  770         LD   C,A		; numéro de la salle
+  780         CALL CHERC	; fixe le pointeur
+  790         CALL AFFIC3	; affiche son nom
+  800         CALL GRAPHE	; affiche le dessin
+  810         LD   A,0
+  820         LD   (#81E1),A
+  825         CALL ISSUE	; affiche les issues possibles
+  830         JR   DEPA2
+
+  840 SOMBR:  LD   HL,SALLE	; regarde les objets et la salle
+  850         LD   A,(#8196)	; #8190+6
+  860         CP   (HL)
+  870         JR   Z,CALCUL
+  880         CP   255
+  890         JR   Z,CALCUL
+  900         LD   A,(#819E)	; #8190+14
+  910         CP   (HL)
+  920         JR   Z,CALCUL
+  930         CP   255		; déjà pris ?
+  940         JR   Z,CALCUL
+  950         LD   A,(#81B1)	; PERSSAL+1
+  960         CP   (HL)
+  970         JR   NZ,SOMBRE
+  980         LD   A,(#81BC)	; l'objet que l'on porte ?
+  990         CP   6		; une torche
+ 1000         JR   Z,CALCUL
+ 1010         CP   14		; une torche
+ 1020         JR   Z,CALCUL
+
+ 1030 SOMBRE: LD   A,3
+ 1040         CALL CLEARF
+ 1050         LD   A,1
+ 1060         LD   (#81E1),A	; la salle est sombre
+ 1065         CALL CLEARF
+ 1070         LD   A,2
+ 1080         CALL CLEARF
+ 1090         LD   A,3
+ 1100         CALL CLEARF
+ 1110         LD   HL,DESSOM
+ 1120         CALL GRAPH1-3
+ 1130 DEPA2:  CALL VERIFI
+ 1140         LD   A,(#81E1)	; est-ce que la salle est sombre ?
+ 1150         CP   1
+ 1160         JR   Z,DEPA3	; oui, saute toute la suite
+ 1170         LD   A,1
+ 1180         CALL CLEARF
+ 1190         LD   HL,#7F3B	; affiche OBJETS PRESENTS
+ 1200         CALL AFFIC1
+ 1210         LD   A,10
+ 1220         CALL #BB5A	; LF (move cursor down one line)
+ 1230         LD   A,(SALLE)
+ 1240         CALL LISTE
+ 1250         LD   A,2
+ 1260         CALL CLEARF
+ 1270         LD   HL,#7FA8	; affiche PERSONNAGES
+ 1280         CALL AFFIC2
+ 1290         LD   A,10
+ 1300         CALL #BB5A
+ 1310         LD   A,(SALLE)
+ 1320         LD   (MODF+1),A
+ 1330         LD   A,3
+ 1340         LD   B,9
+ 1350         LD   E,0
+ 1360 PERSO:  LD   C,B
+ 1370         LD   HL,#81B0
+ 1380         LD   B,0
+ 1390         ADD  HL,BC
+ 1400         LD   D,A
+ 1410         LD   A,(HL)
+ 1420 MODF:   CP   255
+ 1430         CALL Z,IMPRM
+ 1440         LD   B,C
+ 1450         LD   A,D
+ 1460         DJNZ PERSO
+ 1470         LD   A,E
+ 1480         CP   0
+ 1490         CALL Z,NESSUN
+ 1500         LD   A,D
+ 1510         CP   0
+ 1520         CALL NZ,SCRO
+ 1530         JR   DEPA3
+ 1540 NESSUN: LD   HL,#7F36	; AUCUN OBJET PRESENT
+ 1550         PUSH DE
+ 1560         CALL AFFIC2
+ 1570         POP  DE
+ 1580         CP   0
+ 1590         RET  Z
+ 1600         DEC  D
+ 1610         RET
+ 1620 IMPRM:  LD   A,D
+ 1630         CP   0
+ 1640         JR   Z,NODEC
+ 1650         DEC  D
+ 1660 NODEC:  LD   E,1
+ 1670         LD   HL,#8223	; @YURK LE DRAGON
+ 1680         PUSH BC
+ 1690         PUSH DE
+ 1700         CALL CHERC
+ 1710         CALL AFFIC2
+ 1720         POP  DE
+ 1730         POP  BC
+ 1740         RET
+ 1750 SCRO:   LD   B,A
+ 1760         LD   A,10
+ 1770 SCRO1:  CALL #BB5A
+ 1780         DJNZ SCRO1
+ 1790         RET
+ 1800 DEPA3:  CALL GETCOM
+ 1810         CALL DCRIPT
+ 1820         LD   IX,#84A9
+ 1830         LD   A,(IX+0)	; sujet ?
+ 1840         CP   0
+ 1850         JR   NZ,DEPA31	; oui, on en a un
+ 1860         LD   A,(IX+1)	; verbe ?
+ 1870         CP   0
+ 1880         JR   Z,DEPA32	; non, on n'en a pas
+ 1890         CP   12		; oui, MARCHE OU AVANCE
+ 1900         JR   Z,DEPA32	; saute
+ 1910         JR   DEPA31	; oui, on en a un
+ 1920 DEPA32: LD   A,(IX+3)	; COD (pour une direction)
+ 1930         CP   0
+ 1940         JR   Z,DEPA31	; non
+ 1950         CALL MVT		; oui, les directions sont dans les COD !
+ 1960 DEPA31: CALL ANALYS	; analyse les mots
+ 1970         JP   DEPA2	; boucle
+
+ 2240 MVT:    LD   HL,#7BC5	; pointe sur MVT.BIN
+ 2250         LD   A,(SALLE)	; numero de salle
+ 2260         LD   C,A		; sauve
+ 2270 MVT1:   LD   A,(HL)	; prend la valeur
+ 2280         INC  HL		; ptr++
+ 2290         CP   0		; a-t-on une direction possible ?
+ 2300         JR   NZ,MVT1	; oui
+ 2310         DEC  C		; nb salle-- (bizarre)
+ 2320         JR   NZ,MVT1	; boucle
+ 2330         LD   IX,#84AC	; COD
+ 2340 MVT2:   LD   A,(HL)	; 
+ 2350         CP   (IX+0)	; quel COD ?
+ 2360         JR   Z,MVT3	; même valeur, saute
+ 2370         CP   0		; si fin alors
+ 2380         RET  Z		; retourne
+ 2390         INC  HL		; sinon, mvt +=2
+ 2400         INC  HL		
+ 2410         JR   MVT2		; boucle
+ 2420 MVT3:   INC  HL		; recupere la salle
+ 2430         LD   A,(HL)
+ 2440         LD   (SALLE),A
+ 2450         POP  HL
+ 2460         JP   DEPA1	; et revient
+
+* Vérifie ce qu'il y a à faire (action/condition)
+
+ 3430 VERIFI: LD   HL,#73F0	; ptr COND.BIN
+ 3440         LD   IX,#84A9	; index sujet/verbe
+ 3450         LD   IY,SALLE	; la salle
+ 3460 VERIF1: LD   DE,#8190	; OBJSAL
+ 3470         LD   A,(HL)
+ 3480         CP   97		; si val ptr < 97
+ 3490         JP   P,VERIF3	; alors VERIF3
+ 3500         INC  HL		; ptr++
+ 3510         LD   C,(HL)	; met en C
+ 3520         CALL TESTCO	; teste les conditions
+ 3530         JR   NZ,VERIF2	; result <> 0, saute
+ 3540         INC  HL		; sinon ptr++
+ 3550         JR   VERIF1	; boucle
+ 3560 VERIF2: INC  HL		; ptr++
+ 3570         LD   A,(HL)	; charge valeur
+ 3580         CP   255		; fin atteinte ?
+ 3590         JR   NZ,VERIF2	; non, boucle
+ 3600 VERIF4: INC  HL		; ptr++
+ 3610         LD   A,254	; fin de tableau ?
+ 3620         CP   (HL)
+ 3630         JR   NZ,VERIF1	; non, boucle haute
+ 3640         RET		; retourne
+ 3650 VERIF3: INC  HL		; ptr++
+ 3660         LD   C,(HL)	; met la valeur en C
+ 3670         PUSH HL		; sauve HL
+ 3680         LD   B,0		; B=0
+ 3690         CALL TESTAC	; teste les actions
+ 3700         POP  HL		; restaure
+ 3710         JR   NC,VERIF5	; pas de carry set, alors verif5
+ 3720         POP  HL		; sinon, pull encore...
+ 3730         EX   DE,HL	; échange les valeurs
+ 3740         JP   (HL)		; et saute !
+ 3750 VERIF5: INC  HL		; ptr++
+ 3760         LD   A,(HL)	; charge la valeur
+ 3770         CP   255		; fin ?
+ 3780         JR   NZ,VERIF3	; non, boucle
+ 3790         JR   VERIF4	; oui, continue
+
+* 
+
+ 3800 RETROU: LD   HL,SUJET	; cherche un sujet
+ 3810         CALL FINDMO
+ 3820         LD   B,1		; index 1
+ 3830         CP   0
+ 3840         RET  NZ
+ 3850         LD   HL,ADJ	; cherche un adjectif
+ 3860         CALL FINDMO
+ 3870         LD   B,4		; index 4
+ 3880         CP   0		; a-t-on trouve une equivalence ?
+ 3890         RET  NZ		; non, on revient
+ 3900         LD   HL,COD	; cherche un COD
+ 3910         CALL FINDMO
+ 3920         LD   B,3		; index 3
+ 3930         CP   0
+ 3940         RET  NZ
+ 3950         LD   HL,VERBE	; cherche un verbe
+ 3960         CALL FINDMO
+ 3970         LD   B,2		; index 2
+ 3980         CP   0
+ 3990         RET  NZ
+ 4000         LD   HL,ATTRIB	; cherche un attribut
+ 4010         CALL FINDMO
+ 4020         LD   B,5		; index 5
+ 4030         CP   0
+ 4040         RET  NZ
+ 4050         LD   HL,ARTICL	; cherche un article
+ 4060         CALL FINDMO
+ 4070         LD   B,6		; index 6
+ 4080         RET
+ 4090 TEST:   LD   A,(IY+4)	; quelle valeur de fin ?
+ 4100         CP   0
+ 4110         RET  NZ		; <>0, on revient à DCRYPT
+ 4120         POP  HL		; sinon, on revient sur DEPA3
+ 4130         JP   DEPA3
+ 4140 DCRIP9: LD   A,(HL)
+ 4150         CP   32		; espace
+ 4160         JR   Z,DCRIP1	; oui, déchiffre
+ 4170         INC  HL		; next char
+ 4180         CP   39		; compare le même car avec apostrophe
+ 4190         JR   Z,DCRIP1	; oui, déchiffre
+ 4200         JR   DCRIP9	; sinon, boucle
+
+* Déchiffre la chaîne saisie
+
+ 4340 DCRIPT: CALL ZERO		; efface les index des mots
+ 4350         LD   IY,#84A4	; IY $84A4
+ 4360         LD   HL,#846C	; HL $846C buffer clavier
+ 4370 DCRIP1: PUSH HL
+ 4380         LD   IX,#849E	; IX $849E
+ 4390         CALL SPACE	; efface la zone MOT
+ 4400         POP  HL
+ 4410         CALL NEXTMO	; cherche le prochain mot
+ 4420         LD   A,(IY+2)	; est-on en fin de 
+ 4430         CP   1	; buffer clavier ?
+ 4440         JR   Z,TEST	; oui, teste le
+ 4450         LD   B,5	; len = 5
+ 4460 DCRIP2: LD   A,(HL)	; $846C et après
+ 4470         CP   0		; on arrive à 0 ?
+ 4480         JR   NZ,DCRIP3	; non, saute
+ 4490         LD   (IY+2),1	; met le flag à 1
+ 4500         JR   TESTMO	; teste le mot trouve
+ 4510 DCRIP3: LD   (IX+0),A	; regarde le caractère en $849E++
+ 4520         CP   39		; apostrophe
+ 4530         JR   Z,TESTMO	; oui, saute
+ 4540         CP   32		; ou espace
+ 4550         JR   Z,TESTMO	; oui, saute
+ 4560         INC  HL		; ptr++
+ 4570         INC  IX
+ 4580         DJNZ DCRIP2	; on boucle sur 5 caractères
+ 4590         DEC  HL		; ptr--
+
+* 1 sujet
+* 2 verbe
+* 3 COD
+* 4 adjectif
+* 5 attribut
+* 6 article
+
+ 4600 TESTMO: PUSH DE		; sauve les pointeurs
+ 4610         PUSH HL
+ 4620         CALL RETROU	; cherche le mot parmi les 5 tables
+ 4630         POP  HL
+ 4640         POP  DE
+ 4650         CP   0		; retour à 0 ?
+ 4660         JP   Z,PACAPI	; oui, on n'a pas compris
+ 4670         LD   C,A		; en A, l'index
+ 4680         LD   A,B		; en B, le type (1..6)
+ 4690         INC  (IY+4)	; on a trouve qqch
+ 4700         CP   6		; est-ce un article ?
+ 4710         JR   NZ,DCRIP4	; non, saute
+ 4720         LD   A,1		; est-on en fin de chaine ?
+ 4730         CP   (IY+2)
+ 4740         JR   NZ,DCRIP9	; non, travaille
+ 4750         JP   SYNERR	; oui, erreur
+ 4760 DCRIP4: CP   5		; est-ce un attribut ?
+ 4770         JR   NZ,DCRIP5	; non, saute
+ 4780         LD   A,1
+ 4790         CP   (IY+2)	; est-on en fin de chaine ?
+ 4800         JR   Z,SYNERR	; oui, erreur de syntaxe
+ 4810         CP   (IY+1)	; un attribut deja ?
+ 4820         JR   Z,SYNERR	; oui, erreur
+ 4830         LD   (IY+1),A
+ 4840         JP   DCRIP9
+ 4850 DCRIP5: CP   2		; est-ce un verbe ?
+ 4860         JR   NZ,DCRIP6	; non, saute
+ 4870         LD   A,1		; a-t-on deja un attribut ?
+ 4880         CP   (IY+1)
+ 4890         JR   Z,SYNERR	; oui, erreur
+ 4900         LD   A,(IY+6)	; a-t-on deja un verbe ?
+ 4910         CP   0
+ 4920         JR   NZ,SYNERR	; oui, erreur
+ 4930         LD   (IY+6),C	; sauve l'index
+ 4940 DCRFIN: LD   A,1		; est-on en fin de chaine ?
+ 4950         CP   (IY+2)
+ 4960         JP   NZ,DCRIP9	; non
+ 4970         RET		; oui
+ 4980 DCRIP6: CP   4		; est-ce un adjectif ?
+ 4990         JR   NZ,DCRIP7	; non, saute
+ 5000         LD   A,(IY+9)	; a-t-on deja un adjectif ?
+ 5010         CP   0
+ 5020         JR   NZ,SYNERR	; oui, erreur
+ 5030         LD   (IY+9),C	; non, sauve
+ 5040         JR   DCRFIN	; boucle
+ 5050 DCRIP7: CP   3		; un COD ?
+ 5060         JR   NZ,DCRIP8	; non, saute
+ 5070         LD   A,(IY+1)	; a-t-on un attribut ?
+ 5080         CP   1
+ 5090         JR   NZ,DCRCOD	; non, continue
+ 5100 DCRCA:  LD   A,(IY+7)	; a-t-on un attribut ?
+ 5110         CP   0
+ 5120         JR   NZ,SYNERR	; oui, erreur
+ 5130         LD   (IY+7),C	; sauve l'attribut
+ 5140         LD   (IY+1),0	; reset flag verbe
+ 5150         JR   DCRFIN	; boucle
+ 5160 DCRCOD: LD   A,(IY+8)	; a-t-on un COD ?
+ 5170         CP   0
+ 5180         JR   NZ,SYNERR	; oui, erreur
+ 5190         LD   (IY+8),C	; sauve
+ 5200         JR   DCRFIN
+ 5210 DCRIP8: CP   (IY+4)
+ 5220         JR   Z,DCRSUJ
+ 5230         CP   (IY+1)
+ 5240         JR   NZ,DCRCOD
+ 5250         JR   DCRCA
+ 5260 DCRSUJ: LD   A,(IY+5)	; a-t-on deja un sujet ?
+ 5270         CP   0
+ 5280         JR   NZ,SYNERR	; oui, erreur
+ 5290         LD   (IY+5),C	; sauve
+ 5300         JR   DCRFIN	; boucle
+ 5310 SYNERR: LD   HL,#7F70	; ERREUR GRAMMATICALE
+ 5320         CALL AFFIC0
+ 5330         POP  HL
+ 5340         JP   DEPA3
+ 5350 NEXTMO: LD   A,(HL)	; est-on en fin de buffer clavier ?
+ 5360         CP   0
+ 5370         JR   NZ,NOFIN	; non, pas la fin
+ 5380         LD   (IY+2),1	; oui, met un 1
+ 5390         RET
+ 5400 NOFIN:  CP   32		; un espace ?
+ 5410         JR   Z,CONTMO	; oui, saute
+ 5420         PUSH HL		; non, on a trouve un autre mot
+ 5430         POP  DE		; alors, on revient
+ 5440         RET
+ 5450 CONTMO: INC  HL		; ptr++
+ 5460         JR   NEXTMO	; on boucle
+
+ 5470 PACAPI: PUSH DE		; sauve DE
+ 5480         LD   HL,#7F83	; JE NE COMPRENDS PAS
+ 5490         CALL AFFIC0
+ 5500         POP  DE
+ 5510         PUSH DE		; sauve DE
+ 5520         EX   DE,HL	; met HL dans DE
+ 5530         LD   B,0		; loop 0
+ 5540 PACAP1: INC  B
+ 5550         LD   A,(HL)	; charge *ptr
+ 5560         CP   0
+ 5570         JR   Z,PACAP3	; si 0, PACAP3 (fin de chaîne)
+ 5580         CP   32
+ 5590         JR   Z,PACAP2	; si 32, PACAP2 (espace)
+ 5600         LD   A,B
+ 5610         CP   15
+ 5620         JR   Z,PACAP2	; on sort si B=15
+ 5630         INC  HL		; sinon ptr++
+ 5640         JR   PACAP1	; loop
+ 5650 PACAP2: LD   (HL),160
+ 5660         POP  HL		; restore DE dans HL (qui était HL)
+ 5670         LD   B,21		; len
+ 5680         CALL AFF12	; affiche la string
+ 5690         POP  HL
+ 5700         JP   DEPA3	; saute à la suite
+ 5710 PACAP3: LD   A,32
+ 5720         JR   PACAP2
+
+*
+
+ 6750 AFFIC4: CALL CHERC	; cherche la chaîne
+ 6760         LD   A,2		; et fixe la couleur 2
+ 6770         LD   (AFF13+1),A	; pour le pen
+ 6780         CALL AFFIC1	; affiche la chaîne en fenêtre 1
+ 6790         LD   A,1		; remet couleur 1
+ 6800         LD   (AFF13+1),A
+ 6810         RET
+ 6820 AFFIC5: CALL CHERC	; cherche une string
+ 6830         JP   AFFIC1	; affiche dans fenetre 1
+ 6840 AFFIC6: CALL CHERC	; cherche une string
+ 6850         JP   AFFIC0	; affiche dans fenetre 0
+
+* L'analyse des mots
+
+ 9430 ANALYS: LD   HL,#56A0	; la table des actions
+ 9440         LD   IX,#84A9	; les index des MOTS trouvés
+ 9450         LD   IY,SALLE
+ 9460         LD   (IX-2),0	; met le flag à 0
+ 9470 MOTS:   LD   A,(HL)	; A = $56A0
+ 9480         CP   (IX+0)	; même SUJET
+ 9490         JR   Z,MOT2	; oui, saute
+ 9500         CP   99		; non pertinent
+ 9510         JR   NZ,NOUVEL
+ 9520 MOT2:   INC  HL
+ 9530         LD   A,(HL)
+ 9540         CP   (IX+1)	; même VERBE
+ 9550         JR   Z,MOT3
+ 9560         CP   99		; non pertinent
+ 9570         JR   NZ,NOUVEL
+ 9580 MOT3:   INC  HL
+ 9590         LD   A,(HL)
+ 9600         CP   (IX+2)	; même ARTICLE
+ 9610         JR   Z,MOT4
+ 9620         CP   99		; non pertinent
+ 9630         JR   NZ,NOUVEL
+ 9640 MOT4:   INC  HL
+ 9650         LD   A,(HL)
+ 9660         CP   (IX+3)	; même COD
+ 9670         JR   Z,MOT5
+ 9680         CP   99		; non pertinent
+ 9690         JR   NZ,NOUVEL
+ 9700 MOT5:   INC  HL
+ 9710         LD   A,(HL)
+ 9720         CP   (IX+4)	; même ADJECTIF
+ 9730         JR   Z,CONDIT
+ 9740         CP   99		; non pertinent
+ 9750         JR   Z,CONDIT
+ 9760         LD   (IX-2),1	; on a trouvé, met le flag
+ 9770 NOUVEL: INC  HL		; pointeur++
+ 9780         LD   A,(HL)	; prend la valeur
+ 9790         CP   255		; est-ce 255 ?
+ 9800         JR   NZ,NOUVEL	; non, boucle
+ 9810 FIN:    INC  HL		; oui, prend le prochain byte
+ 9820         LD   A,254	; compare avec 254
+ 9830         CP   (HL)
+ 9840         JR   NZ,MOTS	; non, change de mot
+ 9850 IMPOSS: LD   HL,#7EA0	; fin, affiche IMPOSSIBLE
+ 9860         LD   A,1
+ 9870         CP   (IX-2)
+ 9880         JP   NZ,AFFIC0
+ 9890         XOR  A
+ 9900         CP   (IX+1)
+ 9910         JP   Z,AFFIC0
+ 9920         LD   HL,#7F97	; SOYEZ PLUS PRECIS
+ 9930         JP   AFFIC0
+
+* On a trouvé une action, on vérifie maintenant les conditions
+
+ 9940 CONDIT: LD   DE,#8190
+ 9945         LD   (IX-2),0	; flag à 0
+ 9950         INC  HL		; ptr action++
+ 9960         LD   A,(HL)	; charge valeur
+ 9970         CP   97		; est-ce 97 ? ($61 = a)
+ 9980         JP   P,ACTION	; < go action
+ 9990         INC  HL		; sinon teste
+10000         LD   C,(HL)	; met en C la valeur
+10010         CALL TESTCO	; gère la condition
+10020         JR   NZ,NOUVEL	; si different, on passe à la suivante
+10030         JR   CONDIT	; sinon, on boucle sur la même
+10040 TESTCO: CP   "A"		; gère les différentes conditions
+10050         JR   Z,CONDA
+10060         CP   "B"
+10070         JR   Z,CONDB
+10080         CP   "C"
+10090         JR   Z,CONDC
+10100         CP   "D"
+10110         JR   Z,CONDD
+10120         CP   "E"
+10130         JR   Z,CONDE
+10140         CP   "F"
+10150         JR   Z,CONDF
+10160         CP   "G"
+10170         JR   Z,CONDG
+10180         CP   "H"
+10190         JR   Z,CONDH
+10200         CP   "I"
+10210         JP   Z,CONDI
+10220         CP   "J"
+10230         JP   Z,CONDJ
+10240         CP   "K"
+10250         JP   Z,CONDK
+10260         CP   "L"
+10270         JP   Z,CONDL
+10280 CONDM:  PUSH HL		; sauve HL
+10290         LD   HL,#81BB	; 81BB,x
+10300         LD   B,0
+10310         ADD  HL,BC
+10320         LD   A,(HL)
+10330         POP  HL		; restaure HL
+10340         INC  HL		; ptr++
+10350         CP   (HL)		; compare avec la valeur
+10360         JR   INVERZ	; et inverse Z
+10370 CONDA:  LD   A,C		; 01
+10380         CP   (IY+0)	; SALLE
+10390         RET
+10400 CONDB:  EX   DE,HL	; same
+10410         LD   B,0		; 8190,X
+10420         ADD  HL,BC
+10430         LD   A,(HL)
+10440         EX   DE,HL
+10450         CP   (IY+0)	; SALLE
+10460         RET  Z
+10470         CP   255		; -1
+10480         RET
+10490 CONDC:  EX   DE,HL	;
+10500         LD   B,0		; 8190,X
+10510         ADD  HL,BC
+10520         LD   A,(HL)
+10530         EX   DE,HL
+10540         CP   255		; -1
+10550         CALL INVERZ	; if true then false, if false then true
+10560         RET  NZ
+10570         CP   (IY+0)	; SALLE
+10580 INVERZ: PUSH AF		; Invert the Z flag - push AF, pull in DE
+10590         POP  DE		; to get the flags
+10600         LD   A,E		; E -> A
+10610         XOR  64		; xor 0100_0000
+10620         LD   E,A		; A -> E
+10630         PUSH DE		; push DE and pull AF
+10640         POP  AF		; to set the flags
+10650         RET
+10660 CONDD:  EX   DE,HL	; same
+10670         LD   B,0		; DE points to OBJSAL at 8190
+10680         ADD  HL,BC
+10690         LD   A,(HL)
+10700         EX   DE,HL
+10710         CP   255		; compare with -1
+10720         RET
+10730 CONDE:  PUSH HL		; same
+10740         LD   HL,#81E0	; P,x
+10750         LD   B,0
+10760         ADD  HL,BC
+10770         LD   A,(HL)
+10780         POP  HL
+10790         CP   1		; compare with 1
+10800         RET
+10810 CONDF:  PUSH HL		; same
+10820         LD   HL,#81E0	; P,x
+10830         LD   B,0
+10840         ADD  HL,BC
+10850         LD   A,(HL)
+10860         POP  HL
+10870         CP   0		; compare with 0
+10880         RET
+10890 CONDG:  PUSH HL		; same
+10900         LD   HL,#81C6	; C,x
+10910         LD   B,0
+10920         ADD  HL,BC
+10930         LD   A,(HL)
+10940         POP  HL
+10950         CP   1		; compare with 1
+10960         RET
+10970 CONDH:  LD   A,(#B1FD)	; same
+10980         AND  15		; RND uses colour time
+10990         SLA  A
+11000         CP   C		; compare
+11010         JP   P,MAUVAI	; <, c'est mauvais
+11020 BON:    XOR  A		; 0
+11030         RET
+11040 MAUVAI: INC  A		; <> 0
+11050         RET  NZ		; revient si > 0
+11060         JR   MAUVAIS	; sinon boucle
+11070 CONDI:  LD   A,C		; dans la même SALLE ?
+11080         CP   (IY+0)
+11090         JR   INVERZ	; inverse, dans tous les cas
+11100 CONDJ:  PUSH HL		; save HL
+11110         LD   B,0
+11120         LD   HL,#81B0	; 81B0,x
+11130         ADD  HL,BC
+11140         LD   A,(HL)	; put in A
+11150         POP  HL		; restore ptr
+11160         CP   (IY+0)	; compare with SALLE
+11170         RET
+11180 CONDK:  PUSH HL		; save HL
+11190         LD   B,0
+11200         LD   HL,#81B0	; 81B0,x
+11210         ADD  HL,BC
+11220         LD   A,(HL)	; put in A
+11230         POP  HL		; restore ptr
+11240         CP   (IY+0)	; compare with SALLE
+11250         JR   INVERZ	; inverse pour sortir
+11260 CONDL:  PUSH HL		; save HL
+11270         LD   B,0
+11280         LD   HL,#81BB	; 81BB,x
+11290         ADD  HL,BC
+11300         LD   A,(HL)	; put in A
+11310         POP  HL		; restore ptr
+11320         INC  HL		; ptr++
+11330         CP   (HL)		; compare with A
+11340         RET
+
+11350 AFFICH: PUSH HL
+11360         CALL #BBB4	; TXT STR SELECT
+11370         LD   A,B
+11380         CALL #BB72	; TXT SET ROW
+11390         POP  HL
+11400 AFF13:  LD   A,1
+11410         CALL #BBDE	; GRA SET PEN
+11420 AFF11:  LD   A,10
+11430         CALL #BB5A	; TXT OUTPUT
+11440         PUSH HL
+11450         PUSH BC
+11460 AFFIX:  LD   DE,16	; x
+11470 AFFIY:  LD   HL,318	; y
+11480         CALL #BBC0	; GRA MOVE ABSOLUTE
+11490         POP  BC
+11500         POP  HL
+11510         LD   B,0		; len=0
+11520 AFF12:  INC  B		; len++
+11530         LD   A,(HL)	; output char
+11540         AND  127
+11550         CALL WRCHAR
+11560         LD   A,(HL)
+11570         SLA  A		; bit 7 high?
+11580         RET  C		; yes, return
+11590         INC  HL		; no, ptr++
+11600         LD   A,B		; prend len
+11610         CP   C		; compare avec max
+11620         JR   Z,AFF11	; sors si fin
+11630         JR   AFF12	; sinon boucle
+
+11640 AFFIC0: XOR  A	
+11650         LD   BC,#632	; 	
+11660         LD   DE,16	; x
+11670         LD   (AFFIX+1),DE
+11680         LD   DE,318	; y
+
+11690 AFF:    LD   (AFFIY+1),DE
+11700         JR   AFFICH
+
+11710 AFFIC1: LD   A,1
+11720         LD   BC,#C11
+11730         LD   DE,416
+11740         LD   (AFFIX+1),DE
+11750         LD   DE,126
+11760         JR   AFF
+
+11770 AFFIC2: LD   A,2
+11780         LD   BC,#611
+11790         LD   DE,416
+11800         LD   (AFFIX+1),DE
+11810         LD   DE,30
+11820         JR   AFF
+
+11830 AFFIC3: LD   A,3
+11840         LD   BC,#220
+11850         LD   DE,16
+11860         LD   (AFFIX+1),DE
+11870         LD   DE,286
+11880         JR   AFF
+
+* Gère les actions
+
+11910 ACTION: INC  HL		; ptr++
+11920         LD   C,(HL)	; prend la valeur
+11930         PUSH HL		; sauve le pointeur
+11940         LD   B,0		; efface les 8-bits 0
+11950         CALL TESTAC	; teste l'action
+11960         POP  HL		; restaure le pointeur
+11970         JR   NC,NEXTAC	; pas de retenue, saute
+11980         POP  HL		; restaure le pointeur (encore)
+11990         EX   DE,HL	; prend l'adresse de retour
+12000         JP   (HL)		; saute (équivalent du BREAK d'avant)
+12010 NEXTAC: INC  HL		; ptr++
+12020         LD   A,(HL)	; lit la valeur
+12030         JR   ACTION	; et boucle
+
+12040 TESTAC: CP   "a"		; inventaire
+12050         JP   Z,ACTIOa
+12060         CP   "b"		; prend objet N
+12070         JP   Z,ACTIOb
+12080         CP   "c"		; dépose objet N
+12090         JP   Z,ACTIOc
+12100         CP   "d"		; affiche une description
+12110         JP   Z,ACTIOd
+12120         CP   "e"		; active pointeur N
+12130         JP   Z,ACTIOe
+12140         CP   "f"		; désactive pointeur N
+12150         JP   Z,ACTIOf
+12160         CP   "g"		; fixe le compteur N à M
+12170         JP   Z,ACTIOg
+12180         CP   "h"		; repose l'objet
+12190         JP   Z,ACTIOh
+12200         CP   "i"		; prochaine salle
+12210         JP   Z,ACTIOi
+12220         CP   "z"		; victoire
+12230         JP   Z,ACTIOz
+12240         CP   "{"		; action gros mots ! (ligne 14950 ACTIONS.BAS = [, $7B = { en ASM)
+12250         JP   Z,ACTIO0
+12260         CP   "j"		; affiche D'ACCORD puis DEPA2
+12270         JP   Z,ACTIOj
+12280         CP   "k"		; saute à DEPA2
+12290         JP   Z,ACTIOk
+12300         CP   "w"		; musique
+12310         JP   Z,ACTIOw
+12320         CP   "x"		; bruit
+12330         JP   Z,ACTIOx
+12340         CP   "l"		; saute à DEPA3
+12350         JP   Z,ACTIOl
+12360         CP   "v"		; décremente condition
+12370         JP   Z,ACTIOv
+12380         CP   "m"		; recommence
+12390         JP   Z,ACTIOm
+12400         CP   "y"		; inverse les pointeurs de deux images
+12410         JP   Z,ACTIOy
+12420         CP   "n"		; mort
+12430         JP   Z,ACTIOn
+12440         CP   "o"		; pose objet dans la salle
+12450         JP   Z,ACTIOo
+12460         CP   "p"		; pose personnage et objet
+12470         JP   Z,ACTIOp
+12480         CP   "t"		; sauve une partie
+12490         JP   Z,ACTIOt
+12500         CP   "q"		; perd personnage et objet
+12510         JP   Z,ACTIOq
+12520         CP   "u"		; charge une partie
+12530         JP   Z,ACTIOu
+12540         CP   "r"		; pose un objet ?
+12550         JP   Z,ACTIOr
+
+* Action S - Pose un objet porté dans la salle
+
+12560 ACTIOs: LD   HL,#81BB	; pose objet porte dans salle
+12570         ADD  HL,BC
+12580         LD   A,(HL)
+12590         CP   0		; a-t-on l'objet ?
+12600         JP   Z,PASOBJ	; non, saute
+12610         LD   (HL),0	; libère le
+12620         LD   C,A
+12630         LD   A,(SALLE)
+12640         LD   HL,#8190	; OBJSAL,x = SALLE
+12650         ADD  HL,BC
+12660         LD   (HL),A
+12670         AND  A
+12680         RET
+
+* Action B - Prend un objet
+
+12690 ACTIOb: LD   HL,#8190	; prend un objet
+12700         ADD  HL,BC
+12710         LD   A,(HL)
+12720         CP   255		; a-t-on deja l'objet ?
+12730         JP   Z,DEJOBJ	; oui
+12740         CP   (IY+0)	; dispo dans la salle ?
+12750         JP   NZ,PASICI	; non
+12760         LD   A,(NBOBJ)	; on ne peut pas porter
+12770         CP   6		; plus de 6 objets
+12780         JP   P,TROOBJ
+12790         LD   (HL),255	; prend l'objet
+12800         LD   HL,NBOBJ	; nbobj++
+12810         INC  (HL)
+12820         CALL RETOBJ	; assure la prise
+12830         AND  A
+12840         RET
+
+* Action C - Dépose un objet
+
+12850 ACTIOc: LD   HL,#8190	; dépose un objet
+12860         ADD  HL,BC
+12870         LD   A,(HL)
+12880         CP   255		; a-t-on deja l'objet ?
+12890         JP   NZ,NOOBJ	; non, ON NE PEUT PAS POSER
+12900         LD   A,(SALLE)
+12910         LD   (HL),A	; OBJSAL,X = SALLE
+12920         LD   HL,NBOBJ
+12930         DEC  (HL)		; NBOBJ--
+12940         AND  A
+12950         RET
+
+* Action D - Affiche une description
+
+12960 ACTIOd: CALL ONDISC	; cherche sur disque
+12970         LD   HL,#192D	; adresse en mémoire
+12980         CALL CHERC	; cherche la description
+12990         CALL AFFIC0	; l'affiche
+13000         AND  A		; retour OK
+13010         RET
+
+* Action E - Active pointeur N
+
+13020 ACTIOe: LD   HL,#81E0	; active pointeur N
+13030         ADD  HL,BC
+13040         LD   (HL),1	; P,x = 1
+13050         AND  A
+13060         RET
+
+* Action F - Désactive pointeur N
+
+13070 ACTIOf: LD   HL,#81E0	; desactive pointeur N
+13080         ADD  HL,BC
+13090         LD   (HL),0	; P,x = 0
+13100         AND  A
+13110         RET
+
+* Action G - Fixe le compteur N à M
+
+13120 ACTIOg: POP  DE		; fixe le compteur N à M
+13130         POP  HL
+13140         INC  HL
+13150         PUSH HL
+13160         PUSH DE
+13170         LD   D,(HL)
+13180         LD   HL,#81C6	; C,x
+13190         ADD  HL,BC
+13200         LD   (HL),D
+13210         AND  A
+13220         RET
+
+13230 ACTIOh: LD   HL,#8190	; repose l'objet
+13240         ADD  HL,BC
+13250         LD   (HL),0
+13260         CALL RETOBJ
+13270         AND  A
+13280         RET
+
+13290 ACTIOi: LD   A,C		; prochaine salle
+13300         LD   (SALLE),A
+13310         AND  A
+13320         RET
+
+13330 ACTIOk: SCF		; saute à DEPA2
+13340         LD   DE,DEPA2
+13350         RET
+
+13360 ACTIOj: LD   HL,#7EAA	; affiche d'accord
+13370         CALL AFFIC0
+13380         JR   ACTIOk
+
+13390 ACTIOl: SCF		; saute à DEPA3
+13400         LD   DE,DEPA3
+13410         RET
+
+* Action M - boucle sur DEPA1
+
+13420 ACTIOm: SCF		; recommence
+13430         LD   DE,DEPA1
+13440         RET
+
+* Action N - On est mort
+
+13450 ACTIOn: SCF		; mort
+13460         LD   DE,MORT
+13470         RET
+
+* Action O - Pose un objet dans la salle
+
+13480 ACTIOo: LD   HL,#8190	; pose objet dans la salle
+
+13490 ACTIo1: ADD  HL,BC	; pose objet ou personnage
+13500         LD   A,(SALLE)
+13510         LD   (HL),A
+13520         AND  A
+13530         RET
+
+* Action P - Pose un personnage et un objet dans la salle
+
+13540 ACTIOp: LD   HL,#81B0	; pose personnage dans la salle
+13550         CALL ACTIo1
+13560         LD   HL,#81BB	; et les objets
+13570         ADD  HL,BC
+13580         LD   C,(HL)
+13590         JR   ACTIOo
+
+* Action Q - Perd un personnage et un objet
+
+13600 ACTIOq: LD   HL,#81B0	; perd personnage
+13610         ADD  HL,BC
+13620         LD   (HL),0
+13630         LD   HL,#81BB	; perd objet
+13640         ADD  HL,BC
+13650         LD   (HL),0
+13660         AND  A
+13670         RET
+
+* Action R - Pose un objet
+
+13680 ACTIOr: LD   HL,#81BB	; pose un objet
+13690         ADD  HL,BC
+13700         LD   A,(HL)	; 81BB,x
+13701         EX   DE,HL	; échange
+13702         POP  BC		; récup dans BC
+13703         POP  HL		; récup dans HL
+13704         INC  HL		; +1
+13705         PUSH HL		; repousse
+13706         PUSH BC
+13707         LD   C,(HL)	; quel est l'objet que je porte ?
+13708         CP   C		; le même ?
+13709         JP   Z,AIDEJA	; JE L'AI DEJA
+13710         CP   0		; aucun
+13720         JP   NZ,DEJAUN	; si, mais JE NE PORTE PAS PLUS D'UN OBJET
+13740         LD   HL,#8190	; quels sont les objets en salle ?
+13745         LD   B,0
+13750         ADD  HL,BC
+13755         LD   (#83E4),HL	; sauve le pointeur
+13760         LD   A,(HL)	; prend la valeur
+13770         CP   (IY+0)	; SALLE
+13780         JR   Z,ACTIr1	; même salle
+13790         CP   255		; on l'a ?
+13800         JP   NZ,PASICI	; non, pas ici
+13801         LD   HL,NBOBJ	; oui, retire l'objet
+13802         DEC  (HL)
+
+13900 ACTIr1: EX   DE,HL	; récup l'adresse
+13910         LD   (HL),C	; pose l'objet
+13920         LD   A,(IY+0)	; récupère la salle
+13940         LD   HL,(#83E4)	; récupère l'adresse
+13950         LD   (HL),A	; sauve la salle
+13960         AND  A		; zéro
+13970         RET		; retour
+
+* Action A - Inventaire
+
+13980 ACTIOa: LD   A,1		; inventaire
+13990         CALL CLEARF
+14000         LD   HL,#7F4C	; OBJETS PORTES
+14010         CALL AFFIC1
+14020         LD   A,10
+14030         CALL #BB5A	; out character
+14040         LD   A,255
+14050 LISTE:  LD   (MODIF+1),A	; reset to 255
+14060         LD   A,9		; nombre d'objets possibles perhaps
+14070         LD   B,31	;	; $1F
+14080         LD   E,0
+14090 ACTa:   LD   C,B
+14100         LD   HL,#8190	; pointeur vers les objets
+14110         LD   B,0		; $00
+14120         ADD  HL,BC
+14130         LD   D,A		; 9 -> D
+14140         LD   A,(HL)	; prend l'objet
+14150 MODIF:  CP   255		; code auto-modifié
+14160         CALL Z,IMPRIM	; le même, go IMPRI
+14170         LD   B,C		; 
+14180         LD   A,D		; 
+14190         DJNZ ACTa		; next 
+14200         LD   A,E
+14210         CP   0
+14220         CALL Z,AUCUN
+14230         LD   A,D
+14240         CP   0
+14250         CALL NZ,SCROOL
+14260         SCF
+14270         LD   DE,DEPA3
+14280         RET
+14290 AUCUN:  LD   HL,#7F36	; AUCUN OBJET
+14300         PUSH DE
+14310         CALL AFFIC1
+14320         POP  DE
+14330         CP   0
+14340         RET  Z
+14350         DEC  D
+14360         RET
+14370 IMPRIM: LD   A,D
+14380         CP   0
+14390         JR   Z,NODECR
+14400         DEC  D
+14410 NODECR: LD   E,1
+14420         LD   HL,#7A50	; ?
+14430         PUSH BC
+14440         PUSH DE
+14450         CALL CHERC
+14460         CALL AFFIC1
+14470         POP  DE
+14480         POP  BC
+14490         RET
+14500 SCROOL: LD   B,A
+14510         LD   A,10
+14520 SCROO1: CALL #BB5A
+14530         DJNZ SCROO1
+14540         RET
+14550 ICIOBJ: LD   A,1
+14560         CALL CLEARF
+14570         LD   HL,#7F3B
+14580         CALL AFFIC1
+14590         LD   A,10
+14600         CALL #BB5A
+14610         LD   A,(SALLE)
+14620         JR   LISTE
+
+* Action T - Sauve une partie
+
+14630 ACTIOt: CALL #BB18	; sauve une partie
+14640         CALL SAUVE
+14650         LD   DE,DEPA2	; et continue de jouer
+14660         SCF
+14670         RET
+
+* Action U - Charge une partie
+
+14680 ACTIOu: CALL #BB18	; charge une partie
+14690         LD   HL,#4150	; PA
+14700         LD   (#84B1),HL
+14710         LD   DE,#8190
+14720         CALL CHARGE
+14725         CALL #BB18
+14730         XOR  A
+14740         LD   (#84AF),A
+14750         LD   DE,DEPA1	; et recommence le jeu
+14760         SCF
+14770         RET
+
+* Action V - Decremente une condition
+
+14780 ACTIOv: LD   HL,#81C6	; C,x
+14790         ADD  HL,BC
+14800         LD   A,(HL)	; compare 2
+14810         CP   2
+14820         JP   P,ACTIv1	; si inférieur, saute
+14830         AND  A		; retourne 0
+14840         RET
+14850 ACTIv1: DEC  (HL)		; décrémente C,x (:110 du Dr Genius)
+14860         AND  A
+14870         RET
+
+* Charge un fichier
+
+14880 CHARGE: LD   HL,#84B1	; HL filename
+14890         LD   B,2		;  B filename len
+14900         CALL #BC77	; *CAS IN OPEN
+14910         JR   C,CHARG1	; continue si OK
+
+14920 ERREUR: LD   HL,#7F5C	; ERREUR DE CHARGEMENT
+14930         CALL AFFIC0
+14940         CALL #BB18	; WAIT KEY
+14950         LD   SP,(#83C2)
+14960         JP   DEBUT	; recommence
+
+14970 CHARG1: EX   DE,HL	; Adresse de chargement
+14980         CALL #BC83	; *CAS IN DIRECT
+14990         JR   NC,ERREUR
+15000         CALL #BC7A	; *CAS IN CLOSE
+15010         JR   NC,ERREUR
+15020         RET
+
+* Sauve une partie
+
+15030 SAUVE:  LD   HL,#4150	; PA
+15040         LD   (#84B1),HL
+15050         LD   HL,#84B1
+15060         LD   DE,#8190
+15070         LD   B,2
+15080         CALL #BC8C
+15090         JR   NC,ERREUR
+15100         LD   HL,#8190
+15110         LD   BC,0
+15120         LD   A,2
+15130         LD   DE,#500
+15140         CALL #BC98
+15150         JR   NC,ERREUR
+15160         CALL #BC8F
+15170         JR   NC,ERREUR
+15180         RET
+
+* Action X joue des bruits
+
+15740 ACTIOx: LD   A,C		; quel bruit jouer ?
+15750         CP   1
+15760         JR   Z,BRUIT1
+15770         CP   2
+15780         JR   Z,BRUIT2
+15790         CP   3
+15800         JR   Z,BRUIT3
+
+15810 BRUIT4: LD   HL,CODE4
+15820         CALL #BCAA	; SOUND QUEUE
+15830         LD   HL,CODE41
+
+15840 FINx:   CALL #BCAA	; SOUND QUEUE
+15850         AND  A
+15860         RET
+
+15870 BRUIT3: LD   HL,CODE3
+15880         JR   FINx
+15890 BRUIT2: LD   HL,CODE2
+15900         JR   FINx
+15910 BRUIT1: LD   HL,CODE1
+15920         JR   FINx
+
+15930 CODE1:  DEFB 7,1,0
+15940         DEFB 0,0,19,0
+15950         DEFB 0,0
+15960 CODE2:  DEFB 7,2,0
+15970         DEFB 33,0,0,15
+15980         DEFB 0,0
+15990 CODE3:  DEFB 7,3,1
+16000         DEFB 154,2,0,15
+16010         DEFB 120,0
+16020 CODE4:  DEFB 7,5,2
+16030         DEFB 80,0,0,10
+16040         DEFB 0,0
+16050 CODE41: DEFB 7,4,0
+16060         DEFB 184,11,0,15
+16070         DEFB 0,0
+
+* Action W joue de la synthèse sonore
+
+16080 ACTIOw: LD   A,48
+16090         ADD  A,C
+16100         LD   H,A
+16110         LD   L,"S"
+16120         LD   (#84B1),HL	; Sx
+16130         XOR  A
+16140         LD   (#84B0),A
+16150         LD   DE,#1960	; at $1960
+16160         CALL CHARGE	; load it
+16170 SYNT0:  LD   A,255
+16180         LD   HL,SYNT8
+16190 SYNT1:  INC  A
+16200         LD   C,(HL)
+16210         INC  HL
+16220         PUSH AF
+16230         CALL #BD34
+16240         POP  AF
+16250         CP   13
+16260         JR   NZ,SYNT1
+16270 S1:     LD   HL,#1960	; adresse auto-modifiée
+16280         DI
+16290 SYNT2:  LD   A,(HL)
+16300         SLA  A
+16310         JR   C,SYNT3
+16320         LD   D,0
+16330         JR   SYNT4
+16340 SYNT3:  LD   D,15
+16350 SYNT4:  LD   BC,#F6C0
+16360         OUT  (C),C
+16370         LD   BC,#F40A
+16380         OUT  (C),C
+16390         LD   BC,#F680
+16400         OUT  (C),C
+16410         LD   B,#F4
+16420         OUT  (C),D
+16430         LD   BC,#F600
+16440         OUT  (C),C
+16450         SRL  A
+16460 SYNT5:  CALL SYNT6
+16470         DEC  A
+16480         JR   NZ,SYNT5
+16490         INC  HL
+16500 S0:     LD   A,#41
+16510         CP   H
+16520         JR   NZ,SYNT2
+16530         EI
+16540         AND  A
+16550         RET
+16560 SYNT6:  LD   E,2
+16570 SYNT7:  DEC  E
+16580         JR   NZ,SYNT7
+16590         RET
+16600 SYNT8:  DEFB 0,0,0,0
+16610         DEFB 0,0,0,56
+16620         DEFB 0,0,0
+16630         DEFB 0,0,0
+
+* Action Y - Inverse les pointeurs de deux images
+
+16640 ACTIOy: POP  DE		; adresse courante
+16650         POP  HL		; adresse sauvegardée
+16660         INC  HL		; ptr++
+16670         PUSH HL		; repousse les paramètres
+16680         PUSH DE
+16690         LD   D,(HL)	; prend la valeur+1
+16700         LD   B,0		; low is 0
+16710         LD   HL,#82B8	; on pointe sur 82B8
+16720         SLA  C		; x2
+16730         ADD  HL,BC	; 82B8,x
+16740         LD   (ACTy1+1),HL	; met l'adresse
+16750         LD   (ACTy2+2),HL	; met l'adresse
+16760         LD   C,D		; prend D maintenant
+16770         SLA  C		; x2
+16780         LD   HL,#82B8
+16790         ADD  HL,BC	; 82B8,x
+16800         LD   (ACTy3+2),HL	; met les deux autres adresses
+16810         LD   (ACTy4+1),HL
+16820 ACTy1:  LD   HL,(#8888)	; inverse
+16830 ACTy3:  LD   DE,(#9999)
+16840 ACTy2:  LD   (#8888),DE
+16850 ACTy4:  LD   (#9999),HL
+16860         AND  A
+16870         RET
+
+16880 PASICI: LD   HL,#7FCA	; JE NE VOIS PAS CELA ICI
+16890         JP   NOO1
+16900 RETOBJ: LD   HL,#81BB	; les objets portes
+16910         LD   B,0
+16920 RETOB2: LD   A,(HL)	; prend l'index de l'objet
+16930         CP   C		; est-ce celui en question ?
+16940         JR   Z,RETOB1	; oui
+16950         INC  HL		; non, continue
+16960         INC  B
+16970         LD   A,8		; jusqu'à 8
+16980         CP   B		; (pourtant on ne peut porter que 6 objets)
+16990         JR   NZ,RETOB2	; boucle
+17000         RET		; fin
+17010 RETOB1: LD   (HL),0	; efface l'objet porté
+17020         RET
+
+* Action Z : Victoire !!
+
+17030 ACTIOz: LD   DE,VICTOI
+17040         SCF		; Set Carry Flag
+17050         RET
+
+* Action pour les gros mots
+
+17060 ACTIO0: CALL #BB18	; WAIT KEY
+17070         LD   BC,#BC03	; SCR SET OFFSET + 1
+17080         OUT  (C),C
+17090         LD   BC,#BD01	; KL DONE SYNC
+17100         OUT  (C),C
+17110         CALL #BB18	; WAIT KEY
+17120         CALL #BB18	; WAIT KEY
+17130         LD   BC,#BC03	; SCR SET OFFSET +1
+17140         OUT  (C),C
+17150         LD   BC,#BD8E	; REAL COMPARISON
+17160         OUT  (C),C
+17170         AND  A
+17180         RET
+
+18800 PRINT:  CP   96
+18803         JP   M,PR
+18805         RES  5,A
+18810 PR:     RST  8
+18820         NOP
+18830         SUB  H
+19000 ZZZ:			; It's the end

@@ -62,6 +62,8 @@ strPROMPT	asc	'>'00
 * Les actions version hexadecimale
 *
 *		0001020304AA
+
+TBLACTIONS
 ACTION$	hex	001600000061FF		; INVENTAIRE (a)
 	hex	0000000100410C4602650269136DFF	; NORD (A)
 	hex	0000000300410F4602650269136DFF	; EST (A)
@@ -605,6 +607,7 @@ ACTION$	hex	001600000061FF		; INVENTAIRE (a)
 * Les conditions version hexadecimale
 *
 
+TBLCONDITIONS
 CONDITION$	hex	4629450145204C010664DD70016DFF
 	hex	4629450145204C010E64DD70016DFF
 	hex	462945204954495549424943494C494D491E49717001FF
@@ -1072,7 +1075,7 @@ ADJECTIF$	@asc	01;'OR   '
 	@asc	14;'PIERR'
 	@asc	15;'FORET'
 	@asc	16;'MARAI'
-	dfb	chrNULL
+	dfb	chrEOT
 
 *
 * Les attributs
@@ -1091,8 +1094,7 @@ ATTRIBUT$	@asc	01;'AVEC '
 	@asc	06;'AU   '
 	@asc	06;'AUX  '
 	@asc	07;'PAR  '
-	dfb	chrNULL
-
+	dfb	chrEOT
 *
 * Les sujets
 *
@@ -1114,8 +1116,7 @@ SUJET$	@asc	51;'BILLY'
 	@asc	48;'MINIU'
 	@asc	48;'SORCI'
 	@asc	34;'MONST'
-	dfb	chrNULL
-
+	dfb	chrEOT
 *
 * Les verbes
 *
@@ -1241,7 +1242,7 @@ VERBE$	@asc	05;'M    '
 	@asc	71;'SAUVE'
 	@asc	71;'SAVE '
 	@asc	72;'COUPE'
-	dfb	chrNULL
+	dfb	chrEOT
 
 *
 * Les COD
@@ -1356,7 +1357,7 @@ COD$	@asc	01;'N    '
 	@asc	83;'AUTEL'
 	@asc	84;'COLON'
 	@asc	84;'PILIE'
-	dfb	chrNULL
+	dfb	chrEOT
 
 *
 * Les articles
@@ -1381,7 +1382,7 @@ ARTICLE$	@asc	01;'L'27'   '
 	@asc	15;'EN   '
 	@asc	16;'D'27'   '
 	@asc	17;'ME   '
-	dfb	chrNULL
+	dfb	chrEOT
 
 *
 * Les phrases

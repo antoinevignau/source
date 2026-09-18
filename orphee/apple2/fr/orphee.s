@@ -344,6 +344,7 @@ FINDMO	sta	dpFROM	; cherche un mot de 5 lettres
 FINDMO_1	sep	#$20
 	ldy	#0
 ]lp	lda	(dpFROM),y
+	and	#$ff
 	cmp	#chrEOT	; fin de table ?
 	beq	FINDMO_4	; oui, sors
 	cmp	WORDBUFFER,y	; non, compare

@@ -497,14 +497,14 @@ proOPENGAME
 proREADGAME
 	dw	4	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	A1	; 4 - data_buffer
+	adrl	SALLE	; 4 - data_buffer
 	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 
 proWRITEGAME
 	dw	5	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	A1	; 4 - data_buffer (we are in same bank)
+	adrl	SALLE	; 4 - data_buffer (we are in same bank)
 	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority

@@ -201,16 +201,53 @@ DEPA2	jsr	VERIFI
 	bne	DEPA2_1
 	jmp	DEPA3
 
-DEPA2_1
-*	@CLS	#wINVENTAIRE
-*	@PRINT	#wINVENTAIRE;#strOBJETSPRESENTS
+DEPA2_1	@CLS	#wINVENTAIRE
+	@PRINT	#wINVENTAIRE;#strOBJETSPRESENTS
+	
+	lda	SALLE	; affiche les objets
+	sta	N	; de la salle
 	jsr	LISTE
 	
 	@CLS	#wPERSONNAGE
 	@PRINT	#wPERSONNAGE;#strPERSONNAGES
+
+	lda	#FALSE
+	sta	DRAP
+	ldx	#1
+]lp	sep	#$20
+	lda	PERSSAL-1,x
+	cmp	SALLE
+	beq	IMPRIM
+DEPA2_2	inx
+	cpx	#NBPERSSAL
+	bcc	]lp
+	beq	]lp
+	rep	#$20
+
+	lda	DRAP
+	cmp	#TRUE
+	beq	DEPA3
+	
+NESSUN	@PRINT	#wPERSONNAGE;#strAUCUN
 	jmp	DEPA3
 
-NESSUN	@PRINT	#wPERSONNAGE;#strAUCUN
+	mx	%10
+	
+IMPRIM	stx	IX
+	rep	#$20
+
+	txa
+	ldy	#PERSONNAGE$
+	jsr	CHERC
+	jsr	AFFIC2
+	
+	lda	#TRUE
+	sta	DRAP
+	sep	#$20
+	ldx	IX
+	bra	DEPA2_2
+
+	mx	%00
 
 *-----------------------------------
 
@@ -498,7 +535,7 @@ CODFEN	dw	0,0	; les coordonnées des fenetres
 
 tblWINDOW1	dw	36,52,8,18
 tblWINDOW2	dw	36,52,20,24
-tblWINDOW3	dw	2,34,8,8
+tblWINDOW3	dw	2,33,8,8
 tblWINDOW4	dw	2,52,2,6
 
 windowTEXTE
@@ -1283,6 +1320,11 @@ AFFIC2	sta	N
 
 AFFIC3	sta	N
 	@CLS	#wSALLE
+	lda	SALLE
+	and	#$ff
+	jsr	getDEBUG
+	@PRINT	#wSALLE;#strDEBUG
+	@PRINT	#wSALLE;#strSPACE
 	@PRINT	#wSALLE;N
 	rts
 
@@ -1315,7 +1357,38 @@ TESTAC
 ACTIONA	@CLS	#wINVENTAIRE
 	@PRINT	#wINVENTAIRE;#strOBJETSPORTES
 
-LISTE	rts
+	lda	#TRUE	; affiche les objets portés
+	sta	N
+
+LISTE	ldx	#1	; les inits
+	stx	IX
+	lda	#FALSE	; aucun objet trouvé
+	sta	DRAP
+
+	ldx	IX
+]lp	lda	OBJSAL-1,x	; prend l'objet X
+	and	#$ff
+	cmp	N	; dans la salle ou porté (TRUE)
+	bne	LISTE_1	; non
+
+	txa		; oui, affiche le
+	ldy	#OBJET$
+	jsr	CHERC
+	jsr	AFFIC1
+
+	lda	#TRUE
+	sta	DRAP
+
+LISTE_1	inc	IX	; prochain objet
+	ldx	IX
+	cpx	#NBOBJET
+	bcc	]lp
+	beq	]lp
+
+	lda	DRAP	; on sort, a-t-on
+	cmp	#FALSE	; trouvé un objet ?
+	beq	AUCUN	; non
+	rts		; oui
 
 AUCUN	@PRINT	#wINVENTAIRE;#strAUCUN
 	rts
@@ -1614,7 +1687,7 @@ VIR	lda	#TRUE
 *	jsr	HGR
 	@draw	SALLE
 
-	lda	A2	; trace des dessins
+*	lda	A2	; trace des dessins
 	beq	:206
 	cmp	#1
 	bne	:204
@@ -1690,16 +1763,16 @@ VIR	lda	#TRUE
 
 :360	@print	#strRETURNSPACE
 
-	lda	N
-	asl
-	tax
-	ldy	tblOBJSAL,x
-	lda	tblOBJSAL+1,x
-	tax
+*	lda	N
+*	asl
+*	tax
+*	ldy	tblOBJSAL,x
+*	lda	tblOBJSAL+1,x
+*	tax
 *	jsr	printCSTRING
-
-	inc	HH
-	
+*
+*	inc	HH
+*	
 :400	inc	N
 	lda	N
 	cmp	#NBOBJET
@@ -1879,20 +1952,20 @@ tbl1800	da	:1800,:1900
 
 :1860	@print	#strRETURNSPACE
 
-	lda	G
-	asl
-	tax
-	ldy	tblOBJSAL,x
-	lda	tblOBJSAL+1,x
-	tax
+*	lda	G
+*	asl
+*	tax
+*	ldy	tblOBJSAL,x
+*	lda	tblOBJSAL+1,x
+*	tax
 *	jsr	printCSTRING
-
-	inc	H
-	
-	lda	G
-	cmp	#NBOBJET
-	bcc	:1810
-	
+*
+*	inc	H
+*	
+*	lda	G
+*	cmp	#NBOBJET
+*	bcc	:1810
+*	
 :1870	lda	HH
 	beq	:1880
 
@@ -2243,7 +2316,7 @@ tbl4000
 INIT_ALL	sep	#$20
 
 	ldx	#FIN_DATA-DEBUT_DATA
-]lp	stz	A1-1,x
+]lp	stz	SALLE-1,x
 	dex
 	bne	]lp
 
@@ -2593,8 +2666,9 @@ WORDBUFFER	ds	MAX_LEN+1
 
 DEBUT_DATA
 
-A1	ds	2
-A2	ds	2	; $400
+SALLE	ds	2
+*A1	ds	2
+*A2	ds	2	; $400
 BREAK	ds	2
 E	ds	2
 G	ds	2
@@ -2627,7 +2701,6 @@ NL	ds	2
 OK	ds	2
 PP	ds	2
 S	ds	2	; parce qu'on l'utilise en 16-bits aussi
-SALLE	ds	2
 NBOBJ	ds	2
 DRAP	ds	2
 T	ds	2

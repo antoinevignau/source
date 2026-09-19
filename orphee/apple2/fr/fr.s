@@ -22,13 +22,13 @@ strVOUSLAVEZ	asc	'Vous l'27'avez d'8e'j'8800
 strPASPLUS	asc	'Je ne porte pas plus d'27'un objet'00
 strPORTERIEN	asc	'Je ne porte rien'00
 strAUCUN	asc	'AUCUN'00
-strOBJETSPRESENTS asc	'OBJETS PRESENTS :'00
+strOBJETSPRESENTS asc	'OBJETS PRESENTS :'0d00
 strOBJETSPORTES	asc	'OBJETS PORTES :'0d00
 	asc	'ERREUR DE CHARGEMENT'00
 strPBGRAMMAIRE	asc	'Erreur grammaticale'00
 strPBCOMPRENDRE	asc	'Je ne comprends pas '00
 	asc	'Soyez plus pr'8e'cis'00
-strPERSONNAGES	asc	'PERSONNAGES :'0d00
+strPERSONNAGES	asc	'PERSONNAGES :'0d0d00
 strREJOUER	asc	'Voulez-vous rejouer ? '00
 	asc	'Je ne vois pas cela ici'00
 strAIDEJA	asc	'Je l'27'ai d'8e'j'8800
@@ -66,13 +66,6 @@ refOBJSAL	dfb	002,000,000,003,024,046,048,045,016,013
 	dfb	026,068,000,078,080,007,000,070,073,094
 	dfb	099,090,000,000,000,109,113,000,000,000
 	dfb	075
-
-tblOBJSAL	da	OB$1,OB$2,OB$3,OB$4,OB$5,OB$6,OB$7,OB$8,OB$9
-	da	OB$10,OB$11,OB$12,OB$13,OB$14,OB$15,OB$16,OB$17,OB$18,OB$19
-	da	OB$20,OB$21,OB$22,OB$23,OB$24,OB$25,OB$26,OB$27,OB$28,OB$29
-	da	OB$30,OB$31
-
-tblMF	asc	'FFFFFFFMMFFMFFFFFDFMMFFMDFMMLFF'	; Des/Femelle/La/Male
 
 OBJET$
 OB$1	asc	'UNE GOURDE'00
@@ -112,9 +105,6 @@ OB$31	asc	'UNE LOUPE GEANTE'00
 *
 
 NBPERSONNAGE	=	9
-
-tblPERSONNAGE$
-	da	PE$1,PE$2,PE$3,PE$4,PE$5,PE$6,PE$7,PE$8,PE$9
 
 NBPERSSAL	=	9
 

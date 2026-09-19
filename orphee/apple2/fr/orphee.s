@@ -45,19 +45,7 @@ wMESSAGE	=	4
 	dfb	#]1
 	eom
 
-@gotoxy2	mac
-	jsr	RETURN
-	<<<
-	
-@gotoxy	mac
-	jsr	RETURN
-	<<<
-
 @print	mac
-	jsr	RETURN
-	<<<
-
-@center	mac
 	jsr	RETURN
 	<<<
 
@@ -65,8 +53,37 @@ wMESSAGE	=	4
 	jsr	GRAPHE
 	<<<
 
-@cout	mac
-	jsr	RETURN
+@get_salsomb	mac
+	ldx	#]1
+	jsr	GET_SALSOMB
+	<<<
+	
+@set_salsomb	mac
+	ldx	]1
+	lda	]2
+	jsr	SET_SALSOMB
+	<<<
+	
+@get_objsal	mac
+	ldx	#]1
+	jsr	GET_OBJSAL
+	<<<
+
+@set_objsal	mac
+	ldx	]1
+	lda	]2
+	jsr	SET_OBJSAL
+	<<<
+	
+@get_perssal	mac
+	ldx	#]1
+	jsr	GET_PERSSAL
+	<<<
+
+@set_perssal	mac
+	ldx	]1
+	lda	]2
+	jsr	SET_PERSSAL
 	<<<
 	
 *-----------------------------------
@@ -141,25 +158,19 @@ DESSIN	lda	SALLE
 
 *-----------------------------------
 
-SOMBR	ldx	#6
-	lda	OBJSAL-1,x
-	and	#$ff
+SOMBR	@get_objsal	#6
 	cmp	SALLE
 	beq	CALCUL
 	cmp	#-1
 	beq	CALCUL
 	
-	ldx	#14
-	lda	OBJSAL-1,x
-	and	#$ff
+	@get_objsal	#14
 	cmp	SALLE
 	beq	CALCUL
 	cmp	#-1
 	beq	CALCUL
 	
-	ldx	#1
-	lda	PERSSAL-1,x
-	and	#$ff
+	@get_perssal	#1
 	cmp	SALLE
 	bne	SOMBRE
 	
@@ -189,8 +200,9 @@ DEPA2	jsr	VERIFI
 	bne	DEPA2_1
 	jmp	DEPA3
 
-DEPA2_1	@CLS	#wINVENTAIRE
-	@PRINT	#wINVENTAIRE;#strOBJETSPRESENTS
+DEPA2_1
+*	@CLS	#wINVENTAIRE
+*	@PRINT	#wINVENTAIRE;#strOBJETSPRESENTS
 	jsr	LISTE
 	
 	@CLS	#wPERSONNAGE
@@ -206,14 +218,17 @@ DEPA3	jsr	GETCOM	; saisie des caracteres
 	jsr	showSALLE
 	
 	lda	SUJET
-	bne	DEPA31
+	cmp	#FALSE
+	bne	DEPA31	; CP 0 ... JR NZ,DEPA31
 	lda	VERBE
+	beq	DEPA32	; CP 0 ... JR Z,DEPA32
+	cmp	#FALSE
 	beq	DEPA32
 	cmp	#12
-	bne	DEPA31
+	bne	DEPA31	; CP 12 ... JR NZ,DEPA31
 	
 DEPA32	lda	COD	; = MOT$+3
-	beq	DEPA31
+	beq	DEPA31	; CP 0 ... JR Z,DEPA31
 	jsr	MVT
 
 DEPA31	jsr	ANALYS
@@ -259,7 +274,7 @@ MORT	@PRINT	#wMESSAGE;#strRETURN
 * MVT
 *-----------------------------------
 
-MVT
+MVT	
 	rts
 	
 *-----------------------------------
@@ -345,8 +360,8 @@ FINDMO_1	sep	#$20
 	ldy	#0
 ]lp	lda	(dpFROM),y
 	and	#$ff
-	cmp	#chrEOT	; fin de table ?
-	beq	FINDMO_4	; oui, sors
+	cmp	#chrNULL	; fin de table ?
+	beq	FINDMO_2	; oui, sors
 	cmp	WORDBUFFER,y	; non, compare
 	bne	FINDMO_3
 	iny
@@ -356,6 +371,9 @@ FINDMO_1	sep	#$20
 	lda	(dpFROM),y	; l'index du mot
 FINDMO_2	rep	#$20
 	and	#$ff
+	ldx	monindex
+	stal	$300,x
+	tay
 	rts
 
 FINDMO_3	rep	#$20	; on n'a pas trouvŽ
@@ -365,11 +383,6 @@ FINDMO_3	rep	#$20	; on n'a pas trouvŽ
 	sta	dpFROM
 	bra	FINDMO_1
 
-	mx	%10
-
-FINDMO_4	lda	#chrNULL
-	bra	FINDMO_2
-	
 	mx	%00
 
 *-----------------------------------
@@ -479,21 +492,27 @@ windowPERSONNAGE
 *-------------------------------
 
 showSALLE	lda	SUJET
+	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+0
 	lda	VERBE
+	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+2
 	lda	ARTICLE
+	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+4
 	lda	COD
+	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+6
 	lda	ADJECTIF
+	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+8
 	lda	ATTRIBUT
+	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+10
 	rts
@@ -506,11 +525,12 @@ getDEBUG	pha
 
 	lda	strDEBUG
 	ora	#'00'
+	sta	strDEBUG
 	rts
 
 *--- Data
 
-strDEBUG	ds	2
+strDEBUG	ds	3	; trailing \0
 
 *---------------
 
@@ -532,10 +552,7 @@ VERIFI
 * RETROU
 *-----------------------------------
 
-RETROU	@PRINT	#3;#WORDBUFFER
-	@PRINT	#3;#strRETURN
-	
-	lda	#SUJET$	; cherche WORDBUFFER
+RETROU	lda	#SUJET$	; cherche WORDBUFFER
 	jsr	FINDMO	; dans les diffŽrentes listes...
 	cmp	#chrNULL
 	beq	RETROU_1
@@ -574,21 +591,28 @@ RETROU_5	lda	#ARTICLE$
 * TEST
 *-----------------------------------
 
-TEST
+TEST	lda	nbMOTS	; nombre de mots trouvŽs
+	beq	TEST_1
 	rts
+TEST_1	pla		; aucun !
+	jmp	DEPA3
 
 *-----------------------------------
 * ZERO
 *-----------------------------------
 
-ZERO	stz	SUJET	; efface l'index des mots
-	stz	COD	; 2 en une fois
-	stz	ATTRIBUT	; itou
-	
-	stz	DEJA
-	stz	DEJA+2
-	stz	DEJA+4
-	
+ZERO	sep	#$20
+	ldx	#0
+]lp	stz	MOT,x
+	inx
+	cpx	#6
+	bcc	]lp
+	rep	#$20
+
+	stz	gotATTRIBUT	; on a dŽjˆ trouvŽ un attribut
+	stz	endMOTS	; plus de mots si TRUE
+	stz	nbMOTS	; nombre de mots trouvŽs
+	stz	fgATTRIBUT
 	stz	TEXT_X	; index courant dans TEXTBUFFER
 	rts
 
@@ -612,34 +636,142 @@ SPACE	sep	#$20	; remplit la zone du mot
 
 DCRIPT	jsr	ZERO
 
+	lda	#1
+	sta	monindex
+	
 DCRIPT_1	jsr	SPACE	; efface la zone du mot cible
 	jsr	NEXTMO	; cherche un mot, recopie-le
-	bcs	DCRIPT_2	; plus de mots
+	
+	lda	endMOTS
+	cmp	#TRUE
+	beq	TEST	; on sort
+
+	inc	monindex
 	jsr	TESTMO	; est-il dans les tables ?
 
-	lda	TEXT_X	; si zero, on n'a plus
-	bne	DCRIPT_1	; de mot ˆ chercher
-DCRIPT_2	rts
+	inc	monindex
+	bra	DCRIPT_1
+
+*---
+
+monindex	ds	2
 
 *-----------------------------------
 * TESTMO
 *-----------------------------------
 
-TESTMO	jsr	RETROU	; cherche parmi les 5 tables
+TESTMO	lda	monindex
+	jsr	getDEBUG
+	@PRINT	#wINVENTAIRE;#strDEBUG
+	@PRINT	#wINVENTAIRE;#strSPACE
+	@PRINT	#wINVENTAIRE;#WORDBUFFER
+	@PRINT	#wINVENTAIRE;#strRETURN
+	
+	jsr	RETROU	; cherche parmi les 5 tables
 	cmp	#chrNULL	; on n'a pas trouvŽ
 	bne	TESTMO_1
+	jmp	PACAPI	; on n'a pas compris
+
+* A: index, X: famille
+
+TESTMO_1	inc	nbMOTS	; nombre de mots trouvŽs++
+
+	cpx	#iARTICLE
+	bne	DCRIPT_4
+
+	lda	endMOTS
+	cmp	#TRUE
+	bne	DCRIPT_9
+	jmp	SYNERR
+
+DCRIPT_4	cpx	#iATTRIBUT
+	bne	DCRIPT_5
+	
+	lda	endMOTS
+	cmp	#TRUE
+	beq	DCRIPT_SYNERR
+	cmp	gotATTRIBUT	; IY+1
+	beq	DCRIPT_SYNERR
+	lda	#TRUE
+	sta	gotATTRIBUT
+	jmp	DCRIPT_9
+
+DCRIPT_5	cpx	#iVERBE
+	bne	DCRIPT_6
+	lda	fgATTRIBUT
+	cmp	#TRUE
+	beq	DCRIPT_SYNERR
+	lda	VERBE
+	and	#$ff
+	bne	DCRIPT_SYNERR
+	sep	#$10
+	sty	VERBE
+	rep	#$10
+
+DCR_FIN	lda	endMOTS
+	cmp	#TRUE
+	bne	DCRIPT_9
 	rts
-TESTMO_1	sep	#$20	; on a trouvŽ
-	bit	DEJA-1,x
-	bmi	TESTMO_2
 
-	sta	MOT-1,x	; enregistre l'index
-	lda	#$ff
-	sta	DEJA-1,x	; dit qu'on a trouve
+DCRIPT_9	jmp	DCRIPT_1
 
-TESTMO_2	rep	#$20
-	rts
+DCRIPT_SYNERR	jmp	SYNERR
 
+DCRIPT_6	cpx	#iADJECTIF
+	bne	DCRIPT_7
+	lda	ADJECTIF
+	and	#$ff
+	bne	SYNERR
+	sep	#$10
+	sty	ADJECTIF
+	rep	#$10
+	jmp	DCR_FIN
+
+DCRIPT_7	cpx	#iCOD
+	bne	DCRIPT_8
+	lda	fgATTRIBUT
+	cmp	#TRUE
+	bne	DCR_COD
+
+DCR_A	lda	ARTICLE
+	and	#$ff
+	bne	SYNERR
+	sep	#$10
+	sty	ARTICLE
+	rep	#$10
+	stz	fgATTRIBUT
+	jmp	DCR_FIN
+
+DCR_COD	lda	COD
+	and	#$ff
+	bne	SYNERR
+	sep	#$10
+	sty	COD
+	rep	#$10
+	jmp	DCR_FIN
+
+DCRIPT_8	cpx	nbMOTS
+	beq	DCR_SUJ
+	cpx	fgATTRIBUT
+	bne	DCR_COD
+	jmp	DCR_A
+
+DCR_SUJ	lda	SUJET
+	and	#$ff
+	bne	SYNERR
+	sep	#$10
+	sty	SUJET
+	rep	#$10
+	jmp	DCR_FIN
+
+*-----------------------------------
+* SYNERR
+*-----------------------------------
+
+SYNERR	@PRINT	#wMESSAGE;#strPBGRAMMAIRE
+	pla
+	jmp	DEPA3
+	
 *-----------------------------------
 * NEXTMO
 *-----------------------------------
@@ -654,9 +786,11 @@ NEXTMO	sep	#$20
 	inx
 	cpx	lenSTRING
 	bcc	]lp
-NEXTMO_1	rep	#$20	; retourne sans avoir trouvŽ
-	stz	TEXT_X
-	sec		
+
+NEXTMO_1	rep	#$20
+	lda	#TRUE	; retourne sans avoir trouvŽ
+	sta	endMOTS
+	sec	
 	rts
 
 	mx	%10
@@ -699,7 +833,8 @@ NEXTMO_4	rep	#$20	; retourne en ayant trouvŽ
 * PACAPI
 *-----------------------------------
 
-PACAPI
+PACAPI	@PRINT	#wMESSAGE;#strPBCOMPRENDRE
+	@PRINT	#wMESSAGE;#TEXTBUFFER
 	rts
 
 *-----------------------------------
@@ -717,7 +852,7 @@ PRESENT	jsr	FENETR
 
 	ldal	HORIZCNT	; affiche image 119 ou 120
 	and	#%00000001
-	clc
+yurk 	clc
 	adc	#picVOYAGE
 	jsr	GRAPHE
 
@@ -741,7 +876,15 @@ VICTOI	@CLS	#wINVENTAIRE
 * GETCOM
 *-----------------------------------
 
-GETCOM	@LOCATE	#wMESSAGE;#1;#5
+GETCOM	sep	#$20
+	ldx	#0
+]lp	stz	TEXTBUFFER,x
+	inx
+	cpx	#MAX_LEN
+	bcc	]lp
+	rep	#$20
+
+	@LOCATE	#wMESSAGE;#1;#5
 	@PRINT	#wMESSAGE;#strCOMMANDE
 	@INPUT	#TEXTBUFFER;#MAX_LEN
 	stx	lenSTRING
@@ -1535,7 +1678,7 @@ VIR	lda	#TRUE
 
 	@print	#strCOMMA
 
-:360	@print	#strSPACE
+:360	@print	#strRETURNSPACE
 
 	lda	N
 	asl
@@ -1590,8 +1733,6 @@ VIR	lda	#TRUE
 
 	lda	SUJET
 	bne	:900
-
-	@print	#strJENECOMPRENDSPAS
 	jmp	:3500
 
 *-----------------------------------
@@ -1781,7 +1922,7 @@ tbl1800	da	:1800,:1900
 	
 	@print	#strCOMMA
 
-:1860	@print	#strSPACE
+:1860	@print	#strRETURNSPACE
 
 	lda	G
 	asl
@@ -2203,11 +2344,49 @@ INIT_ALL	sep	#$20
 *-----------------------------------
 
 *-----------------------------------
+* GET/SET
+*-----------------------------------
+
+GET_SALSOMB	lda	SALSOMB-1,x
+	and	#$ff
+	cmp	#$ff
+	bne	GET_SALSOMB_1
+	lda	#TRUE
+GET_SALSOMB_1	rts
+
+SET_SALSOMB	sep	#$20
+	sta	SALSOMB-1,x
+	rep	#$20
+	rts
+
+GET_OBJSAL	lda	OBJSAL-1,x
+	and	#$ff
+	cmp	#$ff
+	bne	GET_OBJSAL_1
+	lda	#TRUE
+GET_OBJSAL_1	rts
+
+SET_OBJSAL	sep	#$20
+	sta	OBJSAL-1,x
+	rep	#$20
+	rts
+	
+GET_PERSSAL	lda	PERSSAL-1,x
+	and	#$ff
+	cmp	#$ff
+	bne	GET_PERSSAL_1
+	lda	#TRUE
+GET_PERSSAL_1	rts
+
+SET_PERSSAL	sep	#$20
+	sta	PERSSAL-1,x
+	rep	#$20
+	rts
+
+*-----------------------------------
 * CHARGE UNE IMAGE
 *-----------------------------------
 
-	mx	%00
-	
 loadPIC	and	#$ff
 	pha
 	PushLong	#strSALLE
@@ -2472,16 +2651,18 @@ IY	ds	2
 IZ	ds	2
 
 MOT
-SUJET	ds	1
-VERBE	ds	1
-COD	ds	1
-ADJECTIF	ds	1
-ATTRIBUT	ds	1
-ARTICLE	ds	1
+SUJET	ds	1	; 1
+VERBE	ds	1	; 2
+ARTICLE	ds	1	; 3
+COD	ds	1	; 4
+ADJECTIF	ds	1	; 5
+ATTRIBUT	ds	1	; 6
 
-DEJA	ds	6	; 0 si pas trouvŽ, -1 sinon
-
-TEXT_X	ds	2
+gotATTRIBUT	ds	2	; on a dŽjˆ trouvŽ un attribut
+endMOTS	ds	2	; plus de mots si TRUE
+nbMOTS	ds	2	; nombre de mots trouvŽs
+fgATTRIBUT	ds	2
+TEXT_X	ds	2	; index dans TEXTBUFFER
 
 fgSOMBRE	ds	2
 L81BC	ds	2

@@ -31,75 +31,6 @@
 
 * Boucle principale
 
-  490 DEPA1:  LD   HL,#83C3	; est-on
-  500         LD   A,(SALLE)	; dans une salle sombre
-  510         LD   B,15
-  520 NOSOM:  INC  HL
-  530         CP   (HL)
-  540         JR   Z,SOMBR	; oui
-  550         DJNZ NOSOM
-  560 CALCUL: LD   B,0		; calcule le numéro de l'image à charger
-  570         LD   A,(SALLE)
-  580         DEC  A
-  590 CALC1:  INC  B
-  600         SUB  5
-  610         JR   NC,CALC1
-  620         LD   A,(#84AF)	; a-t-on l'image déjà chargée ?
-  630         CP   B
-  640         JR   Z,DESSIN	; oui, la dessine
-  650 LOADES: LD   L,"D"	; non, définit Dxxx
-  660         LD   A,64
-  670         ADD  A,B
-  680         LD   H,A
-  690         LD   (#84B1),HL	; nom de fichier
-  700         LD   DE,#4160
-  710         PUSH BC
-  720         CALL CHARGE	; charge l'image
-  730         POP  AF
-  740         LD   (#84AF),A	; sauve la réf de l'image
-
-  750 DESSIN: LD   HL,#8980	; table des pointeurs des noms des salles
-  760         LD   A,(SALLE)
-  770         LD   C,A		; numéro de la salle
-  780         CALL CHERC	; fixe le pointeur
-  790         CALL AFFIC3	; affiche son nom
-  800         CALL GRAPHE	; affiche le dessin
-  810         LD   A,0
-  820         LD   (#81E1),A
-  825         CALL ISSUE	; affiche les issues possibles
-  830         JR   DEPA2
-
-  840 SOMBR:  LD   HL,SALLE	; regarde les objets et la salle
-  850         LD   A,(#8196)	; #8190+6
-  860         CP   (HL)
-  870         JR   Z,CALCUL
-  880         CP   255
-  890         JR   Z,CALCUL
-  900         LD   A,(#819E)	; #8190+14
-  910         CP   (HL)
-  920         JR   Z,CALCUL
-  930         CP   255		; déjà pris ?
-  940         JR   Z,CALCUL
-  950         LD   A,(#81B1)	; PERSSAL+1
-  960         CP   (HL)
-  970         JR   NZ,SOMBRE
-  980         LD   A,(#81BC)	; l'objet que l'on porte ?
-  990         CP   6		; une torche
- 1000         JR   Z,CALCUL
- 1010         CP   14		; une torche
- 1020         JR   Z,CALCUL
-
- 1030 SOMBRE: LD   A,3
- 1040         CALL CLEARF
- 1050         LD   A,1
- 1060         LD   (#81E1),A	; la salle est sombre
- 1065         CALL CLEARF
- 1070         LD   A,2
- 1080         CALL CLEARF
- 1090         LD   A,3
- 1100         CALL CLEARF
- 1110         LD   HL,DESSOM
- 1120         CALL GRAPH1-3
  1130 DEPA2:  CALL VERIFI
  1140         LD   A,(#81E1)	; est-ce que la salle est sombre ?
  1150         CP   1
@@ -250,42 +181,14 @@
  3780         JR   NZ,VERIF3	; non, boucle
  3790         JR   VERIF4	; oui, continue
 
-* 
+*
 
- 3800 RETROU: LD   HL,SUJET	; cherche un sujet
- 3810         CALL FINDMO
- 3820         LD   B,1		; index 1
- 3830         CP   0
- 3840         RET  NZ
- 3850         LD   HL,ADJ	; cherche un adjectif
- 3860         CALL FINDMO
- 3870         LD   B,4		; index 4
- 3880         CP   0		; a-t-on trouve une equivalence ?
- 3890         RET  NZ		; non, on revient
- 3900         LD   HL,COD	; cherche un COD
- 3910         CALL FINDMO
- 3920         LD   B,3		; index 3
- 3930         CP   0
- 3940         RET  NZ
- 3950         LD   HL,VERBE	; cherche un verbe
- 3960         CALL FINDMO
- 3970         LD   B,2		; index 2
- 3980         CP   0
- 3990         RET  NZ
- 4000         LD   HL,ATTRIB	; cherche un attribut
- 4010         CALL FINDMO
- 4020         LD   B,5		; index 5
- 4030         CP   0
- 4040         RET  NZ
- 4050         LD   HL,ARTICL	; cherche un article
- 4060         CALL FINDMO
- 4070         LD   B,6		; index 6
- 4080         RET
- 4090 TEST:   LD   A,(IY+4)	; quelle valeur de fin ?
+ 4090 TEST:   LD   A,(IY+4)	; a-t-on déjà trouvé un mot ?
  4100         CP   0
- 4110         RET  NZ		; <>0, on revient à DCRYPT
- 4120         POP  HL		; sinon, on revient sur DEPA3
+ 4110         RET  NZ	; oui, retourne
+ 4120         POP  HL	; sinon, on revient sur DEPA3
  4130         JP   DEPA3
+
  4140 DCRIP9: LD   A,(HL)
  4150         CP   32		; espace
  4160         JR   Z,DCRIP1	; oui, déchiffre
@@ -304,9 +207,9 @@
  4390         CALL SPACE	; efface la zone MOT
  4400         POP  HL
  4410         CALL NEXTMO	; cherche le prochain mot
- 4420         LD   A,(IY+2)	; est-on en fin de 
- 4430         CP   1	; buffer clavier ?
- 4440         JR   Z,TEST	; oui, teste le
+ 4420         LD   A,(IY+2)	; a-t-on déjà
+ 4430         CP   1	; un article ?
+ 4440         JR   Z,TEST	; oui, saute à TEST
  4450         LD   B,5	; len = 5
  4460 DCRIP2: LD   A,(HL)	; $846C et après
  4470         CP   0		; on arrive à 0 ?
@@ -368,6 +271,7 @@
  4950         CP   (IY+2)
  4960         JP   NZ,DCRIP9	; non
  4970         RET		; oui
+
  4980 DCRIP6: CP   4		; est-ce un adjectif ?
  4990         JR   NZ,DCRIP7	; non, saute
  5000         LD   A,(IY+9)	; a-t-on deja un adjectif ?

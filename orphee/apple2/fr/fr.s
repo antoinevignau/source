@@ -27,9 +27,8 @@ strAUCUN	asc	'AUCUN'00
 strOBJETSPRESENTS asc	'OBJETS PRESENTS :'00
 strOBJETSPORTES	asc	'OBJETS PORTES :'0d00
 	asc	'ERREUR DE CHARGEMENT'00
-	asc	'ERREUR GRAMMATICALE'00
-strJENECOMPRENDSPAS
-	asc	'Je ne comprends pas'00
+strPBGRAMMAIRE	asc	'Erreur grammaticale'00
+strPBCOMPRENDRE	asc	'Je ne comprends pas '00
 	asc	'Soyez plus pr'8e'cis'00
 strPERSONNAGES	asc	'PERSONNAGES :'0d00
 strREJOUER	asc	'Voulez-vous rejouer ? '00
@@ -53,7 +52,8 @@ strAUCUNE	asc	'AUCUNE'00
 
 strCOMMA	asc	','00
 strPOINT	asc	'.'00
-strSPACE	asc	0d' '00
+strRETURNSPACE	asc	0d' '00
+strSPACE	asc	' '00
 strEXCLAM	asc	' !'0d00
 strTEMPS	asc	'00:00'00
 strPROMPT	asc	'>'00
@@ -1075,7 +1075,7 @@ ADJECTIF$	@asc	01;'OR   '
 	@asc	14;'PIERR'
 	@asc	15;'FORET'
 	@asc	16;'MARAI'
-	dfb	chrEOT
+	dfb	chrNULL
 
 *
 * Les attributs
@@ -1094,7 +1094,7 @@ ATTRIBUT$	@asc	01;'AVEC '
 	@asc	06;'AU   '
 	@asc	06;'AUX  '
 	@asc	07;'PAR  '
-	dfb	chrEOT
+	dfb	chrNULL
 *
 * Les sujets
 *
@@ -1116,7 +1116,7 @@ SUJET$	@asc	51;'BILLY'
 	@asc	48;'MINIU'
 	@asc	48;'SORCI'
 	@asc	34;'MONST'
-	dfb	chrEOT
+	dfb	chrNULL
 *
 * Les verbes
 *
@@ -1242,7 +1242,7 @@ VERBE$	@asc	05;'M    '
 	@asc	71;'SAUVE'
 	@asc	71;'SAVE '
 	@asc	72;'COUPE'
-	dfb	chrEOT
+	dfb	chrNULL
 
 *
 * Les COD
@@ -1357,7 +1357,7 @@ COD$	@asc	01;'N    '
 	@asc	83;'AUTEL'
 	@asc	84;'COLON'
 	@asc	84;'PILIE'
-	dfb	chrEOT
+	dfb	chrNULL
 
 *
 * Les articles
@@ -1382,7 +1382,7 @@ ARTICLE$	@asc	01;'L'27'   '
 	@asc	15;'EN   '
 	@asc	16;'D'27'   '
 	@asc	17;'ME   '
-	dfb	chrEOT
+	dfb	chrNULL
 
 *
 * Les phrases

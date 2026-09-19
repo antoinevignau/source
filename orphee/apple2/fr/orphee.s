@@ -152,6 +152,7 @@ DESSIN	lda	SALLE
 	ldy	#SALLE$
 	jsr	CHERC
 	jsr	AFFIC3
+	lda	SALLE
 	jsr	GRAPHE
 	jsr	ISSUE
 	jmp	DEPA2
@@ -218,16 +219,18 @@ DEPA3	jsr	GETCOM	; saisie des caracteres
 	jsr	showSALLE
 	
 	lda	SUJET
+	and	#$ff
 	cmp	#FALSE
 	bne	DEPA31	; CP 0 ... JR NZ,DEPA31
 	lda	VERBE
-	beq	DEPA32	; CP 0 ... JR Z,DEPA32
+	and	#$ff
 	cmp	#FALSE
-	beq	DEPA32
+	beq	DEPA32	; CP 0 ... JR Z,DEPA32
 	cmp	#12
 	bne	DEPA31	; CP 12 ... JR NZ,DEPA31
 	
 DEPA32	lda	COD	; = MOT$+3
+	cmp	#FALSE
 	beq	DEPA31	; CP 0 ... JR Z,DEPA31
 	jsr	MVT
 
@@ -274,9 +277,42 @@ MORT	@PRINT	#wMESSAGE;#strRETURN
 * MVT
 *-----------------------------------
 
-MVT	
-	rts
+MVT	lda	SALLE	; pointe sur la table
+	ldy	#TBLMOUVEMENT	; de direction de la salle
+	jsr	CHERC
+	sta	dpFROM
 	
+	sep	#$20
+
+	ldy	#0
+]lp	lda	(dpFROM),y	; prend la direction
+	cmp	#chrNULL	; fin de ligne
+	bne	MVT_1
+	rep	#$20
+	sec
+	rts		; on sort sans avoir trouvé
+
+	mx	%10
+	
+MVT_1	cmp	COD
+	bne	MVT_2	; pas la bonne direction
+
+	iny		; direction trouvée
+	lda	(dpFROM),y	; récupère la salle
+	sta	SALLE
+	rep	#$20
+	clc
+	pla
+	jmp	DEPA1	; on sort en ayant trouvé
+
+	mx	%10
+	
+MVT_2	iny		; +2
+	iny
+	bra	]lp
+
+	mx	%00
+
 *-----------------------------------
 * CHERC
 *-----------------------------------
@@ -371,8 +407,6 @@ FINDMO_1	sep	#$20
 	lda	(dpFROM),y	; l'index du mot
 FINDMO_2	rep	#$20
 	and	#$ff
-	ldx	monindex
-	stal	$300,x
 	tay
 	rts
 
@@ -636,9 +670,6 @@ SPACE	sep	#$20	; remplit la zone du mot
 
 DCRIPT	jsr	ZERO
 
-	lda	#1
-	sta	monindex
-	
 DCRIPT_1	jsr	SPACE	; efface la zone du mot cible
 	jsr	NEXTMO	; cherche un mot, recopie-le
 	
@@ -646,28 +677,14 @@ DCRIPT_1	jsr	SPACE	; efface la zone du mot cible
 	cmp	#TRUE
 	beq	TEST	; on sort
 
-	inc	monindex
 	jsr	TESTMO	; est-il dans les tables ?
-
-	inc	monindex
 	bra	DCRIPT_1
-
-*---
-
-monindex	ds	2
 
 *-----------------------------------
 * TESTMO
 *-----------------------------------
 
-TESTMO	lda	monindex
-	jsr	getDEBUG
-	@PRINT	#wINVENTAIRE;#strDEBUG
-	@PRINT	#wINVENTAIRE;#strSPACE
-	@PRINT	#wINVENTAIRE;#WORDBUFFER
-	@PRINT	#wINVENTAIRE;#strRETURN
-	
-	jsr	RETROU	; cherche parmi les 5 tables
+TESTMO	jsr	RETROU	; cherche parmi les 5 tables
 	cmp	#chrNULL	; on n'a pas trouvé
 	bne	TESTMO_1
 	jmp	PACAPI	; on n'a pas compris
@@ -876,22 +893,14 @@ VICTOI	@CLS	#wINVENTAIRE
 * GETCOM
 *-----------------------------------
 
-GETCOM	sep	#$20
-	ldx	#0
-]lp	stz	TEXTBUFFER,x
-	inx
-	cpx	#MAX_LEN
-	bcc	]lp
-	rep	#$20
-
-	@LOCATE	#wMESSAGE;#1;#5
+GETCOM	@PRINT	#wMESSAGE;#strRETURN
 	@PRINT	#wMESSAGE;#strCOMMANDE
 	@INPUT	#TEXTBUFFER;#MAX_LEN
 	stx	lenSTRING
 	rts
 
 *-----------------------------------
-* TOTO
+* GRAPHE
 *-----------------------------------
 * IF A<192 THEN
 *  DRAW B,A +2
@@ -1099,7 +1108,8 @@ FILL_O	ldx	theA1	; sets the pattern to use
 	PushWord	fillX
 	PushWord	fillY
 	PushWord	#resMode
-	PushLong	patternPtr
+*	PushLong	patternPtr
+	PushLong	#redPATTERN
 	PushLong	#leakTblPtr
 	_SeedFill
 	rts
@@ -1138,7 +1148,7 @@ srcRect	dw	68,0,200,204
 patternPtr	adrl	blackPATTERN ; pointer to pattern
 
 leakTblPtr	dw	1
-	dw	$0000	; color 0 is concerned
+	dw	$000F	; color 0 is concerned
 	
 *-----------------------------------
 * CLEARW
@@ -1731,61 +1741,6 @@ VIR	lda	#TRUE
 :535	@INPUT	#TEXTBUFFER;#MAX_LEN
 	@UPPER	#TEXTBUFFER;#TEXTBUFFER
 
-	lda	SUJET
-	bne	:900
-	jmp	:3500
-
-*-----------------------------------
-* 900 - CONTROLES APPLE II
-*-----------------------------------
-*
-*:900	cmp	#idxTIMER
-*	bne	:905
-*	
-*	jsr	switchTEMPS	; temps et énergie
-*	jmp	:100
-*
-*:905	cmp	#idxMUSIC
-*	bne	:915
-*	
-*	jsr	switchMUSIC
-*	jmp	:100
-*
-*-----------------------------------
-* 910 - CONTROLE MVT
-*-----------------------------------
-
-:900
-:915	ldy	#0
-
-*	jsr	gereFORCE	; FORCE--
-	
-:920	lda	SALLE	; T$=MID(M$(SALLE),Z,2)
-	asl
-	tax
-	lda	tblMOUVEMENT$,x
-	sta	LINNUM
-	lda	tblMOUVEMENT$+1,x
-	sta	LINNUM+1
-	
-	lda	(LINNUM),y
-	beq	:980
-	cmp	SUJET
-	bne	:970
-
-:950	iny
-	lda	(LINNUM),y
-	sta	SALLE
-	jmp	:100
-	
-:970	iny
-	iny
-	bne	:920
-
-:980	lda	#0
-	sta	T
-	sta	A1
-	
 *-----------------------------------
 * 1000 - CONTROLE
 *-----------------------------------

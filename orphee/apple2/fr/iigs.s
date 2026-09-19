@@ -171,6 +171,16 @@ ICI	phk
 	ora	#$0100
 	sta	myID
 
+	lda	#MOT
+	stal	$300
+	lda	#^MOT
+	stal	$302
+	
+	lda	#leakTblPtr
+	stal	$308
+	lda	#^leakTblPtr
+	stal	$30a
+	
 *-----------------------------------
 * MEMORY...
 *-----------------------------------
@@ -596,6 +606,7 @@ taskDATA	ds	4	; wmTaskData       +16
 
 	put	orphee.s
 	put	engine.s
+	put	tables.s
 	put	fr.s
 	put	midi.s
 	

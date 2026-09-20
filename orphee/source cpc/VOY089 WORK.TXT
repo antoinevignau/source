@@ -1,33 +1,3 @@
-   10         ORG  #92D0
-   30 VERBE:       #B10	VERBES.BIN
-   40 COD:         #DD0	COD.BIN
-      ISS:         #18AD	ISS.BIN
-      REPONSE:     #192D	REP.BIN
-      ACT          #56A0        ACT.BIN
-      COND:        #73F0	COND.BIN
-      PHRASE:      #7910	PHR.BIN - Copyright Loriciels...
-      OBJNOM:      #7A50	OBJNOM.BIN
-      MVT:         #7BC5	MVT.BIN
-   90 ATTRIB:      #7DB0	C-A.BIN
-   20 SUJET:       #7E20	SUJ.BIN
-      DIV:         #7EA0	DIV.BIN
-      OBJSAL:      #8190	OBJSAL.BIN - Numéro de salle où se trouve l'objet d'index X
-      PERSSALOBJ:  #81B0	PERSSAL.BIN - charge en #81B1
-      PERSOBJ:     #81BB	PERSOBJ.BIN
-      PERSNOM:     #8223	PERSNOM.BIN / PERS.BIN
-      ADR:         #82BA	ADR.BIN - charge en #82B8
-      PERSAL:      #83AB	PERSSAL.BIN - commence par 00 00
-      PERSOBJ:     #83B6	PERSOBJ.BIN
-      SALSOMB:     #83C4	SALSOMB.BIN - Salle sombre
-   60 SALLE:  EQU  #83E3
-   15 DRAP:   EQU  #83E6
-      SVC          #84A9	#84A9..#84AD - sujet, verbe, article, COD, adjectif
-   80 NBOBJ:  EQU  #84AE	word
-  110 DESSOM:      #85A4	DESSOM.BIN - Dessin sombre
-      DESCRIPTION: #8980	DESCRIPT.BIN
-   50 ADJ:         #91D0	ADJ.BIN
-  100 ARTICL:      #9250	ART.BIN
-   70 PAINT1: EQU  #A280
 
 * Vérifie ce qu'il y a à faire (action/condition)
 
@@ -46,7 +16,7 @@
  3550         JR   VERIF1	; boucle
  3560 VERIF2: INC  HL		; ptr++
  3570         LD   A,(HL)	; charge valeur
- 3580         CP   255		; fin atteinte ?
+ 3580         CP   255		; fin de ligne ?
  3590         JR   NZ,VERIF2	; non, boucle
  3600 VERIF4: INC  HL		; ptr++
  3610         LD   A,254	; fin de tableau ?
@@ -161,7 +131,7 @@
 10260         CP   "L"
 10270         JP   Z,CONDL
 10280 CONDM:  PUSH HL		; sauve HL
-10290         LD   HL,#81BB	; 81BB,x
+10290         LD   HL,#81BB	; 81BB,x	PERSOBJ
 10300         LD   B,0
 10310         ADD  HL,BC
 10320         LD   A,(HL)
@@ -268,136 +238,7 @@
 11330         CP   (HL)		; compare with A
 11340         RET
 
-11350 AFFICH: PUSH HL
-11360         CALL #BBB4	; TXT STR SELECT
-11370         LD   A,B
-11380         CALL #BB72	; TXT SET ROW
-11390         POP  HL
-11400 AFF13:  LD   A,1
-11410         CALL #BBDE	; GRA SET PEN
-11420 AFF11:  LD   A,10
-11430         CALL #BB5A	; TXT OUTPUT
-11440         PUSH HL
-11450         PUSH BC
-11460 AFFIX:  LD   DE,16	; x
-11470 AFFIY:  LD   HL,318	; y
-11480         CALL #BBC0	; GRA MOVE ABSOLUTE
-11490         POP  BC
-11500         POP  HL
-11510         LD   B,0		; len=0
-11520 AFF12:  INC  B		; len++
-11530         LD   A,(HL)	; output char
-11540         AND  127
-11550         CALL WRCHAR
-11560         LD   A,(HL)
-11570         SLA  A		; bit 7 high?
-11580         RET  C		; yes, return
-11590         INC  HL		; no, ptr++
-11600         LD   A,B		; prend len
-11610         CP   C		; compare avec max
-11620         JR   Z,AFF11	; sors si fin
-11630         JR   AFF12	; sinon boucle
-
-11640 AFFIC0: XOR  A	
-11650         LD   BC,#632	; 	
-11660         LD   DE,16	; x
-11670         LD   (AFFIX+1),DE
-11680         LD   DE,318	; y
-
-11690 AFF:    LD   (AFFIY+1),DE
-11700         JR   AFFICH
-
-11710 AFFIC1: LD   A,1
-11720         LD   BC,#C11
-11730         LD   DE,416
-11740         LD   (AFFIX+1),DE
-11750         LD   DE,126
-11760         JR   AFF
-
-11770 AFFIC2: LD   A,2
-11780         LD   BC,#611
-11790         LD   DE,416
-11800         LD   (AFFIX+1),DE
-11810         LD   DE,30
-11820         JR   AFF
-
-11830 AFFIC3: LD   A,3
-11840         LD   BC,#220
-11850         LD   DE,16
-11860         LD   (AFFIX+1),DE
-11870         LD   DE,286
-11880         JR   AFF
-
-* Gère les actions
-
-11910 ACTION: INC  HL		; ptr++
-11920         LD   C,(HL)	; prend la valeur
-11930         PUSH HL		; sauve le pointeur
-11940         LD   B,0		; efface les 8-bits 0
-11950         CALL TESTAC	; teste l'action
-11960         POP  HL		; restaure le pointeur
-11970         JR   NC,NEXTAC	; pas de retenue, saute
-11980         POP  HL		; restaure le pointeur (encore)
-11990         EX   DE,HL	; prend l'adresse de retour
-12000         JP   (HL)		; saute (équivalent du BREAK d'avant)
-12010 NEXTAC: INC  HL		; ptr++
-12020         LD   A,(HL)	; lit la valeur
-12030         JR   ACTION	; et boucle
-
-12040 TESTAC: CP   "a"		; inventaire
-12050         JP   Z,ACTIOa
-12060         CP   "b"		; prend objet N
-12070         JP   Z,ACTIOb
-12080         CP   "c"		; dépose objet N
-12090         JP   Z,ACTIOc
-12100         CP   "d"		; affiche une description
-12110         JP   Z,ACTIOd
-12120         CP   "e"		; active pointeur N
-12130         JP   Z,ACTIOe
-12140         CP   "f"		; désactive pointeur N
-12150         JP   Z,ACTIOf
-12160         CP   "g"		; fixe le compteur N à M
-12170         JP   Z,ACTIOg
-12180         CP   "h"		; repose l'objet
-12190         JP   Z,ACTIOh
-12200         CP   "i"		; prochaine salle
-12210         JP   Z,ACTIOi
-12220         CP   "z"		; victoire
-12230         JP   Z,ACTIOz
-12240         CP   "{"		; action gros mots ! (ligne 14950 ACTIONS.BAS = [, $7B = { en ASM)
-12250         JP   Z,ACTIO0
-12260         CP   "j"		; affiche D'ACCORD puis DEPA2
-12270         JP   Z,ACTIOj
-12280         CP   "k"		; saute à DEPA2
-12290         JP   Z,ACTIOk
-12300         CP   "w"		; musique
-12310         JP   Z,ACTIOw
-12320         CP   "x"		; bruit
-12330         JP   Z,ACTIOx
-12340         CP   "l"		; saute à DEPA3
-12350         JP   Z,ACTIOl
-12360         CP   "v"		; décremente condition
-12370         JP   Z,ACTIOv
-12380         CP   "m"		; recommence
-12390         JP   Z,ACTIOm
-12400         CP   "y"		; inverse les pointeurs de deux images
-12410         JP   Z,ACTIOy
-12420         CP   "n"		; mort
-12430         JP   Z,ACTIOn
-12440         CP   "o"		; pose objet dans la salle
-12450         JP   Z,ACTIOo
-12460         CP   "p"		; pose personnage et objet
-12470         JP   Z,ACTIOp
-12480         CP   "t"		; sauve une partie
-12490         JP   Z,ACTIOt
-12500         CP   "q"		; perd personnage et objet
-12510         JP   Z,ACTIOq
-12520         CP   "u"		; charge une partie
-12530         JP   Z,ACTIOu
-12540         CP   "r"		; pose un objet ?
-12550         JP   Z,ACTIOr
-
-* Action S - Pose un objet porté dans la salle
+* Action S - Prend un objet porté dans la salle
 
 12560 ACTIOs: LD   HL,#81BB	; pose objet porte dans salle
 12570         ADD  HL,BC
@@ -446,81 +287,6 @@
 12940         AND  A
 12950         RET
 
-* Action D - Affiche une description
-
-12960 ACTIOd: CALL ONDISC	; cherche sur disque
-12970         LD   HL,#192D	; adresse en mémoire
-12980         CALL CHERC	; cherche la description
-12990         CALL AFFIC0	; l'affiche
-13000         AND  A		; retour OK
-13010         RET
-
-* Action E - Active pointeur N
-
-13020 ACTIOe: LD   HL,#81E0	; active pointeur N
-13030         ADD  HL,BC
-13040         LD   (HL),1	; P,x = 1
-13050         AND  A
-13060         RET
-
-* Action F - Désactive pointeur N
-
-13070 ACTIOf: LD   HL,#81E0	; desactive pointeur N
-13080         ADD  HL,BC
-13090         LD   (HL),0	; P,x = 0
-13100         AND  A
-13110         RET
-
-* Action G - Fixe le compteur N à M
-
-13120 ACTIOg: POP  DE		; fixe le compteur N à M
-13130         POP  HL
-13140         INC  HL
-13150         PUSH HL
-13160         PUSH DE
-13170         LD   D,(HL)
-13180         LD   HL,#81C6	; C,x
-13190         ADD  HL,BC
-13200         LD   (HL),D
-13210         AND  A
-13220         RET
-
-13230 ACTIOh: LD   HL,#8190	; repose l'objet
-13240         ADD  HL,BC
-13250         LD   (HL),0
-13260         CALL RETOBJ
-13270         AND  A
-13280         RET
-
-13290 ACTIOi: LD   A,C		; prochaine salle
-13300         LD   (SALLE),A
-13310         AND  A
-13320         RET
-
-13330 ACTIOk: SCF		; saute à DEPA2
-13340         LD   DE,DEPA2
-13350         RET
-
-13360 ACTIOj: LD   HL,#7EAA	; affiche d'accord
-13370         CALL AFFIC0
-13380         JR   ACTIOk
-
-13390 ACTIOl: SCF		; saute à DEPA3
-13400         LD   DE,DEPA3
-13410         RET
-
-* Action M - boucle sur DEPA1
-
-13420 ACTIOm: SCF		; recommence
-13430         LD   DE,DEPA1
-13440         RET
-
-* Action N - On est mort
-
-13450 ACTIOn: SCF		; mort
-13460         LD   DE,MORT
-13470         RET
-
 * Action O - Pose un objet dans la salle
 
 13480 ACTIOo: LD   HL,#8190	; pose objet dans la salle
@@ -540,18 +306,7 @@
 13580         LD   C,(HL)
 13590         JR   ACTIOo
 
-* Action Q - Perd un personnage et un objet
-
-13600 ACTIOq: LD   HL,#81B0	; perd personnage
-13610         ADD  HL,BC
-13620         LD   (HL),0
-13630         LD   HL,#81BB	; perd objet
-13640         ADD  HL,BC
-13650         LD   (HL),0
-13660         AND  A
-13670         RET
-
-* Action R - Pose un objet
+* Action R - Pose un objet de personnage
 
 13680 ACTIOr: LD   HL,#81BB	; pose un objet
 13690         ADD  HL,BC
@@ -587,207 +342,6 @@
 13960         AND  A		; zéro
 13970         RET		; retour
 
-* Action T - Sauve une partie
-
-14630 ACTIOt: CALL #BB18	; sauve une partie
-14640         CALL SAUVE
-14650         LD   DE,DEPA2	; et continue de jouer
-14660         SCF
-14670         RET
-
-* Action U - Charge une partie
-
-14680 ACTIOu: CALL #BB18	; charge une partie
-14690         LD   HL,#4150	; PA
-14700         LD   (#84B1),HL
-14710         LD   DE,#8190
-14720         CALL CHARGE
-14725         CALL #BB18
-14730         XOR  A
-14740         LD   (#84AF),A
-14750         LD   DE,DEPA1	; et recommence le jeu
-14760         SCF
-14770         RET
-
-* Action V - Decremente une condition
-
-14780 ACTIOv: LD   HL,#81C6	; C,x
-14790         ADD  HL,BC
-14800         LD   A,(HL)	; compare 2
-14810         CP   2
-14820         JP   P,ACTIv1	; si inférieur, saute
-14830         AND  A		; retourne 0
-14840         RET
-14850 ACTIv1: DEC  (HL)		; décrémente C,x (:110 du Dr Genius)
-14860         AND  A
-14870         RET
-
-* Charge un fichier
-
-14880 CHARGE: LD   HL,#84B1	; HL filename
-14890         LD   B,2		;  B filename len
-14900         CALL #BC77	; *CAS IN OPEN
-14910         JR   C,CHARG1	; continue si OK
-
-14920 ERREUR: LD   HL,#7F5C	; ERREUR DE CHARGEMENT
-14930         CALL AFFIC0
-14940         CALL #BB18	; WAIT KEY
-14950         LD   SP,(#83C2)
-14960         JP   DEBUT	; recommence
-
-14970 CHARG1: EX   DE,HL	; Adresse de chargement
-14980         CALL #BC83	; *CAS IN DIRECT
-14990         JR   NC,ERREUR
-15000         CALL #BC7A	; *CAS IN CLOSE
-15010         JR   NC,ERREUR
-15020         RET
-
-* Sauve une partie
-
-15030 SAUVE:  LD   HL,#4150	; PA
-15040         LD   (#84B1),HL
-15050         LD   HL,#84B1
-15060         LD   DE,#8190
-15070         LD   B,2
-15080         CALL #BC8C
-15090         JR   NC,ERREUR
-15100         LD   HL,#8190
-15110         LD   BC,0
-15120         LD   A,2
-15130         LD   DE,#500
-15140         CALL #BC98
-15150         JR   NC,ERREUR
-15160         CALL #BC8F
-15170         JR   NC,ERREUR
-15180         RET
-
-* Action X joue des bruits
-
-15740 ACTIOx: LD   A,C		; quel bruit jouer ?
-15750         CP   1
-15760         JR   Z,BRUIT1
-15770         CP   2
-15780         JR   Z,BRUIT2
-15790         CP   3
-15800         JR   Z,BRUIT3
-
-15810 BRUIT4: LD   HL,CODE4
-15820         CALL #BCAA	; SOUND QUEUE
-15830         LD   HL,CODE41
-
-15840 FINx:   CALL #BCAA	; SOUND QUEUE
-15850         AND  A
-15860         RET
-
-15870 BRUIT3: LD   HL,CODE3
-15880         JR   FINx
-15890 BRUIT2: LD   HL,CODE2
-15900         JR   FINx
-15910 BRUIT1: LD   HL,CODE1
-15920         JR   FINx
-
-15930 CODE1:  DEFB 7,1,0
-15940         DEFB 0,0,19,0
-15950         DEFB 0,0
-15960 CODE2:  DEFB 7,2,0
-15970         DEFB 33,0,0,15
-15980         DEFB 0,0
-15990 CODE3:  DEFB 7,3,1
-16000         DEFB 154,2,0,15
-16010         DEFB 120,0
-16020 CODE4:  DEFB 7,5,2
-16030         DEFB 80,0,0,10
-16040         DEFB 0,0
-16050 CODE41: DEFB 7,4,0
-16060         DEFB 184,11,0,15
-16070         DEFB 0,0
-
-* Action W joue de la synthèse sonore
-
-16080 ACTIOw: LD   A,48
-16090         ADD  A,C
-16100         LD   H,A
-16110         LD   L,"S"
-16120         LD   (#84B1),HL	; Sx
-16130         XOR  A
-16140         LD   (#84B0),A
-16150         LD   DE,#1960	; at $1960
-16160         CALL CHARGE	; load it
-16170 SYNT0:  LD   A,255
-16180         LD   HL,SYNT8
-16190 SYNT1:  INC  A
-16200         LD   C,(HL)
-16210         INC  HL
-16220         PUSH AF
-16230         CALL #BD34
-16240         POP  AF
-16250         CP   13
-16260         JR   NZ,SYNT1
-16270 S1:     LD   HL,#1960	; adresse auto-modifiée
-16280         DI
-16290 SYNT2:  LD   A,(HL)
-16300         SLA  A
-16310         JR   C,SYNT3
-16320         LD   D,0
-16330         JR   SYNT4
-16340 SYNT3:  LD   D,15
-16350 SYNT4:  LD   BC,#F6C0
-16360         OUT  (C),C
-16370         LD   BC,#F40A
-16380         OUT  (C),C
-16390         LD   BC,#F680
-16400         OUT  (C),C
-16410         LD   B,#F4
-16420         OUT  (C),D
-16430         LD   BC,#F600
-16440         OUT  (C),C
-16450         SRL  A
-16460 SYNT5:  CALL SYNT6
-16470         DEC  A
-16480         JR   NZ,SYNT5
-16490         INC  HL
-16500 S0:     LD   A,#41
-16510         CP   H
-16520         JR   NZ,SYNT2
-16530         EI
-16540         AND  A
-16550         RET
-16560 SYNT6:  LD   E,2
-16570 SYNT7:  DEC  E
-16580         JR   NZ,SYNT7
-16590         RET
-16600 SYNT8:  DEFB 0,0,0,0
-16610         DEFB 0,0,0,56
-16620         DEFB 0,0,0
-16630         DEFB 0,0,0
-
-* Action Y - Inverse les pointeurs de deux images
-
-16640 ACTIOy: POP  DE		; adresse courante
-16650         POP  HL		; adresse sauvegardée
-16660         INC  HL		; ptr++
-16670         PUSH HL		; repousse les paramètres
-16680         PUSH DE
-16690         LD   D,(HL)	; prend la valeur+1
-16700         LD   B,0		; low is 0
-16710         LD   HL,#82B8	; on pointe sur 82B8
-16720         SLA  C		; x2
-16730         ADD  HL,BC	; 82B8,x
-16740         LD   (ACTy1+1),HL	; met l'adresse
-16750         LD   (ACTy2+2),HL	; met l'adresse
-16760         LD   C,D		; prend D maintenant
-16770         SLA  C		; x2
-16780         LD   HL,#82B8
-16790         ADD  HL,BC	; 82B8,x
-16800         LD   (ACTy3+2),HL	; met les deux autres adresses
-16810         LD   (ACTy4+1),HL
-16820 ACTy1:  LD   HL,(#8888)	; inverse
-16830 ACTy3:  LD   DE,(#9999)
-16840 ACTy2:  LD   (#8888),DE
-16850 ACTy4:  LD   (#9999),HL
-16860         AND  A
-16870         RET
-
 16880 PASICI: LD   HL,#7FCA	; JE NE VOIS PAS CELA ICI
 16890         JP   NOO1
 16900 RETOBJ: LD   HL,#81BB	; les objets portes
@@ -803,25 +357,3 @@
 17000         RET		; fin
 17010 RETOB1: LD   (HL),0	; efface l'objet porté
 17020         RET
-
-* Action Z : Victoire !!
-
-17030 ACTIOz: LD   DE,VICTOI
-17040         SCF		; Set Carry Flag
-17050         RET
-
-* Action pour les gros mots
-
-17060 ACTIO0: CALL #BB18	; WAIT KEY
-17070         LD   BC,#BC03	; SCR SET OFFSET + 1
-17080         OUT  (C),C
-17090         LD   BC,#BD01	; KL DONE SYNC
-17100         OUT  (C),C
-17110         CALL #BB18	; WAIT KEY
-17120         CALL #BB18	; WAIT KEY
-17130         LD   BC,#BC03	; SCR SET OFFSET +1
-17140         OUT  (C),C
-17150         LD   BC,#BD8E	; REAL COMPARISON
-17160         OUT  (C),C
-17170         AND  A
-17180         RET

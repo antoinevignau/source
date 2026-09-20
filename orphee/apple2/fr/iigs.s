@@ -91,6 +91,7 @@ chrGUILLEMET	=	$27
 chrCOMMA	=	$2c
 chrDELETE	=	$7f
 chrEOT	=	$fe
+chrEOL	=	$ff
 
 chrYES	=	'O'	; FR
 chrNO	=	'N'
@@ -126,11 +127,14 @@ dpTO	=	dpFROM+4
 dpTHREE	=	dpTO+4
 dpFOUR	=	dpTHREE+4
 
-Debut	=	dpFOUR+4
+Debut	=	$10
 Arrivee	=	Debut+4
 Third	=	Arrivee+4
 
-dpDATA	=	Third+4
+dpANALYSE	=	$20
+dpCONDITIONS	=	dpANALYSE+4
+
+dpDATA	=	$30
 dpREAD	=	dpDATA+4
 dpINSTR1	=	dpREAD+4
 dpINSTR2	=	dpINSTR1+4
@@ -405,15 +409,23 @@ loadBACK	_HideCursor
 	rts
 
 *-----------------------------------
+* RANDOM
+*-----------------------------------
+
+RANDOM	pha
+	_Random
+	pla
+	rts
+
+*-----------------------------------
 * LOAD/SAVE
 *-----------------------------------
 
 *----------------------------------- Open
 
-	mx	%00
-	
-doLOAD	sta	pGAME+10
-	rep	#$30
+loadGAME	sep	#$20
+	sta	pGAME+10
+	rep	#$20
 
 	jsl	GSOS
 	dw	$2010
@@ -432,15 +444,13 @@ doLOAD	sta	pGAME+10
 	dw	$2014
 	adrl	proCLOSE
 
-loadKO99	sep	#$30
-	rts
+loadKO99	rts
 
 *----------------------------------- Save
 
-	mx	%00
-
-doSAVE	sta	pGAME+10
-	rep	#$30
+saveGAME	sep	#$20
+	sta	pGAME+10
+	rep	#$20
 
 	jsl	GSOS
 	dw	$2002
@@ -468,11 +478,8 @@ doSAVE	sta	pGAME+10
 	dw	$2014
 	adrl	proCLOSE
 
-saveKO99	sep	#$30
-	rts
+saveKO99	rts
 
-	mx	%00
-	
 *--- For the game party
 
 proCREATEGAME
@@ -480,7 +487,7 @@ proCREATEGAME
 	adrl	pGAME	; pathname
 	dw	$c3	; access_code
 	dw	$5d	; file_type
-	adrl	$8020	; aux_type
+	adrl	$802e	; aux_type
 	ds	2	; storage_type
 	ds	4	; eof
 	ds	4	; resource_eof
@@ -497,19 +504,19 @@ proOPENGAME
 proREADGAME
 	dw	4	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	SALLE	; 4 - data_buffer
+	adrl	DEBUT_DATA	; 4 - data_buffer
 	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 
 proWRITEGAME
 	dw	5	; 0 - pcount
 	ds	2	; 2 - ref_num
-	adrl	SALLE	; 4 - data_buffer (we are in same bank)
+	adrl	DEBUT_DATA	; 4 - data_buffer (we are in same bank)
 	adrl	FIN_DATA-DEBUT_DATA	; 8 - request_count
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
-pGAME	strl	'1/Partie0'
+pGAME	strl	'8/Partie0'
 
 *-----------------------------------
 * DES DONNES 16-BITS

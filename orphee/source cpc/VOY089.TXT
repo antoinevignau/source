@@ -1696,15 +1696,15 @@
 15050         LD   HL,#84B1
 15060         LD   DE,#8190
 15070         LD   B,2
-15080         CALL #BC8C
+15080         CALL #BC8C	; CAS OUT OPEN
 15090         JR   NC,ERREUR
-15100         LD   HL,#8190
-15110         LD   BC,0
-15120         LD   A,2
-15130         LD   DE,#500
-15140         CALL #BC98
+15100         LD   HL,#8190	; $8190
+15110         LD   BC,0	; exe address 0
+15120         LD   A,2	; binaire
+15130         LD   DE,#500	; 500 octets
+15140         CALL #BC98	; CAS OUT DIRECT
 15150         JR   NC,ERREUR
-15160         CALL #BC8F
+15160         CALL #BC8F	; CAS OUT CLOSE
 15170         JR   NC,ERREUR
 15180         RET
 

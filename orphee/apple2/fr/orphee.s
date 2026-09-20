@@ -24,6 +24,9 @@ MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
 LEN_WORD	=	5	; but limit to 4
 
+NBCONDITIONS	=	26
+NBPOINTEURS	=	67
+
 iSUJET	=	1	; 
 iVERBE	=	2	; 
 iCOD	=	3	; 
@@ -152,7 +155,8 @@ DESSIN	lda	SALLE
 	ldy	#SALLE$
 	jsr	CHERC
 	jsr	AFFIC3
-	lda	SALLE
+	ldx	SALLE	; parce qu'on peut inverser
+	lda	ADR-1,x	; des salles
 	jsr	GRAPHE
 	jsr	ISSUE
 	jmp	DEPA2
@@ -276,7 +280,6 @@ DEPA31	jsr	ANALYS
 
 *--- DEBUG
 
-RND
 RETURN	rts		; ne fait rien
 
 *-----------------------------------
@@ -616,7 +619,9 @@ showBORDER	sep	#$20
 * VERIFI
 *-----------------------------------
 
-VERIFI	
+VERIFI	lda	#TBLCONDITIONS
+	sta	dpCONDITIONS
+		
 	rts
 
 *-----------------------------------
@@ -1197,7 +1202,8 @@ CLEARW	rts
 * ANALYS
 *-----------------------------------
 
-ANALYS
+ANALYS	lda	#TBLANALYSE
+	sta	dpANALYSE
 	rts
 
 *---------- 
@@ -1338,21 +1344,108 @@ CLEARF	rts
 * ACTION
 *-----------------------------------
 
-ACTION
+ACTION	jsr	getCONDITION
+	cmp	#chrEOL
+	bne	ACTION_1
+	rts
+
+ACTION_1	jsr	TESTAC	; on boucle
+	bcc	ACTION
+
+	sta	ACTION_2+1
+ACTION_2	jmp	RETURN	; saute
 
 *---------- 
 
-NEXTAC
-
-*---------- 
-
-TESTAC
+TESTAC	cmp	#'a'
+	bne	TESTAC_2
+	jmp	ACTIONA
+TESTAC_2	cmp	#'b'
+	bne	TESTAC_3
+	jmp	ACTIONB
+TESTAC_3	cmp	#'c'
+	bne	TESTAC_4
+	jmp	ACTIONC
+TESTAC_4	cmp	#'d'
+	bne	TESTAC_5
+	jmp	ACTIOND
+TESTAC_5	cmp	#'e'
+	bne	TESTAC_6
+	jmp	ACTIONE
+TESTAC_6	cmp	#'f'
+	bne	TESTAC_7
+	jmp	ACTIONF
+TESTAC_7	cmp	#'g'
+	bne	TESTAC_8
+	jmp	ACTIONG
+TESTAC_8	cmp	#'h'
+	bne	TESTAC_9
+	jmp	ACTIONH
+TESTAC_9	cmp	#'i'
+	bne	TESTAC_10
+	jmp	ACTIONI
+TESTAC_10	cmp	#'z'
+	bne	TESTAC_11
+	jmp	ACTIONZ
+TESTAC_11	cmp	#$7b	; {
+	bne	TESTAC_12
+	jmp	ACTION0
+TESTAC_12	cmp	#'j'
+	bne	TESTAC_13
+	jmp	ACTIONJ
+TESTAC_13	cmp	#'k'
+	bne	TESTAC_14
+	jmp	ACTIONK
+TESTAC_14	cmp	#'w'
+	bne	TESTAC_15
+	jmp	ACTIONW
+TESTAC_15	cmp	#'x'
+	bne	TESTAC_16
+	jmp	ACTIONX
+TESTAC_16	cmp	#'l'
+	bne	TESTAC_17
+	jmp	ACTIONL
+TESTAC_17	cmp	#'v'
+	bne	TESTAC_18
+	jmp	ACTIONV
+TESTAC_18	cmp	#'m'
+	bne	TESTAC_19
+	jmp	ACTIONM
+TESTAC_19	cmp	#'y'
+	bne	TESTAC_20
+	jmp	ACTIONY
+TESTAC_20	cmp	#'n'
+	bne	TESTAC_21
+	jmp	ACTIONN
+TESTAC_21	cmp	#'o'
+	bne	TESTAC_22
+	jmp	ACTIONO
+TESTAC_22	cmp	#'p'
+	bne	TESTAC_23
+	jmp	ACTIONP
+TESTAC_23	cmp	#'t'
+	bne	TESTAC_24
+	jmp	ACTIONT
+TESTAC_24	cmp	#'q'
+	bne	TESTAC_25
+	jmp	ACTIONQ
+TESTAC_25	cmp	#'u'
+	bne	TESTAC_26
+	jmp	ACTIONU
+TESTAC_26	cmp	#'r'
+	bne	TESTAC_27
+	jmp	ACTIONR
+TESTAC_27	cmp	#'s'
+	bne	TESTAC_28
+	jmp	ACTIONS
+TESTAC_28	clc
+	rts
 
 *-----------------------------------
 * TOUTES LES ACTIONS
 *-----------------------------------
 
-*---------- A - 
+*---------- A - INVENTAIRE
 
 ACTIONA	@CLS	#wINVENTAIRE
 	@PRINT	#wINVENTAIRE;#strOBJETSPORTES
@@ -1395,67 +1488,123 @@ AUCUN	@PRINT	#wINVENTAIRE;#strAUCUN
 
 *---------- B - 
 
-ACTIONB	rts
+ACTIONB	clc
+	rts
 
 *---------- C - 
 
-ACTIONC	rts
+ACTIONC	clc
+	rts
 
-*---------- D - 
+*---------- D - AFFICHE UNE DESCRIPTION
 
-ACTIOND	rts
+ACTIOND	jsr	getCONDITION
+	ldy	#MESSAGE$
+	jsr	CHERC
+	jsr	AFFIC0
+	clc
+	rts
 
-*---------- E - 
+*---------- E - ACTIVE LE POINTEUR M
 
-ACTIONE	rts
+ACTIONE	jsr	getCONDITION
+	tax
+	sep	#$20
+	lda	#TRUE
+	sta	P-1,x
+	rep	#$20
+	clc
+	rts
 
-*---------- F - 
+*---------- F - DESACTIVE LE POINTEUR M
 
-ACTIONF	rts
+ACTIONF	jsr	getCONDITION
+	tax
+	sep	#$20
+	lda	#FALSE
+	sta	P-1,x
+	rep	#$20
+	clc
+	rts
 
-*---------- G - 
+*---------- G - FIXE LE COMPTEUR M A LA VALEUR N
 
-ACTIONG	rts
+ACTIONG	jsr	getCONDITION	; get M
+	tax
+	jsr	getCONDITION	; get N
+	sep	#$20
+	sta	C-1,x
+	rep	#$20
+	clc
+	rts
 
-*---------- H - 
+*---------- H - DETRUIT L'OBJET M
 
-ACTIONH	rts
+ACTIONH	jsr	getCONDITION
+	tax
+	sep	#$20
+	lda	#FALSE
+	sta	OBJSAL-1,x
+	rep	#$20
+	clc
+	rts
 
-*---------- I - 
+*---------- I - PROCHAINE SALLE
 
-ACTIONI	rts
+ACTIONI	jsr	getCONDITION
+	sta	SALLE
+	clc
+	rts
 
-*---------- J - 
+*---------- J - AFFICHE D'ACCORD
 
-ACTIONJ	rts
+ACTIONJ	@PRINT	#wMESSAGE;#strDACCORD	; jmp below...
 
-*---------- K - 
+*---------- K - RETOURNE A DEPA2
 
-ACTIONK	rts
+ACTIONK	lda	#DEPA2
+	sec
+	rts
 
-*---------- L - 
+*---------- L - RETOURNE A DEPA3
 
-ACTIONL	rts
+ACTIONL	lda	#DEPA3
+	sec
+	rts
+	
+*---------- M - RETOURNE A DEPA1
 
-*---------- M - 
+ACTIONM	lda	#DEPA1
+	sec
+	rts
 
-ACTIONM	rts
+*---------- N - MORT
 
-*---------- N - 
-
-ACTIONN	rts
+ACTIONN	lda	#MORT
+	sec
+	rts
 
 *---------- O - 
 
-ACTIONO	rts
+ACTIONO	clc
+	rts
 
 *---------- P - 
 
-ACTIONP	rts
+ACTIONP	clc
+	rts
 
-*---------- Q - 
+*---------- Q - DETRUIT PERSONNAGE ET OBJET M
 
-ACTIONQ	rts
+ACTIONQ	jsr	getCONDITION
+	tax
+	sep	#$20
+	lda	#FALSE
+	sta	PERSSAL-1,x
+	sta	PERSOBJ-1,x
+	rep	#$20
+	clc
+	rts
 
 *---------- R - 
 
@@ -1463,39 +1612,164 @@ ACTIONR	rts
 
 *---------- S - 
 
-ACTIONS	rts
+ACTIONS	clc
+	rts
 
-*---------- T - 
+*---------- T - SAUVE UNE PARTIE
 
-ACTIONT	rts
+ACTIONT	@PRINT	#wMESSAGE;#strSAVE
+	jsr	slotGAME
+	bcs	ACTIONT_NOTOK
+	jsr	saveGAME
+	bcc	ACTIONT_OK
 
-*---------- U - 
+ACTIONT_NOTOK	@PRINT	#wMESSAGE;#strSAVENOTOK
+	bra	ACTIONT_END
 
-ACTIONU	rts
+ACTIONT_OK	@PRINT	#wMESSAGE;#strSAVEOK
 
-*---------- V - 
+ACTIONT_END	@WAIT	#60
+	lda	#DEPA2
+	sec
+	rts
 
-ACTIONV	rts
+*---------- U - CHARGE UNE PARTIE
 
-*---------- W - 
+ACTIONU	@PRINT	#wMESSAGE;#strLOAD
+	jsr	slotGAME
+	bcs	ACTIONU_NOTOK
+	jsr	loadGAME
+	bcc	ACTIONU_OK
 
-ACTIONW	rts
+ACTIONU_NOTOK	@PRINT	#wMESSAGE;#strLOADNOTOK
+	bra	ACTIONU_END
 
-*---------- X - 
+ACTIONU_OK	@PRINT	#wMESSAGE;#strLOADOK
 
-ACTIONX	rts
+ACTIONU_END	@WAIT	#60
+	lda	#DEPA1
+	sec
+	rts
 
-*---------- Y - 
+*---------------
 
-ACTIONY	rts
+slotGAME	@INKEY	#SLOT$
+	sep	#$20
+	lda	SLOT$	; est-ce un chiffre ?
+	cmp	#'1'
+	bcc	slotGAME_ERR
+	cmp	#'9'+1
+	bcs	slotGAME_ERR
+	sta	pGAME+10
+	rep	#$20
+	clc
+	rts
+slotGAME_ERR	rep	#$20
+	sec
+	rts
 
-*---------- Z - 
+*---------- V - DECREMENTE UNE CONDITION
 
-ACTIONZ	rts
+ACTIONV	jsr	getCONDITION
+	tax
+	lda	C-1,x
+	and	#$ff
+	cmp	#1
+	bcc	ACTIONV_1
+	beq	ACTIONV_1
+	sep	#$20
+	dec	C-1,x
+	rep	#$20
+ACTIONV_1	clc
+	rts
+
+*---------- W - JOUE DE LA SYNTHESE SONORE
+
+ACTIONW	clc
+	rts
+
+*---------- X - JOUE DES BRUITS
+
+ACTIONX	clc
+	rts
+
+*---------- Y - INVERSE LES POINTEURS DES DEUX IMAGES
+
+ACTIONY	jsr	getCONDITION	; 1ère image
+	tax
+	jsr	getCONDITION	; 2nde image
+	tay
+
+	sep	#$20
+	lda	ADR-1,x	; image 1
+	pha
+	lda	ADR-1,y	; image 2
+	sta	ADR-1,x	; devient image 1
+	pla
+	sta	ADR-1,y	; image 1 devient image 2
+	rep	#$20
+	clc
+	rts
+
+*---------- Z - VICTOIRE
+
+ACTIONZ	lda	#VICTOI
+	sec
+	rts
 
 *---------- ] - GROS MOTS
 
-ACTION0	rts
+ACTION0	jsr	getCONDITION
+
+	sep	#$20
+	ldal	CLOCKCTL
+	sta	N
+	stz	NL
+	rep	#$20
+	
+]lp	@INKEY_TRUE
+	cmp	#TRUE
+	beq	ACTION0_1
+
+	sep	#$20
+	lda	NL
+	inc
+	and	#$0f
+	sta	NL
+
+	ldal	CLOCKCTL
+	and	#$f0
+	ora	NL
+	stal	CLOCKCTL
+	rep	#$20
+	bra	]lp
+
+ACTION0_1	sep	#$20
+	ldal	CLOCKCTL
+	and	#$f0
+	ora	N
+	stal	CLOCKCTL
+	rep	#$20
+	clc
+	rts
+
+*-----------------------------------
+* getANALYSE
+*-----------------------------------
+
+getANALYSE	lda	(dpANALYSE)
+	and	#$ff
+	inc	dpANALYSE
+	rts
+
+*-----------------------------------
+* getCONDITION
+*-----------------------------------
+
+getCONDITION	lda	(dpCONDITIONS)
+	and	#$ff
+	inc	dpCONDITIONS
+	rts
 
 *-----------------------------------
 * MUSIQUE DE MORT
@@ -1618,698 +1892,6 @@ VIR	lda	#TRUE
 	rts
 
 *-----------------------------------
-* DU BASIC A L'ASSEMBLEUR (BEURK)
-*-----------------------------------
-
-:100	ldx	#$11
-	lda	P,x
-	cmp	#1
-	beq	:140
-
-:101	lda	SALLE
-	cmp	#23
-	bne	:102
-	ldx	#3
-	lda	P,x
-	cmp	#1
-	beq	:130
-
-:102	lda	SALLE
-	cmp	#14
-	bne	:104
-	ldx	#4
-	lda	P,x
-	cmp	#1
-	beq	:130
-	
-:104	lda	SALLE
-	cmp	#20
-	bne	:106
-	ldx	#5
-	lda	P,x
-	cmp	#1
-	beq	:130
-
-:106	lda	SALLE
-	cmp	#29
-	bne	:108
-	ldx	#6
-	lda	P,x
-	cmp	#1
-	beq	:130
-	
-:108	lda	SALLE
-	cmp	#38
-	bne	:110
-	ldx	#7
-	lda	P,x
-	cmp	#1
-	beq	:130
-
-:110	jmp	:200
-
-:130
-*	jsr	HGR
-*	@print	#strILFAITNOIR
-*	jsr	:30000
-	jmp	:500
-
-:140
-*	jsr	HGR
-*	@print	#strVOSYEUX
-	jmp	:500
-
-*-----------------------------------
-* 200 - description salle
-*-----------------------------------
-
-:200
-*	jsr	HGR
-	@draw	SALLE
-
-*	lda	A2	; trace des dessins
-	beq	:206
-	cmp	#1
-	bne	:204
-*	jsr	:12010	; 1er "cadre"
-	bra	:206
-:204	cmp	#2
-	bne	:206
-*	jsr	:12020	; 2nd "cadre"
-
-:206	lda	PP
-	bne	:210
-	
-	lda	SALLE
-	cmp	#11
-	bne	:300
-
-	lda	#1
-	sta	PP
-*	jsr	:4920
-
-:210	ldx	#-1
-	lda	SALLE
-	cmp	#21
-	bcs	:220
-	ldx	#1
-	jmp	:270
-
-:220	cmp	#26
-	bcs	:230
-	ldx	#3
-	jmp	:270
-
-:230	cmp	#31
-	bcs	:240
-	ldx	#0
-	jmp	:270
-
-:240	cmp	#52
-	bcs	:270
-	ldx	#2
-	cmp	#26
-
-:270	cpx	#-1
-	beq	:300
-	
-	txa
-*	jsr	printNIVEAU
-	
-*-----------------------------------
-		
-:300	lda	#0
-	sta	H
-	sta	HH	; for comma
-	lda	#1
-	sta	N
-	
-:310	ldx	N
-	lda	OBJSAL,x
-	cmp	SALLE
-	bne	:400
-	
-	lda	H
-	bne	:350
-
-	@print	#strILYA
-	
-	inc	H
-
-:350	lda	HH
-	beq	:360
-
-	@print	#strCOMMA
-
-:360	@print	#strRETURNSPACE
-
-*	lda	N
-*	asl
-*	tax
-*	ldy	tblOBJSAL,x
-*	lda	tblOBJSAL+1,x
-*	tax
-*	jsr	printCSTRING
-*
-*	inc	HH
-*	
-:400	inc	N
-	lda	N
-	cmp	#NBOBJET
-	bcc	:310
-	beq	:310
-
-*	@print	#strRETURN
-	
-*-----------------------------------
-* 500 - ACCEPTATION COMMANDE
-*-----------------------------------
-
-:500	lda	SALLE
-	cmp	#51
-	beq	:510
-	cmp	#48
-	beq	:510
-	cmp	#22
-	beq	:510
-	cmp	#4
-	beq	:510
-	cmp	#17
-	beq	:510
-	jmp	:3500
-
-:510	ldx	#3
-	lda	C,x
-	dec	C,x
-	cmp	#1
-	bne	:520
-*	jmp	:4820	; mort par contamination radioactive
-
-:520	jmp	:3500
-
-*-----------
-
-:530	@print	#strCOMMANDE	; commande avec energie
-
-:535	@INPUT	#TEXTBUFFER;#MAX_LEN
-	@UPPER	#TEXTBUFFER;#TEXTBUFFER
-
-*-----------------------------------
-* 1000 - CONTROLE
-*-----------------------------------
-
-:1000	lda	#10	; met n'importe quoi
-	sta	BFF0
-	jsr	checkACTION
-	lda	BFF0
-	bne	:1700	; 0 si rien trouvé
-	
-	@print	#strIMPOSSIBLE
-
-	lda	SUJET	; les directions
-	cmp	#9
-	bcs	:1040
-	
-*	@print	#strCECHEMIN
-	
-:1040	@print	#strEXCLAM
-	jmp	:500
-
-*-----------------------------------
-* 1700 - ACTIONS
-*-----------------------------------
-
-:1700	lda	#0
-	sta	E
-
-	ldx	#0
-]lp	lda	BFE0,x
-	sta	E$,x
-	inx
-	cmp	#-1
-	bne	]lp
-
-:1710	ldx	E
-	lda	E$,x
-	sec
-	sbc	#'A'
-	pha		; LI
-
-	lda	E$+1,x
-	cmp	#'.'
-	beq	:1740
-	sec
-	sbc	#'0'
-	tay
-	lda	tblD2H,y
-	sta	N
-
-	lda	E$+2,x
-	sec
-	sbc	#'0'
-	clc
-	adc	N
-	sta	N
-
-:1740	lda	#0
-	sta	BREAK
-
-	pla
-	cmp	#190	; 255-65 = 190 = la fin
-	beq	:1760
-
-:1745	asl
-	tax
-	lda	tbl1800,x
-	sta	:1750+1
-	lda	tbl1800+1,x
-	sta	:1750+2
-
-:1750	jsr	$bdbd
-
-:1760	lda	BREAK
-	beq	:1780
-	asl
-	tax
-	lda	tblBRKA,x
-	sta	:1762+1
-	lda	tblBRKA+1,x
-	sta	:1762+2
-:1762	jmp	$bdbd
-
-:1780	lda	E
-	clc
-	adc	#3
-	sta	E
-	jmp	:1710
-
-*-------- The modified BREAK table
-
-tblBRKA	da	$bdbd
-	da	:100,:500,:530
-	
-*-----------------------------------
-* 1800
-*-----------------------------------
-
-tbl1800	da	:1800,:1900
-	da	:2000,:2100,:2200,:2300,:2400,:2500,:2600,:2700,:2800,:2900
-	da	:3000,:3100,:3200
-	
-*-------- A
-
-:1800	lda	#0
-	sta	G
-	sta	HH
-	sta	H	; for comma
-	
-	lda	#2	; 500
-	sta	BREAK
-
-:1810	inc	G
-	lda	G
-	tax
-	lda	OBJSAL,x
-	cmp	#-1
-	beq	:1840
-
-	lda	G
-	cmp	#NBOBJET
-	bcc	:1810
-	bcs	:1870
-	
-:1840	lda	HH
-	bne	:1850
-
-	@print	#strVOUSDETENEZ
-	
-:1850	inc	HH
-
-	lda	H
-	beq	:1860
-	
-	@print	#strCOMMA
-
-:1860	@print	#strRETURNSPACE
-
-*	lda	G
-*	asl
-*	tax
-*	ldy	tblOBJSAL,x
-*	lda	tblOBJSAL+1,x
-*	tax
-*	jsr	printCSTRING
-*
-*	inc	H
-*	
-*	lda	G
-*	cmp	#NBOBJET
-*	bcc	:1810
-*	
-:1870	lda	HH
-	beq	:1880
-
-	@print	#strPOINT
-	rts
-
-:1880	@print	#strVOUSRIEN
-	rts
-
-*-------- B
-
-:1900	ldx	N
-	lda	OBJSAL,x
-	cmp	#-1
-	bne	:1960
-
-	@print	#strVOUSLAVEZ
-	
-	lda	#2	; 500
-	sta	BREAK
-	rts
-
-:1960	lda	#-1
-	sta	OBJSAL,x
-	
-	inc	S
-	rts
-
-*-------- C
-
-:2000	ldx	N
-	lda	OBJSAL,x
-	cmp	#-1
-	beq	:2030
-
-	@print	#strNOTOWNED
-
-	lda	#2
-	sta	BREAK
-	rts
-
-:2030	lda	SALLE
-	sta	OBJSAL,x
-
-	dec	S
-	rts
-
-*-------- D
-
-:2100	lda	N
-	asl
-	tax
-	lda	tbl4000,x
-	sta	:2112+1
-	lda	tbl4000+1,x
-	sta	:2112+2
-
-:2112	jmp	$bdbd
-
-*-------- E
-
-:2200	ldx	N
-	lda	#1
-	sta	P,x
-	rts
-
-*-------- F
-
-:2300	ldx	N
-	lda	#0
-	sta	P,x
-	rts
-
-*-------- G
-
-:2400	ldy	E	; +3
-	iny
-	iny
-	sty	E
-	iny
-	lda	E$,y
-	sec
-	sbc	#'0'
-	tax
-	lda	tblD2H,x
-	
-	ldx	N
-	sta	C,x
-	
-	iny
-	lda	E$,y
-	sec
-	sbc	#'0'
-	clc
-	adc	C,x
-	sta	C,x
-	rts
-
-*-------- H
-
-:2500	ldx	N
-	lda	#0
-	sta	OBJSAL,x
-	rts
-
-*-------- I
-
-:2600	lda	N
-	sta	SALLE
-	rts
-
-*-------- J
-
-:2700	@print	#strDACCORD	; jump into K
-
-*-------- K
-
-:2800
-	lda	#2	; 500
-	sta	BREAK
-	rts
-
-*-------- L
-
-:2900	lda	#3	; 530
-	sta	BREAK
-	rts
-
-*-------- M
-
-:3000	lda	#1	; 100
-	sta	BREAK
-	rts
-	
-*-------- N
-
-:3100	jmp	:perdu
-
-*-------- O
-
-:3200	ldx	N
-	lda	SALLE
-	sta	OBJSAL,x
-	rts
-
-*-----------------------------------
-* 3500 - LES VERIFICATIONS
-*-----------------------------------
-
-:3500	lda	SALLE
-	cmp	#11
-	bne	:3502
-	ldx	#1
-	lda	#1
-	sta	P,x
-
-:3502	lda	SALLE
-	cmp	#19
-	bne	:3504
-	
-	ldx	#1
-	lda	#0
-	sta	P,x
-
-:3504	lda	SALLE
-	cmp	#36
-	bne	:3510
-	ldx	#2
-	lda	P,x
-	cmp	#1
-	beq	:3510
-
-:3506	ldx	#$d
-	lda	OBJSAL,x
-	cmp	#-1
-	bne	:3508
-
-	@WAIT	#100
-*	jsr	:4010
-	
-	ldx	#2
-	lda	#1
-	sta	P,x
-	jmp	:3510
-
-:3508	@WAIT	#100
-*	jmp	:4020
-
-:3510	ldx	#4
-	lda	OBJSAL,x
-	cmp	#-1
-	bne	:3516
-
-:3512	ldx	#8
-	dec	C,x
-	
-:3514	ldx	#8
-	lda	C,x
-	bne	:3516
-*	jmp	:4740
-
-:3516	ldx	#1
-	lda	C,x
-	beq	:3534
-	
-:3518	dec	C,x
-
-:3520	lda	C,x
-	cmp	#1
-	bcs	:3534
-
-:3522	ldx	#3
-	lda	OBJSAL,x
-	cmp	#-1
-	bne	:3524
-*	jmp	:4750
-
-:3524	cmp	#51
-	beq	:3526
-*	jmp	:4760
-
-:3526	lda	SALLE
-	cmp	#51
-	bne	:3528
-*	jmp	:4750
-
-:3528	ldx	#4
-	lda	OBJSAL,x
-	cmp	#51
-	beq	:3530
-	ldx	#$13
-	lda	OBJSAL,x
-	cmp	#51
-	beq	:3530
-*	jmp	:4780
-
-:3530	lda	SALLE
-	cmp	#46
-	beq	:3531
-	cmp	#49
-	bne	:3532
-:3531
-*	jmp	:4770
-
-:3532	ldx	#$c
-	lda	#0
-	sta	P,x
-*	jsr	:4790
-	ldx	#$10
-	lda	#1
-	sta	P,x
-	bne	:3540
-
-:3534	ldx	#$e
-	lda	P,x
-	beq	:3537
-
-:3535	ldx	#2
-	dec	C,x
-	lda	C,x
-	cmp	#1
-	bcs	:3540
-	
-:3536	ldx	#$e
-	lda	#0
-	sta	P,x
-
-:3537	ldx	#$c	; LOGO - It was a PEEK not a DEEK
-	lda	P,x
-	cmp	#0
-	bcs	:3540
-	
-:3538	lda	SALLE
-	cmp	#50
-	beq	:3540
-*	jmp	:4800
-
-:3540	ldx	#$10
-	lda	P,x
-	beq	:3544
-
-:3542	ldx	#5
-	dec	C,x
-	lda	C,x
-	cmp	#1
-	bne	:3544
-*	jmp	:4810
-
-:3544	ldx	#6
-	lda	C,x
-	beq	:3548
-
-:3546	
-	dec	C,x
-	lda	C,x
-	bne	:3548
-*	jsr	:4830
-	ldx	#8
-	lda	#0
-	sta	P,x
-
-:3548	ldx	#8
-	lda	P,x
-	cmp	#1
-	beq	:3552
-
-:3550	ldx	#7
-	dec	C,x
-	lda	C,x
-	bne	:3552
-*	jsr	:4580
-	jmp	:perdu
-
-:3552	ldx	#4
-	lda	C,x
-	beq	:3556
-
-:3554
-	dec	C,x
-	lda	C,x
-	cmp	#1
-	bne	:3556
-*	jmp	:4840
-	
-:3556	jmp	:530
-
-*-----------------------------------
-* 4000 - LES REPONSES
-*-----------------------------------
-
-tbl4000
-*	da	$bdbd,:4010,:4020,:4030,:4040,:4050,:4060,:4070,:4080,:4090
-*	da	:4100,:4110,:4120,:4130,:4140,:4150,:4160,:4170,:4180,:4190
-*	da	:4200,:4210,:4220,:4230,:4240,:4250,:4260,:4270,:4280,:4290
-*	da	:4300,:4310,:4320,:4330,:4340,:4350,:4360,:4370,:4380,:4390
-*	da	:4400,:4410,:4420,:4430,:4440,:4450,:4460,:4470,:4480,:4490
-*	da	:4500,:4510,:4520,:4530,:4540,:4550,:4560,:4570,:4580,:4590
-*	da	:4600,:4610,:4620,:4630,:4640,:4650,:4660,:4670,:4680,:4690
-*	da	:4700,:4710,:4720,:4730,:4740,:4750,:4760,:4770,:4780,:4790
-*	da	:4800,:4810,:4820,:4830,:4840,:4850,:4860,:4870,:4880,:4890
-*	da	:4900,:4910,:4920
-*	
-
-*-----------------------------------
 * INIT
 *-----------------------------------
 
@@ -2338,6 +1920,12 @@ INIT_ALL	sep	#$20
 	dex
 	bne	]lp
 
+	ldx	#NBSALLE	; les indexes des images
+]lp	txa		; 1, 2, ..., 114, 115
+	sta	ADR-1,x
+	dex
+	bne	]lp
+	
 	rep	#$20
 
 	lda	#1
@@ -2496,166 +2084,6 @@ proREADPIC	dw	4	; 0 - pcount
 	ds	4	; C - transfer_count
 
 *-----------------------------------
-* RECOPIE ACTION A$
-*-----------------------------------
-	
-checkACTION	lda	#ACTION$	; POINTEUR
-	sta	dpFROM
-	sep	#$30
-	
-L953B       LDY	#0
-            LDA	(dpFROM),Y
-            CMP	MO$1	; premier mot
-            BEQ	L9546
-            JMP	L95EF
-L9546       INY	
-            LDA	(dpFROM),Y
-            BEQ	L9552
-            CMP	MO$2	; second mot
-            BEQ	L9552
-            JMP	L95EF
-
-L9552       INY		; on a trouvé, on gère
-            LDA	(dpFROM),Y
-            INY	
-            TAX	
-            LDA	(dpFROM),Y
-            and	#$ff
-            CPX	#$41	; A
-            BEQ	L958B
-            CPX	#$42	; B
-            BEQ	L9593
-            CPX	#$43	; C
-            BEQ	L95A3
-            CPX	#$44	; D
-            BEQ	L95B3
-            CPX	#$45	; E
-            BEQ	L95BE
-            CPX	#$46	; F
-            BEQ	L95C7
-            CPX	#$47	; G
-            BEQ	L95D0
-            CPX	#$48	; H
-            BEQ	L95DB
-            CPX	#$49	; I
-            BEQ	L95E7
-
-            LDX	#0	; sinon, on recopie until FF
-L957F       LDA	(dpFROM),Y
-            STA	BFE0,X
-            INY	
-            INX	
-            CMP	#-1
-            BNE	L957F
-            
-            rep	#$30
-            RTS
-
-	mx	%11
-
-*-- A - 
-
-L958B       CMP	SALLE
-            BNE	L95EF
-            JMP	L9552		; on boucle
-
-*-- B - 
-
-L9593       TAX
-            LDA	OBJSAL-1,X	; les objets
-            CMP	#-1
-            BEQ	L9552
-            CMP	SALLE
-            BEQ	L9552
-            JMP	L95EF
-
-*-- C - 
-
-L95A3       TAX
-            LDA	OBJSAL-1,X
-            CMP	#-1
-            BEQ	L95EF
-            CMP	SALLE
-            BEQ	L95EF
-            JMP	L9552
-
-*-- D - 
-
-L95B3       TAX
-            LDA	OBJSAL-1,X
-            CMP	#-1
-            BEQ	L9552
-            JMP	L95EF
-
-*-- E - 
-
-L95BE       TAX
-            LDA	P-1,X
-            BNE	L9552
-            JMP	L95EF
-
-*-- F - 
-
-L95C7       TAX
-            LDA	P-1,X
-            BEQ	L9552
-            JMP	L95EF
-
-*-- G - 
-
-L95D0       TAX
-            LDA	C-1,X
-            CMP	#1
-            BNE	L95EF
-            JMP	L9552
-
-*-- H - RANDOM
-
-L95DB	STA	$7C
-*	LDA	$0306
-	jsr	RND
-	CMP	$7C
-	BCS	L95EF
-	JMP	L9552
-
-*-- I - 
-
-L95E7       CMP	SALLE
-            BEQ	L95EF
-            JMP	L9552
-
-*--- next
-
-L95EF	inc	dpFROM
-	bne	L95F0
-	inc	dpFROM+1
-L95F0	lda	(dpFROM)	; until the end
-	cmp	#-1
-	bne	L95EF
-	
-	inc	dpFROM
-	bne	L95F1
-	inc	dpFROM+1
-L95F1	lda	(dpFROM)	; on a parcouru
-            cmp	#chrNULL
-	beq	L9619	; le tableau, on sort
-	cmp	#chrEOT
-	beq	L9619
-	jmp	L953B
-
-L9619	LDA	#$00
-	STA	BFF0
-	rep	#$30
-	RTS
-
-	mx	%00
-	
-*--- data
-
-BFE0	ds	16
-BFF0	ds	16
-
-*-----------------------------------
 * DATA
 *-----------------------------------
 
@@ -2664,9 +2092,9 @@ WORDBUFFER	ds	MAX_LEN+1
 
 *-----------------------------------
 
-DEBUT_DATA
+*--- Données diverses
 
-SALLE	ds	2
+SLOT$	ds	2	; slot de load/save + trailing 00
 *A1	ds	2
 *A2	ds	2	; $400
 BREAK	ds	2
@@ -2705,13 +2133,17 @@ NBOBJ	ds	2
 DRAP	ds	2
 T	ds	2
 
-C	ds	32
-P	ds	32
-E$	ds	32
+*--- Données du jeu
 
-OBJSAL	ds	NBOBJET+1
-PERSSAL	ds	NBPERSSAL+1
-PERSOBJ	ds	NBPERSOBJ+1
+DEBUT_DATA
+
+SALLE	ds	2
+OBJSAL	ds	NBOBJET	; dans quelle salle se trouve l'objet d'index X
+PERSSAL	ds	NBPERSSAL	; dans quelle salle se trouve le personnage d'index X
+PERSOBJ	ds	NBPERSOBJ	; 
+ADR	ds	NBSALLE	; on met les indexes des salles pour les images
+C	ds	NBCONDITIONS	; toutes les conditions
+P	ds	NBPOINTEURS	; toutes les "énigmes"
 
 FIN_DATA
 

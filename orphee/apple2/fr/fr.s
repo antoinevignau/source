@@ -24,7 +24,12 @@ strPORTERIEN	asc	'Je ne porte rien'00
 strAUCUN	asc	'AUCUN'00
 strOBJETSPRESENTS asc	'OBJETS PRESENTS :'0d00
 strOBJETSPORTES	asc	'OBJETS PORTES :'0d00
-	asc	'ERREUR DE CHARGEMENT'00
+strLOAD	asc	'Charger quelle partie (1-9) ? '00
+strSAVE	asc	'Enregistrer sous quelle partie (1-9) ? '00
+strLOADNOTOK	asc	'ERREUR DE CHARGEMENT'00
+strSAVENOTOK	asc	'ERREUR D'27'ENREGISTREMENT'00
+strLOADOK	asc	'Partie charg'8e'e...'00
+strSAVEOK	asc	'Partie enregistr'8e'e...'00
 strPBGRAMMAIRE	asc	'Erreur grammaticale'00
 strPBCOMPRENDRE	asc	'Je ne comprends pas '00
 	asc	'Soyez plus pr'8e'cis'00
@@ -619,7 +624,7 @@ DE$115	asc	'OUF! UNE SORTIE A L'27'OUEST'00
 
 NBREPONSE	=	229
 
-REPONSE$	
+MESSAGE$	
 RE$1	asc	'VOUS AVEZ SOIF, VOUS VIDEZ VOTRE GOURDE D'27'UN TRAIT'00
 RE$2	asc	'VOUS N'27'AVEZ RIEN A BOIRE, VOUS MOURREZ DE SOIF.'00
 RE$3	asc	'YURK A SOIF, IL VIDE LA GOURDE!'00

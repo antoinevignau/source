@@ -26,7 +26,7 @@ LEN_WORD	=	5	; but limit to 4
 
 NBCONDITIONS	=	26
 NBPOINTEURS	=	67
-MAXPORTES	=	6	; pas plus de 6 objets
+MAXPORTES	=	7	; pas plus de 7 objets
 
 iSUJET	=	1	; 
 iVERBE	=	2	; 
@@ -224,7 +224,7 @@ DEPA2_1	@CLS	#wINVENTAIRE
 	cmp	SALLE
 	beq	IMPRIM
 DEPA2_2	inx
-	cpx	#NBPERSSAL
+	cpx	#NBPERSONNAGE
 	bcc	]lp
 	beq	]lp
 	rep	#$20
@@ -1763,16 +1763,16 @@ ACTIONO	jsr	getCONDITION
 
 *---------- P - POSE PERSONNAGE ET OBJET
 
-ACTIONP	jsr	getCONDITION	; DEBUG - A vérifier
+ACTIONP	jsr	getCONDITION
 	tax
 	sep	#$20
 	lda	SALLE
-	sta	PERSSAL-1,x
+	sta	PERSSAL-1,x	; pose le personnage
 	
-	lda	PERSOBJ-1,x
+	lda	PERSOBJ-1,x	; prend l'index de l'objet
 	tax
 	lda	SALLE
-	sta	PERSOBJ-1,x
+	sta	OBJSAL-1,x	; pose l'objet dans la salle
 	rep	#$20
 	clc
 	rts
@@ -1791,7 +1791,41 @@ ACTIONQ	jsr	getCONDITION
 
 *---------- R - DONNER UN OBJET A UN PERSONNAGE
 
-ACTIONR	rts
+ACTIONR	jsr	getCONDITION
+	tax		; index de personnage
+	lda	PERSOBJ-1,x
+	and	#$ff
+	sta	N	; l'objet qu'il porte
+	
+	jsr	getCONDITION
+	tay		; index de l'objet
+	cmp	N	; même index ?
+	bne	ACTIONR_1	; non
+	jmp	AIDEJA	; oui, le perso le porte déjà
+ACTIONR_1	lda	N	; est-ce un objet ?
+	cmp	#FALSE
+	beq	ACTIONR_2	; non, vide
+	jmp	DEJAUN	; oui, le porte porte déjà un objet
+
+ACTIONR_2	lda	OBJSAL-1,y	; est-ce que l'objet est en salle ?
+	and	#$ff
+	cmp	SALLE	; oui
+	beq	ACTIONR_4
+	cmp	#TRUE	; ou le porte-t-on ?
+	beq	ACTIONR_3	; oui
+	jmp	PASICI	; non, erreur
+ACTIONR_3	dec	NBOBJ	; si on porte, on le retire
+
+ACTIONR_4	sep	#$20
+	lda	SALLE	; le personnage reçoit la salle
+	sta	PERSSAL-1,x	; et l'index de l'objet
+	tya
+	sta	PERSOBJ-1,x
+	lda	SALLE	; et aussi l'objet dans la salle
+	sta	OBJSAL-1,y
+	rep	#$20
+	clc
+	rts
 
 *---------- S - RETIRER UN OBJET A UN PERSONNAGE ET POSE LE EN SALLE
 
@@ -2105,14 +2139,10 @@ INIT_ALL	sep	#$20
 	dex
 	bne	]lp
 
-	ldx	#NBPERSSAL	; reset PERSSAL table
+	ldx	#NBPERSONNAGE	; reset PERSSAL table
 ]lp	lda	refPERSSAL-1,x
 	sta	PERSSAL-1,x
-	dex
-	bne	]lp
-
-	ldx	#NBPERSOBJ	; reset PERSOBJ table
-]lp	lda	refPERSOBJ-1,x
+	lda	refPERSOBJ-1,x
 	sta	PERSOBJ-1,x
 	dex
 	bne	]lp
@@ -2300,12 +2330,12 @@ NL	ds	2
 SLOT$	ds	2	; slot de load/save + trailing 00
 
 MOT
-SUJET	ds	1	; 1
-VERBE	ds	1	; 2
-ARTICLE	ds	1	; 3
-COD	ds	1	; 4
-ADJECTIF	ds	1	; 5
-ATTRIBUT	ds	1	; 6
+SUJET	ds	2	; 1
+VERBE	ds	2	; 2
+COD	ds	2	; 4
+ARTICLE	ds	2	; 3
+ADJECTIF	ds	2	; 5
+ATTRIBUT	ds	2	; 6
 
 gotATTRIBUT	ds	2	; on a déjà trouvé un attribut
 endMOTS	ds	2	; plus de mots si TRUE
@@ -2323,8 +2353,8 @@ DEBUT_DATA
 SALLE	ds	2
 NBOBJ	ds	2
 OBJSAL	ds	NBOBJET	; dans quelle salle se trouve l'objet d'index X
-PERSSAL	ds	NBPERSSAL	; dans quelle salle se trouve le personnage d'index X
-PERSOBJ	ds	NBPERSOBJ	; 
+PERSSAL	ds	NBPERSONNAGE	; dans quelle salle se trouve le personnage d'index X
+PERSOBJ	ds	NBPERSONNAGE	; l'objet possédé par un personnage
 ADR	ds	NBSALLE	; on met les indexes des salles pour les images
 C	ds	NBCONDITIONS	; toutes les conditions
 P	ds	NBPOINTEURS	; toutes les "énigmes"

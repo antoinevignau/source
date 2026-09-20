@@ -142,39 +142,3 @@
 11320         INC  HL		; ptr++
 11330         CP   (HL)		; compare with A
 11340         RET
-
-* Action R - Donne un objet à un personnage
-
-13680 ACTIOr: LD   HL,#81BB	; pose un objet
-13690         ADD  HL,BC
-13700         LD   A,(HL)	; 81BB,x
-13701         EX   DE,HL	; échange
-13702         POP  BC		; récup dans BC
-13703         POP  HL		; récup dans HL
-13704         INC  HL		; +1
-13705         PUSH HL		; repousse
-13706         PUSH BC
-13707         LD   C,(HL)	; quel est l'objet que je porte ?
-13708         CP   C		; le même ?
-13709         JP   Z,AIDEJA	; JE L'AI DEJA
-13710         CP   0		; aucun
-13720         JP   NZ,DEJAUN	; si, mais JE NE PORTE PAS PLUS D'UN OBJET
-13740         LD   HL,#8190	; quels sont les objets en salle ?
-13745         LD   B,0
-13750         ADD  HL,BC
-13755         LD   (#83E4),HL	; sauve le pointeur
-13760         LD   A,(HL)	; prend la valeur
-13770         CP   (IY+0)	; SALLE
-13780         JR   Z,ACTIr1	; même salle
-13790         CP   255		; on l'a ?
-13800         JP   NZ,PASICI	; non, pas ici
-13801         LD   HL,NBOBJ	; oui, retire l'objet
-13802         DEC  (HL)
-
-13900 ACTIr1: EX   DE,HL	; récup l'adresse
-13910         LD   (HL),C	; pose l'objet
-13920         LD   A,(IY+0)	; récupère la salle
-13940         LD   HL,(#83E4)	; récupère l'adresse
-13950         LD   (HL),A	; sauve la salle
-13960         AND  A		; zéro
-13970         RET		; retour

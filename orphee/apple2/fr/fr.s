@@ -111,24 +111,19 @@ OB$31	asc	'UNE LOUPE GEANTE'00
 
 NBPERSONNAGE	=	9
 
-NBPERSSAL	=	9
-
 refPERSSAL	dfb	054,003,056,029,099,100,065,019,106	; Miniu la socière (index 2) est dans la salle 3
-
-NBPERSOBJ	=	11
-
-refPERSOBJ	dfb	000,000,004,000,000,021,000,000,000,000,000
-
+refPERSOBJ	dfb	000,004,000,000,021,000,000,000,000	; Yurk (index 1), de la salle 54, n'a pas d'objet
+					; Bellus (index 5) de la salle 99, a un oeil de verre
 PERSONNAGE$
-PE$1	asc	'YURK LE DRAGON'00
-PE$2	asc	'MINIU LA SORCIERE'00
-PE$3	asc	'YOP LE DEMON'00
-PE$4	asc	'DRIFUS LE SAGE'00
-PE$5	asc	'BELLUS LA DEESSE'00
-PE$6	asc	'BILLY LE GUIDE'00
-PE$7	asc	'SATAN'00
-PE$8	asc	'LE GARDIEN'00
-PE$9	asc	'L'27'ARAIGNEE GEANTE'00
+PE$1	asc	'YURK LE DRAGON'00	;  54  0
+PE$2	asc	'MINIU LA SORCIERE'00	;   3  4 = clé en rubis, 3 = harpe
+PE$3	asc	'YOP LE DEMON'00	;  56  0
+PE$4	asc	'DRIFUS LE SAGE'00	;  29  0
+PE$5	asc	'BELLUS LA DEESSE'00	;  99 21 = oeil de verre, 22 = bague
+PE$6	asc	'BILLY LE GUIDE'00	; 100  0
+PE$7	asc	'SATAN'00		;  65  0, 13 = épée
+PE$8	asc	'LE GARDIEN'00		;  19  0
+PE$9	asc	'L'27'ARAIGNEE GEANTE'00	; 106  0
 
 *
 * Les adjectifs

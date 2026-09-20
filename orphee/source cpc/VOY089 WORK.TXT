@@ -1,44 +1,3 @@
-
-* Vérifie ce qu'il y a à faire (action/condition)
-
- 3430 VERIFI: LD   HL,#73F0	; ptr COND.BIN
- 3440         LD   IX,#84A9	; index sujet/verbe
- 3450         LD   IY,SALLE	; la salle
- 3460 VERIF1: LD   DE,#8190	; OBJSAL
- 3470         LD   A,(HL)
- 3480         CP   97		; si val ptr < 97
- 3490         JP   P,VERIF3	; alors VERIF3
- 3500         INC  HL		; ptr++
- 3510         LD   C,(HL)	; met en C
- 3520         CALL TESTCO	; teste les conditions
- 3530         JR   NZ,VERIF2	; result <> 0, saute
- 3540         INC  HL		; sinon ptr++
- 3550         JR   VERIF1	; boucle
- 3560 VERIF2: INC  HL		; ptr++
- 3570         LD   A,(HL)	; charge valeur
- 3580         CP   255		; fin de ligne ?
- 3590         JR   NZ,VERIF2	; non, boucle
- 3600 VERIF4: INC  HL		; ptr++
- 3610         LD   A,254	; fin de tableau ?
- 3620         CP   (HL)
- 3630         JR   NZ,VERIF1	; non, boucle haute
- 3640         RET		; retourne
- 3650 VERIF3: INC  HL		; ptr++
- 3660         LD   C,(HL)	; met la valeur en C
- 3670         PUSH HL		; sauve HL
- 3680         LD   B,0		; B=0
- 3690         CALL TESTAC	; teste les actions
- 3700         POP  HL		; restaure
- 3710         JR   NC,VERIF5	; pas de carry set, alors verif5
- 3720         POP  HL		; sinon, pull encore...
- 3730         EX   DE,HL	; échange les valeurs
- 3740         JP   (HL)		; et saute !
- 3750 VERIF5: INC  HL		; ptr++
- 3760         LD   A,(HL)	; charge la valeur
- 3770         CP   255		; fin ?
- 3780         JR   NZ,VERIF3	; non, boucle
- 3790         JR   VERIF4	; oui, continue
-
 * L'analyse des mots
 
  9430 ANALYS: LD   HL,#56A0	; la table des actions
@@ -75,61 +34,7 @@
  9740         CP   99		; non pertinent
  9750         JR   Z,CONDIT
  9760         LD   (IX-2),1	; on a trouvé, met le flag
- 9770 NOUVEL: INC  HL		; pointeur++
- 9780         LD   A,(HL)	; prend la valeur
- 9790         CP   255		; est-ce 255 ?
- 9800         JR   NZ,NOUVEL	; non, boucle
- 9810 FIN:    INC  HL		; oui, prend le prochain byte
- 9820         LD   A,254	; compare avec 254
- 9830         CP   (HL)
- 9840         JR   NZ,MOTS	; non, change de mot
- 9850 IMPOSS: LD   HL,#7EA0	; fin, affiche IMPOSSIBLE
- 9860         LD   A,1
- 9870         CP   (IX-2)
- 9880         JP   NZ,AFFIC0
- 9890         XOR  A
- 9900         CP   (IX+1)
- 9910         JP   Z,AFFIC0
- 9920         LD   HL,#7F97	; SOYEZ PLUS PRECIS
- 9930         JP   AFFIC0
 
-* On a trouvé une action, on vérifie maintenant les conditions
-
- 9940 CONDIT: LD   DE,#8190
- 9945         LD   (IX-2),0	; flag à 0
- 9950         INC  HL		; ptr action++
- 9960         LD   A,(HL)	; charge valeur
- 9970         CP   97		; est-ce 97 ? ($61 = a)
- 9980         JP   P,ACTION	; < go action
- 9990         INC  HL		; sinon teste
-10000         LD   C,(HL)	; met en C la valeur
-10010         CALL TESTCO	; gère la condition
-10020         JR   NZ,NOUVEL	; si different, on passe à la suivante
-10030         JR   CONDIT	; sinon, on boucle sur la même
-10040 TESTCO: CP   "A"		; gère les différentes conditions
-10050         JR   Z,CONDA
-10060         CP   "B"
-10070         JR   Z,CONDB
-10080         CP   "C"
-10090         JR   Z,CONDC
-10100         CP   "D"
-10110         JR   Z,CONDD
-10120         CP   "E"
-10130         JR   Z,CONDE
-10140         CP   "F"
-10150         JR   Z,CONDF
-10160         CP   "G"
-10170         JR   Z,CONDG
-10180         CP   "H"
-10190         JR   Z,CONDH
-10200         CP   "I"
-10210         JP   Z,CONDI
-10220         CP   "J"
-10230         JP   Z,CONDJ
-10240         CP   "K"
-10250         JP   Z,CONDK
-10260         CP   "L"
-10270         JP   Z,CONDL
 10280 CONDM:  PUSH HL		; sauve HL
 10290         LD   HL,#81BB	; 81BB,x	PERSOBJ
 10300         LD   B,0
@@ -238,75 +143,7 @@
 11330         CP   (HL)		; compare with A
 11340         RET
 
-* Action S - Prend un objet porté dans la salle
-
-12560 ACTIOs: LD   HL,#81BB	; pose objet porte dans salle
-12570         ADD  HL,BC
-12580         LD   A,(HL)
-12590         CP   0		; a-t-on l'objet ?
-12600         JP   Z,PASOBJ	; non, saute
-12610         LD   (HL),0	; libère le
-12620         LD   C,A
-12630         LD   A,(SALLE)
-12640         LD   HL,#8190	; OBJSAL,x = SALLE
-12650         ADD  HL,BC
-12660         LD   (HL),A
-12670         AND  A
-12680         RET
-
-* Action B - Prend un objet
-
-12690 ACTIOb: LD   HL,#8190	; prend un objet
-12700         ADD  HL,BC
-12710         LD   A,(HL)
-12720         CP   255		; a-t-on deja l'objet ?
-12730         JP   Z,DEJOBJ	; oui
-12740         CP   (IY+0)	; dispo dans la salle ?
-12750         JP   NZ,PASICI	; non
-12760         LD   A,(NBOBJ)	; on ne peut pas porter
-12770         CP   6		; plus de 6 objets
-12780         JP   P,TROOBJ
-12790         LD   (HL),255	; prend l'objet
-12800         LD   HL,NBOBJ	; nbobj++
-12810         INC  (HL)
-12820         CALL RETOBJ	; assure la prise
-12830         AND  A
-12840         RET
-
-* Action C - Dépose un objet
-
-12850 ACTIOc: LD   HL,#8190	; dépose un objet
-12860         ADD  HL,BC
-12870         LD   A,(HL)
-12880         CP   255		; a-t-on deja l'objet ?
-12890         JP   NZ,NOOBJ	; non, ON NE PEUT PAS POSER
-12900         LD   A,(SALLE)
-12910         LD   (HL),A	; OBJSAL,X = SALLE
-12920         LD   HL,NBOBJ
-12930         DEC  (HL)		; NBOBJ--
-12940         AND  A
-12950         RET
-
-* Action O - Pose un objet dans la salle
-
-13480 ACTIOo: LD   HL,#8190	; pose objet dans la salle
-
-13490 ACTIo1: ADD  HL,BC	; pose objet ou personnage
-13500         LD   A,(SALLE)
-13510         LD   (HL),A
-13520         AND  A
-13530         RET
-
-* Action P - Pose un personnage et un objet dans la salle
-
-13540 ACTIOp: LD   HL,#81B0	; pose personnage dans la salle
-13550         CALL ACTIo1
-13560         LD   HL,#81BB	; et les objets
-13570         ADD  HL,BC
-13580         LD   C,(HL)
-13590         JR   ACTIOo
-
-* Action R - Pose un objet de personnage
+* Action R - Donne un objet à un personnage
 
 13680 ACTIOr: LD   HL,#81BB	; pose un objet
 13690         ADD  HL,BC
@@ -341,19 +178,3 @@
 13950         LD   (HL),A	; sauve la salle
 13960         AND  A		; zéro
 13970         RET		; retour
-
-16880 PASICI: LD   HL,#7FCA	; JE NE VOIS PAS CELA ICI
-16890         JP   NOO1
-16900 RETOBJ: LD   HL,#81BB	; les objets portes
-16910         LD   B,0
-16920 RETOB2: LD   A,(HL)	; prend l'index de l'objet
-16930         CP   C		; est-ce celui en question ?
-16940         JR   Z,RETOB1	; oui
-16950         INC  HL		; non, continue
-16960         INC  B
-16970         LD   A,8		; jusqu'à 8
-16980         CP   B		; (pourtant on ne peut porter que 6 objets)
-16990         JR   NZ,RETOB2	; boucle
-17000         RET		; fin
-17010 RETOB1: LD   (HL),0	; efface l'objet porté
-17020         RET

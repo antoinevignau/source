@@ -26,6 +26,7 @@ LEN_WORD	=	5	; but limit to 4
 
 NBCONDITIONS	=	26
 NBPOINTEURS	=	67
+MAXPORTES	=	6	; pas plus de 6 objets
 
 iSUJET	=	1	; 
 iVERBE	=	2	; 
@@ -378,11 +379,44 @@ CHERC_2	tya		; return the pointer
 	rts
 
 *-----------------------------------
+* RETOBJ
+*-----------------------------------
+
+RETOBJ	txa
+	sep	#$20
+	ldy	#1
+]lp	cmp	PERSOBJ-1,y
+	beq	RETOBJ_1
+	inx
+	cpx	#8
+	bcc	]lp
+	beq	]lp
+	rep	#$20
+	rts
+	
+	mx	%10
+
+RETOBJ_1	lda	#FALSE
+	sta	PERSOBJ-1,x
+	rep	#$20
+	rts
+
+*-----------------------------------
+* PASICI
+*-----------------------------------
+
+PASICI	@PRINT	#wMESSAGE;#strPASICI
+	bra	OBJ_EXIT
+	
+*-----------------------------------
 * NOOBJ
 *-----------------------------------
 * Vous ne pouvez pas poser ce que vous n'avez pas
 
 NOOBJ	@PRINT	#wMESSAGE;#strNOTOWNED
+
+OBJ_EXIT	lda	#DEPA2
+	sec
 	rts
 
 *-----------------------------------
@@ -391,7 +425,7 @@ NOOBJ	@PRINT	#wMESSAGE;#strNOTOWNED
 * Vous ne pouvez pas porter tant
 
 TROOBJ	@PRINT	#wMESSAGE;#strTROPPORTER
-	rts
+	bra	OBJ_EXIT
 
 *-----------------------------------
 * DEJOBJ
@@ -399,7 +433,7 @@ TROOBJ	@PRINT	#wMESSAGE;#strTROPPORTER
 * Vous l'avez déjà
 
 DEJOBJ	@PRINT	#wMESSAGE;#strVOUSLAVEZ
-	rts
+	bra	OBJ_EXIT
 
 *-----------------------------------
 * DEJAUN
@@ -407,7 +441,7 @@ DEJOBJ	@PRINT	#wMESSAGE;#strVOUSLAVEZ
 * Je ne porte pas plus d'un objet
 
 DEJAUN	@PRINT	#wMESSAGE;#strPASPLUS
-	rts
+	bra	OBJ_EXIT
 
 *-----------------------------------
 * PASOBJ
@@ -415,7 +449,7 @@ DEJAUN	@PRINT	#wMESSAGE;#strPASPLUS
 * Je ne porte rien
 
 PASOBJ	@PRINT	#wMESSAGE;#strPORTERIEN
-	rts
+	bra	OBJ_EXIT
 
 *-----------------------------------
 * AIDEJA
@@ -423,7 +457,7 @@ PASOBJ	@PRINT	#wMESSAGE;#strPORTERIEN
 * Je l'ai déjà
 
 AIDEJA	@PRINT	#wMESSAGE;#strAIDEJA
-	rts
+	bra	OBJ_EXIT
 
 *-----------------------------------
 * FINDMO
@@ -621,8 +655,32 @@ showBORDER	sep	#$20
 
 VERIFI	lda	#TBLCONDITIONS
 	sta	dpCONDITIONS
-		
+
+	jsr	getCONDITION
+VERIFI_1	cmp	#'a'	; teste une action
+	bcs	VERIFI_3	; oui
+	
+	jsr	TESTCO	; non une action, "A".."Z"
+	bcc	VERIFI_1
+
+VERIFI_2	jsr	getCONDITION	; erreur, boucle
+	cmp	#chrEOL	; jusqu'à la fin
+	bne	VERIFI_2	; de la ligne
+	
+VERIFI_4	jsr	getCONDITION	; prend la nouvelle
+	cmp	#chrEOT	; valeur et sort si
+	bne	VERIFI_1	; fin de table
 	rts
+
+VERIFI_3	jsr	TESTAC	; "a".."z"
+	bcc	VERIFI_5
+	sta	VERIFI_31+1
+VERIFI_31	jmp	RETURN
+
+VERIFI_5	jsr	getCONDITION
+	cmp	#chrEOL
+	bne	VERIFI_3
+	beq	VERIFI_4
 
 *-----------------------------------
 * RETROU
@@ -1204,23 +1262,97 @@ CLEARW	rts
 
 ANALYS	lda	#TBLANALYSE
 	sta	dpANALYSE
-	rts
+
+MOTS
+
+MOTS_5	lda	#TRUE
+	sta	DRAP
+
+*----------
+
+NOUVEL	jsr	getCONDITION
+	cmp	#chrEOL
+	bne	NOUVEL
+	
+*----------
+
+FIN	jsr	getCONDITION
+	cmp	#chrEOT
+	bne	MOTS
 
 *---------- 
 
-IMPOSS
+IMPOSS	lda	DRAP
+	cmp	#TRUE
+	beq	IMPOSS_2
+IMPOSS_1	@PRINT	#wMESSAGE;#strIMPOSSIBLE
+	rts
+
+IMPOSS_2	lda	DRAP
+	eor	DRAP
+	cmp	VERBE
+	beq	IMPOSS_1
+	@PRINT	#wMESSAGE;#strPLUSPRECIS
+	rts
 
 *-----------------------------------
 * CONDIT
 *-----------------------------------
 
-CONDIT
+CONDIT	jsr	getCONDITION
+	cmp	#'a'	; est-ce une action ?
+	bcs	CONDIT_2	; oui
+	
+CONDIT_1	jsr	TESTCO
+	bcc	CONDIT	; on boucle si OK
+	jmp	NOUVEL	; sinon, on sort
+
+CONDIT_2	jmp	ACTION
+
+*---------- 
+
+TESTCO	cmp	#'A'
+	bne	TESTCO_2
+	jmp	CONDA
+TESTCO_2	cmp	#'B'
+	bne	TESTCO_3
+	jmp	CONDB
+TESTCO_3	cmp	#'C'
+	bne	TESTCO_4
+	jmp	CONDC
+TESTCO_4	cmp	#'D'
+	bne	TESTCO_5
+	jmp	CONDD
+TESTCO_5	cmp	#'E'
+	bne	TESTCO_6
+	jmp	CONDE
+TESTCO_6	cmp	#'F'
+	bne	TESTCO_7
+	jmp	CONDF
+TESTCO_7	cmp	#'G'
+	bne	TESTCO_8
+	jmp	CONDG
+TESTCO_8	cmp	#'H'
+	bne	TESTCO_9
+	jmp	CONDH
+TESTCO_9	cmp	#'I'
+	bne	TESTCO_10
+	jmp	CONDI
+TESTCO_10	cmp	#'J'
+	bne	TESTCO_11
+	jmp	CONDJ
+TESTCO_11	cmp	#'K'
+	bne	TESTCO_12
+	jmp	CONDK
+TESTCO_12	cmp	#'L'
+	bne	TESTCO_13
+	jmp	CONDL
+TESTCO_13	cmp	#'M'
+	bne	TESTCO_14
+	jmp	CONDM
+TESTCO_14	clc
 	rts
 	
-*----------  
-
-TESTCO
-
 *-----------------------------------
 * TOUTES LES CONDITIONS
 *-----------------------------------
@@ -1480,20 +1612,54 @@ LISTE_1	inc	IX	; prochain objet
 
 	lda	DRAP	; on sort, a-t-on
 	cmp	#FALSE	; trouvé un objet ?
-	beq	AUCUN	; non
-	rts		; oui
+	bne	AUCUN_1	; oui
 
-AUCUN	@PRINT	#wINVENTAIRE;#strAUCUN
+	@PRINT	#wINVENTAIRE;#strAUCUN
+
+AUCUN_1	clc
 	rts
 
-*---------- B - 
+*---------- B - PREND UN OBJET
 
-ACTIONB	clc
+ACTIONB	jsr	getCONDITION
+	tax
+	lda	OBJSAL-1,x
+	and	#$ff
+	cmp	#TRUE
+	bne	ACTIONB_1
+	jmp	DEJOBJ
+ACTIONB_1	cmp	SALLE
+	beq	ACTIONB_2
+	jmp	PASICI
+ACTIONB_2	lda	NBOBJ
+	cmp	#MAXPORTES
+	bcc	ACTIONB_3
+	beq	ACTIONB_3
+	jmp	TROOBJ
+ACTIONB_3	sep	#$20
+	lda	#TRUE
+	sta	OBJSAL-1,x
+	inc	NBOBJ
+	rep	#$20
+	jsr	RETOBJ
+	clc
 	rts
 
-*---------- C - 
+*---------- C - POSER UN OBJET POSSEDE DANS LA SALLE COURANTE
 
-ACTIONC	clc
+ACTIONC	jsr	getCONDITION
+	tax
+	lda	OBJSAL-1,x
+	and	#$ff
+	cmp	#TRUE
+	beq	ACTIONC_1
+	jmp	NOOBJ
+ACTIONC_1	sep	#$20
+	lda	SALLE
+	sta	OBJSAL-1,x
+	rep	#$20
+	dec	NBOBJ
+	clc
 	rts
 
 *---------- D - AFFICHE UNE DESCRIPTION
@@ -1584,14 +1750,31 @@ ACTIONN	lda	#MORT
 	sec
 	rts
 
-*---------- O - 
+*---------- O - POSE UN OBJET DANS LA SALLE COURANTE (CREATION)
 
-ACTIONO	clc
+ACTIONO	jsr	getCONDITION
+	tax
+	sep	#$20
+	lda	SALLE
+	sta	OBJSAL-1,x
+	rep	#$20
+	clc
 	rts
 
-*---------- P - 
+*---------- P - POSE PERSONNAGE ET OBJET
 
-ACTIONP	clc
+ACTIONP	jsr	getCONDITION	; DEBUG - A vérifier
+	tax
+	sep	#$20
+	lda	SALLE
+	sta	PERSSAL-1,x
+	
+	lda	PERSOBJ-1,x
+	tax
+	lda	SALLE
+	sta	PERSOBJ-1,x
+	rep	#$20
+	clc
 	rts
 
 *---------- Q - DETRUIT PERSONNAGE ET OBJET M
@@ -1606,13 +1789,27 @@ ACTIONQ	jsr	getCONDITION
 	clc
 	rts
 
-*---------- R - 
+*---------- R - DONNER UN OBJET A UN PERSONNAGE
 
 ACTIONR	rts
 
-*---------- S - 
+*---------- S - RETIRER UN OBJET A UN PERSONNAGE ET POSE LE EN SALLE
 
-ACTIONS	clc
+ACTIONS	jsr	getCONDITION
+	tax
+	lda	PERSOBJ-1,x
+	and	#$ff
+	cmp	#FALSE
+	bne	ACTIONS_1
+	jmp	PASOBJ
+ACTIONS_1	sep	#$20
+	tay
+	lda	#FALSE
+	sta	PERSOBJ-1,x
+	lda	SALLE
+	sta	OBJSAL-1,y
+	rep	#$20
+	clc
 	rts
 
 *---------- T - SAUVE UNE PARTIE
@@ -2094,18 +2291,13 @@ WORDBUFFER	ds	MAX_LEN+1
 
 *--- Données diverses
 
-SLOT$	ds	2	; slot de load/save + trailing 00
-*A1	ds	2
-*A2	ds	2	; $400
-BREAK	ds	2
-E	ds	2
-G	ds	2
-H	ds	2
-HH	ds	2
-I	ds	2
+DRAP	ds	2
 IX	ds	2
 IY	ds	2
 IZ	ds	2
+N	ds	2
+NL	ds	2
+SLOT$	ds	2	; slot de load/save + trailing 00
 
 MOT
 SUJET	ds	1	; 1
@@ -2124,20 +2316,12 @@ TEXT_X	ds	2	; index dans TEXTBUFFER
 fgSOMBRE	ds	2
 L81BC	ds	2
 
-N	ds	2
-NL	ds	2
-OK	ds	2
-PP	ds	2
-S	ds	2	; parce qu'on l'utilise en 16-bits aussi
-NBOBJ	ds	2
-DRAP	ds	2
-T	ds	2
-
 *--- Données du jeu
 
 DEBUT_DATA
 
 SALLE	ds	2
+NBOBJ	ds	2
 OBJSAL	ds	NBOBJET	; dans quelle salle se trouve l'objet d'index X
 PERSSAL	ds	NBPERSSAL	; dans quelle salle se trouve le personnage d'index X
 PERSOBJ	ds	NBPERSOBJ	; 
@@ -2148,8 +2332,6 @@ P	ds	NBPOINTEURS	; toutes les "énigmes"
 FIN_DATA
 
 *--- The lazy decimal to hexadecimal conversion
-
-tblD2H	dfb	0,10,20,30,40,50,60,70,80,90
 
 indexCPC	dfb	20,04,21,28,24,29,12,05,13,22
 	dfb	06,23,30,00,31,14,07,15,18,02

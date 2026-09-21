@@ -1,0 +1,125 @@
+
+* Déchiffre la chaîne saisie
+
+ 4340 DCRIPT: CALL ZERO		; efface les index des mots
+ 4350         LD   IY,#84A4	; IY $84A4
+ 4360         LD   HL,#846C	; HL $846C buffer clavier
+ 4370 DCRIP1: PUSH HL
+ 4380         LD   IX,#849E	; IX $849E
+ 4390         CALL SPACE	; efface la zone MOT
+ 4400         POP  HL
+ 4410         CALL NEXTMO	; cherche le prochain mot
+ 4420         LD   A,endMOTS	; est-on en fin de 
+ 4430         CP   1	; buffer clavier ?
+ 4440         JR   Z,TEST	; oui, teste le
+ 4450         LD   B,5	; len = 5
+ 4460 DCRIP2: LD   A,(HL)	; $846C et après
+ 4470         CP   0		; on arrive à 0 ?
+ 4480         JR   NZ,DCRIP3	; non, saute
+ 4490         LD   endMOTS,1	; met le flag à 1
+ 4500         JR   TESTMO	; teste le mot trouve
+ 4510 DCRIP3: LD   (IX+0),A	; regarde le caractère en $849E++
+ 4520         CP   39		; apostrophe
+ 4530         JR   Z,TESTMO	; oui, saute
+ 4540         CP   32		; ou espace
+ 4550         JR   Z,TESTMO	; oui, saute
+ 4560         INC  HL		; ptr++
+ 4570         INC  IX
+ 4580         DJNZ DCRIP2	; on boucle sur 5 caractères
+ 4590         DEC  HL		; ptr--
+
+* 1 sujet
+* 2 verbe
+* 3 COD
+* 4 adjectif
+* 5 attribut
+* 6 article
+
+ 4600 TESTMO: PUSH DE		; sauve les pointeurs
+ 4610         PUSH HL
+ 4620         CALL RETROU	; cherche le mot parmi les 5 tables
+ 4630         POP  HL
+ 4640         POP  DE
+ 4650         CP   0		; retour à 0 ?
+ 4660         JP   Z,PACAPI	; oui, on n'a pas compris
+ 4670         LD   C,A		; en A, l'index
+ 4680         LD   A,B		; en B, le type (1..6)
+ 4690         INC  nbMOTS	; on a trouve qqch
+ 4700         CP   6		; est-ce un article ?
+ 4710         JR   NZ,DCRIP4	; non, saute
+ 4720         LD   A,1		; est-on en fin de chaine ?
+ 4730         CP   endMOTS
+ 4740         JR   NZ,DCRIP9	; non, travaille
+ 4750         JP   SYNERR	; oui, erreur
+ 4760 DCRIP4: CP   5		; est-ce un attribut ?
+ 4770         JR   NZ,DCRIP5	; non, saute
+ 4780         LD   A,1
+ 4790         CP   endMOTS	; est-on en fin de chaine ?
+ 4800         JR   Z,SYNERR	; oui, erreur de syntaxe
+ 4810         CP   fgATTR	; un attribut deja ?
+ 4820         JR   Z,SYNERR	; oui, erreur
+ 4830         LD   fgATTR,A
+ 4840         JP   DCRIP9
+ 4850 DCRIP5: CP   2		; est-ce un verbe ?
+ 4860         JR   NZ,DCRIP6	; non, saute
+ 4870         LD   A,1		; a-t-on deja un attribut ?
+ 4880         CP   fgATTR
+ 4890         JR   Z,SYNERR	; oui, erreur
+ 4900         LD   A,VERBE	; a-t-on deja un verbe ?
+ 4910         CP   0
+ 4920         JR   NZ,SYNERR	; oui, erreur
+ 4930         LD   VERBE,C	; sauve l'index
+ 4940 DCRFIN: LD   A,1		; est-on en fin de chaine ?
+ 4950         CP   endMOTS
+ 4960         JP   NZ,DCRIP9	; non
+ 4970         RET		; oui
+ 4980 DCRIP6: CP   4		; est-ce un adjectif ?
+ 4990         JR   NZ,DCRIP7	; non, saute
+ 5000         LD   A,ADJECTIF	; a-t-on deja un adjectif ?
+ 5010         CP   0
+ 5020         JR   NZ,SYNERR	; oui, erreur
+ 5030         LD   ADJECTIF,C	; non, sauve
+ 5040         JR   DCRFIN	; boucle
+ 5050 DCRIP7: CP   3		; un COD ?
+ 5060         JR   NZ,DCRIP8	; non, saute
+ 5070         LD   A,fgATTR	; a-t-on un attribut ?
+ 5080         CP   1
+ 5090         JR   NZ,DCRCOD	; non, continue
+ 5100 DCRCA:  LD   A,ATTRIBUT	; a-t-on un attribut ou article ? CHECK
+ 5110         CP   0
+ 5120         JR   NZ,SYNERR	; oui, erreur
+ 5130         LD   ATTRIBUT,C	; sauve le COD
+ 5140         LD   fgATTR,0	; reset flag attribut
+ 5150         JR   DCRFIN	; boucle
+ 5160 DCRCOD: LD   A,COD	; a-t-on un COD ?
+ 5170         CP   0
+ 5180         JR   NZ,SYNERR	; oui, erreur
+ 5190         LD   COD,C	; sauve
+ 5200         JR   DCRFIN
+ 5210 DCRIP8: CP   nbMOTS
+ 5220         JR   Z,DCRSUJ
+ 5230         CP   fgATTR
+ 5240         JR   NZ,DCRCOD
+ 5250         JR   DCRCA
+ 5260 DCRSUJ: LD   A,SUJET	; a-t-on deja un sujet ?
+ 5270         CP   0
+ 5280         JR   NZ,SYNERR	; oui, erreur
+ 5290         LD   SUJET,C	; sauve
+ 5300         JR   DCRFIN	; boucle
+ 5310 SYNERR: LD   HL,#7F70	; ERREUR GRAMMATICALE
+ 5320         CALL AFFIC0
+ 5330         POP  HL
+ 5340         JP   DEPA3
+ 5350 NEXTMO: LD   A,(HL)	; est-on en fin de buffer clavier ?
+ 5360         CP   0
+ 5370         JR   NZ,NOFIN	; non, pas la fin
+ 5380         LD   endMOTS,1	; oui, met un 1
+ 5390         RET
+ 5400 NOFIN:  CP   32		; un espace ?
+ 5410         JR   Z,CONTMO	; oui, saute
+ 5420         PUSH HL		; non, on a trouve un autre mot
+ 5430         POP  DE		; alors, on revient
+ 5440         RET
+ 5450 CONTMO: INC  HL		; ptr++
+ 5460         JR   NEXTMO	; on boucle
+

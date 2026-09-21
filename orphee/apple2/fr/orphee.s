@@ -199,8 +199,7 @@ SOMBRE	lda	#TRUE
 
 *-----------------------------------
 
-DEPA2
-*	jsr	VERIFI
+DEPA2	jsr	VERIFI
 
 	lda	fgSOMBRE
 	cmp	#TRUE
@@ -262,11 +261,9 @@ DEPA3	jsr	GETCOM	; saisie des caracteres
 	jsr	showSALLE
 	
 	lda	SUJET
-	and	#$ff
 	cmp	#FALSE
 	bne	DEPA31	; CP 0 ... JR NZ,DEPA31
 	lda	VERBE
-	and	#$ff
 	cmp	#FALSE
 	beq	DEPA32	; CP 0 ... JR Z,DEPA32
 	cmp	#12
@@ -608,10 +605,10 @@ showSALLE	lda	SUJET
 	lda	VERBE
 	jsr	getDEBUG
 	sta	strCOMMANDE+2
-	lda	COD
+	lda	ARTICLE
 	jsr	getDEBUG
 	sta	strCOMMANDE+4
-	lda	ARTICLE
+	lda	COD
 	jsr	getDEBUG
 	sta	strCOMMANDE+6
 	lda	ADJECTIF
@@ -653,8 +650,8 @@ showBORDER	sep	#$20
 VERIFI	lda	#TBLCONDITIONS
 	sta	dpCONDITIONS
 
-	jsr	getCONDITION
-VERIFI_1	cmp	#'a'	; teste une action
+VERIFI_1	jsr	getCONDITION
+VERIFI_1BIS	cmp	#'a'	; teste une action
 	bcs	VERIFI_3	; oui
 	
 	jsr	TESTCO	; non une action, "A".."Z"
@@ -666,7 +663,7 @@ VERIFI_2	jsr	getCONDITION	; erreur, boucle
 	
 VERIFI_4	jsr	getCONDITION	; prend la nouvelle
 	cmp	#chrEOT	; valeur et sort si
-	bne	VERIFI_1	; fin de table
+	bne	VERIFI_1BIS	; fin de table
 	rts
 
 VERIFI_3	jsr	TESTAC	; "a".."z"
@@ -734,12 +731,11 @@ TEST_1	pla		; aucun !
 
 ZERO	stz	SUJET
 	stz	VERBE
+	stz	ATTRIBUT
 	stz	COD
 	stz	ARTICLE
 	stz	ADJECTIF
-	stz	ATTRIBUT
 	
-	stz	gotATTRIBUT	; on a déjà trouvé un attribut
 	stz	endMOTS	; plus de mots si TRUE
 	stz	nbMOTS	; nombre de mots trouvés
 	stz	fgATTRIBUT
@@ -785,11 +781,11 @@ TESTMO	jsr	RETROU	; cherche parmi les 5 tables
 	bne	TESTMO_1
 	jmp	PACAPI	; on n'a pas compris
 
-* A: index, X: famille
+* A/Y: index, X: type (1..6)
 
 TESTMO_1	inc	nbMOTS	; nombre de mots trouvés++
 
-	cpx	#iARTICLE
+	cpx	#iARTICLE	; 6
 	bne	DCRIPT_4
 
 	lda	endMOTS
@@ -797,19 +793,20 @@ TESTMO_1	inc	nbMOTS	; nombre de mots trouvés++
 	bne	DCRIPT_9
 	jmp	SYNERR
 
-DCRIPT_4	cpx	#iATTRIBUT
+DCRIPT_4	cpx	#iATTRIBUT	; 5
 	bne	DCRIPT_5
 	
 	lda	endMOTS
 	cmp	#TRUE
 	beq	DCRIPT_SYNERR
-	cmp	gotATTRIBUT	; IY+1
+	lda	fgATTRIBUT
+	cmp	#TRUE
 	beq	DCRIPT_SYNERR
 	lda	#TRUE
-	sta	gotATTRIBUT
+	sta	fgATTRIBUT
 	jmp	DCRIPT_9
 
-DCRIPT_5	cpx	#iVERBE
+DCRIPT_5	cpx	#iVERBE	; 2
 	bne	DCRIPT_6
 	lda	fgATTRIBUT
 	cmp	#TRUE
@@ -827,29 +824,26 @@ DCRIPT_9	jmp	DCRIPT_1
 
 DCRIPT_SYNERR	jmp	SYNERR
 
-DCRIPT_6	cpx	#iADJECTIF
+DCRIPT_6	cpx	#iADJECTIF	; 4
 	bne	DCRIPT_7
 	lda	ADJECTIF
-	and	#$ff
 	bne	SYNERR
 	sty	ADJECTIF
 	jmp	DCR_FIN
 
-DCRIPT_7	cpx	#iCOD
+DCRIPT_7	cpx	#iCOD	; 3
 	bne	DCRIPT_8
 	lda	fgATTRIBUT
 	cmp	#TRUE
 	bne	DCR_COD
 
-DCR_A	lda	ARTICLE
-	and	#$ff
+DCR_A	lda	ATTRIBUT
 	bne	SYNERR
-	sty	ARTICLE
+	sty	ATTRIBUT
 	stz	fgATTRIBUT
 	jmp	DCR_FIN
 
 DCR_COD	lda	COD
-	and	#$ff
 	bne	SYNERR
 	sty	COD
 	jmp	DCR_FIN
@@ -861,7 +855,6 @@ DCRIPT_8	cpx	nbMOTS
 	jmp	DCR_A
 
 DCR_SUJ	lda	SUJET
-	and	#$ff
 	bne	SYNERR
 	sty	SUJET
 	jmp	DCR_FIN
@@ -1023,7 +1016,7 @@ GRAPHEOK	lda	#bufIMAGE
 spLOOP	ldy	#0
 	lda	(dpFROM),y
 	and	#$ff
-	sta	theA
+	sta	theA	; soit Y, soit une commande
 	iny
 	lda	(dpFROM),y
 	and	#$ff
@@ -1034,7 +1027,7 @@ spLOOP	ldy	#0
 	sta	theC
 
 	lda	theA
-	cmp	#192	; commande %11xx_xxxx
+	cmp	#%1100_0000	; commande %11xx_xxxx
 	bcs	spOTHER
 
 	lda	#GFX_MAX_Y
@@ -1049,22 +1042,21 @@ spLOOP	ldy	#0
 *--- Gère les autres cas
 
 spOTHER	lda	theA
-	and	#%00110000
+	and	#%00110000	; 16
 	lsr
 	lsr
 	lsr
 	lsr
-	sta	theA1
+	sta	theE1
 
 	lda	theA
-	and	#%00001100
+	and	#%00001100	; 4
 	lsr
 	lsr
-	sta	theA2
+	sta	theE2
 	
 	lda	theA
 	and	#%00000011
-	sta	theA3
 	beq	spPLOT
 	cmp	#2
 	beq	spINK
@@ -1089,18 +1081,20 @@ spPLOT	lda	theC
 	jsr	PLOT_O
 	jmp	skip3
 
-spINK	lda	theB
-	sta	theINK0
-	lda	theC
-	sta	theINK1
+spINK	iny
+	lda	(dpFROM),y
+	and	#$ff
+	sta	theINK2	; ink2
 	iny
 	lda	(dpFROM),y
 	and	#$ff
-	sta	theINK2
-	iny
-	lda	(dpFROM),y
-	and	#$ff
-	sta	theINK3
+	sta	theINK3	; ink3
+	
+	@BORDER	theB
+	@INK	#0;theB	
+	@INK	#1;theC	
+	@INK	#0;theINK2	
+	@INK	#0;theINK3
 	jmp	skip5
 
 spECRIT	lda	theC
@@ -1110,6 +1104,9 @@ spECRIT	lda	theC
 	sbc	theB
 	pha
 	_MoveTo
+
+	@PAPER	#0;theE1
+	@PEN	#0;theE2
 	
 	PushWord	#0
 	_GetTextMode
@@ -1158,6 +1155,9 @@ drawEXIT	rts
 PLOT_O	PushWord	theX	; On déplace le curseur seulement
 	PushWord	theY
 	_MoveTo
+	
+	@GFXPEN	theE2
+	
 	PushWord	theX	; On trace un point
 	PushWord	theY
 	_LineTo
@@ -1174,9 +1174,9 @@ DRAW_O	PushWord	theX	; On trace une ligne
 
 resMode	=	%0001_0000000000_10
 
-FILL_O	ldx	theA1	; sets the pattern to use
-	lda	a2gsCOLOR,x
-	and	#$ff
+FILL_O	lda	theE1	; sets the pattern to use
+*	lda	a2gsCOLOR,x
+*	and	#$ff
 	asl
 	asl
 	asl
@@ -1193,8 +1193,7 @@ FILL_O	ldx	theA1	; sets the pattern to use
 	PushWord	fillX
 	PushWord	fillY
 	PushWord	#resMode
-*	PushLong	patternPtr
-	PushLong	#redPATTERN
+	PushLong	patternPtr
 	PushLong	#leakTblPtr
 	_SeedFill
 	rts
@@ -1205,15 +1204,12 @@ theSTEP	ds	2	; pas courant
 maxSTEPS	ds	2	; nombre de pas dans un image
 
 theA	ds	2
-theA1	ds	2
-theA2	ds	2
-theA3	ds	2
 theB	ds	2
 theC	ds	2
+theE1	ds	2
+theE2	ds	2
 theX	ds	2
 theY	ds	2
-theINK0	ds	2
-theINK1	ds	2
 theINK2	ds	2
 theINK3	ds	2
 
@@ -1233,7 +1229,7 @@ srcRect	dw	68,0,200,204
 patternPtr	adrl	blackPATTERN ; pointer to pattern
 
 leakTblPtr	dw	1
-	dw	$000F	; color 0 is concerned
+	dw	$FFFF	; color 0 is concerned
 	
 *-----------------------------------
 * CLEARW
@@ -1249,7 +1245,7 @@ ANALYS	lda	#TBLANALYSE
 	sta	dpCONDITIONS
 
 	lda	#FALSE
-	sta	DRAP
+	sta	motPASTROUVE
 	
 MOTS	jsr	getCONDITION
 MOTS_1	cmp	SUJET
@@ -1264,13 +1260,13 @@ MOTS_2	jsr	getCONDITION
 	bne	NOUVEL
 
 MOTS_3	jsr	getCONDITION
-	cmp	COD
+	cmp	ARTICLE
 	beq	MOTS_4
 	cmp	#99	; non pertinent
 	bne	NOUVEL
 
 MOTS_4	jsr	getCONDITION
-	cmp	ARTICLE
+	cmp	COD
 	beq	MOTS_5
 	cmp	#99	; non pertinent
 	bne	NOUVEL
@@ -1282,7 +1278,7 @@ MOTS_5	jsr	getCONDITION
 	beq	MOTS_6
 
 	lda	#TRUE
-	sta	DRAP
+	sta	motPASTROUVE
 	jmp	NOUVEL
 	
 MOTS_6	jmp	CONDIT
@@ -1301,7 +1297,7 @@ FIN	jsr	getCONDITION
 
 *---------- 
 
-IMPOSS	lda	DRAP
+IMPOSS	lda	motPASTROUVE
 	cmp	#TRUE
 	beq	IMPOSS_2
 IMPOSS_1	@PRINT	#wMESSAGE;#strIMPOSSIBLE
@@ -2482,15 +2478,16 @@ SLOT$	ds	2	; slot de load/save + trailing 00
 MOT
 SUJET	ds	2	; 1
 VERBE	ds	2	; 2
-COD	ds	2	; 4
 ARTICLE	ds	2	; 3
+COD	ds	2	; 4
 ADJECTIF	ds	2	; 5
 ATTRIBUT	ds	2	; 6
 
-gotATTRIBUT	ds	2	; on a déjà trouvé un attribut
-endMOTS	ds	2	; plus de mots si TRUE
-nbMOTS	ds	2	; nombre de mots trouvés
 fgATTRIBUT	ds	2
+endMOTS	ds	2	; plus de mots si TRUE
+motPASTROUVE	ds	2	; on a trouvé une correspondance ou pas (TRUE)
+nbMOTS	ds	2	; nombre de mots trouvés
+
 TEXT_X	ds	2	; index dans TEXTBUFFER
 
 fgSOMBRE	ds	2

@@ -34,10 +34,10 @@ strPBGRAMMAIRE	asc	'Erreur grammaticale'00
 strPBCOMPRENDRE	asc	'Je ne comprends pas '00
 strPLUSPRECIS	asc	'Soyez plus pr'8e'cis'00
 strPERSONNAGES	asc	'PERSONNAGES :'0d0d00
-strREJOUER	asc	'Voulez-vous rejouer ? '00
+strQUITTER	asc	'Voulez-vous quitter (O/N) ? '00
+strREJOUER	asc	'Voulez-vous rejouer (O/N) ? '00
 strPASICI	asc	'Je ne vois pas cela ici'00
 strAIDEJA	asc	'Je l'27'ai d'8e'j'8800
-
 strISSUES	asc	'Issue(s) principale(s): '00
 strNORD	asc	'N'00
 strSUD	asc	'S'00

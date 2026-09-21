@@ -199,7 +199,8 @@ SOMBRE	lda	#TRUE
 
 *-----------------------------------
 
-DEPA2	jsr	VERIFI
+DEPA2
+*	jsr	VERIFI
 
 	lda	fgSOMBRE
 	cmp	#TRUE
@@ -401,6 +402,8 @@ RETOBJ_1	lda	#FALSE
 	rep	#$20
 	rts
 
+	mx	%00
+	
 *-----------------------------------
 * PASICI
 *-----------------------------------
@@ -600,27 +603,21 @@ windowPERSONNAGE
 *-------------------------------
 
 showSALLE	lda	SUJET
-	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+0
 	lda	VERBE
-	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+2
-	lda	ARTICLE
-	and	#$ff
+	lda	COD
 	jsr	getDEBUG
 	sta	strCOMMANDE+4
-	lda	COD
-	and	#$ff
+	lda	ARTICLE
 	jsr	getDEBUG
 	sta	strCOMMANDE+6
 	lda	ADJECTIF
-	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+8
 	lda	ATTRIBUT
-	and	#$ff
 	jsr	getDEBUG
 	sta	strCOMMANDE+10
 	rts
@@ -735,14 +732,13 @@ TEST_1	pla		; aucun !
 * ZERO
 *-----------------------------------
 
-ZERO	sep	#$20
-	ldx	#0
-]lp	stz	MOT,x
-	inx
-	cpx	#6
-	bcc	]lp
-	rep	#$20
-
+ZERO	stz	SUJET
+	stz	VERBE
+	stz	COD
+	stz	ARTICLE
+	stz	ADJECTIF
+	stz	ATTRIBUT
+	
 	stz	gotATTRIBUT	; on a déjà trouvé un attribut
 	stz	endMOTS	; plus de mots si TRUE
 	stz	nbMOTS	; nombre de mots trouvés
@@ -819,11 +815,8 @@ DCRIPT_5	cpx	#iVERBE
 	cmp	#TRUE
 	beq	DCRIPT_SYNERR
 	lda	VERBE
-	and	#$ff
 	bne	DCRIPT_SYNERR
-	sep	#$10
 	sty	VERBE
-	rep	#$10
 
 DCR_FIN	lda	endMOTS
 	cmp	#TRUE
@@ -839,9 +832,7 @@ DCRIPT_6	cpx	#iADJECTIF
 	lda	ADJECTIF
 	and	#$ff
 	bne	SYNERR
-	sep	#$10
 	sty	ADJECTIF
-	rep	#$10
 	jmp	DCR_FIN
 
 DCRIPT_7	cpx	#iCOD
@@ -853,18 +844,14 @@ DCRIPT_7	cpx	#iCOD
 DCR_A	lda	ARTICLE
 	and	#$ff
 	bne	SYNERR
-	sep	#$10
 	sty	ARTICLE
-	rep	#$10
 	stz	fgATTRIBUT
 	jmp	DCR_FIN
 
 DCR_COD	lda	COD
 	and	#$ff
 	bne	SYNERR
-	sep	#$10
 	sty	COD
-	rep	#$10
 	jmp	DCR_FIN
 
 DCRIPT_8	cpx	nbMOTS
@@ -876,9 +863,7 @@ DCRIPT_8	cpx	nbMOTS
 DCR_SUJ	lda	SUJET
 	and	#$ff
 	bne	SYNERR
-	sep	#$10
 	sty	SUJET
-	rep	#$10
 	jmp	DCR_FIN
 
 *-----------------------------------
@@ -1261,12 +1246,46 @@ CLEARW	rts
 *-----------------------------------
 
 ANALYS	lda	#TBLANALYSE
-	sta	dpANALYSE
+	sta	dpCONDITIONS
 
-MOTS
-
-MOTS_5	lda	#TRUE
+	lda	#FALSE
 	sta	DRAP
+	
+MOTS	jsr	getCONDITION
+MOTS_1	cmp	SUJET
+	beq	MOTS_2
+	cmp	#99	; non pertinent
+	bne	NOUVEL
+
+MOTS_2	jsr	getCONDITION
+	cmp	VERBE
+	beq	MOTS_3
+	cmp	#99	; non pertinent
+	bne	NOUVEL
+
+MOTS_3	jsr	getCONDITION
+	cmp	COD
+	beq	MOTS_4
+	cmp	#99	; non pertinent
+	bne	NOUVEL
+
+MOTS_4	jsr	getCONDITION
+	cmp	ARTICLE
+	beq	MOTS_5
+	cmp	#99	; non pertinent
+	bne	NOUVEL
+	
+MOTS_5	jsr	getCONDITION
+	cmp	ADJECTIF
+	beq	MOTS_6
+	cmp	#99	; non pertinent
+	beq	MOTS_6
+
+	lda	#TRUE
+	sta	DRAP
+	jmp	NOUVEL
+	
+MOTS_6	jmp	CONDIT
 
 *----------
 
@@ -1278,7 +1297,7 @@ NOUVEL	jsr	getCONDITION
 
 FIN	jsr	getCONDITION
 	cmp	#chrEOT
-	bne	MOTS
+	bne	MOTS_1
 
 *---------- 
 
@@ -1303,7 +1322,9 @@ CONDIT	jsr	getCONDITION
 	cmp	#'a'	; est-ce une action ?
 	bcs	CONDIT_2	; oui
 	
-CONDIT_1	jsr	TESTCO
+CONDIT_1	jsr	getCONDITION
+	tax
+	jsr	TESTCO
 	bcc	CONDIT	; on boucle si OK
 	jmp	NOUVEL	; sinon, on sort
 
@@ -1357,76 +1378,186 @@ TESTCO_14	clc
 * TOUTES LES CONDITIONS
 *-----------------------------------
 
-*---------- A - 
+*---------- A - EST-ON DANS LA SALLE ?
 
-CONDA
+CONDA	cpx	SALLE
+	beq	CONDA_1
+	sec
+	rts
+CONDA_1	clc
+	rts
 
-*---------- B - 
+*---------- B - OBJET DANS LA SALLE OU PORTé ?
 
-CONDB
+CONDB	sep	#$20
+	lda	OBJSAL-1,x
+	cmp	SALLE
+	beq	CONDB_1
+	cmp	#TRUE
+	beq	CONDB_1
+	rep	#$20
+	sec
+	rts
+CONDB_1	rep	#$20
+	clc
+	rts
 
-*---------- C - 
+*---------- C - OBJET PAS DANS LA SALLE OU PAS PORTé ?
 
-CONDC
+CONDC	sep	#$20
+	lda	OBJSAL-1,x
+	cmp	SALLE
+	beq	CONDC_1
+	cmp	#TRUE
+	beq	CONDC_1
+	rep	#$20
+	clc
+	rts
+CONDC_1	rep	#$20
+	sec
+	rts
 
-*---------- D - 
+*---------- D - OBJET PORTé ?
 
-CONDD
+CONDD	sep	#$20
+	lda	OBJSAL-1,x
+	cmp	#TRUE
+	beq	CONDD_1
+	rep	#$20
+	sec
+	rts
+CONDD_1	rep	#$20
+	clc
+	rts
 
-*---------- E - 
+*---------- E - POINTEUR ACTIF ?
 
-CONDE
+CONDE	sep	#$20
+	lda	P-1,x
+	cmp	#TRUE
+	beq	CONDE_1
+	rep	#$20
+	sec
+	rts
+CONDE_1	rep	#$20
+	clc
+	rts
 
-*---------- F - 
+*---------- F - POINTEUR INACTIF ?
 
-CONDF
+CONDF	sep	#$20
+	lda	P-1,x
+	cmp	#TRUE
+	beq	CONDF_1
+	rep	#$20
+	clc
+	rts
+CONDF_1	rep	#$20
+	sec
+	rts
 
-*---------- G - 
+*---------- G - CONDITION ACTIVE ?
 
-CONDG
+CONDG	sep	#$20
+	lda	C-1,x
+	cmp	#TRUE
+	beq	CONDG_1
+	rep	#$20
+	sec
+	rts
+CONDG_1	rep	#$20
+	clc
+	rts
 
-*---------- H - 
+*---------- H - RANDOM < N ALORS OK
 
-CONDH
+CONDH	sta	N
+	jsr	RANDOM
+	and	#$0f	; AND 15
+	asl		; SLA A
+	cmp	N	; CP C
+	bcs	CONDH_1	; JP P,MAUVAI (si A<=N)
+	clc
+	rts
+CONDH_1	sec
+	rts
 
-*---------- I - 
+*---------- I - N'EST PAS DANS LA SALLE
 
-CONDI
+CONDI	cpx	SALLE
+	bne	CONDI_1
+	sec
+	rts
+CONDI_1	clc
+	rts
 
-*---------- J - 
+*---------- J - PERSONNAGE DANS LA SALLE ?
 
-CONDJ
+CONDJ	lda	PERSSAL-1,x
+	and	#$ff
+	cmp	SALLE
+	beq	CONDJ_1
+	sec
+	rts
+CONDJ_1	clc
+	rts
 
-*---------- K - 
+*---------- K - PERSONNAGE PAS DANS LA SALLE ?
 
-CONDK
+CONDK	lda	PERSSAL-1,x
+	and	#$ff
+	cmp	SALLE
+	bne	CONDK_1
+	sec
+	rts
+CONDK_1	clc
+	rts
 
-*---------- L - 
+*---------- L - PERSONNAGE PORTE L'OBJET DEMANDE ?
 
-CONDL
+CONDL	lda	PERSOBJ-1,x
+	and	#$ff
+	sta	N
+	
+	jsr	getCONDITION
+	cmp	N
+	beq	CONDL_1
+	sec
+	rts
+CONDL_1	clc
+	rts
 
-*---------- M - 
+*---------- M - PERSONNAGE NE PORTE PAS L'OBJET DEMANDE ?
 
-CONDM
+CONDM	lda	PERSOBJ-1,x
+	and	#$ff
+	sta	N
+	
+	jsr	getCONDITION
+	cmp	N
+	bne	CONDM_1
+	sec
+	rts
+CONDM_1	clc
+	rts
 
 *---------- INVERSE LE FLAG S
 
-INVERZ
+INVERZ	rts
 
 *---------- BON RETOUR
 
-BON
+BON	rts
 
 *---------- MAUVAIS RETOUR
 
-MAUVAIS
+MAUVAIS	rts
 
 *-----------------------------------
 * AFFICH
 *-----------------------------------
 
-AFFICH
-	rts
+AFFICH	rts
 
 *-----------------------------------
 * AFFIC0 - message
@@ -1570,12 +1701,31 @@ TESTAC_26	cmp	#'r'
 TESTAC_27	cmp	#'s'
 	bne	TESTAC_28
 	jmp	ACTIONS
-TESTAC_28	clc
+TESTAC_28	cmp	#$7c
+	bne	TESTAC_29
+	jmp	ACTIONQUITTER
+TESTAC_29	clc
 	rts
 
 *-----------------------------------
 * TOUTES LES ACTIONS
 *-----------------------------------
+
+*---------- #$7c - QUITTER
+
+ACTIONQUITTER	@PRINT	#wINVENTAIRE;#strQUITTER
+	@INKEY
+	cmp	#chrNO
+	beq	ACTIONQU_1
+	cmp	#chrYES
+	bne	ACTIONQU_1
+	
+	lda	#QUIT	; return to the IIgs
+	sec
+	rts
+
+ACTIONQU_1	clc
+	rts
 
 *---------- A - INVENTAIRE
 
@@ -2164,7 +2314,7 @@ INIT_ALL	sep	#$20
 * 20000 - PERDU
 *-----------------------------------
 
-:perdu
+:perdu	@PRINT	#wMESSAGE;#strREJOUER
 :perdu_bis	
 
 :20050	@INKEY
@@ -2180,7 +2330,7 @@ INIT_ALL	sep	#$20
 * 32000 - GAGNE
 *-----------------------------------
 
-:gagne	jmp	:20050
+:gagne	jmp	:perdu_bis
 
 *-----------------------------------
 * CODE SPECIFIQUE

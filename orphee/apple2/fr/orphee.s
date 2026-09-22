@@ -20,6 +20,8 @@ picVICTOIRE	=	118	; victoire
 picVOYAGE	=	119	; voyage aux enfers
 picORPHEE	=	120	; orphée
 
+FIRST_ROOM	=	2	; salle de démarrage
+
 MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
 LEN_WORD	=	5	; but limit to 4
@@ -167,13 +169,13 @@ DESSIN	lda	SALLE
 SOMBR	@get_objsal	#6
 	cmp	SALLE
 	beq	CALCUL
-	cmp	#-1
+	cmp	#TRUE
 	beq	CALCUL
 	
 	@get_objsal	#14
 	cmp	SALLE
 	beq	CALCUL
-	cmp	#-1
+	cmp	#TRUE
 	beq	CALCUL
 	
 	@get_perssal	#1
@@ -254,7 +256,7 @@ IMPRIM	stx	IX
 
 	mx	%00
 
-*-----------------------------------
+*-----------------------------------8
 
 DEPA3	jsr	GETCOM	; saisie des caracteres
 	jsr	DCRIPT	; déchiffre la chaîne saisie
@@ -386,7 +388,7 @@ RETOBJ	txa
 ]lp	cmp	PERSOBJ-1,y
 	beq	RETOBJ_1
 	inx
-	cpx	#8
+	cpx	#NBPERSONNAGE
 	bcc	]lp
 	beq	]lp
 	rep	#$20
@@ -649,12 +651,14 @@ showBORDER	sep	#$20
 
 VERIFI	lda	#TBLCONDITIONS
 	sta	dpCONDITIONS
-
+	lda	#^TBLCONDITIONS
+	sta	dpCONDITIONS+2
+	
 VERIFI_1	jsr	getCONDITION
 VERIFI_1BIS	cmp	#'a'	; teste une action
 	bcs	VERIFI_3	; oui
 	
-	jsr	TESTCO	; non une action, "A".."Z"
+	jsr	TESTCO	; non, une condition "A".."Z"
 	bcc	VERIFI_1
 
 VERIFI_2	jsr	getCONDITION	; erreur, boucle
@@ -666,7 +670,7 @@ VERIFI_4	jsr	getCONDITION	; prend la nouvelle
 	bne	VERIFI_1BIS	; fin de table
 	rts
 
-VERIFI_3	jsr	TESTAC	; "a".."z"
+VERIFI_3	jsr	TESTAC	; oui, une action "a".."z"
 	bcc	VERIFI_5
 	sta	VERIFI_31+1
 VERIFI_31	jmp	RETURN
@@ -1244,9 +1248,6 @@ CLEARW	rts
 ANALYS	lda	#TBLANALYSE
 	sta	dpCONDITIONS
 
-	lda	#FALSE
-	sta	motPASTROUVE
-	
 MOTS	jsr	getCONDITION
 MOTS_1	cmp	SUJET
 	beq	MOTS_2
@@ -1273,31 +1274,28 @@ MOTS_4	jsr	getCONDITION
 	
 MOTS_5	jsr	getCONDITION
 	cmp	ADJECTIF
-	beq	MOTS_6
+	beq	CONDIT
 	cmp	#99	; non pertinent
-	beq	MOTS_6
+	beq	CONDIT
 
 	lda	#TRUE
 	sta	motPASTROUVE
-	jmp	NOUVEL
 	
-MOTS_6	jmp	CONDIT
-
 *----------
 
-NOUVEL	jsr	getCONDITION
+NOUVEL	jsr	getCONDITION	; va jusqu'à la fin de la ligne
 	cmp	#chrEOL
 	bne	NOUVEL
 	
 *----------
 
-FIN	jsr	getCONDITION
+FIN	jsr	getCONDITION	; nouvelle ligne, fin de table ?
 	cmp	#chrEOT
-	bne	MOTS_1
+	bne	MOTS_1	; non, boucle
 
 *---------- 
 
-IMPOSS	lda	motPASTROUVE
+IMPOSS	lda	motPASTROUVE	; fin de table, a-t-on trouvé ?
 	cmp	#TRUE
 	beq	IMPOSS_2
 IMPOSS_1	@PRINT	#wMESSAGE;#strIMPOSSIBLE
@@ -1314,21 +1312,26 @@ IMPOSS_2	lda	DRAP
 * CONDIT
 *-----------------------------------
 
-CONDIT	jsr	getCONDITION
-	cmp	#'a'	; est-ce une action ?
-	bcs	CONDIT_2	; oui
+CONDIT	lda	#FALSE	; on a trouvé un mot
+	sta	motPASTROUVE
 	
 CONDIT_1	jsr	getCONDITION
+	cmp	#'a'	; est-ce une action ?
+	bcs	CONDIT_2	; oui
+	sta	N
+
+	jsr	getCONDITION
 	tax
 	jsr	TESTCO
-	bcc	CONDIT	; on boucle si OK
-	jmp	NOUVEL	; sinon, on sort
+	bcs	NOUVEL	; on boucle si OK
+	bcc	CONDIT_1	; sinon, on sort
 
 CONDIT_2	jmp	ACTION
 
 *---------- 
 
-TESTCO	cmp	#'A'
+TESTCO	lda	N
+	cmp	#'A'
 	bne	TESTCO_2
 	jmp	CONDA
 TESTCO_2	cmp	#'B'
@@ -1367,7 +1370,7 @@ TESTCO_12	cmp	#'L'
 TESTCO_13	cmp	#'M'
 	bne	TESTCO_14
 	jmp	CONDM
-TESTCO_14	clc
+TESTCO_14	sec
 	rts
 	
 *-----------------------------------
@@ -1385,11 +1388,14 @@ CONDA_1	clc
 
 *---------- B - OBJET DANS LA SALLE OU PORTé ?
 
-CONDB	sep	#$20
+CONDB	nop
+	nop
+	
+	sep	#$20
 	lda	OBJSAL-1,x
 	cmp	SALLE
 	beq	CONDB_1
-	cmp	#TRUE
+	cmp	#TRUE8
 	beq	CONDB_1
 	rep	#$20
 	sec
@@ -1404,7 +1410,7 @@ CONDC	sep	#$20
 	lda	OBJSAL-1,x
 	cmp	SALLE
 	beq	CONDC_1
-	cmp	#TRUE
+	cmp	#TRUE8
 	beq	CONDC_1
 	rep	#$20
 	clc
@@ -1417,7 +1423,7 @@ CONDC_1	rep	#$20
 
 CONDD	sep	#$20
 	lda	OBJSAL-1,x
-	cmp	#TRUE
+	cmp	#TRUE8
 	beq	CONDD_1
 	rep	#$20
 	sec
@@ -1430,7 +1436,7 @@ CONDD_1	rep	#$20
 
 CONDE	sep	#$20
 	lda	P-1,x
-	cmp	#TRUE
+	cmp	#TRUE8
 	beq	CONDE_1
 	rep	#$20
 	sec
@@ -1443,7 +1449,7 @@ CONDE_1	rep	#$20
 
 CONDF	sep	#$20
 	lda	P-1,x
-	cmp	#TRUE
+	cmp	#TRUE8
 	beq	CONDF_1
 	rep	#$20
 	clc
@@ -1456,7 +1462,7 @@ CONDF_1	rep	#$20
 
 CONDG	sep	#$20
 	lda	C-1,x
-	cmp	#TRUE
+	cmp	#TRUE8
 	beq	CONDG_1
 	rep	#$20
 	sec
@@ -1603,16 +1609,18 @@ CLEARF	rts
 * ACTION
 *-----------------------------------
 
-ACTION	jsr	getCONDITION
-	cmp	#chrEOL
+ACTION	cmp	#chrEOL
 	bne	ACTION_1
 	rts
 
-ACTION_1	jsr	TESTAC	; on boucle
-	bcc	ACTION
-
-	sta	ACTION_2+1
+ACTION_1	jsr	TESTAC	; on exécute
+	bcc	ACTION_3	; on continue
+	
+	sta	ACTION_2+1	; on sort
 ACTION_2	jmp	RETURN	; saute
+
+ACTION_3	jsr	getCONDITION
+	bra	ACTION
 
 *---------- 
 
@@ -1700,8 +1708,7 @@ TESTAC_27	cmp	#'s'
 TESTAC_28	cmp	#$7c
 	bne	TESTAC_29
 	jmp	ACTIONQUITTER
-TESTAC_29	clc
-	rts
+TESTAC_29	jmp	ACTIONM	; retourne à DEPA1
 
 *-----------------------------------
 * TOUTES LES ACTIONS
@@ -1709,7 +1716,7 @@ TESTAC_29	clc
 
 *---------- #$7c - QUITTER
 
-ACTIONQUITTER	@PRINT	#wINVENTAIRE;#strQUITTER
+ACTIONQUITTER	@PRINT	#wMESSAGE;#strQUITTER
 	@INKEY
 	cmp	#chrNO
 	beq	ACTIONQU_1
@@ -1728,7 +1735,7 @@ ACTIONQU_1	clc
 ACTIONA	@CLS	#wINVENTAIRE
 	@PRINT	#wINVENTAIRE;#strOBJETSPORTES
 
-	lda	#TRUE	; affiche les objets portés
+	lda	#TRUE8	; affiche les objets portés
 	sta	N
 
 LISTE	ldx	#1	; les inits
@@ -1762,16 +1769,20 @@ LISTE_1	inc	IX	; prochain objet
 
 	@PRINT	#wINVENTAIRE;#strAUCUN
 
-AUCUN_1	clc
+AUCUN_1	lda	N
+	cmp	#TRUE8
+	bne	AUCUN_2
+	@INKEY		; pause clavier pour inventaire
+AUCUN_2	clc
 	rts
 
 *---------- B - PREND UN OBJET
 
-ACTIONB	jsr	getCONDITION
+ACTIONB	jsr	getCONDITION	; check object
 	tax
 	lda	OBJSAL-1,x
 	and	#$ff
-	cmp	#TRUE
+	cmp	#TRUE8
 	bne	ACTIONB_1
 	jmp	DEJOBJ
 ACTIONB_1	cmp	SALLE
@@ -1783,7 +1794,7 @@ ACTIONB_2	lda	NBOBJ
 	beq	ACTIONB_3
 	jmp	TROOBJ
 ACTIONB_3	sep	#$20
-	lda	#TRUE
+	lda	#TRUE8
 	sta	OBJSAL-1,x
 	inc	NBOBJ
 	rep	#$20
@@ -1797,7 +1808,7 @@ ACTIONC	jsr	getCONDITION
 	tax
 	lda	OBJSAL-1,x
 	and	#$ff
-	cmp	#TRUE
+	cmp	#TRUE8
 	beq	ACTIONC_1
 	jmp	NOOBJ
 ACTIONC_1	sep	#$20
@@ -1822,7 +1833,7 @@ ACTIOND	jsr	getCONDITION
 ACTIONE	jsr	getCONDITION
 	tax
 	sep	#$20
-	lda	#TRUE
+	lda	#TRUE8
 	sta	P-1,x
 	rep	#$20
 	clc
@@ -1871,7 +1882,7 @@ ACTIONI	jsr	getCONDITION
 *---------- J - AFFICHE D'ACCORD
 
 ACTIONJ	@PRINT	#wMESSAGE;#strDACCORD	; jmp below...
-
+	
 *---------- K - RETOURNE A DEPA2
 
 ACTIONK	lda	#DEPA2
@@ -1957,7 +1968,7 @@ ACTIONR_2	lda	OBJSAL-1,y	; est-ce que l'objet est en salle ?
 	and	#$ff
 	cmp	SALLE	; oui
 	beq	ACTIONR_4
-	cmp	#TRUE	; ou le porte-t-on ?
+	cmp	#TRUE8	; ou le porte-t-on ?
 	beq	ACTIONR_3	; oui
 	jmp	PASICI	; non, erreur
 ACTIONR_3	dec	NBOBJ	; si on porte, on le retire
@@ -2131,15 +2142,6 @@ ACTION0_1	sep	#$20
 	rts
 
 *-----------------------------------
-* getANALYSE
-*-----------------------------------
-
-getANALYSE	lda	(dpANALYSE)
-	and	#$ff
-	inc	dpANALYSE
-	rts
-
-*-----------------------------------
 * getCONDITION
 *-----------------------------------
 
@@ -2301,7 +2303,7 @@ INIT_ALL	sep	#$20
 	
 	rep	#$20
 
-	lda	#1
+	lda	#FIRST_ROOM
 	sta	SALLE
 	stz	NBOBJ
 	rts

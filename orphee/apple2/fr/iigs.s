@@ -96,6 +96,7 @@ chrEOL	=	$ff
 chrYES	=	'O'	; FR
 chrNO	=	'N'
 
+TRUE8	=	$ff
 TRUE	=	$ffff
 FALSE	=	$0000
 
@@ -175,16 +176,14 @@ ICI	phk
 	ora	#$0100
 	sta	myID
 
-	lda	#MOT
-	stal	$300
-	lda	#^MOT
-	stal	$302
-	
-	lda	#leakTblPtr
-	stal	$308
-	lda	#^leakTblPtr
-	stal	$30a
-	
+*--- Get the border
+
+	PushWord	#0
+	PushWord	#$1c
+	_ReadBParam
+	pla
+	sta	bramBORDER
+
 *-----------------------------------
 * MEMORY...
 *-----------------------------------
@@ -308,6 +307,17 @@ QUIT	rep	#$30
 meQUIT	PushWord	#refIsHandle
 	PushLong	ssREC
 	_ShutDownTools
+
+	sep	#$20
+	ldal	CLOCKCTL
+	and	#$F0
+	ora	bramBORDER
+	stal	CLOCKCTL
+	rep	#$20
+
+	PushWord	bramBORDER
+	PushWord	#$1c
+	_WriteBParam
 
 meQUIT1	PushWord myID
 	_DisposeAll
@@ -527,6 +537,8 @@ pGAME	strl	'8/Partie0'
 appID	ds	2
 myID	ds	2
 myDP	ds	2
+
+bramBORDER	ds	2
 
 ptrSCREEN	adrl	ptr012000	; l'Žcran actif
 

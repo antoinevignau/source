@@ -29,7 +29,8 @@ setBTSLOT	@WriteCString	#strSETSLOT
 	asl
 	sta	theSLOT16
 
-exitBTSLOT	rts
+exitBTSLOT	jsr	updateTimerMode
+	rts
 
 *----------------------------
 * SET BRUTAL TIMER FREQUENCY

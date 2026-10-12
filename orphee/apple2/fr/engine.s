@@ -1380,7 +1380,7 @@ COUT2	lda	flagY	; flagY is active and we're
 	bmi	COUT3_END	; at the bottom of the window...
 
 	dec	textY	; last line
-	jsr	scrollWINDOW
+	jsr	scrollWINDOW	; scroll window
 
 	hex	ad	; LDA the next two bytes
 	

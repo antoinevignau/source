@@ -20,7 +20,7 @@ picVICTOIRE	=	118	; victoire
 picVOYAGE	=	119	; voyage aux enfers
 picORPHEE	=	120	; orphée
 
-FIRST_ROOM	=	2	; salle de démarrage
+FIRST_ROOM	=	1	; salle de démarrage
 
 MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
@@ -575,7 +575,7 @@ CODFEN	dw	0,0	; les coordonnées des fenetres
 tblWINDOW1	dw	36,52,8,18
 tblWINDOW2	dw	36,52,20,24
 tblWINDOW3	dw	2,33,8,8
-tblWINDOW4	dw	2,52,2,6
+tblWINDOW4	dw	2,51,2,6
 
 windowTEXTE
 	dw	0,0
@@ -651,7 +651,7 @@ showBORDER	sep	#$20
 
 VERIFI	lda	#TBLCONDITIONS
 	sta	dpCONDITIONS
-	lda	#^TBLCONDITIONS
+	lda	#^TBLCONDITIONS	; DEBUG - inutile
 	sta	dpCONDITIONS+2
 	
 VERIFI_1	jsr	getCONDITION
@@ -1094,11 +1094,13 @@ spINK	iny
 	and	#$ff
 	sta	theINK3	; ink3
 	
-	@BORDER	theB
-	@INK	#0;theB	
-	@INK	#1;theC	
-	@INK	#0;theINK2	
-	@INK	#0;theINK3
+*	@BORDER	theB
+*	@INK	#0;theB	
+*	@INK	#1;theC
+*	@GFXPAPER	theB
+*	@GFXPEN	theC	
+*	@INK	#2;theINK2
+*	@INK	#3;theINK3
 	jmp	skip5
 
 spECRIT	lda	theC
@@ -1109,8 +1111,8 @@ spECRIT	lda	theC
 	pha
 	_MoveTo
 
-	@PAPER	#0;theE1
-	@PEN	#0;theE2
+*	@PAPER	#0;theE1
+*	@PEN	#0;theE2
 	
 	PushWord	#0
 	_GetTextMode
@@ -1121,7 +1123,7 @@ spECRIT	lda	theC
 	ldy	#3
 ]lp	lda	(dpFROM),y
 	and	#$ff
-	cmp	#$ff
+	cmp	#chrEOL
 	beq	L94B9
 	phy
 	pha
@@ -1160,7 +1162,7 @@ PLOT_O	PushWord	theX	; On déplace le curseur seulement
 	PushWord	theY
 	_MoveTo
 	
-	@GFXPEN	theE2
+*	@GFXPEN	theE2
 	
 	PushWord	theX	; On trace un point
 	PushWord	theY
@@ -1178,7 +1180,7 @@ DRAW_O	PushWord	theX	; On trace une ligne
 
 resMode	=	%0001_0000000000_10
 
-FILL_O	lda	theE1	; sets the pattern to use
+FILL_O	lda	theE2	; sets the pattern to use
 *	lda	a2gsCOLOR,x
 *	and	#$ff
 	asl
@@ -1388,14 +1390,11 @@ CONDA_1	clc
 
 *---------- B - OBJET DANS LA SALLE OU PORTé ?
 
-CONDB	nop
-	nop
-	
-	sep	#$20
+CONDB	sep	#$20
 	lda	OBJSAL-1,x
 	cmp	SALLE
 	beq	CONDB_1
-	cmp	#TRUE8
+	cmp	#<TRUE
 	beq	CONDB_1
 	rep	#$20
 	sec
@@ -1410,7 +1409,7 @@ CONDC	sep	#$20
 	lda	OBJSAL-1,x
 	cmp	SALLE
 	beq	CONDC_1
-	cmp	#TRUE8
+	cmp	#<TRUE
 	beq	CONDC_1
 	rep	#$20
 	clc
@@ -1423,7 +1422,7 @@ CONDC_1	rep	#$20
 
 CONDD	sep	#$20
 	lda	OBJSAL-1,x
-	cmp	#TRUE8
+	cmp	#<TRUE
 	beq	CONDD_1
 	rep	#$20
 	sec
@@ -1436,7 +1435,7 @@ CONDD_1	rep	#$20
 
 CONDE	sep	#$20
 	lda	P-1,x
-	cmp	#TRUE8
+	cmp	#<TRUE
 	beq	CONDE_1
 	rep	#$20
 	sec
@@ -1449,20 +1448,20 @@ CONDE_1	rep	#$20
 
 CONDF	sep	#$20
 	lda	P-1,x
-	cmp	#TRUE8
+	cmp	#<FALSE
 	beq	CONDF_1
 	rep	#$20
-	clc
+	sec
 	rts
 CONDF_1	rep	#$20
-	sec
+	clc
 	rts
 
 *---------- G - CONDITION ACTIVE ?
 
 CONDG	sep	#$20
 	lda	C-1,x
-	cmp	#TRUE8
+	cmp	#<TRUE
 	beq	CONDG_1
 	rep	#$20
 	sec
@@ -1566,6 +1565,7 @@ AFFICH	rts
 *-----------------------------------
 
 AFFIC0	sta	N
+	@PRINT	#wMESSAGE;#strRETURN
 	@PRINT	#wMESSAGE;N
 	rts
 
@@ -1735,7 +1735,7 @@ ACTIONQU_1	clc
 ACTIONA	@CLS	#wINVENTAIRE
 	@PRINT	#wINVENTAIRE;#strOBJETSPORTES
 
-	lda	#TRUE8	; affiche les objets portés
+	lda	#<TRUE	; affiche les objets portés
 	sta	N
 
 LISTE	ldx	#1	; les inits
@@ -1770,7 +1770,7 @@ LISTE_1	inc	IX	; prochain objet
 	@PRINT	#wINVENTAIRE;#strAUCUN
 
 AUCUN_1	lda	N
-	cmp	#TRUE8
+	cmp	#<TRUE
 	bne	AUCUN_2
 	@INKEY		; pause clavier pour inventaire
 AUCUN_2	clc
@@ -1782,19 +1782,19 @@ ACTIONB	jsr	getCONDITION	; check object
 	tax
 	lda	OBJSAL-1,x
 	and	#$ff
-	cmp	#TRUE8
+	cmp	#<TRUE
 	bne	ACTIONB_1
-	jmp	DEJOBJ
+	jmp	DEJOBJ	; on l'a déjà
 ACTIONB_1	cmp	SALLE
 	beq	ACTIONB_2
-	jmp	PASICI
+	jmp	PASICI	; pas ici
 ACTIONB_2	lda	NBOBJ
 	cmp	#MAXPORTES
 	bcc	ACTIONB_3
 	beq	ACTIONB_3
-	jmp	TROOBJ
+	jmp	TROOBJ	; on en porte trop
 ACTIONB_3	sep	#$20
-	lda	#TRUE8
+	lda	#<TRUE
 	sta	OBJSAL-1,x
 	inc	NBOBJ
 	rep	#$20
@@ -1808,9 +1808,9 @@ ACTIONC	jsr	getCONDITION
 	tax
 	lda	OBJSAL-1,x
 	and	#$ff
-	cmp	#TRUE8
+	cmp	#<TRUE
 	beq	ACTIONC_1
-	jmp	NOOBJ
+	jmp	NOOBJ	; on ne l'a pas
 ACTIONC_1	sep	#$20
 	lda	SALLE
 	sta	OBJSAL-1,x
@@ -1833,7 +1833,7 @@ ACTIOND	jsr	getCONDITION
 ACTIONE	jsr	getCONDITION
 	tax
 	sep	#$20
-	lda	#TRUE8
+	lda	#<TRUE
 	sta	P-1,x
 	rep	#$20
 	clc
@@ -1927,10 +1927,11 @@ ACTIONP	jsr	getCONDITION
 	sta	PERSSAL-1,x	; pose le personnage
 	
 	lda	PERSOBJ-1,x	; prend l'index de l'objet
+	beq	ACTIONP_1	; DEBUG
 	tax
 	lda	SALLE
 	sta	OBJSAL-1,x	; pose l'objet dans la salle
-	rep	#$20
+ACTIONP_1	rep	#$20
 	clc
 	rts
 
@@ -1968,7 +1969,7 @@ ACTIONR_2	lda	OBJSAL-1,y	; est-ce que l'objet est en salle ?
 	and	#$ff
 	cmp	SALLE	; oui
 	beq	ACTIONR_4
-	cmp	#TRUE8	; ou le porte-t-on ?
+	cmp	#<TRUE	; ou le porte-t-on ?
 	beq	ACTIONR_3	; oui
 	jmp	PASICI	; non, erreur
 ACTIONR_3	dec	NBOBJ	; si on porte, on le retire
@@ -2041,19 +2042,15 @@ ACTIONU_END	@WAIT	#60
 
 *---------------
 
-slotGAME	@INKEY	#SLOT$
-	sep	#$20
-	lda	SLOT$	; est-ce un chiffre ?
+slotGAME	@INKEY
 	cmp	#'1'
 	bcc	slotGAME_ERR
 	cmp	#'9'+1
 	bcs	slotGAME_ERR
 	sta	pGAME+10
-	rep	#$20
 	clc
 	rts
-slotGAME_ERR	rep	#$20
-	sec
+slotGAME_ERR	sec
 	rts
 
 *---------- V - DECREMENTE UNE CONDITION
@@ -2340,7 +2337,7 @@ INIT_ALL	sep	#$20
 
 GET_SALSOMB	lda	SALSOMB-1,x
 	and	#$ff
-	cmp	#$ff
+	cmp	#<TRUE
 	bne	GET_SALSOMB_1
 	lda	#TRUE
 GET_SALSOMB_1	rts
@@ -2352,7 +2349,7 @@ SET_SALSOMB	sep	#$20
 
 GET_OBJSAL	lda	OBJSAL-1,x
 	and	#$ff
-	cmp	#$ff
+	cmp	#<TRUE
 	bne	GET_OBJSAL_1
 	lda	#TRUE
 GET_OBJSAL_1	rts
@@ -2364,7 +2361,7 @@ SET_OBJSAL	sep	#$20
 	
 GET_PERSSAL	lda	PERSSAL-1,x
 	and	#$ff
-	cmp	#$ff
+	cmp	#<TRUE
 	bne	GET_PERSSAL_1
 	lda	#TRUE
 GET_PERSSAL_1	rts

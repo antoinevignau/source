@@ -96,7 +96,6 @@ chrEOL	=	$ff
 chrYES	=	'O'	; FR
 chrNO	=	'N'
 
-TRUE8	=	$ff
 TRUE	=	$ffff
 FALSE	=	$0000
 
@@ -128,14 +127,12 @@ dpTO	=	dpFROM+4
 dpTHREE	=	dpTO+4
 dpFOUR	=	dpTHREE+4
 
-Debut	=	$10
+Debut	=	dpFOUR+4
 Arrivee	=	Debut+4
 Third	=	Arrivee+4
+dpCONDITIONS	=	Third+4
 
-dpANALYSE	=	$20
-dpCONDITIONS	=	dpANALYSE+4
-
-dpDATA	=	$30
+dpDATA	=	dpCONDITIONS+4
 dpREAD	=	dpDATA+4
 dpINSTR1	=	dpREAD+4
 dpINSTR2	=	dpINSTR1+4
@@ -164,9 +161,6 @@ ICI	phk
 	clc
 	xce
 	rep	#$30
-
-	tdc
-	sta	myDP
 
 	_TLStartUp
 	pha

@@ -1,0 +1,746 @@
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File       Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 amiga.s      1 | Comment     | 11 |         |    0 | 00/0000               | *
+    2 |  1 amiga.s      2 | Comment     | 11 |         |    0 | 00/0000               | * Amiga
+    3 |  1 amiga.s      3 | Comment     | 11 |         |    0 | 00/0000               | * Copy a HDD
+    4 |  1 amiga.s      4 | Comment     | 11 |         |    0 | 00/0000               | *
+    5 |  1 amiga.s      5 | Comment     | 11 |         |    0 | 00/0000               | * (c) 2026, Brutal Deluxe Software
+    6 |  1 amiga.s      6 | Comment     | 11 |         |    0 | 00/0000               | * Visit brutaldeluxe.fr
+    7 |  1 amiga.s      7 | Comment     | 11 |         |    0 | 00/0000               | *
+    8 |  1 amiga.s      8 | Empty       | 11 |         |    0 | 00/0000               |                                          
+    9 |  1 amiga.s      9 | Directive   | 00 |         |    0 | 00/0000               |                 mx        %00            
+   10 |  1 amiga.s     10 | Directive   | 00 |         |    0 | 00/0000               |                 rel                      
+   11 |  1 amiga.s     11 | Directive   | 00 |         |    0 | 00/0000               |                 lst       off            
+   12 |  1 amiga.s     12 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   13 |  1 amiga.s     13 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   14 |  1 amiga.s     14 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   15 |  1 amiga.s     15 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Int.Macs     
+   16 |  1 amiga.s     16 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Locator.Macs 
+   17 |  1 amiga.s     17 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Mem.Macs     
+   18 |  1 amiga.s     18 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Misc.Macs    
+   19 |  1 amiga.s     19 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Text.Macs    
+   20 |  1 amiga.s     20 | Directive   | 00 |         |    0 | 00/0000               |                 use       4/Util.Macs    
+   21 |  1 amiga.s     21 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   22 |  1 amiga.s     22 | Equivalence | 00 |         |    0 | 00/0000               | KBD             =         $c000          
+   23 |  1 amiga.s     23 | Equivalence | 00 |         |    0 | 00/0000               | GSOS            =         $e100a8        
+   24 |  1 amiga.s     24 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   25 |  1 amiga.s     25 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   26 |  1 amiga.s     26 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   27 |  1 amiga.s     27 | Equivalence | 00 |         |    0 | 00/0000               | dcREMOVE        =         $0004          
+   28 |  1 amiga.s     28 | Equivalence | 00 |         |    0 | 00/0000               | dcONLINE        =         $0010          
+   29 |  1 amiga.s     29 | Equivalence | 00 |         |    0 | 00/0000               | dcBLOCKDEVICE   =         $0080          
+   30 |  1 amiga.s     30 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   31 |  1 amiga.s     31 | Comment     | 00 |         |    0 | 00/0000               | *----------
+   32 |  1 amiga.s     32 | Empty       | 00 |         |    0 | 00/0000               |                                          
+   33 |  1 amiga.s     33 | Code        | 00 |         |    1 | 00/0000 : 4B          |                 phk                      
+   34 |  1 amiga.s     34 | Code        | 00 |         |    1 | 00/0001 : AB          |                 plb                      
+   35 |  1 amiga.s     35 | Empty       | 00 |         |    0 | 00/0002               |                                          
+   36 |  1 amiga.s     36 | Code        | 00 |         |    1 | 00/0002 : 7B          |                 tdc                      
+   37 |  1 amiga.s     37 | Code        | 00 |  2      |    3 | 00/0003 : 8D 31 03    |                 sta       myDP           
+   38 |  1 amiga.s     38 | Empty       | 00 |         |    0 | 00/0006               |                                          
+   39 |  1 amiga.s     39 | Macro       | 00 |         |    0 | 00/0006               |                 _TLStartUp                 
+   41 |  1 amiga.s     39 | Code        | 00 |         |    3 | 00/0006 : A2 01 02    |                 LDX       #$201          ; load tool call #
+   42 |  1 amiga.s     39 | Code        | 00 |         |    4 | 00/0009 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   43 |  1 amiga.s     40 | Code        | 00 |         |    1 | 00/000D : 48          |                 pha                      
+   44 |  1 amiga.s     41 | Macro       | 00 |         |    0 | 00/000E               |                 _MMStartUp                 
+   46 |  1 amiga.s     41 | Code        | 00 |         |    3 | 00/000E : A2 02 02    |                 LDX       #$202          ; load tool call #
+   47 |  1 amiga.s     41 | Code        | 00 |         |    4 | 00/0011 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   48 |  1 amiga.s     42 | Code        | 00 |         |    1 | 00/0015 : 68          |                 pla                      
+   49 |  1 amiga.s     43 | Code        | 00 |  2      |    3 | 00/0016 : 8D 2D 03    |                 sta       appID          
+   50 |  1 amiga.s     44 | Code        | 00 |         |    3 | 00/0019 : 09 00 01    |                 ora       #$0100         
+   51 |  1 amiga.s     45 | Code        | 00 |  2      |    3 | 00/001C : 8D 2F 03    |                 sta       myID           
+   52 |  1 amiga.s     46 | Empty       | 00 |         |    0 | 00/001F               |                                          
+   53 |  1 amiga.s     47 | Macro       | 00 |         |    0 | 00/001F               |                 _MTStartUp                 
+   55 |  1 amiga.s     47 | Code        | 00 |         |    3 | 00/001F : A2 03 02    |                 LDX       #$203          ; load tool call #
+   56 |  1 amiga.s     47 | Code        | 00 |         |    4 | 00/0022 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   57 |  1 amiga.s     48 | Macro       | 00 |         |    0 | 00/0026               |                 _TextStartUp                 
+   59 |  1 amiga.s     48 | Code        | 00 |         |    3 | 00/0026 : A2 0C 02    |                 LDX       #$20C          ; load tool call #
+   60 |  1 amiga.s     48 | Code        | 00 |         |    4 | 00/0029 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   61 |  1 amiga.s     49 | Macro       | 00 |         |    0 | 00/002D               |                 _IMStartUp                 
+   63 |  1 amiga.s     49 | Code        | 00 |         |    3 | 00/002D : A2 0B 02    |                 LDX       #$20B          ; load tool call #
+   64 |  1 amiga.s     49 | Code        | 00 |         |    4 | 00/0030 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   65 |  1 amiga.s     50 | Empty       | 00 |         |    0 | 00/0034               |                                          
+   66 |  1 amiga.s     51 | Comment     | 00 |         |    0 | 00/0034               | *----------
+   67 |  1 amiga.s     52 | Empty       | 00 |         |    0 | 00/0034               |                                          
+   68 |  1 amiga.s     53 | Macro       | 00 |         |    0 | 00/0034               |                 PushWord  #$00FF         
+   70 |  1 amiga.s     53 | Code        | 00 |         |    3 | 00/0034 : F4 FF 00    |                 PEA       #$00FF         
+   73 |  1 amiga.s     54 | Macro       | 00 |         |    0 | 00/0037               |                 PushWord  #$0080         
+   75 |  1 amiga.s     54 | Code        | 00 |         |    3 | 00/0037 : F4 80 00    |                 PEA       #$0080         
+   78 |  1 amiga.s     55 | Macro       | 00 |         |    0 | 00/003A               |                 _SetInGlobals                 
+   80 |  1 amiga.s     55 | Code        | 00 |         |    3 | 00/003A : A2 0C 09    |                 LDX       #$90C          ; load tool call #
+   81 |  1 amiga.s     55 | Code        | 00 |         |    4 | 00/003D : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   82 |  1 amiga.s     56 | Macro       | 00 |         |    0 | 00/0041               |                 PushWord  #$00FF         
+   84 |  1 amiga.s     56 | Code        | 00 |         |    3 | 00/0041 : F4 FF 00    |                 PEA       #$00FF         
+   87 |  1 amiga.s     57 | Macro       | 00 |         |    0 | 00/0044               |                 PushWord  #$0080         
+   89 |  1 amiga.s     57 | Code        | 00 |         |    3 | 00/0044 : F4 80 00    |                 PEA       #$0080         
+   92 |  1 amiga.s     58 | Macro       | 00 |         |    0 | 00/0047               |                 _SetOutGlobals                 
+   94 |  1 amiga.s     58 | Code        | 00 |         |    3 | 00/0047 : A2 0C 0A    |                 LDX       #$A0C          ; load tool call #
+   95 |  1 amiga.s     58 | Code        | 00 |         |    4 | 00/004A : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+   96 |  1 amiga.s     59 | Macro       | 00 |         |    0 | 00/004E               |                 PushWord  #$00FF         
+   98 |  1 amiga.s     59 | Code        | 00 |         |    3 | 00/004E : F4 FF 00    |                 PEA       #$00FF         
+  101 |  1 amiga.s     60 | Macro       | 00 |         |    0 | 00/0051               |                 PushWord  #$0080         
+  103 |  1 amiga.s     60 | Code        | 00 |         |    3 | 00/0051 : F4 80 00    |                 PEA       #$0080         
+  106 |  1 amiga.s     61 | Macro       | 00 |         |    0 | 00/0054               |                 _SetErrGlobals                 
+  108 |  1 amiga.s     61 | Code        | 00 |         |    3 | 00/0054 : A2 0C 0B    |                 LDX       #$B0C          ; load tool call #
+  109 |  1 amiga.s     61 | Code        | 00 |         |    4 | 00/0057 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  110 |  1 amiga.s     62 | Empty       | 00 |         |    0 | 00/005B               |                                          
+  111 |  1 amiga.s     63 | Macro       | 00 |         |    0 | 00/005B               |                 PushWord  #0             
+  113 |  1 amiga.s     63 | Code        | 00 |         |    3 | 00/005B : F4 00 00    |                 PEA       #0             
+  116 |  1 amiga.s     64 | Macro       | 00 |         |    0 | 00/005E               |                 PushLong  #3             
+  120 |  1 amiga.s     64 | Code        | 00 |         |    3 | 00/005E : F4 00 00    |                 PEA       #^#3           
+  127 |  1 amiga.s     64 | Code        | 00 |         |    3 | 00/0061 : F4 03 00    |                 PEA       #3             
+  130 |  1 amiga.s     65 | Macro       | 00 |         |    0 | 00/0064               |                 _SetInputDevice                 
+  132 |  1 amiga.s     65 | Code        | 00 |         |    3 | 00/0064 : A2 0C 0F    |                 LDX       #$F0C          ; load tool call #
+  133 |  1 amiga.s     65 | Code        | 00 |         |    4 | 00/0067 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  134 |  1 amiga.s     66 | Macro       | 00 |         |    0 | 00/006B               |                 PushWord  #0             
+  136 |  1 amiga.s     66 | Code        | 00 |         |    3 | 00/006B : F4 00 00    |                 PEA       #0             
+  139 |  1 amiga.s     67 | Macro       | 00 |         |    0 | 00/006E               |                 PushLong  #3             
+  143 |  1 amiga.s     67 | Code        | 00 |         |    3 | 00/006E : F4 00 00    |                 PEA       #^#3           
+  150 |  1 amiga.s     67 | Code        | 00 |         |    3 | 00/0071 : F4 03 00    |                 PEA       #3             
+  153 |  1 amiga.s     68 | Macro       | 00 |         |    0 | 00/0074               |                 _SetOutputDevice                 
+  155 |  1 amiga.s     68 | Code        | 00 |         |    3 | 00/0074 : A2 0C 10    |                 LDX       #$100C         ; load tool call #
+  156 |  1 amiga.s     68 | Code        | 00 |         |    4 | 00/0077 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  157 |  1 amiga.s     69 | Macro       | 00 |         |    0 | 00/007B               |                 PushWord  #0             
+  159 |  1 amiga.s     69 | Code        | 00 |         |    3 | 00/007B : F4 00 00    |                 PEA       #0             
+  162 |  1 amiga.s     70 | Macro       | 00 |         |    0 | 00/007E               |                 PushLong  #3             
+  166 |  1 amiga.s     70 | Code        | 00 |         |    3 | 00/007E : F4 00 00    |                 PEA       #^#3           
+  173 |  1 amiga.s     70 | Code        | 00 |         |    3 | 00/0081 : F4 03 00    |                 PEA       #3             
+  176 |  1 amiga.s     71 | Macro       | 00 |         |    0 | 00/0084               |                 _SetErrorDevice                 
+  178 |  1 amiga.s     71 | Code        | 00 |         |    3 | 00/0084 : A2 0C 11    |                 LDX       #$110C         ; load tool call #
+  179 |  1 amiga.s     71 | Code        | 00 |         |    4 | 00/0087 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  180 |  1 amiga.s     72 | Empty       | 00 |         |    0 | 00/008B               |                                          
+  181 |  1 amiga.s     73 | Macro       | 00 |         |    0 | 00/008B               |                 PushWord  #0             
+  183 |  1 amiga.s     73 | Code        | 00 |         |    3 | 00/008B : F4 00 00    |                 PEA       #0             
+  186 |  1 amiga.s     74 | Macro       | 00 |         |    0 | 00/008E               |                 _InitTextDev                 
+  188 |  1 amiga.s     74 | Code        | 00 |         |    3 | 00/008E : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  189 |  1 amiga.s     74 | Code        | 00 |         |    4 | 00/0091 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  190 |  1 amiga.s     75 | Macro       | 00 |         |    0 | 00/0095               |                 PushWord  #1             
+  192 |  1 amiga.s     75 | Code        | 00 |         |    3 | 00/0095 : F4 01 00    |                 PEA       #1             
+  195 |  1 amiga.s     76 | Macro       | 00 |         |    0 | 00/0098               |                 _InitTextDev                 
+  197 |  1 amiga.s     76 | Code        | 00 |         |    3 | 00/0098 : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  198 |  1 amiga.s     76 | Code        | 00 |         |    4 | 00/009B : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  199 |  1 amiga.s     77 | Macro       | 00 |         |    0 | 00/009F               |                 PushWord  #2             
+  201 |  1 amiga.s     77 | Code        | 00 |         |    3 | 00/009F : F4 02 00    |                 PEA       #2             
+  204 |  1 amiga.s     78 | Macro       | 00 |         |    0 | 00/00A2               |                 _InitTextDev                 
+  206 |  1 amiga.s     78 | Code        | 00 |         |    3 | 00/00A2 : A2 0C 15    |                 LDX       #$150C         ; load tool call #
+  207 |  1 amiga.s     78 | Code        | 00 |         |    4 | 00/00A5 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  208 |  1 amiga.s     79 | Empty       | 00 |         |    0 | 00/00A9               |                                          
+  209 |  1 amiga.s     80 | Macro       | 00 |         |    0 | 00/00A9               |                 PushWord  #$0c           ; home
+  211 |  1 amiga.s     80 | Code        | 00 |         |    3 | 00/00A9 : F4 0C 00    |                 PEA       #$0c           
+  214 |  1 amiga.s     81 | Macro       | 00 |         |    0 | 00/00AC               |                 _WriteChar                 
+  216 |  1 amiga.s     81 | Code        | 00 |         |    3 | 00/00AC : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  217 |  1 amiga.s     81 | Code        | 00 |         |    4 | 00/00AF : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  218 |  1 amiga.s     82 | Empty       | 00 |         |    0 | 00/00B3               |                                          
+  219 |  1 amiga.s     83 | Comment     | 00 |         |    0 | 00/00B3               | *----------------------------
+  220 |  1 amiga.s     84 | Comment     | 00 |         |    0 | 00/00B3               | * MAIN MENU
+  221 |  1 amiga.s     85 | Comment     | 00 |         |    0 | 00/00B3               | *----------------------------
+  222 |  1 amiga.s     86 | Empty       | 00 |         |    0 | 00/00B3               |                                          
+  223 |  1 amiga.s     87 | Code        | 00 |  2      |    3 | 00/00B3 : 20 1E 01    | mainMENU        jsr       pollDEVICES    
+  224 |  1 amiga.s     88 | Empty       | 00 |         |    0 | 00/00B6               |                                          
+  225 |  1 amiga.s     89 | Macro       | 00 |         |    0 | 00/00B6               |                 PushLong  #strMAINMENU   
+  229 |  1 amiga.s     89 | Code        | 00 |  1 >>16 |    3 | 00/00B6 : F4 00 00    |                 PEA       #^#strMAINMENU 
+  236 |  1 amiga.s     89 | Code        | 00 |  2      |    3 | 00/00B9 : F4 5C 02    |                 PEA       #strMAINMENU   
+  239 |  1 amiga.s     90 | Macro       | 00 |         |    0 | 00/00BC               |                 _WriteCString                 
+  241 |  1 amiga.s     90 | Code        | 00 |         |    3 | 00/00BC : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  242 |  1 amiga.s     90 | Code        | 00 |         |    4 | 00/00BF : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  243 |  1 amiga.s     91 | Empty       | 00 |         |    0 | 00/00C3               |                                          
+  244 |  1 amiga.s     92 | Code        | 00 |  2      |    3 | 00/00C3 : 20 37 02    |                 jsr       waitFORKEY     
+  245 |  1 amiga.s     93 | Code        | 00 |         |    3 | 00/00C6 : C9 D1 00    |                 cmp       #"Q"           
+  246 |  1 amiga.s     94 | Code        | 00 |         |    2 | 00/00C9 : F0 15       |                 beq       doQUIT         
+  247 |  1 amiga.s     95 | Code        | 00 |         |    3 | 00/00CB : C9 F1 00    |                 cmp       #"q"           
+  248 |  1 amiga.s     96 | Code        | 00 |         |    2 | 00/00CE : F0 10       |                 beq       doQUIT         
+  249 |  1 amiga.s     97 | Code        | 00 |         |    3 | 00/00D0 : C9 B1 00    |                 cmp       #"1"           
+  250 |  1 amiga.s     98 | Code        | 00 |         |    2 | 00/00D3 : 90 DE       |                 bcc       mainMENU       
+  251 |  1 amiga.s     99 | Code        | 00 |         |    3 | 00/00D5 : C9 BA 00    |                 cmp       #"9"+1         
+  252 |  1 amiga.s    100 | Code        | 00 |         |    2 | 00/00D8 : B0 D9       |                 bcs       mainMENU       
+  253 |  1 amiga.s    101 | Empty       | 00 |         |    0 | 00/00DA               |                                          
+  254 |  1 amiga.s    102 | Code        | 00 |  2      |    3 | 00/00DA : 20 B4 01    |                 jsr       copyDISK       
+  255 |  1 amiga.s    103 | Code        | 00 |  2      |    3 | 00/00DD : 4C B3 00    |                 jmp       mainMENU       
+  256 |  1 amiga.s    104 | Empty       | 00 |         |    0 | 00/00E0               |                                          
+  257 |  1 amiga.s    105 | Comment     | 00 |         |    0 | 00/00E0               | *----------------------------
+  258 |  1 amiga.s    106 | Comment     | 00 |         |    0 | 00/00E0               | * QUIT PROGRAM
+  259 |  1 amiga.s    107 | Comment     | 00 |         |    0 | 00/00E0               | *----------------------------
+  260 |  1 amiga.s    108 | Empty       | 00 |         |    0 | 00/00E0               |                                          
+  261 |  1 amiga.s    109 | Macro       | 00 |         |    0 | 00/00E0               | doQUIT          _IMShutDown                 
+  263 |  1 amiga.s    109 | Code        | 00 |         |    3 | 00/00E0 : A2 0B 03    |                 LDX       #$30B          ; load tool call #
+  264 |  1 amiga.s    109 | Code        | 00 |         |    4 | 00/00E3 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  265 |  1 amiga.s    110 | Macro       | 00 |         |    0 | 00/00E7               |                 _TextShutDown                 
+  267 |  1 amiga.s    110 | Code        | 00 |         |    3 | 00/00E7 : A2 0C 03    |                 LDX       #$30C          ; load tool call #
+  268 |  1 amiga.s    110 | Code        | 00 |         |    4 | 00/00EA : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  269 |  1 amiga.s    111 | Macro       | 00 |         |    0 | 00/00EE               |                 _MTShutDown                 
+  271 |  1 amiga.s    111 | Code        | 00 |         |    3 | 00/00EE : A2 03 03    |                 LDX       #$303          ; load tool call #
+  272 |  1 amiga.s    111 | Code        | 00 |         |    4 | 00/00F1 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  273 |  1 amiga.s    112 | Empty       | 00 |         |    0 | 00/00F5               |                                          
+  274 |  1 amiga.s    113 | Macro       | 00 |         |    0 | 00/00F5               |                 PushWord  myID           
+  279 |  1 amiga.s    113 | Code        | 00 |  2      |    3 | 00/00F5 : AD 2F 03    |                 LDA       myID           
+  280 |  1 amiga.s    113 | Code        | 00 |         |    1 | 00/00F8 : 48          |                 PHA                      
+  282 |  1 amiga.s    114 | Macro       | 00 |         |    0 | 00/00F9               |                 _DisposeAll                 
+  284 |  1 amiga.s    114 | Code        | 00 |         |    3 | 00/00F9 : A2 02 11    |                 LDX       #$1102         ; load tool call #
+  285 |  1 amiga.s    114 | Code        | 00 |         |    4 | 00/00FC : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  286 |  1 amiga.s    115 | Empty       | 00 |         |    0 | 00/0100               |                                          
+  287 |  1 amiga.s    116 | Macro       | 00 |         |    0 | 00/0100               |                 PushWord  appID          
+  292 |  1 amiga.s    116 | Code        | 00 |  2      |    3 | 00/0100 : AD 2D 03    |                 LDA       appID          
+  293 |  1 amiga.s    116 | Code        | 00 |         |    1 | 00/0103 : 48          |                 PHA                      
+  295 |  1 amiga.s    117 | Macro       | 00 |         |    0 | 00/0104               |                 _MMShutDown                 
+  297 |  1 amiga.s    117 | Code        | 00 |         |    3 | 00/0104 : A2 02 03    |                 LDX       #$302          ; load tool call #
+  298 |  1 amiga.s    117 | Code        | 00 |         |    4 | 00/0107 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  299 |  1 amiga.s    118 | Empty       | 00 |         |    0 | 00/010B               |                                          
+  300 |  1 amiga.s    119 | Macro       | 00 |         |    0 | 00/010B               |                 _TLShutDown                 
+  302 |  1 amiga.s    119 | Code        | 00 |         |    3 | 00/010B : A2 01 03    |                 LDX       #$301          ; load tool call #
+  303 |  1 amiga.s    119 | Code        | 00 |         |    4 | 00/010E : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  304 |  1 amiga.s    120 | Empty       | 00 |         |    0 | 00/0112               |                                          
+  305 |  1 amiga.s    121 | Code        | 00 |         |    4 | 00/0112 : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  306 |  1 amiga.s    122 | Data        | 00 |         |    2 | 00/0116 : 29 20       |                 dw        $2029          
+  307 |  1 amiga.s    123 | Data        | 00 |  3      |    4 | 00/0118 : B5 02 00 00 |                 adrl      proQUIT        
+  308 |  1 amiga.s    124 | Empty       | 00 |         |    0 | 00/011C               |                                          
+  309 |  1 amiga.s    125 | Code        | 00 |         |    2 | 00/011C : 00 BD       |                 brk       $bd            
+  310 |  1 amiga.s    126 | Empty       | 00 |         |    0 | 00/011E               |                                          
+  311 |  1 amiga.s    127 | Comment     | 00 |         |    0 | 00/011E               | *----------------------------
+  312 |  1 amiga.s    128 | Comment     | 00 |         |    0 | 00/011E               | * POLL DEVICES
+  313 |  1 amiga.s    129 | Comment     | 00 |         |    0 | 00/011E               | *----------------------------
+  314 |  1 amiga.s    130 | Empty       | 00 |         |    0 | 00/011E               |                                          
+  315 |  1 amiga.s    131 | Code        | 00 |         |    3 | 00/011E : A9 01 00    | pollDEVICES     lda       #1             ; start with device 1
+  316 |  1 amiga.s    132 | Code        | 00 |  2      |    3 | 00/0121 : 8D BF 02    |                 sta       proDINFO+2     
+  317 |  1 amiga.s    133 | Empty       | 00 |         |    0 | 00/0124               |                                          
+  318 |  1 amiga.s    134 | Code        | 00 |         |    4 | 00/0124 : 22 A8 00 E1 | ozunid_1        jsl       {$e100a8}      ; do a DInfo
+  319 |  1 amiga.s    135 | Data        | 00 |         |    2 | 00/0128 : 2C 20       |                 dw        $202c          
+  320 |  1 amiga.s    136 | Data        | 00 |  3      |    4 | 00/012A : BD 02 00 00 |                 adrl      proDINFO       
+  321 |  1 amiga.s    137 | Code        | 00 |         |    2 | 00/012E : 90 0B       |                 bcc       found          
+  322 |  1 amiga.s    138 | Empty       | 00 |         |    0 | 00/0130               |                                          
+  323 |  1 amiga.s    139 | Code        | 00 |         |    3 | 00/0130 : C9 11 00    |                 cmp       #$0011         ; no more devices
+  324 |  1 amiga.s    140 | Code        | 00 |         |    2 | 00/0133 : D0 01       |                 bne       loop           
+  325 |  1 amiga.s    141 | Code        | 00 |         |    1 | 00/0135 : 60          |                 rts                      
+  326 |  1 amiga.s    142 | Empty       | 00 |         |    0 | 00/0136               |                                          
+  327 |  1 amiga.s    143 | Code        | 00 |  2      |    3 | 00/0136 : EE BF 02    | loop            inc       proDINFO+2     
+  328 |  1 amiga.s    144 | Code        | 00 |         |    2 | 00/0139 : 80 E9       |                 bra       ozunid_1       
+  329 |  1 amiga.s    145 | Empty       | 00 |         |    0 | 00/013B               |                                          
+  330 |  1 amiga.s    146 | Comment     | 00 |         |    0 | 00/013B               | *---------- Show device
+  331 |  1 amiga.s    147 | Empty       | 00 |         |    0 | 00/013B               |                                          
+  332 |  1 amiga.s    148 | Code        | 00 |  2      |    3 | 00/013B : AD C5 02    | found           lda       proDINFO+8     ; block device
+  333 |  1 amiga.s    149 | Code        | 00 |  2      |    3 | 00/013E : 2D 75 02    |                 and       devMASK        
+  334 |  1 amiga.s    150 | Code        | 00 |         |    2 | 00/0141 : F0 F3       |                 beq       loop           
+  335 |  1 amiga.s    151 | Empty       | 00 |         |    0 | 00/0143               |                                          
+  336 |  1 amiga.s    152 | Code        | 00 |  2      |    3 | 00/0143 : 20 48 01    |                 jsr       showDEVICEINFO 
+  337 |  1 amiga.s    153 | Code        | 00 |         |    2 | 00/0146 : 80 EE       |                 bra       loop           
+  338 |  1 amiga.s    154 | Empty       | 00 |         |    0 | 00/0148               |                                          
+  339 |  1 amiga.s    155 | Comment     | 00 |         |    0 | 00/0148               | *--- Sub routines
+  340 |  1 amiga.s    156 | Comment     | 00 |         |    0 | 00/0148               | *
+  341 |  1 amiga.s    157 | Comment     | 00 |         |    0 | 00/0148               | * x - $xxxx - .NAMEOFDEVICE
+  342 |  1 amiga.s    158 | Empty       | 00 |         |    0 | 00/0148               |                                          
+  343 |  1 amiga.s    159 | Code        | 00 |  2      |    3 | 00/0148 : AD BF 02    | showDEVICEINFO  lda       proDINFO+2     
+  344 |  1 amiga.s    160 | Code        | 00 |         |    1 | 00/014B : 48          |                 pha                      ; from a word to a string
+  345 |  1 amiga.s    161 | Code        | 00 |         |    1 | 00/014C : 48          |                 pha                      
+  346 |  1 amiga.s    162 | Code        | 00 |         |    1 | 00/014D : 48          |                 pha                      
+  347 |  1 amiga.s    163 | Macro       | 00 |         |    0 | 00/014E               |                 _HexIt                   
+  349 |  1 amiga.s    163 | Code        | 00 |         |    3 | 00/014E : A2 0B 2A    |                 LDX       #$2A0B         ; load tool call #
+  350 |  1 amiga.s    163 | Code        | 00 |         |    4 | 00/0151 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  351 |  1 amiga.s    164 | Macro       | 00 |         |    0 | 00/0155               |                 PullLong  strDEVID       
+  354 |  1 amiga.s    164 | Code        | 00 |         |    1 | 00/0155 : 68          |                 PLA                      
+  356 |  1 amiga.s    164 | Code        | 00 |  2      |    3 | 00/0156 : 8D AC 01    |                 STA       strDEVID       
+  361 |  1 amiga.s    164 | Code        | 00 |         |    1 | 00/0159 : 68          |                 PLA                      
+  363 |  1 amiga.s    164 | Code        | 00 |  2      |    3 | 00/015A : 8D AE 01    |                 STA       strDEVID+2     
+  369 |  1 amiga.s    165 | Empty       | 00 |         |    0 | 00/015D               |                                          
+  370 |  1 amiga.s    166 | Macro       | 00 |         |    0 | 00/015D               |                 PushLong  #strDEV        ; show the string
+  374 |  1 amiga.s    166 | Code        | 00 |  1 >>16 |    3 | 00/015D : F4 00 00    |                 PEA       #^#strDEV      
+  381 |  1 amiga.s    166 | Code        | 00 |  2      |    3 | 00/0160 : F4 AB 01    |                 PEA       #strDEV        
+  384 |  1 amiga.s    167 | Macro       | 00 |         |    0 | 00/0163               |                 _WriteCString                 
+  386 |  1 amiga.s    167 | Code        | 00 |         |    3 | 00/0163 : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  387 |  1 amiga.s    167 | Code        | 00 |         |    4 | 00/0166 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  388 |  1 amiga.s    168 | Empty       | 00 |         |    0 | 00/016A               |                                          
+  389 |  1 amiga.s    169 | Comment     | 00 |         |    0 | 00/016A               | *--- characteristics
+  390 |  1 amiga.s    170 | Empty       | 00 |         |    0 | 00/016A               |                                          
+  391 |  1 amiga.s    171 | Code        | 00 |  2      |    3 | 00/016A : AD C5 02    |                 lda       proDINFO+8     
+  392 |  1 amiga.s    172 | Code        | 00 |         |    1 | 00/016D : 48          |                 pha                      ; from a word to a string
+  393 |  1 amiga.s    173 | Code        | 00 |         |    1 | 00/016E : 48          |                 pha                      
+  394 |  1 amiga.s    174 | Code        | 00 |         |    1 | 00/016F : 48          |                 pha                      
+  395 |  1 amiga.s    175 | Macro       | 00 |         |    0 | 00/0170               |                 _HexIt                   
+  397 |  1 amiga.s    175 | Code        | 00 |         |    3 | 00/0170 : A2 0B 2A    |                 LDX       #$2A0B         ; load tool call #
+  398 |  1 amiga.s    175 | Code        | 00 |         |    4 | 00/0173 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  399 |  1 amiga.s    176 | Macro       | 00 |         |    0 | 00/0177               |                 PullLong  strDEVID       
+  402 |  1 amiga.s    176 | Code        | 00 |         |    1 | 00/0177 : 68          |                 PLA                      
+  404 |  1 amiga.s    176 | Code        | 00 |  2      |    3 | 00/0178 : 8D AC 01    |                 STA       strDEVID       
+  409 |  1 amiga.s    176 | Code        | 00 |         |    1 | 00/017B : 68          |                 PLA                      
+  411 |  1 amiga.s    176 | Code        | 00 |  2      |    3 | 00/017C : 8D AE 01    |                 STA       strDEVID+2     
+  417 |  1 amiga.s    177 | Empty       | 00 |         |    0 | 00/017F               |                                          
+  418 |  1 amiga.s    178 | Macro       | 00 |         |    0 | 00/017F               |                 PushLong  #strDEV        ; show the string
+  422 |  1 amiga.s    178 | Code        | 00 |  1 >>16 |    3 | 00/017F : F4 00 00    |                 PEA       #^#strDEV      
+  429 |  1 amiga.s    178 | Code        | 00 |  2      |    3 | 00/0182 : F4 AB 01    |                 PEA       #strDEV        
+  432 |  1 amiga.s    179 | Macro       | 00 |         |    0 | 00/0185               |                 _WriteCString                 
+  434 |  1 amiga.s    179 | Code        | 00 |         |    3 | 00/0185 : A2 0C 20    |                 LDX       #$200C         ; load tool call #
+  435 |  1 amiga.s    179 | Code        | 00 |         |    4 | 00/0188 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  436 |  1 amiga.s    180 | Empty       | 00 |         |    0 | 00/018C               |                                          
+  437 |  1 amiga.s    181 | Comment     | 00 |         |    0 | 00/018C               | *--- name
+  438 |  1 amiga.s    182 | Empty       | 00 |         |    0 | 00/018C               |                                          
+  439 |  1 amiga.s    183 | Code        | 00 |  2      |    3 | 00/018C : AD EB 02    |                 lda       devINFO1       ; from a STRL to a STR
+  440 |  1 amiga.s    184 | Code        | 00 |         |    1 | 00/018F : EB          |                 xba                      
+  441 |  1 amiga.s    185 | Code        | 00 |  2      |    3 | 00/0190 : 8D EB 02    |                 sta       devINFO1       
+  442 |  1 amiga.s    186 | Empty       | 00 |         |    0 | 00/0193               |                                          
+  443 |  1 amiga.s    187 | Macro       | 00 |         |    0 | 00/0193               |                 PushLong  #devINFO2      
+  447 |  1 amiga.s    187 | Code        | 00 |  1 >>16 |    3 | 00/0193 : F4 00 00    |                 PEA       #^#devINFO2    
+  454 |  1 amiga.s    187 | Code        | 00 |  2      |    3 | 00/0196 : F4 EC 02    |                 PEA       #devINFO2      
+  457 |  1 amiga.s    188 | Macro       | 00 |         |    0 | 00/0199               |                 _WriteString                 
+  459 |  1 amiga.s    188 | Code        | 00 |         |    3 | 00/0199 : A2 0C 1C    |                 LDX       #$1C0C         ; load tool call #
+  460 |  1 amiga.s    188 | Code        | 00 |         |    4 | 00/019C : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  461 |  1 amiga.s    189 | Empty       | 00 |         |    0 | 00/01A0               |                                          
+  462 |  1 amiga.s    190 | Macro       | 00 |         |    0 | 00/01A0               |                 PushWord  #$0d           
+  464 |  1 amiga.s    190 | Code        | 00 |         |    3 | 00/01A0 : F4 0D 00    |                 PEA       #$0d           
+  467 |  1 amiga.s    191 | Macro       | 00 |         |    0 | 00/01A3               |                 _WriteChar                 
+  469 |  1 amiga.s    191 | Code        | 00 |         |    3 | 00/01A3 : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  470 |  1 amiga.s    191 | Code        | 00 |         |    4 | 00/01A6 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  471 |  1 amiga.s    192 | Code        | 00 |         |    1 | 00/01AA : 60          |                 rts                      
+  472 |  1 amiga.s    193 | Empty       | 00 |         |    0 | 00/01AB               |                                          
+  473 |  1 amiga.s    194 | Comment     | 00 |         |    0 | 00/01AB               | *---------- Data
+  474 |  1 amiga.s    195 | Empty       | 00 |         |    0 | 00/01AB               |                                          
+  475 |  1 amiga.s    196 | Data        | 00 |         |    1 | 00/01AB : 24          | strDEV          asc       '$'            
+  476 |  1 amiga.s    197 | Data        | 00 |         |    8 | 00/01AC : 30 30 30 30 | strDEVID        asc       '0000 - '00    
+      |                   |             |    |         |      |           20 2D 20 00 |
+  477 |  1 amiga.s    198 | Empty       | 00 |         |    0 | 00/01B4               |                                          
+  478 |  1 amiga.s    199 | Comment     | 00 |         |    0 | 00/01B4               | *----------------------------
+  479 |  1 amiga.s    200 | Comment     | 00 |         |    0 | 00/01B4               | * COPY DISK
+  480 |  1 amiga.s    201 | Comment     | 00 |         |    0 | 00/01B4               | *----------------------------
+  481 |  1 amiga.s    202 | Empty       | 00 |         |    0 | 00/01B4               |                                          
+  482 |  1 amiga.s    203 | Code        | 00 |         |    1 | 00/01B4 : 38          | copyDISK        sec                      
+  483 |  1 amiga.s    204 | Code        | 00 |         |    3 | 00/01B5 : E9 B0 00    |                 sbc       #"0"           
+  484 |  1 amiga.s    205 | Code        | 00 |  2      |    3 | 00/01B8 : 8D D5 02    |                 sta       proDREAD+2     
+  485 |  1 amiga.s    206 | Empty       | 00 |         |    0 | 00/01BB               |                                          
+  486 |  1 amiga.s    207 | Code        | 00 |  2      |    3 | 00/01BB : 9C DF 02    |                 stz       proDREAD+12    
+  487 |  1 amiga.s    208 | Code        | 00 |  2      |    3 | 00/01BE : 9C E1 02    |                 stz       proDREAD+14    
+  488 |  1 amiga.s    209 | Empty       | 00 |         |    0 | 00/01C1               |                                          
+  489 |  1 amiga.s    210 | Code        | 00 |         |    4 | 00/01C1 : 22 A8 00 E1 |                 jsl       {$e100a8}      ; create
+  490 |  1 amiga.s    211 | Data        | 00 |         |    2 | 00/01C5 : 01 20       |                 dw        $2001          
+  491 |  1 amiga.s    212 | Data        | 00 |  3      |    4 | 00/01C7 : 77 02 00 00 |                 adrl      proCREATE      
+  492 |  1 amiga.s    213 | Code        | 00 |         |    4 | 00/01CB : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  493 |  1 amiga.s    214 | Data        | 00 |         |    2 | 00/01CF : 10 20       |                 dw        $2010          
+  494 |  1 amiga.s    215 | Data        | 00 |  3      |    4 | 00/01D1 : 91 02 00 00 |                 adrl      proOPEN        
+  495 |  1 amiga.s    216 | Empty       | 00 |         |    0 | 00/01D5               |                                          
+  496 |  1 amiga.s    217 | Code        | 00 |  2      |    3 | 00/01D5 : AD 93 02    |                 lda       proOPEN+2      
+  497 |  1 amiga.s    218 | Code        | 00 |  2      |    3 | 00/01D8 : 8D A1 02    |                 sta       proWRITE+2     
+  498 |  1 amiga.s    219 | Code        | 00 |  2      |    3 | 00/01DB : 8D B3 02    |                 sta       proCLOSE+2     
+  499 |  1 amiga.s    220 | Empty       | 00 |         |    0 | 00/01DE               |                                          
+  500 |  1 amiga.s    221 | Code        | 00 |         |    3 | 00/01DE : AD FF BF    | copyDISK_LOOP   lda       {$c000}-1      
+  501 |  1 amiga.s    222 | Code        | 00 |         |    2 | 00/01E1 : 30 16       |                 bmi       copyDISK_END   
+  502 |  1 amiga.s    223 | Empty       | 00 |         |    0 | 00/01E3               |                                          
+  503 |  1 amiga.s    224 | Code        | 00 |         |    4 | 00/01E3 : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  504 |  1 amiga.s    225 | Data        | 00 |         |    2 | 00/01E7 : 2F 20       |                 dw        $202f          ; DRead
+  505 |  1 amiga.s    226 | Data        | 00 |  3      |    4 | 00/01E9 : D3 02 00 00 |                 adrl      proDREAD       
+  506 |  1 amiga.s    227 | Code        | 00 |         |    3 | 00/01ED : C9 2D 00    |                 cmp       #$2d           ; end of data
+  507 |  1 amiga.s    228 | Code        | 00 |         |    2 | 00/01F0 : F0 07       |                 beq       copyDISK_END   
+  508 |  1 amiga.s    229 | Code        | 00 |         |    3 | 00/01F2 : C9 27 00    |                 cmp       #$27           ; I/O error
+  509 |  1 amiga.s    230 | Code        | 00 |         |    2 | 00/01F5 : F0 0F       |                 beq       copyDISK_NOTOK 
+  510 |  1 amiga.s    231 | Code        | 00 |         |    2 | 00/01F7 : D0 12       |                 bne       copyDISK_OK    
+  511 |  1 amiga.s    232 | Empty       | 00 |         |    0 | 00/01F9               |                                          
+  512 |  1 amiga.s    233 | Code        | 00 |         |    4 | 00/01F9 : 22 A8 00 E1 | copyDISK_END    jsl       {$e100a8}      
+  513 |  1 amiga.s    234 | Data        | 00 |         |    2 | 00/01FD : 14 20       |                 dw        $2014          
+  514 |  1 amiga.s    235 | Data        | 00 |  3      |    4 | 00/01FF : B1 02 00 00 |                 adrl      proCLOSE       
+  515 |  1 amiga.s    236 | Code        | 00 |  2      |    3 | 00/0203 : 4C 37 02    |                 jmp       waitFORKEY     
+  516 |  1 amiga.s    237 | Empty       | 00 |         |    0 | 00/0206               |                                          
+  517 |  1 amiga.s    238 | Code        | 00 |  2      |    3 | 00/0206 : A9 3B 03    | copyDISK_NOTOK  lda       #theEMPTYBUFFER
+  518 |  1 amiga.s    239 | Code        | 00 |         |    2 | 00/0209 : 80 03       |                 bra       copyDISK_DO    
+  519 |  1 amiga.s    240 | Code        | 00 |  2      |    3 | 00/020B : A9 3B 05    | copyDISK_OK     lda       #theBUFFER     
+  520 |  1 amiga.s    241 | Code        | 00 |  2      |    3 | 00/020E : 8D A3 02    | copyDISK_DO     sta       proWRITE+4     
+  521 |  1 amiga.s    242 | Empty       | 00 |         |    0 | 00/0211               |                                          
+  522 |  1 amiga.s    243 | Code        | 00 |         |    4 | 00/0211 : 22 A8 00 E1 |                 jsl       {$e100a8}      
+  523 |  1 amiga.s    244 | Data        | 00 |         |    2 | 00/0215 : 13 20       |                 dw        $2013          
+  524 |  1 amiga.s    245 | Data        | 00 |  3      |    4 | 00/0217 : 9F 02 00 00 |                 adrl      proWRITE       
+  525 |  1 amiga.s    246 | Empty       | 00 |         |    0 | 00/021B               |                                          
+  526 |  1 amiga.s    247 | Code        | 00 |  2      |    3 | 00/021B : EE DF 02    |                 inc       proDREAD+12    
+  527 |  1 amiga.s    248 | Code        | 00 |         |    2 | 00/021E : D0 BE       |                 bne       copyDISK_LOOP  
+  528 |  1 amiga.s    249 | Code        | 00 |  2      |    3 | 00/0220 : EE E1 02    |                 inc       proDREAD+14    
+  529 |  1 amiga.s    250 | Code        | 00 |         |    2 | 00/0223 : D0 B9       |                 bne       copyDISK_LOOP  
+  530 |  1 amiga.s    251 | Empty       | 00 |         |    0 | 00/0225               |                                          
+  531 |  1 amiga.s    252 | Code        | 00 |  2      |    3 | 00/0225 : AD E1 02    |                 lda       proDREAD+14    ; unused code
+  532 |  1 amiga.s    253 | Code        | 00 |         |    3 | 00/0228 : C9 01 00    |                 cmp       #$0001         
+  533 |  1 amiga.s    254 | Code        | 00 |         |    2 | 00/022B : D0 B1       |                 bne       copyDISK_LOOP  
+  534 |  1 amiga.s    255 | Code        | 00 |  2      |    3 | 00/022D : AD DF 02    |                 lda       proDREAD+12    
+  535 |  1 amiga.s    256 | Code        | 00 |         |    3 | 00/0230 : C9 00 A0    |                 cmp       #$A000         
+  536 |  1 amiga.s    257 | Code        | 00 |         |    2 | 00/0233 : D0 A9       |                 bne       copyDISK_LOOP  
+  537 |  1 amiga.s    258 | Code        | 00 |         |    2 | 00/0235 : F0 C2       |                 beq       copyDISK_END   
+  538 |  1 amiga.s    259 | Empty       | 00 |         |    0 | 00/0237               |                                          
+  539 |  1 amiga.s    260 | Comment     | 00 |         |    0 | 00/0237               | *----------------------------
+  540 |  1 amiga.s    261 | Comment     | 00 |         |    0 | 00/0237               | * TEXT ROUTINES
+  541 |  1 amiga.s    262 | Comment     | 00 |         |    0 | 00/0237               | *----------------------------
+  542 |  1 amiga.s    263 | Empty       | 00 |         |    0 | 00/0237               |                                          
+  543 |  1 amiga.s    264 | Comment     | 00 |         |    0 | 00/0237               | *---------- Wait for a key
+  544 |  1 amiga.s    265 | Empty       | 00 |         |    0 | 00/0237               |                                          
+  545 |  1 amiga.s    266 | Macro       | 00 |         |    0 | 00/0237               | waitFORKEY      PushWord  #0             ; wait for key
+  547 |  1 amiga.s    266 | Code        | 00 |         |    3 | 00/0237 : F4 00 00    |                 PEA       #0             
+  550 |  1 amiga.s    267 | Macro       | 00 |         |    0 | 00/023A               |                 PushWord  #1             ; echo char
+  552 |  1 amiga.s    267 | Code        | 00 |         |    3 | 00/023A : F4 01 00    |                 PEA       #1             
+  555 |  1 amiga.s    268 | Macro       | 00 |         |    0 | 00/023D               |                 _ReadChar                 
+  557 |  1 amiga.s    268 | Code        | 00 |         |    3 | 00/023D : A2 0C 22    |                 LDX       #$220C         ; load tool call #
+  558 |  1 amiga.s    268 | Code        | 00 |         |    4 | 00/0240 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  559 |  1 amiga.s    269 | Empty       | 00 |         |    0 | 00/0244               |                                          
+  560 |  1 amiga.s    270 | Code        | 00 |         |    2 | 00/0244 : A3 01       | waitKEY1        lda       1,s            ; check CR
+  561 |  1 amiga.s    271 | Code        | 00 |         |    3 | 00/0246 : 29 FF 00    |                 and       #$ff           ; of typed
+  562 |  1 amiga.s    272 | Code        | 00 |         |    2 | 00/0249 : 83 01       |                 sta       1,s            ; in char
+  563 |  1 amiga.s    273 | Code        | 00 |         |    3 | 00/024B : C9 8D 00    |                 cmp       #$8d           
+  564 |  1 amiga.s    274 | Code        | 00 |         |    2 | 00/024E : F0 0A       |                 beq       waitKEY9       
+  565 |  1 amiga.s    275 | Empty       | 00 |         |    0 | 00/0250               |                                          
+  566 |  1 amiga.s    276 | Macro       | 00 |         |    0 | 00/0250               | waitKEY8        PushWord  #$0d           ; return
+  568 |  1 amiga.s    276 | Code        | 00 |         |    3 | 00/0250 : F4 0D 00    |                 PEA       #$0d           
+  571 |  1 amiga.s    277 | Macro       | 00 |         |    0 | 00/0253               |                 _WriteChar                 
+  573 |  1 amiga.s    277 | Code        | 00 |         |    3 | 00/0253 : A2 0C 18    |                 LDX       #$180C         ; load tool call #
+  574 |  1 amiga.s    277 | Code        | 00 |         |    4 | 00/0256 : 22 00 00 E1 |                 JSL       $E10000        ; go to dispatcher
+  575 |  1 amiga.s    278 | Empty       | 00 |         |    0 | 00/025A               |                                          
+  576 |  1 amiga.s    279 | Code        | 00 |         |    1 | 00/025A : 68          | waitKEY9        pla                      ; restore entered char
+  577 |  1 amiga.s    280 | Code        | 00 |         |    1 | 00/025B : 60          |                 rts                      
+  578 |  1 amiga.s    281 | Empty       | 00 |         |    0 | 00/025C               |                                          
+  579 |  1 amiga.s    282 | Comment     | 00 |         |    0 | 00/025C               | *----------------------------
+  580 |  1 amiga.s    283 | Comment     | 00 |         |    0 | 00/025C               | * DATA
+  581 |  1 amiga.s    284 | Comment     | 00 |         |    0 | 00/025C               | *----------------------------
+  582 |  1 amiga.s    285 | Empty       | 00 |         |    0 | 00/025C               |                                          
+  583 |  1 amiga.s    286 | Comment     | 00 |         |    0 | 00/025C               | *--- Text
+  584 |  1 amiga.s    287 | Empty       | 00 |         |    0 | 00/025C               |                                          
+  585 |  1 amiga.s    288 | Data        | 00 |         |   25 | 00/025C : 0D 3E 20 53 | strMAINMENU     asc       0d'> Select disk to copy: '00
+      |                   |             |    |         |      |           65 6C 65 63 |
+      |                   |             |    |         |      |           74 20 64 69 |
+      |                   |             |    |         |      |           73 6B 20 74 |
+      |                   |             |    |         |      |           6F 20 63 6F |
+      |                   |             |    |         |      |           70 79 3A 20 |
+      |                   |             |    |         |      |           00          |
+  586 |  1 amiga.s    289 | Empty       | 00 |         |    0 | 00/0275               |                                          
+  587 |  1 amiga.s    290 | Comment     | 00 |         |    0 | 00/0275               | *--- GS/OS
+  588 |  1 amiga.s    291 | Empty       | 00 |         |    0 | 00/0275               |                                          
+  589 |  1 amiga.s    292 | Data        | 00 |         |    2 | 00/0275 : 80 00       | devMASK         dw        {$0080}        ; default for block devices
+  590 |  1 amiga.s    293 | Empty       | 00 |         |    0 | 00/0277               |                                          
+  591 |  1 amiga.s    294 | Data        | 00 |         |    2 | 00/0277 : 06 00       | proCREATE       dw        6              ; 00 pcount
+  592 |  1 amiga.s    295 | Data        | 00 |  3      |    4 | 00/0279 : 1D 03 00 00 |                 adrl      pFILE          ; 02 pathname
+  593 |  1 amiga.s    296 | Data        | 00 |         |    2 | 00/027D : C3 00       |                 dw        $c3            ; 06 access
+  594 |  1 amiga.s    297 | Data        | 00 |         |    2 | 00/027F : 06 00       |                 dw        $06            ; 08 fileType
+  595 |  1 amiga.s    298 | Data        | 00 |         |    4 | 00/0281 : 00 00 00 00 |                 ds        4              ; 0A auxType
+  596 |  1 amiga.s    299 | Data        | 00 |         |    2 | 00/0285 : 01 00       |                 dw        $01            ; 0E storageType
+  597 |  1 amiga.s    300 | Data        | 00 |         |    4 | 00/0287 : 00 00 00 00 |                 ds        4              ; 10 eof
+  598 |  1 amiga.s    301 | Empty       | 00 |         |    0 | 00/028B               |                                          
+  599 |  1 amiga.s    302 | Data        | 00 |         |    2 | 00/028B : 01 00       | proDESTROY      dw        1              ; 00 pcount
+  600 |  1 amiga.s    303 | Data        | 00 |  3      |    4 | 00/028D : 1D 03 00 00 |                 adrl      pFILE          ; 02 pathname
+  601 |  1 amiga.s    304 | Empty       | 00 |         |    0 | 00/0291               |                                          
+  602 |  1 amiga.s    305 | Data        | 00 |         |    2 | 00/0291 : 05 00       | proOPEN         dw        5              ; pcount
+  603 |  1 amiga.s    306 | Data        | 00 |         |    2 | 00/0293 : 00 00       |                 ds        2              ; ref_num
+  604 |  1 amiga.s    307 | Data        | 00 |  3      |    4 | 00/0295 : 1D 03 00 00 |                 adrl      pFILE          ; pathname
+  605 |  1 amiga.s    308 | Data        | 00 |         |    2 | 00/0299 : 00 00       |                 ds        2              ; request_access
+  606 |  1 amiga.s    309 | Data        | 00 |         |    2 | 00/029B : 00 00       |                 ds        2              ; resource_num
+  607 |  1 amiga.s    310 | Data        | 00 |         |    2 | 00/029D : 00 00       |                 ds        2              ; access
+  608 |  1 amiga.s    311 | Empty       | 00 |         |    0 | 00/029F               |                                          
+  609 |  1 amiga.s    312 | Data        | 00 |         |    2 | 00/029F : 05 00       | proWRITE        dw        5              ; +00 pcount
+  610 |  1 amiga.s    313 | Data        | 00 |         |    2 | 00/02A1 : 00 00       |                 ds        2              ; +02 ref_num
+  611 |  1 amiga.s    314 | Data        | 00 |  3      |    4 | 00/02A3 : 3B 05 00 00 |                 adrl      theBUFFER      ; +04 data_buffer
+  612 |  1 amiga.s    315 | Data        | 00 |         |    4 | 00/02A7 : 00 02 00 00 |                 adrl      512            ; +08 request_count
+  613 |  1 amiga.s    316 | Data        | 00 |         |    4 | 00/02AB : 00 00 00 00 |                 ds        4              ; +12 transfer_count
+  614 |  1 amiga.s    317 | Data        | 00 |         |    2 | 00/02AF : 01 00       |                 dw        1              ; +16 cache_priority
+  615 |  1 amiga.s    318 | Empty       | 00 |         |    0 | 00/02B1               |                                          
+  616 |  1 amiga.s    319 | Data        | 00 |         |    2 | 00/02B1 : 01 00       | proCLOSE        dw        1              ; pcount
+  617 |  1 amiga.s    320 | Data        | 00 |         |    2 | 00/02B3 : 00 00       |                 ds        2              ; ref_num
+  618 |  1 amiga.s    321 | Empty       | 00 |         |    0 | 00/02B5               |                                          
+  619 |  1 amiga.s    322 | Data        | 00 |         |    2 | 00/02B5 : 02 00       | proQUIT         dw        2              ; pcount
+  620 |  1 amiga.s    323 | Data        | 00 |         |    4 | 00/02B7 : 00 00 00 00 |                 ds        4              ; pathname
+  621 |  1 amiga.s    324 | Data        | 00 |         |    2 | 00/02BB : 00 00       |                 ds        2              ; flags
+  622 |  1 amiga.s    325 | Empty       | 00 |         |    0 | 00/02BD               |                                          
+  623 |  1 amiga.s    326 | Data        | 00 |         |    2 | 00/02BD : 08 00       | proDINFO        dw        8              ; Parms for DInfo
+  624 |  1 amiga.s    327 | Data        | 00 |         |    2 | 00/02BF : 00 00       |                 ds        2              ; 02 device num
+  625 |  1 amiga.s    328 | Data        | 00 |  3      |    4 | 00/02C1 : E9 02 00 00 |                 adrl      devINFO        ; 04 device name
+  626 |  1 amiga.s    329 | Data        | 00 |         |    2 | 00/02C5 : 00 00       |                 ds        2              ; 08 characteristics
+  627 |  1 amiga.s    330 | Data        | 00 |         |    4 | 00/02C7 : 00 00 00 00 |                 ds        4              ; 0A total blocks
+  628 |  1 amiga.s    331 | Data        | 00 |         |    2 | 00/02CB : 00 00       |                 ds        2              ; 0E slot number
+  629 |  1 amiga.s    332 | Data        | 00 |         |    2 | 00/02CD : 00 00       |                 ds        2              ; 10 unit number
+  630 |  1 amiga.s    333 | Data        | 00 |         |    2 | 00/02CF : 00 00       |                 ds        2              ; 12 version
+  631 |  1 amiga.s    334 | Data        | 00 |         |    2 | 00/02D1 : 00 00       |                 ds        2              ; 14 device id
+  632 |  1 amiga.s    335 | Empty       | 00 |         |    0 | 00/02D3               |                                          
+  633 |  1 amiga.s    336 | Data        | 00 |         |    2 | 00/02D3 : 06 00       | proDREAD        dw        6              ; Parms for DRead
+  634 |  1 amiga.s    337 | Data        | 00 |         |    2 | 00/02D5 : 00 00       |                 ds        2              ; 02 device num
+  635 |  1 amiga.s    338 | Data        | 00 |  3      |    4 | 00/02D7 : 3B 05 00 00 |                 adrl      theBUFFER      ; 04 buffer
+  636 |  1 amiga.s    339 | Data        | 00 |         |    4 | 00/02DB : 00 02 00 00 |                 adrl      512            ; 08 request count
+  637 |  1 amiga.s    340 | Data        | 00 |         |    4 | 00/02DF : 00 00 00 00 |                 ds        4              ; 0C starting block
+  638 |  1 amiga.s    341 | Data        | 00 |         |    2 | 00/02E3 : 00 02       |                 dw        512            ; 10 block size
+  639 |  1 amiga.s    342 | Data        | 00 |         |    4 | 00/02E5 : 00 00 00 00 |                 ds        4              ; 12 transfer count
+  640 |  1 amiga.s    343 | Empty       | 00 |         |    0 | 00/02E9               |                                          
+  641 |  1 amiga.s    344 | Data        | 00 |         |    2 | 00/02E9 : 32 00       | devINFO         dw        $0032          ; buffer size
+  642 |  1 amiga.s    345 | Data        | 00 |         |    1 | 00/02EB : 00          | devINFO1        db        $00            ; length
+  643 |  1 amiga.s    346 | Data        | 00 |         |    1 | 00/02EC : 00          | devINFO2        db        $00            
+  644 |  1 amiga.s    347 | Data        | 00 |         |   48 | 00/02ED : 00 00 00 00 | devINFO3        ds        $30            ; data
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  645 |  1 amiga.s    348 | Empty       | 00 |         |    0 | 00/031D               |                                          
+  646 |  1 amiga.s    349 | Data        | 00 |         |   16 | 00/031D : 0E 00 2F 48 | pFILE           strl      '/HFS/Amiga.iso'
+      |                   |             |    |         |      |           46 53 2F 41 |
+      |                   |             |    |         |      |           6D 69 67 61 |
+      |                   |             |    |         |      |           2E 69 73 6F |
+  647 |  1 amiga.s    350 | Empty       | 00 |         |    0 | 00/032D               |                                          
+  648 |  1 amiga.s    351 | Comment     | 00 |         |    0 | 00/032D               | *----------
+  649 |  1 amiga.s    352 | Empty       | 00 |         |    0 | 00/032D               |                                          
+  650 |  1 amiga.s    353 | Data        | 00 |         |    2 | 00/032D : 00 00       | appID           ds        2              
+  651 |  1 amiga.s    354 | Data        | 00 |         |    2 | 00/032F : 00 00       | myID            ds        2              
+  652 |  1 amiga.s    355 | Empty       | 00 |         |    0 | 00/0331               |                                          
+  653 |  1 amiga.s    356 | Data        | 00 |         |    2 | 00/0331 : 00 00       | myDP            ds        2              
+  654 |  1 amiga.s    357 | Data        | 00 |         |    4 | 00/0333 : 00 00 00 00 | ptrBUFFER       ds        4              
+  655 |  1 amiga.s    358 | Data        | 00 |         |    4 | 00/0337 : 00 00 00 00 | haBUFFER        ds        4              
+  656 |  1 amiga.s    359 | Empty       | 00 |         |    0 | 00/033B               |                                          
+  657 |  1 amiga.s    360 | Comment     | 00 |         |    0 | 00/033B               | *----------
+  658 |  1 amiga.s    361 | Empty       | 00 |         |    0 | 00/033B               |                                          
+  659 |  1 amiga.s    362 | Data        | 00 |         |  512 | 00/033B : BD BD BD BD | theEMPTYBUFFER  ds        512,$bd        
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+      |                   |             |    |         |      |           BD BD BD BD |
+  660 |  1 amiga.s    363 | Data        | 00 |         |  512 | 00/053B : 00 00 00 00 | theBUFFER       ds        512            
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+      |                   |             |    |         |      |           00 00 00 00 |
+  661 |  1 amiga.s    364 | Empty       | 00 |         |    0 | 00/073B               |                                          
+------+-------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

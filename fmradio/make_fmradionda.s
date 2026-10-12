@@ -10,7 +10,7 @@
 
 * Assemble files
 
-         ASM   nda.s
+         ASM   fmradionda.s
          KND   $0000
          SNA   FMRadioNDA
 

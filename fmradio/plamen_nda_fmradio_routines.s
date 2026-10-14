@@ -24,7 +24,9 @@ MAX_FREQ	=	210
 STEP_FREQ	=	1
 
 DFT_VOL	=	50	; 0..100
+DFT_BAND	=	0	; 0..3
 DFT_FREQ	=	105	; 0..210
+DFT_SPACING	=	0	; 0..3
 DFT_OFF	=	FALSE
 DFT_ON	=	TRUE
 
@@ -36,6 +38,7 @@ BTN_VOL_MINUS	=	5
 BTN_VOL_PLUS	=	6
 STAT_LOW	=	7	; 87.5
 STAT_HIGH	=	8	; 108
+iPOPUP_FREQ	=	9
 POPUP_FREQ	=	$1740	; liste des fréquences enregistrées
 BTN_REMOVE	=	10	; remove a station from the list
 BTN_ADD	=	11	; add a station to the list
@@ -43,11 +46,34 @@ STAT_CHANNEL	=	12	; enter name:
 LE_NAME	=	13	; line edit
 BTN_CANCEL	=	14	; cancel
 BTN_SAVE	=	15	; save
+BTN_MUTE_SOFT	=	16	; soft mute
+BTN_MUTE	=	17	; hard mute
+BTN_SCAN_MINUS	=	18	; scan to <<
+BTN_SCAN_PLUS	=	19	; scan to >>
+BTN_BASS_BOOST	=	20	; bass BOOST
+BTN_MONO_STEREO	=	21	; mono/stereo switch
+BTN_RDS	=	22	; RDS switch
+iPOPUP_BAND	=	23	; fake
+iPOPUP_SPACING	=	24	; fake
+POPUP_BAND	=	$1840	; liste des bandes possibles
+POPUP_SPACING	=	$1940	; liste des pas de fréquences
 
 MENU_CHANNEL	=	$1740	; the channel menu ID
 ITEM_CHANNEL	=	$1741	; the channel menu item ID
 RES_CHANNEL	=	$bd	; the resource type+ID that holds saved channels
 FIRST_ITEM	=	$1780	; the first menu ID in the pop-up
+
+MENU_BAND	=	$1840	; the band menu ID
+BAND_EU	=	$1841	; the band menu item ID
+BAND_JP	=	$1842	; the band menu item ID
+BAND_WW	=	$1843	; the band menu item ID
+BAND_EE	=	$1844	; the band menu item ID
+
+MENU_SPACING	=	$1940	; the spacing menu ID
+SPACING_100	=	$1941	; the spacing menu item ID
+SPACING_200	=	$1942	; the spacing menu item ID
+SPACING_50	=	$1943	; the spacing menu item ID
+SPACING_25	=	$1944	; the spacing menu item ID
 
 *----------------------------
 * NDA ROUTINES
@@ -69,8 +95,12 @@ doREOPEN
 * doRUN
 *----------------------------
 
-doRUN	rts
+doRUN	sep	#$30
+	jsr	RADIO_UPDATE_STATUS
+	jmp	plamen_printFREQUENCY	; return in 16-bit
 
+	mx	%00
+	
 *----------------------------
 * doEVENT
 *----------------------------
@@ -96,8 +126,8 @@ doEVENT	pei	eventPtr+2
 	lda	#$001f
 	sta	taskMASK+2
 	
-	pha	; space
-	pha	; eventMask - not used
+	pha		; space
+	pha		; eventMask - not used
 	PushLong	#taskWHAT
 	_TaskMasterDA
 	pla
@@ -113,8 +143,16 @@ doEVENT	pei	eventPtr+2
 doCONTROL	lda	taskDATA4
 	cmp	#POPUP_FREQ	; handle $1740...
 	bne	doCONTROL1
-	lda	#9
-doCONTROL1	asl
+	lda	#iPOPUP_FREQ
+	bra	doCONTROL3
+doCONTROL1	cmp	#POPUP_BAND	; handle $1840...
+	bne	doCONTROL2
+	lda	#iPOPUP_BAND
+	bra	doCONTROL3
+doCONTROL2	cmp	#POPUP_SPACING	; handle $1940...
+	bne	doCONTROL3
+	lda	#iPOPUP_SPACING
+doCONTROL3	asl
 	tax
 	cmp	#tblCONTROL2-tblCONTROL
 	bcs	endEVENT
@@ -124,19 +162,31 @@ endEVENT	rts
 *--- Control table
 
 tblCONTROL	da	ctlNULL	;  0
-	da	ctlVOL	;  1 - Volume scroll bar (0-100)
-	da	ctlFREQ	;  2 - Frequency scroll bar (0-641)
+	da	ctlNULL	;  1 - Volume scroll bar (0-100)
+	da	ctlNULL	;  2 - Frequency scroll bar (0-641)
 	da	doFREQ_MINUS	;  3 - Frequency--
 	da	doFREQ_PLUS	;  4 - Frequency++
 	da	doVOL_MINUS	;  5 - Volume--
 	da	doVOL_PLUS	;  6 - Volume++
 	da	ctlNULL	;  7 - 87.5
 	da	ctlNULL	;  8 - 108
-	da	doPOPUP	;  9 - Pop-up menu (is $7140)
+	da	doPOPUP	;  9 - Pop-up menu (is $1740)
 	da	doSTAT_MINUS	; 10 - Remove station
 	da	doSTAT_PLUS	; 11 - Add station
+	da	ctlNULL	; 12
+	da	ctlNULL	; 13
+	da	ctlNULL	; 14
+	da	ctlNULL	; 15
+	da	doMUTE_SOFT	; 16 - Soft mute
+	da	doMUTE	; 17 - Hard mute
+	da	doSCAN_MINUS	; 18 - Scan--
+	da	doSCAN_PLUS	; 19 - Scan++
+	da	doBASS_BOOST	; 20 - Bass boost
+	da	doMONO_STEREO	; 21 - Mono/Stereo
+	da	doRDS	; 22 - RDS
+	da	doPOPUP_BAND	; 23 - Pop-up menu BAND (is $1840)
+	da	doPOPUP_SPACING	; 24 - Pop-up menu SPACING (is $1940)
 tblCONTROL2
-
 
 *----------------------------
 * EVENT DATA
@@ -209,6 +259,8 @@ KEY_RDS1	=	'R'
 KEY_RDS2	=	'r'
 KEY_MUTE1	=	'M'
 KEY_MUTE2	=	'm'
+KEY_SOFTMUTE1	=	'S'
+KEY_SOFTMUTE2	=	's'
 
 *---
 
@@ -216,22 +268,18 @@ ctlKEYS	lda	taskMESSAGE
 	and	#$ff
 	cmp	#KEY_VOL_MINUS
 	bne	ctlKEYS1
-
 	jmp	doVOL_MINUS
-	
+
 ctlKEYS1	cmp	#KEY_VOL_PLUS
 	bne	ctlKEYS2
-
 	jmp	doVOL_PLUS
 	
 ctlKEYS2	cmp	#KEY_FREQ_MINUS
 	bne	ctlKEYS3
-
 	jmp	doFREQ_MINUS
 	
 ctlKEYS3	cmp	#KEY_FREQ_PLUS
 	bne	ctlKEYS4
-
 	jmp	doFREQ_PLUS
 	
 ctlKEYS4	cmp	#KEY_RDS1
@@ -246,54 +294,13 @@ ctlKEYS6	cmp	#KEY_MUTE1
 	bne	ctlKEYS8
 ctlKEYS7	jmp	doMUTE
 
-ctlKEYS8	rts
-
-*----------------------------
-* MOVE THE THUMB
-*----------------------------
-* X: control ID
-* A: new value
-
-refreshTHUMB	stx	theCTL
-	sta	thePARAM	; new value
+ctlKEYS8	cmp	#KEY_SOFTMUTE1
+	beq	ctlKEYS9
+	cmp	#KEY_SOFTMUTE2
+	bne	ctlKEYS99
+ctlKEYS9	jmp	doMUTE_SOFT
 	
-	pha		; space for result
-	pha
-	pha		; space for result
-	pha
-	PushLong	myWINDOW	; ctlWindowPtr
-	PushLong	theCTL	; ctlID
-	_GetCtlHandleFromID
-	PushWord	#9	; move_thumb
-	PushLong	thePARAM	; ctlParam = new value
-	_CallCtlDefProc
-	pla
-	pla
-	rts
-
-*---
-
-theCTL	ds	4
-thePARAM	ds	4
-
-*----------------------------
-* CONTROL 1: VOLUME SCROLL BAR
-*----------------------------
-
-ctlVOL	ldx	#SC_VOL
-	jsr	getCTLVALUE
-	sta	theVOL
-	jmp	plamen_setVOLUME
-
-*----------------------------
-* CONTROL 2: FREQUENCY SCROLL BAR
-*----------------------------
-
-ctlFREQ	ldx	#SC_FREQ
-	jsr	getCTLVALUE
-	sta	theFREQ
-	jsr	plamen_setFREQUENCY
-	jmp	plamen_printFREQUENCY
+ctlKEYS99	rts
 
 *----------------------------
 * SPECIFIC CHIP ROUTINES
@@ -303,18 +310,12 @@ ctlFREQ	ldx	#SC_FREQ
 * DECREASE VOLUME
 *----------------------------
 
-doVOL_MINUS	ldx	#SC_VOL
-	jsr	getCTLVALUE
+doVOL_MINUS	lda	theVOL
 	cmp	#MIN_VOL
 	bcc	endVOL_MINUS
 	beq	endVOL_MINUS
 	dec
 	sta	theVOL
-	ldx	#SC_VOL
-	jsr	setCTLVALUE
-	ldx	#SC_VOL
-	lda	theVOL
-	jsr	refreshTHUMB
 	jmp	plamen_setVOLUME
 endVOL_MINUS	rts
 
@@ -322,17 +323,11 @@ endVOL_MINUS	rts
 * INCREASE VOLUME
 *----------------------------
 
-doVOL_PLUS	ldx	#SC_VOL
-	jsr	getCTLVALUE
+doVOL_PLUS	lda	theVOL
 	cmp	#MAX_VOL
 	bcs	endVOL_PLUS
 	inc
 	sta	theVOL
-	ldx	#SC_VOL
-	jsr	setCTLVALUE
-	ldx	#SC_VOL
-	lda	theVOL
-	jsr	refreshTHUMB
 	jmp	plamen_setVOLUME
 endVOL_PLUS	rts
 
@@ -340,40 +335,28 @@ endVOL_PLUS	rts
 * DECREASE FREQUENCY
 *----------------------------
 
-doFREQ_MINUS	ldx	#SC_FREQ
-	jsr	getCTLVALUE
-	cmp	#MIN_FREQ
-	bcc	endFREQ_MINUS
-	beq	endFREQ_MINUS
-	dec
-	sta	theFREQ
-	ldx	#SC_FREQ
-	jsr	setCTLVALUE
-	ldx	#SC_FREQ
-	lda	theFREQ
-	jsr	refreshTHUMB
-	jsr	plamen_setFREQUENCY
+doFREQ_MINUS	jsr	plamen_freqDOWN
 	jmp	plamen_printFREQUENCY
-endFREQ_MINUS	rts
 
 *----------------------------
 * INCREASE FREQUENCY
 *----------------------------
 
-doFREQ_PLUS	ldx	#SC_FREQ
-	jsr	getCTLVALUE
-	cmp	#MAX_FREQ
-	bcs	endFREQ_PLUS
-	inc
-change_FREQ	sta	theFREQ
-	ldx	#SC_FREQ
-	jsr	setCTLVALUE
-	ldx	#SC_FREQ
-	lda	theFREQ
-	jsr	refreshTHUMB
-	jsr	plamen_setFREQUENCY
+doFREQ_PLUS	jsr	plamen_freqUP
 	jmp	plamen_printFREQUENCY
-endFREQ_PLUS	rts
+change_FREQ	rts
+
+*----------------------------
+* SCAN <<
+*----------------------------
+
+doSCAN_MINUS	jmp	plamen_seekDOWN
+
+*----------------------------
+* SCAN >>
+*----------------------------
+
+doSCAN_PLUS	jmp	plamen_seekUP
 
 *----------------------------
 * TOGGLE RD ON/OFF
@@ -382,7 +365,11 @@ endFREQ_PLUS	rts
 doRDS	lda	fgRDS
 	eor	#DFT_ON
 	sta	fgRDS
-	rts		; no call, done in update
+	jsr	plamen_setRDS	; de/activate RDS
+
+	lda	fgRDS
+	ldx	#BTN_RDS
+	jmp	setCTLVALUE
 
 *----------------------------
 * TOGGLE MUTE ON/OFF
@@ -391,16 +378,50 @@ doRDS	lda	fgRDS
 doMUTE	lda	fgMUTE
 	eor	#DFT_ON
 	sta	fgMUTE
-	jmp	plamen_setMUTE
+	jsr	plamen_setMUTE
+
+	lda	fgMUTE
+	ldx	#BTN_MUTE
+	jmp	setCTLVALUE
+
+*----------------------------
+* TOGGLE SOFT MUTE ON/OFF
+*----------------------------
+
+doMUTE_SOFT	lda	fgMUTE_SOFT
+	eor	#DFT_ON
+	sta	fgMUTE_SOFT
+	jsr	plamen_setMUTE_SOFT
+
+	lda	fgMUTE_SOFT
+	ldx	#BTN_MUTE_SOFT
+	jmp	setCTLVALUE
+
+*----------------------------
+* TOGGLE MONO/STEREO
+*----------------------------
+
+doMONO_STEREO	lda	fgMONOSTEREO
+	eor	#DFT_ON
+	sta	fgMONOSTEREO
+	jsr	plamen_setMONOSTEREO
+
+	lda	fgMONOSTEREO
+	ldx	#BTN_MONO_STEREO
+	jmp	setCTLVALUE
 
 *----------------------------
 * TOGGLE BASS ON/OFF
 *----------------------------
 
-doBASS	lda	fgBASS
+doBASS_BOOST	lda	fgBASS
 	eor	#DFT_ON
 	sta	fgBASS
-	jmp	plamen_setBASS
+	jsr	plamen_setBASS	; de/activate bass boost
+
+	lda	fgBASS
+	ldx	#BTN_BASS_BOOST
+	jmp	setCTLVALUE
 
 *----------------------------
 * STATION POP-UP
@@ -427,6 +448,28 @@ popupEXIT	rts		; not found
 popupFOUND	lda	channelFREQ1,x	; get the frequency index
 	beq	popupEXIT	; if it exists...
 	jmp	change_FREQ	; and jumps to it
+
+*----------------------------
+* BAND POP-UP
+*----------------------------
+
+doPOPUP_BAND	ldx	#POPUP_BAND	; $1841..$1844 -> 0..3
+	jsr	getCTLVALUE
+	sec
+	sbc	#BAND_EU
+	sta	theBAND
+	jmp	plamen_setBAND	; and jumps to it
+
+*----------------------------
+* SPACING POP-UP
+*----------------------------
+
+doPOPUP_SPACING	ldx	#POPUP_SPACING	; $1941..$1944 -> 0..3
+	jsr	getCTLVALUE
+	sec
+	sbc	#SPACING_100
+	sta	theSPACING
+	jmp	plamen_setSPACING	; and jumps to it
 
 *----------------------------
 * REMOVE STATION
@@ -814,9 +857,13 @@ createRESOURCE	pha		; ask for 256 bytes
 
 theVOL	dw	DFT_VOL
 theFREQ	dw	DFT_FREQ	; the index of the frequency, not the frequency :-(
-fgMUTE	dw	DFT_OFF	; 0: off, 1: on
-fgRDS	dw	DFT_ON	; 0: off, 1: on
-fgBASS	dw	DFT_OFF	; 0: off, 1: on
+theBAND	dw	DFT_BAND	; 0: Europe, 1: Japan, 2: WW, 3: EE
+theSPACING	dw	DFT_SPACING	; 0: 100 kHz, 1: 200 kHz, 2: 50 kHz, 3: 25 kHz
+fgMUTE	dw	DFT_OFF	; 0: off, -1: on
+fgMUTE_SOFT	dw	DFT_OFF	; 0: off, -1: on
+fgRDS	dw	DFT_ON	; 0: off, -1: on
+fgBASS	dw	DFT_OFF	; 0: off, -1: on
+fgMONOSTEREO	dw	DFT_OFF	; 0: stereo, -1: mono
 
 frequency	ds	2
 

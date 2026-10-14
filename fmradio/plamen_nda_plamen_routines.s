@@ -181,15 +181,16 @@ OPTION_BAND            equ   OPTIONS_OFFSET + 7
 OPTION_CHANNELSPACING  equ   OPTIONS_OFFSET + 8
 OPTION_UI_TYPE       equ   OPTIONS_OFFSET + 9
 
+CYAREG	=	$c036
 
-C_SCL_L                equ   $C088
-C_SCL_H                equ   $C089
-C_SDA_L                equ   $C08A
-C_SDA_H                equ   $C08B
-C_SDA_R                equ   $C08C
+C_SCL_L	=	$C088
+C_SCL_H	=	$C089
+C_SDA_L	=	$C08A
+C_SDA_H	=	$C08B
+C_SDA_R	=	$C08C
 
-LED_STEREO             equ   $C08E
-LED_TUNED              equ   $C08F
+LED_STEREO	=	$C08E
+LED_TUNED	=	$C08F
 
 *----------------------------
 * Antoine's equates
@@ -243,35 +244,91 @@ found_card	tya		; 1 -> $10
 strID	asc	'][RADIO'00
 
 *----------------------------
-* SET DEFAULT VALUES
+* GET CHIP ID
 *----------------------------
 
-plamen_setDFTVAL
+plamen_getCHIPID
+	sep	#$30
+	jsr	RADIO_GET_CHIPID
+	rep	#$30
+	rts
+
+*----------------------------
+* INIT RADIO
+*----------------------------
+
+plamen_initRADIO
 	sep	#$30
 	jsr	RADIO_INIT
-	jsr	RADIO_RESET_STATION
-	jsr	RADIO_UPDATE_STATUS
 	rep	#$30
-
-	lda	#DFT_VOL
-	sta	theVOL
-	lda	#DFT_FREQ
-	sta	theFREQ
-	lda	#DFT_OFF
-	sta	fgMUTE
-	lda	#DFT_ON
-	sta	fgRDS
 	rts
-	
+
+*----------------------------
+* SEEK DOWN
+*----------------------------
+
+plamen_seekDOWN
+	sep	#$30
+	jsr	RADIO_SEEK_DOWN
+	rep	#$30
+	rts
+
+*----------------------------
+* SEEK UP
+*----------------------------
+
+plamen_seekUP
+	sep	#$30
+	jsr	RADIO_SEEK_UP
+	rep	#$30
+	rts
+
+*----------------------------
+* FREQUENCY DOWN
+*----------------------------
+
+plamen_freqDOWN
+	sep	#$30
+	jsr	HandleKeyTuneDown
+	rep	#$30
+	rts
+
+*----------------------------
+* FREQUENCY UP
+*----------------------------
+
+plamen_freqUP
+	sep	#$30
+	jsr	HandleKeyTuneUp
+	rep	#$30
+	rts
+
+*----------------------------
+* SET BAND
+*----------------------------
+
+plamen_setBAND
+	sep	#$30
+	jsr	RADIO_SET_BAND
+	rep	#$30
+	rts
+
+*----------------------------
+* SET SPACING
+*----------------------------
+
+plamen_setSPACING
+	sep	#$30
+	jsr	RADIO_SET_CHANSPACING
+	rep	#$30
+	rts
+
 *----------------------------
 * TURN DEVICE OFF
 *----------------------------
 
 plamen_switchOFF
-	lda	#TRUE
-	sep	#$30
-	jsr	RADIO_SET_MUTE
-	rep	#$30
+	jsr	plamen_setMUTE	; return in 16-bit
 	
 	lda	#DFT_ON
 	sta	fgMUTE
@@ -302,7 +359,7 @@ plamen_setVOLUME
 	rts		; yes, exit
 
 *----------------------------
-* SET MUTE
+* TOGGLE MUTE
 *----------------------------
 
 plamen_setMUTE	sep	#$30
@@ -311,7 +368,17 @@ plamen_setMUTE	sep	#$30
 	rts
 
 *----------------------------
-* SET BASS
+* TOGGLE SOFT MUTE
+*----------------------------
+
+plamen_setMUTE_SOFT
+	sep	#$30
+	jsr	RADIO_SET_SOFTMUTE
+	rep	#$30
+	rts
+
+*----------------------------
+* TOGGLE BASS
 *----------------------------
 
 plamen_setBASS	sep	#$30
@@ -320,45 +387,54 @@ plamen_setBASS	sep	#$30
 	rts
 
 *----------------------------
-* SET FREQUENCY
+* TOGGLE RDS
 *----------------------------
 
-plamen_setFREQUENCY
-	lda	theFREQ
-	asl
-	tax
-	lda	tblFREQUENCY,x
-	sta	frequency
-	stal	$300
-	stal	$302
-	stal	$304
-	
+plamen_setRDS	sep	#$30
+	jsr	RADIO_SET_RDS
+	rep	#$30
+	rts
+
+*----------------------------
+* TOGGLE MONO/STEREO
+*----------------------------
+
+plamen_setMONOSTEREO
+	sep	#$30
+	jsr	RADIO_SET_FORCEMONO
+	rep	#$30
+	rts
+
+*----------------------------
+* GET FREQUENCY
+*----------------------------
+
+plamen_getFREQUENCY
 	sep	#$30
 	jsr	GetFreqAndChannSpacing
-	jsr	TOINET_SET_FREQUENCY
 	rep	#$30
-	rts		; yes, exit
+	rts
 
+*----------------------------
+* LOAD SAVED DATA
+*----------------------------
+
+plamen_loadSAVEDDATA
+	sep	#$30
+	jsr	LoadSavedData
+	rep	#$30
+	rts
+	
 *----------------------------
 * DISPLAY FREQUENCY
 *----------------------------
 * Formula = (87 x 100) + (theFREQ x 10)
 
 plamen_printFREQUENCY
-	lda	theFREQ	; convert to string
-	asl		; * 2
-	pha		; sauve
-	asl
-	asl		; * 8
-	clc
-	adc	1,s	; = * 10
-	adc	#8700	; + 8700
-	sta	1,s
-	PushLong	#strFREQUENCY
-	PushWord	#5
-	PushWord	#FALSE
-	_Int2Dec
-
+	sep	#$30
+	jsr	INT2DEC
+	rep	#$30
+	
 *
 * Font: LED.24 font, ID#32671, from BRCC Font #4 disk
 *
@@ -368,9 +444,8 @@ yFREQUENCY	=	27	; was 30
 	stz	theINDEX
 
 	PushLong	#rectFREQUENCY
-	PushWord	#$ffff	; frameColor
-	PushWord	#$ffff	; fillColor
-	_SpecialRect
+	PushLong	#whitePATTERN
+	_FillRect
 
 	PushWord #$1800
 	PushWord #32671		; LED.24
@@ -380,26 +455,28 @@ yFREQUENCY	=	27	; was 30
 ]lp	ldy	theINDEX
 	lda	xFREQUENCY,y
 	and	#$ff
-	tax
+	tax		; the x-coord
 
-	lda	strFREQUENCY,y
+	lda	STR_FREQ,y	; the digit
 	and	#$ff
-	cmp	#' '
+	cmp	#10	; space, skip
 	beq	printF2
-	pha
+
+	ora	#'0'
+	pha		; save char
 	cmp	#'1'
 	bne	printF1
 
-	txa		; slide the 1 to the right
+	txa		; slide digit 1 to the right
 	clc
-	adc	#10
+	adc	#10	; add 10 to the x-coord
 	tax
 	
-printF1	phx
+printF1	phx		; set xy-coords
 	PushWord	#yFREQUENCY
 	_MoveTo
 	
-	_DrawChar
+	_DrawChar		; draw the char
 	
 printF2	lda	theINDEX
 	cmp	#2	; did we print the unitŽ?
@@ -428,20 +505,13 @@ printF3	inc	theINDEX
 rectFREQUENCY	dw	2,20,32,169
 xFREQUENCY	dfb	10,40,70,110,140	; put the dot at 100
 
-theINDEX	dfb	0
-valFREQUENCY	ds	4	; Formula (max 410*5 + 8750)
-strFREQUENCY	asc	'00000'00	; '10550'
+theINDEX	ds	2
 
-*----------------------------
-* FREQUENCY TABLE
-*----------------------------
-
-tblFREQUENCY
-]theFREQ	=	0	; 0: 87 MHZ, 64: 87,1 MHz
-	lup	MAX_FREQ+1	; 108-87 * 10 + 1
-	dw	]theFREQ
-]theFREQ	=	]theFREQ+100
-	--^
+*********************************************************************
+*********************************************************************
+********************* EVERYTHING BELOW IS 8-BIT *********************
+*********************************************************************
+*********************************************************************
 
 ****************************************
 * Radio DLR                            *
@@ -499,18 +569,154 @@ cbi                    mac
                        and   #>]1 ! $FFFF
                        <<<
 
+**************************************************
+*                Handle Key Tune Up              *
+**************************************************
+
+HandleKeyTuneUp
+	jsr	GetFreqAndChannSpacing	; in A is ChnnelSpacing
+	clc			; Add Current Freq with ChannelSpacing
+	adc	PARAM_L
+	sta	PARAM_L
+	bcc	:NoCarrySet
+	inc	PARAM_H
+:NoCarrySet	jmp	CarrySet:
+
+**************************************************
+*                Handle Key Tune Down            *
+**************************************************
+
+HandleKeyTuneDown
+	jsr	GetFreqAndChannSpacing	; in A is ChnnelSpacing
+	eor	#$FF		; Subtract Current Freq with ChannelSpacing
+	sec
+	adc	PARAM_L
+	sta	PARAM_L
+	bcs	CarrySet:
+	dec	PARAM_H
+CarrySet:	jmp	RADIO_TUNE_TO
+
+************************************************
+*                                              *
+*                  Save Option                 *
+*                                              *
+************************************************
+
+LoadOption
+	sty	I2CDATA_ADDR	; A -> Value ,  Y -> Option Address
+	jmp	ReadFrom2402
+
+************************************************
+*                                              *
+*                  Save Option                 *
+*                                              *
+************************************************
+
+SaveOption
+	sty	I2CDATA_ADDR	; A -> Value ,  Y -> Option Address
+	jmp	WriteTo2402
+
+************************************************
+*                                              *
+*                  Save Preset                 *
+*                                              *
+************************************************
+
+SavePreset
+	asl
+	sta	I2CDATA_ADDR
+	lda	STATE_FREQ_L
+	jsr	WriteTo2402
+	inc	I2CDATA_ADDR
+	lda	STATE_FREQ_H
+	jmp	WriteTo2402
+
+************************************************
+*                                              *
+*                  Load Preset                 *
+*                                              *
+************************************************
+
+LoadPreset
+	asl
+	sta	I2CDATA_ADDR
+	jsr	ReadFrom2402
+	sta	STATE_FREQ_L
+	sta	PARAM_L
+	inc	I2CDATA_ADDR
+	jsr	ReadFrom2402
+	sta	STATE_FREQ_H
+	sta	PARAM_H
+	rts
+
+************************************************
+*                                              *
+*              Load Saved Data                 *
+*                                              *
+************************************************
+
+LoadSavedData
+
+;OPTION_ISMUTED         equ   OPTIONS_OFFSET + 0
+;OPTION_ISSOFTMUTE      equ   OPTIONS_OFFSET + 1
+;OPTION_ISMONOFORCED    equ   OPTIONS_OFFSET + 2
+;OPTION_ISBASSBOOST     equ   OPTIONS_OFFSET + 3
+;OPTION_ISRDSENABLED    equ   OPTIONS_OFFSET + 4
+;OPTION_VOLUME          equ   OPTIONS_OFFSET + 5
+;OPTION_CURRENTPRESET   equ   OPTIONS_OFFSET + 6
+;OPTION_BAND            equ   OPTIONS_OFFSET + 7
+;OPTION_CHANNELSPACING  equ   OPTIONS_OFFSET + 8
+
+
+	ldy	OPTION_ISMUTED
+	jsr	LoadOption
+	jsr	RADIO_SET_MUTE
+
+	ldy	OPTION_ISSOFTMUTE
+	jsr	LoadOption
+	jsr	RADIO_SET_SOFTMUTE
+
+	ldy	OPTION_ISMONOFORCED
+	jsr	LoadOption
+	jsr	RADIO_SET_FORCEMONO
+
+	ldy	OPTION_ISBASSBOOST
+	jsr	LoadOption
+	jsr	RADIO_SET_BASSBOOST
+
+	ldy	OPTION_ISRDSENABLED
+	jsr	LoadOption
+	sta	STATE_ISRDSENABLED
+
+	ldy	OPTION_VOLUME
+	jsr	LoadOption
+	jsr	RADIO_SET_VOLUME
+
+	ldy	OPTION_BAND
+	jsr	LoadOption
+	jsr	RADIO_SET_BAND
+
+	ldy	OPTION_CHANNELSPACING
+	jsr	LoadOption
+	jsr	RADIO_SET_CHANSPACING
+
+	jsr	GetBandFreqInterval
+
+	ldy	OPTION_CURRENTPRESET
+	jsr	LoadOption
+	sta	STATE_CURRENTPRESET
+
+	jsr	LoadPreset
+	jmp	RADIO_TUNE_TO
+
 *************** GetFreqAndChannSpacing ***********
 
 GetFreqAndChannSpacing
-*	jsr	RADIO_GET_FREQUENCY
-
 	lda	STATE_FREQ_L
 	sta	PARAM_L
 	lda	STATE_FREQ_H
 	sta	PARAM_H
-
-	jsr	GetChannelSpacing
-	rts
+	jmp	GetChannelSpacing
 
 ********************** Get Band FreqInterval ************************
 
@@ -664,6 +870,92 @@ SaveRes
 *	sta	RESULT
 	rts
 
+************************************************
+*                                              *
+*                 WriteTo2402                  *
+*                                              *
+************************************************
+
+WriteTo2402
+	pha
+	
+	jsr	I2CStart
+	lda	#I2C_2402_WRITE	; Send i2c dev addr and write bit
+	jsr	I2CWriteByte
+	
+	lda	I2CDATA_ADDR
+	jsr	I2CWriteByte	; Send Address
+	
+	pla
+	jsr	I2CWriteByte	; Write Byte
+	jsr	I2CStop
+	jmp	Delay10
+
+************************************************
+*                                              *
+*                   ReadFrom2402               *
+*                                              *
+************************************************
+
+ReadFrom2402
+	jsr	I2CStart
+	lda	#I2C_2402_WRITE	; Send i2c dev addr and write bit
+	jsr	I2CWriteByte
+	
+	lda	I2CDATA_ADDR
+	jsr	I2CWriteByte	; Send Address
+	
+	jsr	I2CStart
+	lda	#I2C_2402_READ	; Send i2c dev addr and Read bit
+	jsr	I2CWriteByte
+	
+	jsr	I2CReadByte
+	pha
+	jsr	I2CSendNack
+	jsr	I2CStop
+	pla
+	rts
+
+* ========================================================================
+* Dummy Delay Stubs
+* ========================================================================
+
+; Clock: 1.023 MHz
+
+; --- 10ms Base ---
+Delay10
+	pha		; [Stack: A]
+	phx		; [Stack: A, X]
+
+	ldal	CYAREG	; ** new AV ** IIgs slow-speed
+	pha
+	and	#%011111111
+	stal	CYAREG
+	
+	ldx	#$14
+:outer	lda	#$64
+:inner	sec
+	sbc	#$01
+	bne	:inner
+	dex
+	bne	:outer
+
+	pla		; ** new AV ** restore speed
+	stal	CYAREG
+
+	plx		; Pull X-value into A
+			; [Stack: A] -> X restored
+	pla		; [Stack: empty] -> A restored
+	rts
+
+; --- 500ms ---
+Delay10xYms
+
+:loop	jsr	Delay10
+	dey
+	bne	:loop
+	rts
+
 ; ------------------------------------------------------------------
 ; Variable Allocations (Zero Page is faster, but standard memory here)
 ; ------------------------------------------------------------------
@@ -763,6 +1055,7 @@ LOOP_RESET_NAME
 * ===============================================================
 * FUNCTION: RADIO_SET_VOLUME
 * ===============================================================
+
 RADIO_SET_VOLUME
 	sta	STATE_VOLUME
 	and	#$0F
@@ -778,6 +1071,7 @@ RADIO_SET_VOLUME
 * ===============================================================
 * FUNCTION: RADIO_SET_BASSBOOST
 * ===============================================================
+
 RADIO_SET_BASSBOOST
 	sta	STATE_ISBASSBOOST
 	cmp	#TRUE
@@ -793,8 +1087,45 @@ BASS_DONE
 	rts
 
 * ===============================================================
+* FUNCTION: RADIO_SET_MONOSTEREO
+* ===============================================================
+
+RADIO_SET_MONOSTEREO
+	sta	STATE_ISBASSBOOST
+	cmp	#TRUE
+	beq	MONOSTEREO_TRUE
+MONOSTEREO_FALSE
+	clr	REGS_02; R2_MONO_SELECT
+	jmp	MONOSTEREO_DONE
+MONOSTEREO_TRUE
+	set	REGS_02; R2_MONO_SELECT
+MONOSTEREO_DONE
+	lda	#$02
+	jsr	SEND_REGISTER
+	rts
+
+* ===============================================================
+* FUNCTION: RADIO_SET_RDS
+* ===============================================================
+
+RADIO_SET_RDS
+	sta	STATE_ISRDSENABLED
+	cmp	#TRUE
+	beq	RDS_TRUE
+RDS_FALSE
+	set	REGS_02; R2_RDS_ENABLE
+	jmp	RDS_DONE
+RDS_TRUE
+	clr	REGS_02; R2_RDS_ENABLE
+RDS_DONE
+	lda	#$02
+	jsr	SEND_REGISTER
+	rts
+
+* ===============================================================
 * FUNCTION: RADIO_SET_MUTE
 * ===============================================================
+
 RADIO_SET_MUTE
 	sta	STATE_ISMUTED
 	cmp	#TRUE
@@ -812,6 +1143,7 @@ MUTE_DONE
 * ===============================================================
 * FUNCTION: RADIO_SET_SOFTMUTE
 * ===============================================================
+
 RADIO_SET_SOFTMUTE
 	sta	STATE_ISSOFTMUTE
 	cmp	#TRUE
@@ -829,6 +1161,7 @@ SMUTE_DONE
 * ===============================================================
 * FUNCTION: RADIO_SET_FORCEMONO
 * ===============================================================
+
 RADIO_SET_FORCEMONO
 	sta	STATE_ISMONOFORCED
 	cmp	#TRUE
@@ -846,6 +1179,7 @@ MONO_DONE
 * ===============================================================
 * FUNCTION: RADIO_SET_CHANSPACING 
 * ===============================================================
+
 RADIO_SET_CHANSPACING 
 	and	#<R3_CHAN_SPACING
 	sta	TEMP_L                                              
@@ -861,6 +1195,7 @@ RADIO_SET_CHANSPACING
 * ===============================================================
 * FUNCTION: RADIO_SET_BAND
 * ===============================================================
+
 RADIO_SET_BAND
 	asl
 	asl
@@ -878,6 +1213,7 @@ RADIO_SET_BAND
 * ===============================================================
 * FUNCTION: RADIO_SEEK_UP
 * ===============================================================
+
 RADIO_SEEK_UP
 	jsr	RADIO_RESET_STATION
 	set	REGS_02; R2_SEEK_UP . R2_SEEK_ENABLE
@@ -888,6 +1224,7 @@ RADIO_SEEK_UP
 * ===============================================================
 * FUNCTION: RADIO_SEEK_DOWN
 * ===============================================================
+
 RADIO_SEEK_DOWN
 	jsr	RADIO_RESET_STATION
 	clr	REGS_02; R2_SEEK_UP
@@ -896,10 +1233,10 @@ RADIO_SEEK_DOWN
 	jsr	SEND_REGISTER
 	rts
 
-
 * ===============================================================
 * FUNCTION: RADIO_GET_CHIPID
 * ===============================================================
+
 RADIO_GET_CHIPID
 	lda	#$00	;  Chip ID register
 	jsr	GET_REGISTER
@@ -908,6 +1245,7 @@ RADIO_GET_CHIPID
 * ===============================================================
 * FUNCTION: RADIO_GET_FREQUENCY
 * ===============================================================
+
 RADIO_GET_FREQUENCY
                                                  ; band = regs[3] & R3_BAND;
                        lda   REGS_03L
@@ -1098,14 +1436,6 @@ DIV_200K
                        lda   #20
                        jsr   DIVIDE_16
 
-** new AV **
-
-TOINET_SET_FREQUENCY
-	lda	frequency
-	sta	MATH_RES_L
-	lda	frequency+1
-	sta	MATH_RES_H
-
 TUNE_SET_REGS
 	jsr	RADIO_RESET_STATION
 
@@ -1141,6 +1471,85 @@ LOOP_TUNE_SHIFT
 	jsr	SEND_REGISTER
 	rts
  
+* ***************************** HELPERS *******************************
+
+************************************************
+*                                              *
+*      16-bit to Decimal String Conversion     *
+*                                              *
+************************************************
+
+INT2DEC
+                       ldx   #$00                ; X is both table index and STR_FREQ string index
+
+NEXT_PWR
+                       ldy   #$00                ; Y will act as our DIGIT counter (0-9)
+
+SUB_LOOP
+                       sec                       ; Attempt to subtract the power of 10
+                       lda   MATH_RES_L
+                       sbc   TBL_10_L,X
+                       sta   MATH_RES_L
+                       lda   MATH_RES_H
+                       sbc   TBL_10_H,X
+                       sta   MATH_RES_H
+                       bcc   RESTORE             ; If borrow occurred, we subtracted too much
+                       iny                       ; Subtraction succeeded, increment digit count
+                       bne   SUB_LOOP            ; Unconditional branch (Y will never reach 0 here)
+
+RESTORE
+                       clc                       ; Subtracted too much, add the power of 10 back
+                       lda   MATH_RES_L
+                       adc   TBL_10_L,X
+                       sta   MATH_RES_L
+                       lda   MATH_RES_H
+                       adc   TBL_10_H,X
+                       sta   MATH_RES_H
+
+                                                 ; --- DIGIT EVALUATION & ZERO SUPPRESSION ---
+                       tya                       ; Move digit (Y) to Accumulator
+                       bne   PRINT_DIG           ; If digit > 0, always print it
+
+                                                 ; Digit is 0. Check if we should suppress it.
+                       cpx   #$00
+                       beq   SUPPRESS_Z          ; If it's the very first digit (10000s), always suppress
+
+                                                 ; Check the previous character written to the string
+                       lda   STR_FREQ-1,X
+                       cmp   #10                 ; Was the previous character a space?
+                       beq   SUPPRESS_Z          ; Yes, so continue suppressing leading zeros
+
+                                                 ; We are not suppressing, so prepare to print '0'
+                       lda   #$00                ; '0'
+                       beq   STORE_CHR           ; Unconditional branch
+
+SUPPRESS_Z
+                       lda   #10                 ; Space ' '
+                       bne   STORE_CHR           ; Unconditional branch
+
+PRINT_DIG
+                       tya                       ; Bring digit back to A
+
+STORE_CHR
+                       sta   STR_FREQ,X          ; Store character in output array
+                       inx                       ; Move to next string position / power of 10
+                       cpx   #$04                ; Have we done 10000, 1000, 100, and 10?
+                       bne   NEXT_PWR
+
+                                                 ; --- FINAL DIGIT (1s) ---
+                                                 ; The remainder in MATH_RES_L is the 1s digit.
+                                                 ; We always print this, even if it is '0'.
+                       lda   MATH_RES_L
+                       sta   STR_FREQ,X
+                       rts
+
+* ------------------------------------------------------------------
+* Data Tables
+* ------------------------------------------------------------------
+
+TBL_10_L	dfb	$10, $E8, $64, $0A
+TBL_10_H	dfb	$27, $03, $00, $00
+
 *******************************************************************
 * DIVIDE_16: Divides 16-bit (PARAM_H:PARAM_L) by 8-bit divisor in A
 * Result in MATH_RES_H:MATH_RES_L

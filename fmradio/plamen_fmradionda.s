@@ -12,7 +12,6 @@
 
 *-------------- 
 
-	use	4/ADB.Macs
 	use	4/Ctl.Macs
 	use	4/Font.Macs
 	use	4/Int.Macs
@@ -96,7 +95,7 @@ wInSysWindow	=	$8000
 
 *-------------- NDA
 
-Period	=	$ffff	; never
+Period	=	180	; 3 seconds
 EventMask	=	$ffff	; get all events
 
 eventAction	=	1	; action routine, in A register
@@ -183,10 +182,11 @@ ndaOPEN2	pha
 	lda	#1
 	sta	fgOPEN
 
-	jsr	loadCHANNELS		; load the stored channels
-	jsr	plamen_setDFTVAL	; set default values
-	jsr	plamen_setVOLUME	; set the volume
-	jsr	plamen_setFREQUENCY	; and the frequency
+	jsr	plamen_getCHIPID
+	jsr	plamen_initRADIO
+	jsr	plamen_loadSAVEDDATA
+
+	bit	loadCHANNELS		; load the stored channels
 	jsr	plamen_printFREQUENCY	; and print it
 
 ndaOPEN9	PushWord	curRESID
@@ -289,7 +289,7 @@ ndaACTION1	_SetPort
 
 tblACTION	da	doNULL	; 0
 	da	doEVENT	; 1
-	da	doRUN	; 2
+	da	doRUN	; 2 ** refresh radio status **
 	da	doCURSOR	; 3
 	da	doNULL	; 4
 	da	doUNDO	; 5
@@ -437,7 +437,7 @@ makeChannelWindow
 	
 	ldx	#0
 	txy
-]lp	lda	strFREQUENCY,x
+]lp	lda	STR_FREQ,x
 	cmp	#' '
 	beq	mcw_NEXT
 	cpx	#3	; arrive-t-on au séparateur ?
@@ -511,8 +511,6 @@ startResourceManager
 	_GetCurResourceFile
 	PullWord	myRESID
 	
-	_ADBStartUp
-
 startRM1	rts
 
 *----------------------------
@@ -527,8 +525,6 @@ stopResourceManager
 	_CloseResourceFile
 	stz	myRESID
 	_ResourceShutDown
-	
-	_ADBShutDown
 	
 stopRM1	rts
 
@@ -671,6 +667,8 @@ myWINDOW	ds	4	; the Main window
 myWINDOW2	ds	4	; the Channel window
 theCODE	ds	2	; A register from Desk Manager
 curRESID	ds	2	; the curent resource file ID
+
+whitePATTERN	ds	32,$ff	; the QDII white pattern
 
 appID	ds	2
 myID	ds	2

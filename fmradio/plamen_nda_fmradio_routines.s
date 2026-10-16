@@ -23,13 +23,6 @@ MIN_FREQ	=	0
 MAX_FREQ	=	210
 STEP_FREQ	=	1
 
-DFT_VOL	=	50	; 0..100
-DFT_BAND	=	0	; 0..3
-DFT_FREQ	=	105	; 0..210
-DFT_SPACING	=	0	; 0..3
-DFT_OFF	=	FALSE
-DFT_ON	=	TRUE
-
 SC_VOL	=	1	; Control IDs
 SC_FREQ	=	2
 BTN_FREQ_MINUS	=	3
@@ -95,9 +88,16 @@ doREOPEN
 * doRUN
 *----------------------------
 
-doRUN	sep	#$30
+doRUN	sep	#$30		; refresh radio status
 	jsr	RADIO_UPDATE_STATUS
-	jmp	plamen_printFREQUENCY	; return in 16-bit
+	
+	lda	STATE_ISTUNING		; are we tuning?
+	cmp	#TRUE		; yes,
+	beq	doRUN_1		; skip refresh
+	
+	jsr	plamen_printFREQUENCY	; return in 16-bit
+
+doRUN_1	jmp	plamen_printRDS		; return in 16-bit
 
 	mx	%00
 	
@@ -107,7 +107,7 @@ doRUN	sep	#$30
 
 iWHAT	=	0
 iMESSAGE	=	2
-iWHEN	=	6
+iWHEN	=	641
 iWHERE	=	10
 iMODIFIERS	=	14
 
@@ -242,6 +242,59 @@ setCTLVALUE	pha		; newValue
 	rts
 
 *----------------------------
+* UPDATE BUTTONS
+*----------------------------
+
+updateBUTTONS	lda	STATE_ISSOFTMUTE
+	and	#$ff
+	beq	doUB_1
+	lda	#1
+doUB_1	ldx	#BTN_MUTE_SOFT
+	jsr	setCTLVALUE
+
+	lda	STATE_ISMUTED
+	and	#$ff
+	beq	doUB_2
+	lda	#1
+doUB_2	ldx	#BTN_MUTE
+	jsr	setCTLVALUE
+
+	lda	STATE_ISBASSBOOST
+	and	#$ff
+	beq	doUB_3
+	lda	#1
+doUB_3	ldx	#BTN_BASS_BOOST
+	jsr	setCTLVALUE
+
+	lda	STATE_ISMONOFORCED
+	and	#$ff
+	beq	doUB_4
+	lda	#1
+doUB_4	ldx	#BTN_MONO_STEREO
+	jsr	setCTLVALUE
+
+	lda	STATE_ISRDSENABLED
+	and	#$ff
+	beq	doUB_5
+	lda	#1
+doUB_5	ldx	#BTN_RDS
+	jsr	setCTLVALUE
+
+	lda	theBAND
+	clc
+	adc	#BAND_EU
+	ldx	#POPUP_BAND
+	jsr	setCTLVALUE
+
+	lda	theSPACING
+	clc
+	adc	#SPACING_100
+	ldx	#POPUP_SPACING
+	jsr	setCTLVALUE
+
+	rts		; yeah, no JMP above!
+
+*----------------------------
 * CHECK KEYS
 *----------------------------
 * Volume:    + increase
@@ -310,117 +363,150 @@ ctlKEYS99	rts
 * DECREASE VOLUME
 *----------------------------
 
-doVOL_MINUS	lda	theVOL
+doVOL_MINUS	sep	#$30
+	lda	STATE_VOLUME
 	cmp	#MIN_VOL
 	bcc	endVOL_MINUS
 	beq	endVOL_MINUS
 	dec
-	sta	theVOL
-	jmp	plamen_setVOLUME
-endVOL_MINUS	rts
+	sta	STATE_VOLUME
+	jsr	RADIO_SET_VOLUME
+endVOL_MINUS	rep	#$30
+	rts
 
 *----------------------------
 * INCREASE VOLUME
 *----------------------------
 
-doVOL_PLUS	lda	theVOL
+doVOL_PLUS	sep	#$30
+	lda	STATE_VOLUME
 	cmp	#MAX_VOL
 	bcs	endVOL_PLUS
 	inc
-	sta	theVOL
-	jmp	plamen_setVOLUME
-endVOL_PLUS	rts
+	sta	STATE_VOLUME
+	jsr	RADIO_SET_VOLUME
+endVOL_PLUS	rep	#$30
+	rts
 
 *----------------------------
 * DECREASE FREQUENCY
 *----------------------------
 
-doFREQ_MINUS	jsr	plamen_freqDOWN
-	jmp	plamen_printFREQUENCY
+doFREQ_MINUS	sep	#$30
+	jsr	HandleKeyTuneDown
+	rep	#$30
+	rts
 
 *----------------------------
 * INCREASE FREQUENCY
 *----------------------------
 
-doFREQ_PLUS	jsr	plamen_freqUP
-	jmp	plamen_printFREQUENCY
+doFREQ_PLUS	sep	#$30
+	jsr	HandleKeyTuneUp
+	rep	#$30
 change_FREQ	rts
 
 *----------------------------
 * SCAN <<
 *----------------------------
 
-doSCAN_MINUS	jmp	plamen_seekDOWN
+doSCAN_MINUS	sep	#$30
+	jsr	RADIO_SEEK_DOWN
+	rep	#$30
+	rts
 
 *----------------------------
 * SCAN >>
 *----------------------------
 
-doSCAN_PLUS	jmp	plamen_seekUP
+doSCAN_PLUS	sep	#$30
+	jsr	RADIO_SEEK_UP
+	rep	#$30
+	rts
 
 *----------------------------
 * TOGGLE RD ON/OFF
 *----------------------------
 
-doRDS	lda	fgRDS
-	eor	#DFT_ON
-	sta	fgRDS
-	jsr	plamen_setRDS	; de/activate RDS
-
-	lda	fgRDS
-	ldx	#BTN_RDS
+doRDS	sep	#$30
+	lda	STATE_ISRDSENABLED
+	eor	#TRUE
+	jsr	RADIO_SET_RDS
+	rep	#$30
+	
+	lda	STATE_ISRDSENABLED
+	and	#$ff
+	beq	doRDS_1
+	lda	#1
+doRDS_1	ldx	#BTN_RDS
 	jmp	setCTLVALUE
 
 *----------------------------
 * TOGGLE MUTE ON/OFF
 *----------------------------
 
-doMUTE	lda	fgMUTE
-	eor	#DFT_ON
-	sta	fgMUTE
-	jsr	plamen_setMUTE
-
-	lda	fgMUTE
-	ldx	#BTN_MUTE
+doMUTE	sep	#$30
+	lda	STATE_ISMUTED
+	eor	#TRUE
+	jsr	RADIO_SET_MUTE
+	rep	#$30
+	
+	lda	STATE_ISMUTED
+	and	#$ff
+	beq	doMUTE_1
+	lda	#1
+doMUTE_1	ldx	#BTN_MUTE
 	jmp	setCTLVALUE
 
 *----------------------------
 * TOGGLE SOFT MUTE ON/OFF
 *----------------------------
 
-doMUTE_SOFT	lda	fgMUTE_SOFT
-	eor	#DFT_ON
-	sta	fgMUTE_SOFT
-	jsr	plamen_setMUTE_SOFT
+doMUTE_SOFT	sep	#$30
+	lda	STATE_ISSOFTMUTE
+	eor	#TRUE
+	jsr	RADIO_SET_SOFTMUTE
+	rep	#$30
 
-	lda	fgMUTE_SOFT
-	ldx	#BTN_MUTE_SOFT
+	lda	STATE_ISSOFTMUTE
+	and	#$ff
+	beq	doMUSO_1
+	lda	#1
+doMUSO_1	ldx	#BTN_MUTE_SOFT
 	jmp	setCTLVALUE
 
 *----------------------------
 * TOGGLE MONO/STEREO
 *----------------------------
 
-doMONO_STEREO	lda	fgMONOSTEREO
-	eor	#DFT_ON
-	sta	fgMONOSTEREO
-	jsr	plamen_setMONOSTEREO
+doMONO_STEREO	sep	#$30
+	lda	STATE_ISMONOFORCED
+	eor	#TRUE
+	jsr	RADIO_SET_FORCEMONO
+	rep	#$30
 
-	lda	fgMONOSTEREO
-	ldx	#BTN_MONO_STEREO
+	lda	STATE_ISMONOFORCED
+	and	#$ff
+	beq	doMS_1
+	lda	#1
+doMS_1	ldx	#BTN_MONO_STEREO
 	jmp	setCTLVALUE
 
 *----------------------------
 * TOGGLE BASS ON/OFF
 *----------------------------
 
-doBASS_BOOST	lda	fgBASS
-	eor	#DFT_ON
-	sta	fgBASS
-	jsr	plamen_setBASS	; de/activate bass boost
-
-	lda	fgBASS
-	ldx	#BTN_BASS_BOOST
+doBASS_BOOST	sep	#$30
+	lda	STATE_ISBASSBOOST
+	eor	#TRUE
+	jsr	RADIO_SET_BASSBOOST
+	rep	#$30
+	
+	lda	STATE_ISBASSBOOST
+	and	#$ff
+	beq	doBB_1
+	lda	#1
+doBB_1	ldx	#BTN_BASS_BOOST
 	jmp	setCTLVALUE
 
 *----------------------------
@@ -458,7 +544,11 @@ doPOPUP_BAND	ldx	#POPUP_BAND	; $1841..$1844 -> 0..3
 	sec
 	sbc	#BAND_EU
 	sta	theBAND
-	jmp	plamen_setBAND	; and jumps to it
+	
+	sep	#$30
+	jsr	RADIO_SET_BAND
+	rep	#$30
+	rts
 
 *----------------------------
 * SPACING POP-UP
@@ -469,7 +559,11 @@ doPOPUP_SPACING	ldx	#POPUP_SPACING	; $1941..$1944 -> 0..3
 	sec
 	sbc	#SPACING_100
 	sta	theSPACING
-	jmp	plamen_setSPACING	; and jumps to it
+	
+	sep	#$30
+	jsr	RADIO_SET_CHANSPACING
+	rep	#$30
+	rts
 
 *----------------------------
 * REMOVE STATION
@@ -855,16 +949,10 @@ createRESOURCE	pha		; ask for 256 bytes
 * DATA
 *----------------------------
 
-theVOL	dw	DFT_VOL
-theFREQ	dw	DFT_FREQ	; the index of the frequency, not the frequency :-(
-theBAND	dw	DFT_BAND	; 0: Europe, 1: Japan, 2: WW, 3: EE
-theSPACING	dw	DFT_SPACING	; 0: 100 kHz, 1: 200 kHz, 2: 50 kHz, 3: 25 kHz
-fgMUTE	dw	DFT_OFF	; 0: off, -1: on
-fgMUTE_SOFT	dw	DFT_OFF	; 0: off, -1: on
-fgRDS	dw	DFT_ON	; 0: off, -1: on
-fgBASS	dw	DFT_OFF	; 0: off, -1: on
-fgMONOSTEREO	dw	DFT_OFF	; 0: stereo, -1: mono
+theBAND	ds	2
+theSPACING	ds	2
 
+theFREQ	ds	2
 frequency	ds	2
 
 *----------------------------
@@ -890,22 +978,6 @@ channelFREQ7	ds	2
 channelNAME7	ds	14
 channelFREQ8	ds	2
 channelNAME8	ds	14
-channelFREQ9	ds	2
-channelNAME9	ds	14
-channelFREQ10	ds	2
-channelNAME10	ds	14
-channelFREQ11	ds	2
-channelNAME11	ds	14
-channelFREQ12	ds	2
-channelNAME12	ds	14
-channelFREQ13	ds	2
-channelNAME13	ds	14
-channelFREQ14	ds	2
-channelNAME14	ds	14
-channelFREQ15	ds	2
-channelNAME15	ds	14
-channelFREQ16	ds	2
-channelNAME16	ds	14
 
 *---
 *  +0 word version
@@ -941,30 +1013,6 @@ menuITEM7	ds	10
 	ds	2
 menuITEM8	ds	10
 	adrl	channelNAME8
-	ds	2
-menuITEM9	ds	10
-	adrl	channelNAME9
-	ds	2
-menuITEM10	ds	10
-	adrl	channelNAME10
-	ds	2
-menuITEM11	ds	10
-	adrl	channelNAME11
-	ds	2
-menuITEM12	ds	10
-	adrl	channelNAME12
-	ds	2
-menuITEM13	ds	10
-	adrl	channelNAME13
-	ds	2
-menuITEM14	ds	10
-	adrl	channelNAME14
-	ds	2
-menuITEM15	ds	10
-	adrl	channelNAME15
-	ds	2
-menuITEM16	ds	10
-	adrl	channelNAME16
 	ds	2
 
 *--- Ce n'est pas beau mais bon...

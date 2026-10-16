@@ -147,6 +147,11 @@ ndaOPEN	phb
 	sta	result,s
 	sta	result+2,s
 
+	lda	#doMUTE	; plamen_printRDS
+	stal	$300
+	lda	#^doMUTE	; plamen_printRDS
+	stal	$302
+
 *--- Do we have the FM Radio installed?
 
 	jsr	plamen_getINFO
@@ -182,9 +187,12 @@ ndaOPEN2	pha
 	lda	#1
 	sta	fgOPEN
 
-	jsr	plamen_getCHIPID
-	jsr	plamen_initRADIO
-	jsr	plamen_loadSAVEDDATA
+	sep	#$30
+	jsr	RADIO_GET_CHIPID
+	jsr	RADIO_INIT
+	jsr	LoadSavedData
+	rep	#$30
+	jsr	updateBUTTONS
 
 	bit	loadCHANNELS		; load the stored channels
 	jsr	plamen_printFREQUENCY	; and print it
@@ -208,15 +216,20 @@ ndaCLOSE	phb
 	lda	fgOPEN
 	beq	ndaCLOSE9
 
-	sep	#$20
+	sep	#$30	; switch to 8-bit
+
 	ldal	KEYMODREG
-	rep	#$20
 	and	#$40	; is option key down?
 	beq	ndaCLOSE1	; no, do not turn the radio off
 
-	jsr	plamen_switchOFF	; yes, turn the FM Radio off
+	mov	REGS_02; R2_DISABLE	; turn the radio off
+	lda	#$02
+	jsr	SEND_REGISTER
 
-ndaCLOSE1	pha
+ndaCLOSE1	jsr	HandleKeyExit	; save the radio information
+
+	rep	#$30	; back to 16-bit
+	pha
 	_GetCurResourceFile
 	PushWord	myRESID
 	_SetCurResourceFile

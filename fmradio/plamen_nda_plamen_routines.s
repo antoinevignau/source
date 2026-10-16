@@ -67,6 +67,7 @@ R2_RDS_ENABLE          equ   $0008
 R2_NEW_METHOD          equ   $0004
 R2_SOFT_RESET          equ   $0002
 R2_ENABLE              equ   $0001
+R2_DISABLE	=	$0000	; ** new AV **
 
 R3_CHANNEL             equ   $FFC0
 R3_DIRECT_MODE         equ   $0020
@@ -244,191 +245,42 @@ found_card	tya		; 1 -> $10
 strID	asc	'][RADIO'00
 
 *----------------------------
-* GET CHIP ID
+* PRINT RDS TEXT
 *----------------------------
 
-plamen_getCHIPID
+plamen_printRDS
 	sep	#$30
-	jsr	RADIO_GET_CHIPID
-	rep	#$30
-	rts
-
-*----------------------------
-* INIT RADIO
-*----------------------------
-
-plamen_initRADIO
-	sep	#$30
-	jsr	RADIO_INIT
-	rep	#$30
-	rts
-
-*----------------------------
-* SEEK DOWN
-*----------------------------
-
-plamen_seekDOWN
-	sep	#$30
-	jsr	RADIO_SEEK_DOWN
-	rep	#$30
-	rts
-
-*----------------------------
-* SEEK UP
-*----------------------------
-
-plamen_seekUP
-	sep	#$30
-	jsr	RADIO_SEEK_UP
-	rep	#$30
-	rts
-
-*----------------------------
-* FREQUENCY DOWN
-*----------------------------
-
-plamen_freqDOWN
-	sep	#$30
-	jsr	HandleKeyTuneDown
-	rep	#$30
-	rts
-
-*----------------------------
-* FREQUENCY UP
-*----------------------------
-
-plamen_freqUP
-	sep	#$30
-	jsr	HandleKeyTuneUp
-	rep	#$30
-	rts
-
-*----------------------------
-* SET BAND
-*----------------------------
-
-plamen_setBAND
-	sep	#$30
-	jsr	RADIO_SET_BAND
-	rep	#$30
-	rts
-
-*----------------------------
-* SET SPACING
-*----------------------------
-
-plamen_setSPACING
-	sep	#$30
-	jsr	RADIO_SET_CHANSPACING
-	rep	#$30
-	rts
-
-*----------------------------
-* TURN DEVICE OFF
-*----------------------------
-
-plamen_switchOFF
-	jsr	plamen_setMUTE	; return in 16-bit
+	lda	STATE_ISRDSENABLED
+	cmp	#<TRUE
+	beq	ppRDS_1
 	
-	lda	#DFT_ON
-	sta	fgMUTE
-	lda	#0
-	sta	theVOL	; and go below...
-	
-*----------------------------
-* SET VOLUME
-*----------------------------
+	ldy	#8	; clear station name
+	lda	#'-'
+]lp	sta	STATE_STATIONNAME,y
+	dey
+	bpl	]lp
 
-plamen_setVOLUME
-	pha		; _UDivide 0..100
+ppRDS_1	rep	#$30	; draw it
 
-	pha
-	pha
-	PushWord	theVOL	; volume x 100
-	PushWord	#10	
-	_Multiply
+	PushLong	#rectRDS
+	PushLong	#whitePATTERN
+	_FillRect
 
-	PushWord	#66	; =100/15
-	_UDivide
-	pla
-	plx
-	
-	sep	#$30
-	jsr	RADIO_SET_VOLUME
-	rep	#$30
-	rts		; yes, exit
+	PushWord	#20
+	PushWord	#50
+	_MoveTo
 
-*----------------------------
-* TOGGLE MUTE
-*----------------------------
-
-plamen_setMUTE	sep	#$30
-	jsr	RADIO_SET_MUTE
-	rep	#$30
+	PushLong	#STATE_STATIONNAME
+	_DrawCString
 	rts
 
-*----------------------------
-* TOGGLE SOFT MUTE
-*----------------------------
+*---
 
-plamen_setMUTE_SOFT
-	sep	#$30
-	jsr	RADIO_SET_SOFTMUTE
-	rep	#$30
-	rts
+rectRDS	dw	40,20,50,169
 
-*----------------------------
-* TOGGLE BASS
-*----------------------------
-
-plamen_setBASS	sep	#$30
-	jsr	RADIO_SET_BASSBOOST
-	rep	#$30
-	rts
-
-*----------------------------
-* TOGGLE RDS
-*----------------------------
-
-plamen_setRDS	sep	#$30
-	jsr	RADIO_SET_RDS
-	rep	#$30
-	rts
-
-*----------------------------
-* TOGGLE MONO/STEREO
-*----------------------------
-
-plamen_setMONOSTEREO
-	sep	#$30
-	jsr	RADIO_SET_FORCEMONO
-	rep	#$30
-	rts
-
-*----------------------------
-* GET FREQUENCY
-*----------------------------
-
-plamen_getFREQUENCY
-	sep	#$30
-	jsr	GetFreqAndChannSpacing
-	rep	#$30
-	rts
-
-*----------------------------
-* LOAD SAVED DATA
-*----------------------------
-
-plamen_loadSAVEDDATA
-	sep	#$30
-	jsr	LoadSavedData
-	rep	#$30
-	rts
-	
 *----------------------------
 * DISPLAY FREQUENCY
 *----------------------------
-* Formula = (87 x 100) + (theFREQ x 10)
 
 plamen_printFREQUENCY
 	sep	#$30
@@ -596,6 +448,18 @@ HandleKeyTuneDown
 	dec	PARAM_H
 CarrySet:	jmp	RADIO_TUNE_TO
 
+**************************************************
+*                Handle Key Exit                 *
+**************************************************
+
+HandleKeyExit
+	lda	STATE_CURRENTPRESET
+	ldy	OPTION_CURRENTPRESET
+	jsr	SaveOption
+
+	lda	STATE_CURRENTPRESET
+	jmp	SavePreset                      
+                       
 ************************************************
 *                                              *
 *                  Save Option                 *
@@ -1091,7 +955,7 @@ BASS_DONE
 * ===============================================================
 
 RADIO_SET_MONOSTEREO
-	sta	STATE_ISBASSBOOST
+	sta	STATE_ISMONOFORCED
 	cmp	#TRUE
 	beq	MONOSTEREO_TRUE
 MONOSTEREO_FALSE
@@ -2011,7 +1875,7 @@ STATE_RDSBLOCKE_L      dfb	0
 STATE_RDSBLOCKE_H      dfb	0
 
 STATE_HASSTATNAME      dfb	0
-STATE_STATIONNAME      ds	9
+STATE_STATIONNAME      ds	9+1	; for a trailing \0
 RDSSTATIONNAME         ds	8
 
 * regs array (16 words = 32 bytes)

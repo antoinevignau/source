@@ -147,9 +147,9 @@ ndaOPEN	phb
 	sta	result,s
 	sta	result+2,s
 
-	lda	#doRUN	; plamen_printRDS
+	lda	#channelFREQ1
 	stal	$300
-	lda	#^doRUN	; plamen_printRDS
+	lda	#^channelFREQ1
 	stal	$302
 
 *--- Do we have the FM Radio installed?
@@ -194,8 +194,7 @@ ndaOPEN2	pha
 	rep	#$30
 	jsr	updateBUTTONS
 
-	bit	loadCHANNELS		; load the stored channels
-	jsr	plamen_printFREQUENCY	; and print it
+	jsr	loadCHANNELS		; load the stored channels
 
 ndaOPEN9	PushWord	curRESID
 	_SetCurResourceApp

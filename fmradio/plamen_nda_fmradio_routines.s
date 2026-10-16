@@ -171,8 +171,8 @@ tblCONTROL	da	ctlNULL	;  0
 	da	ctlNULL	;  7 - 87.5
 	da	ctlNULL	;  8 - 108
 	da	doPOPUP	;  9 - Pop-up menu (is $1740)
-	da	doSTAT_MINUS	; 10 - Remove station
-	da	doSTAT_PLUS	; 11 - Add station
+	da	ctlNULL	; 10 - Remove station (doSTAT_MINUS)
+	da	ctlNULL	; 11 - Add station (doSTAT_PLUS)
 	da	ctlNULL	; 12
 	da	ctlNULL	; 13
 	da	ctlNULL	; 14
@@ -544,6 +544,8 @@ doPOPUP_BAND	ldx	#POPUP_BAND	; $1841..$1844 -> 0..3
 	sta	theBAND
 	
 	sep	#$30
+	lda	#3
+	jsr	GET_REGISTER
 	jsr	RADIO_SET_BAND
 	rep	#$30
 	rts
@@ -559,6 +561,8 @@ doPOPUP_SPACING	ldx	#POPUP_SPACING	; $1941..$1944 -> 0..3
 	sta	theSPACING
 	
 	sep	#$30
+	lda	#3
+	jsr	GET_REGISTER
 	jsr	RADIO_SET_CHANSPACING
 	rep	#$30
 	rts
@@ -707,33 +711,36 @@ doSP_END	jmp	closeChannelWindow
 *----------------------------
 
 loadCHANNELS
-	pha
-	_GetCurResourceFile
-	PushWord	myRESID
-	_SetCurResourceFile
-
-	pha		; we assume the resource is always present
-	pha
-	PushWord	#RES_CHANNEL
-	PushLong	#1
-	_LoadResource
-	pla
-	sta	haRESOURCE
-	pla
-	sta	haRESOURCE+2
-	bcc	loadOK
-
-	jsr	createRESOURCE	; create the resource if missing
-	
-loadOK	PushLong	haRESOURCE	; copy it
-	PushLong	#channelFREQ1
-	PushLong	#256
-	_HandToPtr
+*	pha
+*	_GetCurResourceFile
+*	PushWord	myRESID
+*	_SetCurResourceFile
+*
+*	pha		; we assume the resource is always present
+*	pha
+*	PushWord	#RES_CHANNEL
+*	PushLong	#1
+*	_LoadResource
+*	pla
+*	sta	haRESOURCE
+*	pla
+*	sta	haRESOURCE+2
+*	bcc	loadOK
+*
+*	jsr	createRESOURCE	; create the resource if missing
+*	
+*loadOK	PushLong	haRESOURCE	; copy it
+*	PushLong	#channelFREQ1
+*	PushLong	#256
+*	_HandToPtr
 
 	jsr	setMENUBAR	; set my menu bar
 	jsr	buildMENU	; create the menu
 
-	lda	#ITEM_CHANNEL
+	lda	STATE_CURRENTPRESET
+	and	#$ff
+	clc
+	adc	#MENU_CHANNEL
 	sta	theMENUID
 
 *--- The common end (used by different routines)
@@ -788,11 +795,26 @@ theMENUBAR	ds	4
 * BUILD THE MENUS
 *----------------------------
 
-buildMENU	ldx	#0
-]lp	lda	channelFREQ1,x
-	beq	exitBUILDMENU
+buildMENU
+*---
 
-	stx	theINDEX
+	ldx	#0
+]lp	stx	theINDEX
+
+	sep	#$30	; get the preset
+	lda	theINDEX	; and make it a string
+	lsr
+	lsr
+	lsr
+	lsr		; /16
+	inc		; +1
+	jsr	LoadPreset
+	jsr	fromPRESETtoFREQUENCY
+	rep	#$30
+
+	ldx	theINDEX	; store the frequency
+	lda	STATE_FREQ_L
+	sta	channelFREQ1,x
 	txa
 	lsr
 	lsr
@@ -802,6 +824,17 @@ buildMENU	ldx	#0
 	adc	#FIRST_ITEM	; add the first menu item ID
 	sta	menuITEM1+2,x
 
+	sep	#$30	; copy the frequency string
+	ldy	#0
+	ldx	theINDEX
+]lp	lda	STR_FREQ,y
+	sta	channelNAME1+1,x
+	iny
+	inx
+	cpy	#8
+	bcc	]lp
+	rep	#$30
+	
 	PushWord	#refIsPointer	; refDesc
 	pea	^menuITEM1	; menuItemTRef
 	lda	theINDEX
@@ -816,7 +849,7 @@ buildMENU	ldx	#0
 	clc
 	adc	#16
 	tax
-	cpx	#256
+	cpx	#16*8	; 8 presets
 	bne	]lp
 exitBUILDMENU	rts
 
@@ -915,34 +948,34 @@ theNAME	ds	16	; channel name
 *----------------------------
 * CREATE RESOURCE
 *----------------------------
-
-createRESOURCE	pha		; ask for 256 bytes
-	pha
-	PushLong	#256
-	PushWord	myID
-	PushWord	#%1000_0000_0001_1100
-	PushLong	#0
-	_NewHandle
-	PullLong	haRESOURCE
-
-	PushLong	#channelFREQ1	; copy the data into the handle
-	PushLong	haRESOURCE
-	PushLong	#256
-	_PtrToHand
-
-	PushLong	haRESOURCE	; add the resource
-	PushWord	#%1000_0000_0001_1100
-	PushWord	#RES_CHANNEL
-	PushLong	#1
-	_AddResource
-
-	PushWord	#$ffff	; tell the resource has changed
-	PushWord	#RES_CHANNEL
-	PushLong	#1
-	_MarkResourceChange
-
-	rts
-
+*
+*createRESOURCE	pha		; ask for 256 bytes
+*	pha
+*	PushLong	#256
+*	PushWord	myID
+*	PushWord	#%1000_0000_0001_1100
+*	PushLong	#0
+*	_NewHandle
+*	PullLong	haRESOURCE
+*
+*	PushLong	#channelFREQ1	; copy the data into the handle
+*	PushLong	haRESOURCE
+*	PushLong	#256
+*	_PtrToHand
+*
+*	PushLong	haRESOURCE	; add the resource
+*	PushWord	#%1000_0000_0001_1100
+*	PushWord	#RES_CHANNEL
+*	PushLong	#1
+*	_AddResource
+*
+*	PushWord	#$ffff	; tell the resource has changed
+*	PushWord	#RES_CHANNEL
+*	PushLong	#1
+*	_MarkResourceChange
+*
+*	rts
+*
 *----------------------------
 * DATA
 *----------------------------
@@ -960,21 +993,29 @@ theFREQ	ds	2
 *
 
 channelFREQ1	ds	2	; frequency
-channelNAME1	ds	14	; channel name
+channelNAME1	dfb	5	; channel name
+	ds	13
 channelFREQ2	ds	2
-channelNAME2	ds	14
+channelNAME2	dfb	5
+	ds	13
 channelFREQ3	ds	2
-channelNAME3	ds	14
+channelNAME3	dfb	5
+	ds	13
 channelFREQ4	ds	2
-channelNAME4	ds	14
+channelNAME4	dfb	5
+	ds	13
 channelFREQ5	ds	2
-channelNAME5	ds	14
+channelNAME5	dfb	5
+	ds	13
 channelFREQ6	ds	2
-channelNAME6	ds	14
+channelNAME6	dfb	5
+	ds	13
 channelFREQ7	ds	2
-channelNAME7	ds	14
+channelNAME7	dfb	5
+	ds	13
 channelFREQ8	ds	2
-channelNAME8	ds	14
+channelNAME8	dfb	5
+	ds	13
 
 *---
 *  +0 word version

@@ -923,7 +923,7 @@ CLEAR_STATION_NAME
 LOOP_RESET_NAME
 	sta	STATE_STATIONNAME,Y
 	iny
-	cpy	#8
+	cpy	#8+1	; ** new av **
 	bne	LOOP_RESET_NAME
 	rts
 
@@ -1197,6 +1197,127 @@ GF_BASE_US
 :RTS
                        rts
                        
+* ===============================================================
+** new AV **
+* FUNCTION: FROM PRESET TO A FREQUENCY
+* ===============================================================
+
+fromPRESETtoFREQUENCY
+	lda   REGS_03L
+	and   #R3_CHAN_SPACING
+	sta   TEMP_L
+
+	lda   REGS_03L	; band = regs[3] & R3_BAND;
+	and   #R3_BAND
+	cmp   #R3_BAND_US_EU
+	beq   ATUNE_BAND_US
+	cmp   #R3_BAND_E_EU
+	beq   ATUNE_BAND_EEU
+    
+ATUNE_BAND_JP	sec	; frequency -= 7600 ($1DB0)
+	lda   PARAM_L
+	sbc   #$B0
+	sta   PARAM_L
+	lda   PARAM_H
+	sbc   #$1D
+	sta   PARAM_H
+	jmp   ATUNE_DIVIDE
+    
+ATUNE_BAND_EEU	sec	; frequency -= 6500 ($1964)
+	lda   PARAM_L
+	sbc   #$64
+	sta   PARAM_L
+	lda   PARAM_H
+	sbc   #$19
+	sta   PARAM_H
+	jmp   ATUNE_DIVIDE
+
+ATUNE_BAND_US	sec	; frequency -= 8700 ($21FC)
+	lda   PARAM_L
+	sbc   #$FC
+	sta   PARAM_L
+	lda   PARAM_H
+	sbc   #$21
+	sta   PARAM_H
+
+ATUNE_DIVIDE		; Divide based on Channel Spacing (in TEMP_L)
+	lda   TEMP_L
+	cmp   #R3_CHAN_SPACE_50K
+	beq   ADIV_50K
+	cmp   #R3_CHAN_SPACE_200K
+	beq   ADIV_200K
+    
+ADIV_100K		; Divide by 10
+	lda   #10
+	jsr   DIVIDE_16
+	jmp   ATUNE_SET_REGS
+    
+ADIV_50K		; Divide by 5
+	lda   #5
+	jsr   DIVIDE_16
+	jmp   ATUNE_SET_REGS
+    
+ADIV_200K		; Divide by 20
+	lda   #20
+	jsr   DIVIDE_16
+
+ATUNE_SET_REGS
+	ldx	#6
+]lp	asl	MATH_RES_L
+	rol	MATH_RES_H
+	dex
+	bne	]lp
+
+*--- Convert the frequency in a text string
+
+                       ldx   #$00                ; X is both table index and STR_FREQ string index
+ANEXT_PWR              ldy   #$00                ; Y will act as our DIGIT counter (0-9)
+
+ASUB_LOOP              sec                       ; Attempt to subtract the power of 10
+                       lda   MATH_RES_L
+                       sbc   TBL_10_L,X
+                       sta   MATH_RES_L
+                       lda   MATH_RES_H
+                       sbc   TBL_10_H,X
+                       sta   MATH_RES_H
+                       bcc   ARESTORE             ; If borrow occurred, we subtracted too much
+                       iny                       ; Subtraction succeeded, increment digit count
+                       bne   ASUB_LOOP            ; Unconditional branch (Y will never reach 0 here)
+
+ARESTORE               clc                       ; Subtracted too much, add the power of 10 back
+                       lda   MATH_RES_L
+                       adc   TBL_10_L,X
+                       sta   MATH_RES_L
+                       lda   MATH_RES_H
+                       adc   TBL_10_H,X
+                       sta   MATH_RES_H
+                                                 ; --- DIGIT EVALUATION & ZERO SUPPRESSION ---
+                       tya                       ; Move digit (Y) to Accumulator
+                       bne   APRINT_DIG           ; If digit > 0, always print it
+                                                 ; Digit is 0. Check if we should suppress it.
+                       cpx   #$00
+                       beq   ASUPPRESS_Z          ; If it's the very first digit (10000s), always suppress
+                                                 ; Check the previous character written to the string
+                       lda   STR_FREQ-1,X
+                       cmp   #' '                ; Was the previous character a space?
+                       beq   ASUPPRESS_Z          ; Yes, so continue suppressing leading zeros
+
+                                                 ; We are not suppressing, so prepare to print '0'
+                       lda   #'0'                ; '0'
+                       bra   ASTORE_CHR           ; Unconditional branch
+ASUPPRESS_Z            lda   #' '                ; Space ' '
+                       bne   ASTORE_CHR           ; Unconditional branch
+
+APRINT_DIG             tya                       ; Bring digit back to A
+
+ASTORE_CHR             sta   STR_FREQ,X          ; Store character in output array
+                       inx                       ; Move to next string position / power of 10
+                       cpx   #$04                ; Have we done 10000, 1000, 100, and 10?
+                       bne   ANEXT_PWR
+                       lda   MATH_RES_L
+                       sta   STR_FREQ,X
+	rts
+ 
 ************************************************
 *                                              *
 *                   Error Beep                 *
@@ -1222,7 +1343,7 @@ BeepLoop]
                        bne   BeepLoop]
                        stal  SPKR
                        rts
-                       
+
 *****************************************************************
 * FUNCTION: RADIO_TUNE_TO
 * ===============================================================
@@ -1691,8 +1812,8 @@ DECODE_MISMATCH_C2
 	rts
 
 CONVERT_VALIDATE_CHR
-	ldy	STATE_UITYPE	; check is Text Mode
-	beq	DLR_MODE
+*	ldy	STATE_UITYPE	; check is Text Mode
+*	beq	DLR_MODE	; ** new AV ** the two comments
 	cmp	#$20	; Compare with Space (lowest printable ASCII)
 	bcc	BAD_APPLE_CHAR	; Branch if Carry Clear (A < $20)
 	cmp	#$7F                 
@@ -1767,6 +1888,7 @@ GET_REGISTER	pha
 	rts
 
 ; --- I2C Start Condition ---
+
 I2CStart	ldx	SlotNr
 	stal	C_SDA_H,x
 	stal	C_SCL_H,x
@@ -1775,6 +1897,7 @@ I2CStart	ldx	SlotNr
 	rts
 
 ; --- I2C Stop Condition ---
+
 I2CStop	ldx	SlotNr
 	stal	C_SDA_L,x
 	stal	C_SCL_H,x
@@ -1782,6 +1905,7 @@ I2CStop	ldx	SlotNr
 	rts
 
 ; --- Send 8 bits ---
+
 I2CWriteByte	sta	I2C_TEMP
 	ldx	SlotNr
 	ldy	#$08
@@ -1798,6 +1922,7 @@ SBClk	stal	C_SCL_H,x
 	rts
 
 ; --- Read 8 bits ---
+
 I2CReadByte	phy
 	stal	C_SDA_H,x	; Release SDA
 	ldx	SlotNr
@@ -1814,6 +1939,7 @@ RBLoop	stal	C_SCL_H,x
 	rts
 
 ; --- Read ACK from Slave ---
+
 I2CGetAck	ldx	SlotNr
 	stal	C_SDA_H,x	; Release SDA
 	stal	C_SCL_H,x
@@ -1823,6 +1949,7 @@ I2CGetAck	ldx	SlotNr
 	rts
 
 ; --- Send ACK to Slave ---
+
 I2CSendAck	ldx	SlotNr
 	stal	C_SDA_L,x
 	stal	C_SCL_H,x
@@ -1830,6 +1957,7 @@ I2CSendAck	ldx	SlotNr
 	rts
 
 ; --- Send NACK to Slave ---
+
 I2CSendNack	ldx	SlotNr
 	stal	C_SDA_H,x
 	stal	C_SCL_H,x

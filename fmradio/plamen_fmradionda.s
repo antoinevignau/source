@@ -381,11 +381,6 @@ checkQDVersion	pha
 *----------------------------
 
 makeMainWindow
-*	pha
-*	_GetCurResourceFile
-*	PushWord	myRESID
-*	_SetCurResourceFile
-	
 	pha
 	pha
 	PushLong	#0
@@ -410,94 +405,6 @@ makeMainWindow
 	jsl	PAINTMAIN
 	PushLong	myWINDOW
 	_EndUpdate
-	
-*	_SetCurResourceFile
-
-	rts
-	
-*----------------------------
-* MAKE CHANNEL WINDOW
-*----------------------------
-
-makeChannelWindow
-*	pha
-*	_GetCurResourceFile
-*	PushWord	myRESID
-*	_SetCurResourceFile
-	
-	pha
-	pha
-	PushLong	#0
-	PushLong	#wCHANNEL
-	PushLong	#PAINTCHANNEL
-	PushLong	#0
-	PushWord	#refIsResource
-	PushLong	#wCHANNEL
-	PushWord	#$800e
-	_NewWindow2
-	PullLong	myWINDOW2
-
-*--- The default name is the frequency of the channel
-
-	ldx	#16-2	; pre-clear the buffer
-]lp	stz	theNAME,x	; if the LineEdit is empty
-	dex
-	dex
-	bpl	]lp
-
-	sep	#$30
-	
-	ldx	#0
-	txy
-]lp	lda	STR_FREQ,x
-	cmp	#' '
-	beq	mcw_NEXT
-	cpx	#3	; arrive-t-on au séparateur ?
-	bne	mcw_GOOD
-	pha		; save digit
-	lda	#'.'	; output .
-	sta	theNAME+1,y
-	iny
-	pla		; and output digit
-mcw_GOOD	sta	theNAME+1,y
-	iny
-mcw_NEXT	inx
-	cpx	#5
-	bcc	]lp
-
-	sty	theNAME	; save the length
-	rep	#$30
-
-	PushLong	myWINDOW2	; get the name
-	PushLong	#LE_NAME
-	PushLong	#theNAME
-	_SetLETextByID
-
-*---
-	
-*	_SetCurResourceFile
-
-	rts
-
-*----------------------------
-* CLOSE CHANNEL WINDOW
-*----------------------------
-
-closeChannelWindow
-*	pha
-*	_GetCurResourceFile
-*	PushWord	myRESID
-*	_SetCurResourceFile
-
-	PushLong	myWINDOW2
-	_HideWindow
-	PushLong	myWINDOW2
-	_CloseWindow
-	
-	stz	myWINDOW2
-	stz	myWINDOW2+2
-
-*	_SetCurResourceFile
 	rts
 
 *----------------------------

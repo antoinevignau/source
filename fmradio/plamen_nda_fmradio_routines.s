@@ -242,43 +242,41 @@ setCTLVALUE	pha		; newValue
 	rts
 
 *----------------------------
+* SET CONTROL VALUE AND DRAW
+*----------------------------
+* A: new value
+* X: control ID
+
+setCTLVALUEANDDRAW
+	stx	theCTLID	; the control ID
+
+	pha		; newValue
+	PushLong	myWINDOW	; windPtr
+	pea	$0000	; ctlID
+	phx
+	_SetCtlValueByID
+
+	pha		; space for result
+	pha
+	PushLong	myWINDOW	; ctlWindowPtr
+	PushLong	theCTLID
+	_GetCtlHandleFromID
+	_DrawOneCtl
+	rts
+
+*--- Data
+
+theCTLID	ds	4
+
+*----------------------------
 * UPDATE BUTTONS
 *----------------------------
 
-updateBUTTONS	lda	STATE_ISSOFTMUTE
-	and	#$ff
-	beq	doUB_1
-	lda	#1
-doUB_1	ldx	#BTN_MUTE_SOFT
-	jsr	setCTLVALUE
-
-	lda	STATE_ISMUTED
-	and	#$ff
-	beq	doUB_2
-	lda	#1
-doUB_2	ldx	#BTN_MUTE
-	jsr	setCTLVALUE
-
-	lda	STATE_ISBASSBOOST
-	and	#$ff
-	beq	doUB_3
-	lda	#1
-doUB_3	ldx	#BTN_BASS_BOOST
-	jsr	setCTLVALUE
-
-	lda	STATE_ISMONOFORCED
-	and	#$ff
-	beq	doUB_4
-	lda	#1
-doUB_4	ldx	#BTN_MONO_STEREO
-	jsr	setCTLVALUE
-
-	lda	STATE_ISRDSENABLED
-	and	#$ff
-	beq	doUB_5
-	lda	#1
-doUB_5	ldx	#BTN_RDS
-	jsr	setCTLVALUE
+updateBUTTONS	jsr	drawMUTE_SOFT
+	jsr	drawMUTE
+	jsr	drawBASS_BOOST
+	jsr	drawMONO_STEREO
+	jsr	drawRDS
 
 	lda	theBAND
 	clc
@@ -425,7 +423,7 @@ doSCAN_PLUS	sep	#$30
 	rts
 
 *----------------------------
-* TOGGLE RD ON/OFF
+* TOGGLE RDS ON/OFF
 *----------------------------
 
 doRDS	sep	#$30
@@ -434,12 +432,12 @@ doRDS	sep	#$30
 	jsr	RADIO_SET_RDS
 	rep	#$30
 	
-	lda	STATE_ISRDSENABLED
+drawRDS	lda	STATE_ISRDSENABLED
 	and	#$ff
 	beq	doRDS_1
 	lda	#1
 doRDS_1	ldx	#BTN_RDS
-	jmp	setCTLVALUE
+	jmp	setCTLVALUEANDDRAW
 
 *----------------------------
 * TOGGLE MUTE ON/OFF
@@ -451,12 +449,12 @@ doMUTE	sep	#$30
 	jsr	RADIO_SET_MUTE
 	rep	#$30
 	
-	lda	STATE_ISMUTED
+drawMUTE	lda	STATE_ISMUTED
 	and	#$ff
 	beq	doMUTE_1
 	lda	#1
 doMUTE_1	ldx	#BTN_MUTE
-	jmp	setCTLVALUE
+	jmp	setCTLVALUEANDDRAW
 
 *----------------------------
 * TOGGLE SOFT MUTE ON/OFF
@@ -468,12 +466,12 @@ doMUTE_SOFT	sep	#$30
 	jsr	RADIO_SET_SOFTMUTE
 	rep	#$30
 
-	lda	STATE_ISSOFTMUTE
+drawMUTE_SOFT	lda	STATE_ISSOFTMUTE
 	and	#$ff
 	beq	doMUSO_1
 	lda	#1
 doMUSO_1	ldx	#BTN_MUTE_SOFT
-	jmp	setCTLVALUE
+	jmp	setCTLVALUEANDDRAW
 
 *----------------------------
 * TOGGLE MONO/STEREO
@@ -485,12 +483,12 @@ doMONO_STEREO	sep	#$30
 	jsr	RADIO_SET_FORCEMONO
 	rep	#$30
 
-	lda	STATE_ISMONOFORCED
+drawMONO_STEREO	lda	STATE_ISMONOFORCED
 	and	#$ff
 	beq	doMS_1
 	lda	#1
 doMS_1	ldx	#BTN_MONO_STEREO
-	jmp	setCTLVALUE
+	jmp	setCTLVALUEANDDRAW
 
 *----------------------------
 * TOGGLE BASS ON/OFF
@@ -502,12 +500,12 @@ doBASS_BOOST	sep	#$30
 	jsr	RADIO_SET_BASSBOOST
 	rep	#$30
 	
-	lda	STATE_ISBASSBOOST
+drawBASS_BOOST	lda	STATE_ISBASSBOOST
 	and	#$ff
 	beq	doBB_1
 	lda	#1
 doBB_1	ldx	#BTN_BASS_BOOST
-	jmp	setCTLVALUE
+	jmp	setCTLVALUEANDDRAW
 
 *----------------------------
 * STATION POP-UP
@@ -953,7 +951,6 @@ theBAND	ds	2
 theSPACING	ds	2
 
 theFREQ	ds	2
-frequency	ds	2
 
 *----------------------------
 * CHANNEL DATA

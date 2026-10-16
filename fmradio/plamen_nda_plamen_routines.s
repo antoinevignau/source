@@ -251,8 +251,7 @@ strID	asc	'][RADIO'00
 plamen_printRDS
 	sep	#$30
 	lda	STATE_ISRDSENABLED
-	cmp	#<TRUE
-	beq	ppRDS_1
+	bne	ppRDS_1
 	
 	ldy	#8	; clear station name
 	lda	#'-'
@@ -286,6 +285,17 @@ plamen_printFREQUENCY
 	sep	#$30
 	jsr	INT2DEC
 	rep	#$30
+
+	lda	STR_FREQ	; is it a new freq?
+	cmp	OLD_FREQ
+	bne	ppf_refresh
+	lda	STR_FREQ+2
+	cmp	OLD_FREQ+2
+	bne	ppf_refresh
+	lda	STR_FREQ+4
+	cmp	OLD_FREQ+4
+	bne	ppf_refresh
+	rts		; no, exit
 	
 *
 * Font: LED.24 font, ID#32671, from BRCC Font #4 disk
@@ -293,7 +303,7 @@ plamen_printFREQUENCY
 
 yFREQUENCY	=	27	; was 30
 
-	stz	theINDEX
+ppf_refresh	stz	theINDEX
 
 	PushLong	#rectFREQUENCY
 	PushLong	#whitePATTERN
@@ -310,6 +320,7 @@ yFREQUENCY	=	27	; was 30
 	tax		; the x-coord
 
 	lda	STR_FREQ,y	; the digit
+	sta	OLD_FREQ,y	; save for later
 	and	#$ff
 	cmp	#10	; space, skip
 	beq	printF2
@@ -1891,7 +1902,8 @@ TEMP_L                 dfb	0
 TEMP_H                 dfb	0
 MATH_REM_L             dfb	0
 MATH_REM_H             dfb	0
-STR_FREQ               ds	6
+STR_FREQ	ds	6
+OLD_FREQ	ds	6	; ** new AV **
 DISPLAY_COUNTER        dfb	0
 OLD_POINTER_POS        dfb	0
 KEY_HOLD_COUNTER       dfb	0

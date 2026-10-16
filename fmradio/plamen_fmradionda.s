@@ -131,7 +131,7 @@ MINQDVERSION	=	$0307	; for 6.0
 	adrl	ndaINIT
 	dw	Period
 	dw	EventMask
-	asc	'  FM Radio \H**'00
+	asc	'  a2Heaven FM Radio \H**'00
 
 *----------------------------
 * OPEN ROUTINE
@@ -147,9 +147,9 @@ ndaOPEN	phb
 	sta	result,s
 	sta	result+2,s
 
-	lda	#doMUTE	; plamen_printRDS
+	lda	#doRUN	; plamen_printRDS
 	stal	$300
-	lda	#^doMUTE	; plamen_printRDS
+	lda	#^doRUN	; plamen_printRDS
 	stal	$302
 
 *--- Do we have the FM Radio installed?

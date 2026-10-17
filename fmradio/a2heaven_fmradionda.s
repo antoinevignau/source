@@ -95,7 +95,7 @@ wInSysWindow	=	$8000
 
 *-------------- NDA
 
-Period	=	120	; 2 seconds
+Period	=	180	; 3 seconds
 EventMask	=	$ffff	; get all events
 
 eventAction	=	1	; action routine, in A register

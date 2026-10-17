@@ -95,7 +95,7 @@ wInSysWindow	=	$8000
 
 *-------------- NDA
 
-Period	=	180	; 3 seconds
+Period	=	120	; 2 seconds
 EventMask	=	$ffff	; get all events
 
 eventAction	=	1	; action routine, in A register
@@ -147,24 +147,25 @@ ndaOPEN	phb
 	sta	result,s
 	sta	result+2,s
 
-	lda	#channelFREQ1
-	stal	$300
-	lda	#^channelFREQ1
-	stal	$302
-
 *--- Do we have the FM Radio installed?
 
-	jsr	plamen_getINFO
-	bcs	ndaOPEN1	; no
+	sep	#$20
+	ldal	KEYMODREG
+	rep	#$20
+	and	#$40	; is option key down?
+	bne	ndaOPEN1	; yes, open the NDA
 
-	jsr	checkQDVersion	; yes
-	bcs	ndaOPEN2
-ndaOPEN1	plb
+	jsr	plamen_getINFO
+	bcs	ndaOPEN2	; no
+
+ndaOPEN1	jsr	checkQDVersion	; yes
+	bcs	ndaOPEN3
+ndaOPEN2	plb
 	rtl
 
 *--- Open our window
 
-ndaOPEN2	pha
+ndaOPEN3	pha
 	pha
 	_GetPort
 	PullLong	curPORT
@@ -194,7 +195,7 @@ ndaOPEN2	pha
 	rep	#$30
 	jsr	updateBUTTONS
 
-	jsr	loadCHANNELS		; load the stored channels
+	jsr	buildMENU		; load the stored channels
 
 ndaOPEN9	PushWord	curRESID
 	_SetCurResourceApp
@@ -357,13 +358,13 @@ ndaINITShutDown	PushWord	myID	; shut down
 * NDA ROUTINES
 *----------------------------
 
-	put	plamen_nda_fmradio_routines.s
+	put	a2heaven_nda_fmradio_routines.s
 
 *----------------------------
 * FM CHIP ROUTINES
 *----------------------------
 
-	put	plamen_nda_plamen_routines.s
+	put	a2heaven_nda_plamen_routines.s
 
 *----------------------------
 * CHECK QD VERSION
@@ -472,26 +473,6 @@ PAINTMAIN	phb
 	_SetCurResourceFile
 	
 	plb
-	rtl
-
-*----------------------------
-* DRAW THE WINDOW
-*----------------------------
-
-PAINTCHANNEL	pha
-	_GetCurResourceFile
-
-	ldal	myRESID	; bank register not set
-	pha
-	_SetCurResourceFile
-	
-	pha
-	pha
-	_GetPort
-	_DrawControls
-
-	_SetCurResourceFile
-	
 	rtl
 
 *----------------------------

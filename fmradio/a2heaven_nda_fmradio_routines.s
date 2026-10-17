@@ -170,7 +170,7 @@ tblCONTROL	da	ctlNULL	;  0
 	da	ctlNULL	;  8 - 108
 	da	doPOPUP	;  9 - Pop-up menu (is $1740)
 	da	ctlNULL	; 10 - Remove station (doSTAT_MINUS)
-	da	ctlNULL	; 11 - Add station (doSTAT_PLUS)
+	da	doSTAT_PLUS	; 11 - Add station (doSTAT_PLUS)
 	da	ctlNULL	; 12
 	da	ctlNULL	; 13
 	da	ctlNULL	; 14
@@ -276,15 +276,21 @@ updateBUTTONS	jsr	drawMUTE_SOFT
 	jsr	drawMONO_STEREO
 	jsr	drawRDS
 
-	lda	theBAND
+	lda	STATE_CURRENTPRESET	; 1..8
 	clc
-	adc	#BAND_EU
+	adc	#MENU_CHANNEL	; +1740
+	ldx	#POPUP_FREQ
+	jsr	setCTLVALUE
+	
+	lda	theBAND	; 0..3
+	clc
+	adc	#BAND_EU	; +1841
 	ldx	#POPUP_BAND
 	jsr	setCTLVALUE
 
-	lda	theSPACING
+	lda	theSPACING	; 0..3
 	clc
-	adc	#SPACING_100
+	adc	#SPACING_100	; +1941
 	ldx	#POPUP_SPACING
 	jsr	setCTLVALUE
 
@@ -523,7 +529,12 @@ doBB_1	ldx	#BTN_BASS_BOOST
 doPOPUP	ldx	#POPUP_FREQ
 	jsr	getCTLVALUE
 	sec
-	sbc	#ITEM_CHANNEL	; 1741 - 1741 = 0
+	sbc	#MENU_CHANNEL	; 1741 - 1740 = 1
+	sep	#$20
+	sta	STATE_CURRENTPRESET
+	dec
+	sta	thePRESET
+	rep	#$20
 	asl
 	tax
 	lda	channelFREQ1,x	; get the frequency index
@@ -542,6 +553,7 @@ doPOPUP_BAND	ldx	#POPUP_BAND	; $1841..$1844 -> 0..3
 	sep	#$30
 	lda	#3
 	jsr	GET_REGISTER
+	lda	theBAND
 	jsr	RADIO_SET_BAND
 	rep	#$30
 	rts
@@ -559,6 +571,7 @@ doPOPUP_SPACING	ldx	#POPUP_SPACING	; $1941..$1944 -> 0..3
 	sep	#$30
 	lda	#3
 	jsr	GET_REGISTER
+	lda	theSPACING
 	jsr	RADIO_SET_CHANSPACING
 	rep	#$30
 	rts
@@ -567,65 +580,21 @@ doPOPUP_SPACING	ldx	#POPUP_SPACING	; $1941..$1944 -> 0..3
 * SAVE STATION
 *----------------------------
 
-doSTAT_PLUS	rts
-
-*----------------------------
-* LOAD SAVED CHANNELS
-*----------------------------
-
-loadCHANNELS
-*	jsr	setMENUBAR	; set my menu bar
-	jsr	buildMENU	; create the menu
-
+doSTAT_PLUS	sep	#$30	; save into the card
 	lda	STATE_CURRENTPRESET
+	jsr	SavePreset                      
+	rep	#$30
+
+	lda	STATE_CURRENTPRESET	; save into my code
 	and	#$ff
-	clc
-	adc	#MENU_CHANNEL
-*	sta	theMENUID
-*
-*--- The common end (used by different routines)
-*
-*exitPOPUP	PushWord	#0
-*	PushWord	#0
-*	PushWord	#MENU_CHANNEL
-*	_CalcMenuSize
-*
-*	lda	theMENUID
-	ldx	#POPUP_FREQ
-	jmp	setCTLVALUEANDDRAW
-*
-*---
-*
-*theMENUID	ds	2
-*
-*----------------------------
-* MENU BAR
-*----------------------------
-
-*--- Set my menu bar
-
-setMENUBAR      pha
-                pha
-                _GetMenuBar
-                PullLong	theMENUBAR
-
-	pha
-	pha
-                PushLong	myWINDOW
-                PushLong	#POPUP_FREQ
-                _GetCtlHandleFromID
-                _SetMenuBar
+	dec
+	asl
+	tax
+	lda	STATE_FREQ_L
+	sta	channelFREQ1,x
+	lda	STATE_FREQ_H
+	sta	channelFREQ1+2,x
 	rts
-
-*--- Restore the previous menu bar
-
-restoreMENUBAR	PushLong	theMENUBAR
-	_SetMenuBar
-	rts
-
-*---
-
-theMENUBAR	ds	4
 
 *----------------------------
 * BUILD THE MENUS
@@ -634,19 +603,19 @@ theMENUBAR	ds	4
 buildMENU	sep	#$30
 	lda	#1
 	sta	theINDEX
-	ldy	#0
 
 ]lp	lda	theINDEX
 	jsr	LoadPreset
 
+	lda	theINDEX
+	dec
+	asl
+	tax
 	lda	STATE_FREQ_L
-	sta	channelFREQ1,y
+	sta	channelFREQ1,x
 	lda	STATE_FREQ_H
-	sta	channelFREQ1+1,y
+	sta	channelFREQ1+1,x
 	
-	iny
-	iny
-
 	inc	theINDEX
 	lda	theINDEX
 	cmp	#8
@@ -659,77 +628,21 @@ buildMENU	sep	#$30
 * DATA
 *----------------------------
 
+thePRESET	ds	2
 theBAND	ds	2
 theSPACING	ds	2
-
-theFREQ	ds	2
 
 *----------------------------
 * CHANNEL DATA
 *----------------------------
-* +0 word frequency
-* +2 pstr channel name
-*
 
 channelFREQ1	ds	2	; frequency
-channelNAME1	dfb	5	; channel name
-	ds	13
 channelFREQ2	ds	2
-channelNAME2	dfb	5
-	ds	13
 channelFREQ3	ds	2
-channelNAME3	dfb	5
-	ds	13
 channelFREQ4	ds	2
-channelNAME4	dfb	5
-	ds	13
 channelFREQ5	ds	2
-channelNAME5	dfb	5
-	ds	13
 channelFREQ6	ds	2
-channelNAME6	dfb	5
-	ds	13
 channelFREQ7	ds	2
-channelNAME7	dfb	5
-	ds	13
 channelFREQ8	ds	2
-channelNAME8	dfb	5
-	ds	13
-
-*---
-*  +0 word version
-*  +2 word itemID	<- ˆ toucher
-*  +4 byte itemChar
-*  +5 byte itemAltChar
-*  +6 word itemCheck
-*  +8 word itemFlag
-* +10 long itemTitleRef
-* j'ajoute un word pour faire 16
-*
-
-menuITEM1	ds	10
-	adrl	channelNAME1
-	ds	2
-menuITEM2	ds	10
-	adrl	channelNAME2
-	ds	2
-menuITEM3	ds	10
-	adrl	channelNAME3
-	ds	2
-menuITEM4	ds	10
-	adrl	channelNAME4
-	ds	2
-menuITEM5	ds	10
-	adrl	channelNAME5
-	ds	2
-menuITEM6	ds	10
-	adrl	channelNAME6
-	ds	2
-menuITEM7	ds	10
-	adrl	channelNAME7
-	ds	2
-menuITEM8	ds	10
-	adrl	channelNAME8
-	ds	2
 
 *--- Ce n'est pas beau mais bon...

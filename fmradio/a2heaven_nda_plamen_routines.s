@@ -182,16 +182,16 @@ OPTION_BAND            equ   OPTIONS_OFFSET + 7
 OPTION_CHANNELSPACING  equ   OPTIONS_OFFSET + 8
 OPTION_UI_TYPE       equ   OPTIONS_OFFSET + 9
 
-CYAREG	=	$c036
+CYAREG	=	$e1c036	; ** new AV **
 
-C_SCL_L	=	$C088
-C_SCL_H	=	$C089
-C_SDA_L	=	$C08A
-C_SDA_H	=	$C08B
-C_SDA_R	=	$C08C
+C_SCL_L	=	$E1C088	; ** new AV **
+C_SCL_H	=	$E1C089
+C_SDA_L	=	$E1C08A
+C_SDA_H	=	$E1C08B
+C_SDA_R	=	$E1C08C
 
-LED_STEREO	=	$C08E
-LED_TUNED	=	$C08F
+LED_STEREO	=	$E1C08E
+LED_TUNED	=	$E1C08F
 
 *----------------------------
 * Antoine's equates
@@ -432,6 +432,32 @@ cbi                    mac
                        and   #>]1 ! $FFFF
                        <<<
 
+*----------------------------
+* SET TO 1MHz
+*----------------------------
+
+slowSPEED	tax
+	ldal	CYAREG	; switch to 1MHz
+	sta	saveSPEED
+	and	#%0111_1111
+	stal	CYAREG
+	txa
+	rts
+
+*----------------------------
+* RESTORE SPEED
+*----------------------------
+
+fastSPEED	tax
+	lda	saveSPEED
+	stal	CYAREG
+	txa
+	rts
+
+*---
+
+saveSPEED	ds	1
+
 **************************************************
 *                Handle Key Tune Up              *
 **************************************************
@@ -458,7 +484,7 @@ HandleKeyTuneDown
 	bcs	CarrySet:
 	dec	PARAM_H
 CarrySet:	jmp	RADIO_TUNE_TO
-
+	
 **************************************************
 *                Handle Key Exit                 *
 **************************************************
@@ -470,7 +496,7 @@ HandleKeyExit
 
 	lda	STATE_CURRENTPRESET
 	jmp	SavePreset                      
-                       
+	
 ************************************************
 *                                              *
 *                  Save Option                 *
@@ -541,8 +567,7 @@ LoadSavedData
 ;OPTION_CURRENTPRESET   equ   OPTIONS_OFFSET + 6
 ;OPTION_BAND            equ   OPTIONS_OFFSET + 7
 ;OPTION_CHANNELSPACING  equ   OPTIONS_OFFSET + 8
-
-
+	
 	ldy	OPTION_ISMUTED
 	jsr	LoadOption
 	jsr	RADIO_SET_MUTE
@@ -753,7 +778,7 @@ SaveRes
 
 WriteTo2402
 	pha
-	
+	jsr	slowSPEED	; ** new AV **
 	jsr	I2CStart
 	lda	#I2C_2402_WRITE	; Send i2c dev addr and write bit
 	jsr	I2CWriteByte
@@ -764,7 +789,8 @@ WriteTo2402
 	pla
 	jsr	I2CWriteByte	; Write Byte
 	jsr	I2CStop
-	jmp	Delay10
+	jsr	Delay10
+	jmp	fastSPEED	; ** new AV **
 
 ************************************************
 *                                              *
@@ -773,6 +799,8 @@ WriteTo2402
 ************************************************
 
 ReadFrom2402
+	jsr	slowSPEED	; ** new AV **
+
 	jsr	I2CStart
 	lda	#I2C_2402_WRITE	; Send i2c dev addr and write bit
 	jsr	I2CWriteByte
@@ -789,7 +817,7 @@ ReadFrom2402
 	jsr	I2CSendNack
 	jsr	I2CStop
 	pla
-	rts
+	jmp	fastSPEED	; ** new AV **
 
 * ========================================================================
 * Dummy Delay Stubs
@@ -800,13 +828,9 @@ ReadFrom2402
 ; --- 10ms Base ---
 Delay10
 	pha		; [Stack: A]
-	phx		; [Stack: A, X]
+	txa
+	pha		; [Stack: A, X]
 
-	ldal	CYAREG	; ** new AV ** IIgs slow-speed
-	pha
-	and	#%011111111
-	stal	CYAREG
-	
 	ldx	#$14
 :outer	lda	#$64
 :inner	sec
@@ -815,11 +839,8 @@ Delay10
 	dex
 	bne	:outer
 
-	pla		; ** new AV ** restore speed
-	stal	CYAREG
-
-	plx		; Pull X-value into A
-			; [Stack: A] -> X restored
+	pla		; Pull X-value into A
+	tax		; [Stack: A] -> X restored
 	pla		; [Stack: empty] -> A restored
 	rts
 
@@ -847,7 +868,7 @@ REM                    ds    2                   ; 16-bit Remainder
 * ===============================================================
 
 RADIO_INIT
-
+	
 *    ***************  Clear REGS *********************
 	ldy	#$00
 	lda	#$00
@@ -901,8 +922,7 @@ LOOP_INIT_SEND	pha
                        
 	set	REGS_03; #R3_TUNE_ENABLE
 	lda	#$03
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_RESET_STATION
@@ -934,14 +954,13 @@ LOOP_RESET_NAME
 RADIO_SET_VOLUME
 	sta	STATE_VOLUME
 	and	#$0F
-	sta	TEMP_L                       
+	sta	TEMP_L
 	lda	REGS_05L
 	and	#$F0
 	ora	TEMP_L
 	sta	REGS_05L
 	lda	#$05
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SET_BASSBOOST
@@ -958,8 +977,7 @@ BASS_TRUE
 	set	REGS_02; R2_BASS_BOOST
 BASS_DONE
 	lda	#$02
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SET_MONOSTEREO
@@ -976,8 +994,7 @@ MONOSTEREO_TRUE
 	set	REGS_02; R2_MONO_SELECT
 MONOSTEREO_DONE
 	lda	#$02
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SET_RDS
@@ -994,8 +1011,7 @@ RDS_TRUE
 	clr	REGS_02; R2_RDS_ENABLE
 RDS_DONE
 	lda	#$02
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SET_MUTE
@@ -1012,8 +1028,7 @@ MUTE_TRUE
 	clr	REGS_02; R2_MUTE_DISABLE
 MUTE_DONE
 	lda	#$02
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SET_SOFTMUTE
@@ -1030,8 +1045,7 @@ SMUTE_TRUE
 	set	REGS_04; R4_SOFT_MUTE_ENABLE
 SMUTE_DONE
 	lda	#$04
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
                        
 * ===============================================================
 * FUNCTION: RADIO_SET_FORCEMONO
@@ -1048,8 +1062,7 @@ MONO_TRUE
 	set	REGS_02; R2_MONO_SELECT
 MONO_DONE
 	lda	#$02
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
                        
 * ===============================================================
 * FUNCTION: RADIO_SET_CHANSPACING 
@@ -1064,8 +1077,7 @@ RADIO_SET_CHANSPACING
 	sta	REGS_03L                                                                     
                        
 	lda	#$03
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SET_BAND
@@ -1080,10 +1092,9 @@ RADIO_SET_BAND
 	and	#<R3_BAND  ! #$FF
 	ora	TEMP_L
 	sta	REGS_03L                                                                     
-                       
+
 	lda	#$03
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SEEK_UP
@@ -1093,8 +1104,7 @@ RADIO_SEEK_UP
 	jsr	RADIO_RESET_STATION
 	set	REGS_02; R2_SEEK_UP . R2_SEEK_ENABLE
 	lda	#$02
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_SEEK_DOWN
@@ -1105,8 +1115,7 @@ RADIO_SEEK_DOWN
 	clr	REGS_02; R2_SEEK_UP
 	set	REGS_02; R2_SEEK_ENABLE
 	lda	#$02
-	jsr	SEND_REGISTER
-	rts
+	jmp	SEND_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_GET_CHIPID
@@ -1114,8 +1123,7 @@ RADIO_SEEK_DOWN
 
 RADIO_GET_CHIPID
 	lda	#$00	;  Chip ID register
-	jsr	GET_REGISTER
-	rts
+	jmp	GET_REGISTER
 
 * ===============================================================
 * FUNCTION: RADIO_GET_FREQUENCY
@@ -1618,7 +1626,8 @@ MUL_NOADD
 * ===============================================================
 * FUNCTION: RADIO_UPDATE_STATUS
 * ===============================================================
-RADIO_UPDATE_STATUS
+
+RADIO_UPDATE_STATUS	
 	lda	#$03	; Register 3
 	jsr	GET_REGISTER
 	lda	#$0A	; Register A
@@ -1841,6 +1850,7 @@ BAD_CHAR
 * ===============================================================
 
 SEND_REGISTER	pha
+	jsr	slowSPEED	; ** new AV **
 	jsr	I2CStart
 	lda	#I2C_DATA_WRITE	; Send i2c dev addr and write bit
 	jsr	I2CWriteByte
@@ -1858,13 +1868,14 @@ SEND_REGISTER	pha
 	lda	REGS,Y	; Write Low Byte next
 	jsr	I2CWriteByte
 	jsr	I2CStop
-	rts
+	jmp	fastSPEED	; ** new AV **
 
 * ===============================================================
 * FUNCTION: GET_REGISTER
 * ===============================================================
 
 GET_REGISTER	pha
+	jsr	slowSPEED	; ** new AV **
 	jsr	I2CStart
 	lda	#I2C_DATA_WRITE	; Send i2c dev addr and write command
 	jsr	I2CWriteByte
@@ -1885,7 +1896,7 @@ GET_REGISTER	pha
 	jsr	I2CSendNack
 	jsr	I2CStop
 	sta	REGS,Y	; Save Low Byte next
-	rts
+	jmp	fastSPEED	; ** new AV **
 
 ; --- I2C Start Condition ---
 

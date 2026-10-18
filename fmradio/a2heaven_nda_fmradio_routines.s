@@ -606,7 +606,7 @@ buildMENU	sep	#$30
 
 ]lp	lda	theINDEX
 	jsr	LoadPreset
-
+	
 	lda	theINDEX
 	dec
 	asl

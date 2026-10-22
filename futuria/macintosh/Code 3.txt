@@ -1,0 +1,2247 @@
+Seg loader info
++0000  000000  DC.W       $0000               ; JT offset          | 0000
++0002  000002  DC.W       $0001               ; # of entries       | 0001
+
+Anon1
++0000  000004  PEA        -$0004(A5)                               | 486D FFFC	init desktop
++0004  000008  _InitGraf                      ; A86E               | A86E
++0006  00000A  _InitFonts                     ; A8FE               | A8FE
++0008  00000C  _InitWindows                   ; A912               | A912
++000A  00000E  _InitMenus                     ; A930               | A930
++000C  000010  CLR.L      -(A7)                                    | 42A7
++000E  000012  _InitDialogs                   ; A97B               | A97B
++0010  000014  _TEInit                        ; A9CC               | A9CC
++0012  000016  MOVE.W     #$0004,ApFontID                          | 31FC 0004 0984
++0018  00001C  JSR        Anon32              ; 00003826           | 4EBA 3808	set random
++001C  000020  LEA        Anon29+$0126,A3     ; 0000305A           | 47FA 3038	A3 = &menuHandle
++0020  000024  MOVEQ      #$01,D4                                  | 7801
++0022  000026  CLR.L      -(A7)                                    | 42A7
++0024  000028  MOVE.W     D4,-(A7)                                 | 3F04
++0026  00002A  _GetRMenu                      ; A9BF               | A9BF	getMenu
++0028  00002C  MOVE.L     (A7),(A3)+                               | 26D7	save menuHandle
++002A  00002E  CLR.W      -(A7)                                    | 4267
++002C  000030  _InsertMenu                    ; A935               | A935	insert the menu in the menubar
++002E  000032  ADDQ.W     #$1,D4                                   | 5244
++0030  000034  CMPI.B     #$05,D4                                  | 0C04 0005	until all menus are done
++0034  000038  BNE.S      Anon1+$0022         ; 00000026           | 66EC
++0036  00003A  MOVE.L     Anon29+$0126,-(A7)  ; 0000305A           | 2F3A 301E
++003A  00003E  MOVE.L     #$44525652,-(A7)    ; 'DRVR'             | 2F3C 4452 5652
++0040  000044  _AddResMenu                    ; A94D               | A94D	add the Apple menu
++0042  000046  _DrawMenuBar                   ; A937               | A937	draw the menu bar
++0044  000048  JSR        Anon1+$007E         ; 00000082           | 4EBA 0038	add windows
+
++0048  00004C  MOVEA.L    Anon29+$013E,A0     ; 00003072           | 207A 3024	source = windowPtr3
++004C  000050  LEA        Anon29+$07F4,A6     ; 00003728           | 4DFA 36D6	destination = 3728
++0050  000054  ADDA.L     #$00000002,A0                            | D1FC 0000 0002
++0056  00005A  MOVE.W     #$000E,D0                                | 303C 000E	set length of $E
++005A  00005E  JSR        Anon44+$000E        ; 00003AEA           | 4EBA 3A8A	copy data from A0 to A6
++005E  000062  LEA        Anon29+$07F4,A6     ; 00003728           | 4DFA 36C4
++0062  000066  LEA        Anon2,A0            ; 000000B8           | 41FA 0050	A0 = Anon2
++0066  00006A  MOVE.L     A0,(A6)                                  | 2C88	now save Anon2 pointer to the end of the windowPtr
++0068  00006C  LEA        Anon29+$07F8,A0     ; 0000372C           | 41FA 36BE
++006C  000070  MOVE.W     #$0020,(A0)                              | 30BC 0020
++0070  000074  MOVE.L     #$0000FFFF,D0                            | 203C 0000 FFFF	event and stop Masks
++0076  00007A  _FlushEvents                   ; A032               | A032
++0078  00007C  _InitCursor                    ; A850               | A850
++007A  00007E  JMP        Anon28+$0092        ; 00002F12           | 4EFA 2E92	next stage please
+
++007E  000082  LEA        Anon29+$0136,A4     ; 0000306A           | 49FA 2FE6	create all windows
++0082  000086  MOVE.W     #$012C,D0                                | 303C 012C
++0086  00008A  LEA        Anon29+$0292,A1     ; 000031C6           | 43FA 313A
++008A  00008E  JSR        Anon1+$00A2         ; 000000A6           | 4EBA 0016
++008E  000092  MOVE.W     #$00C8,D0                                | 303C 00C8
++0092  000096  LEA        Anon29+$03D2,A1     ; 00003306           | 43FA 326E
++0096  00009A  JSR        Anon1+$00A2         ; 000000A6           | 4EBA 000A
++009A  00009E  MOVE.W     #$0064,D0                                | 303C 0064
++009E  0000A2  LEA        Anon29+$0152,A1     ; 00003086           | 43FA 2FE2
++00A2  0000A6  CLR.L      -(A7)                                    | 42A7
++00A4  0000A8  MOVE.W     D0,-(A7)                                 | 3F00
++00A6  0000AA  MOVE.L     A1,-(A7)                                 | 2F09
++00A8  0000AC  MOVE.L     #$FFFFFFFF,-(A7)                         | 2F3C FFFF FFFF
++00AE  0000B2  _GetNewWindow                  ; A9BD               | A9BD
++00B0  0000B4  MOVE.L     (A7)+,(A4)+                              | 28DF
++00B2  0000B6  RTS                                                 | 4E75
+
+* From here to there, useless code...
+
+Anon2
++0000  0000B8  MOVE.W     (A7)+,D0                                 | 301F
++0002  0000BA  BEQ        Anon28+$00A2        ; 00002F22           | 6700 2E66
++0006  0000BE  JMP        Anon26+$0024        ; 00000558           | 4EFA 0498
++000A  0000C2  MOVE.B     #$01,(A7)                                | 1EBC 0001
++000E  0000C6  JMP        Anon25+$000A        ; 0000052A           | 4EFA 0462
++0012  0000CA  MOVEA.L    (A7)+,A0                                 | 205F
++0014  0000CC  MOVE.W     (A7)+,D0                                 | 301F
++0016  0000CE  MOVEM.L    D1-D7/A0-A6,-(A7)                        | 48E7 7FFE
++001A  0000D2  MOVEQ      #$18,D1                                  | 7218
++001C  0000D4  CLR.W      -(A7)                                    | 4267
++001E  0000D6  DBF        D1,Anon2+$001C      ; 000000D4           | 51C9 FFFC
++0022  0000DA  MOVEA.L    A7,A0                                    | 204F
++0024  0000DC  MOVE.W     #$FFFB,$0018(A0)                         | 317C FFFB 0018
++002A  0000E2  MOVE.W     D0,$0016(A0)                             | 3140 0016
++002E  0000E6  MOVE.W     #$0007,$001A(A0)                         | 317C 0007 001A
++0034  0000EC  _Eject                         ; A017               | A017
++0036  0000EE  ADDA.W     #$0032,A7                                | DEFC 0032
++003A  0000F2  MOVEM.L    (A7)+,D1-D7/A0-A6                        | 4CDF 7FFE
++003E  0000F6  JMP        (A0)                                     | 4ED0
+
+Anon3
++0000  0000F8  CMPI.W     #$0003,D0                                | 0C40 0003
++0004  0000FC  BNE        Anon28+$009A        ; 00002F1A           | 6600 2E1C
++0008  000100  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++000C  000104  JSR        Anon2+$0012         ; 000000CA           | 4EBA FFC4
++0010  000108  JMP        Anon26+$0020        ; 00000554           | 4EFA 044A
++0014  00010C  MOVEM.L    D1/A0/A1,-(A7)                           | 48E7 40C0
+
++0018  000110  ANDI.W     #$0003,D0                                | 0240 0003
++001C  000114  MOVEQ      #$18,D1                                  | 7218
++001E  000116  CLR.W      -(A7)                                    | 4267
++0020  000118  DBF        D1,Anon3+$001E      ; 00000116           | 51C9 FFFC
++0024  00011C  MOVEA.L    A7,A0                                    | 204F
++0026  00011E  MOVE.W     D0,$0016(A0)                             | 3140 0016
++002A  000122  MOVE.L     D0,-(A7)                                 | 2F00
++002C  000124  _MountVol                      ; A00F               | A00F
++002E  000126  MOVE.L     (A7)+,D0                                 | 201F
++0030  000128  ADDA.L     #$00000032,A7                            | DFFC 0000 0032
++0036  00012E  MOVEA.L    SonyVars,A1                              | 2278 0134
++003A  000132  MOVE.W     D0,$0012(A1)                             | 3340 0012
++003E  000136  MOVEA.L    IWM,A1                                   | 2278 01E0
++0042  00013A  CMPI.W     #$0001,D0                                | 0C40 0001
++0046  00013E  BEQ.S      Anon3+$004E         ; 00000146           | 6706
++0048  000140  TST.B      $1600(A1)                                | 4A29 1600
++004C  000144  BRA.S      Anon3+$0052         ; 0000014A           | 6004
++004E  000146  TST.B      $1400(A1)                                | 4A29 1400
++0052  00014A  TST.B      $1200(A1)                                | 4A29 1200
++0056  00014E  MOVEM.L    (A7)+,D1/A0/A1                           | 4CDF 0302
++005A  000152  RTS                                                 | 4E75
+
+Anon4
++0000  000154  CLR.B      (A7)                                     | 4217
++0002  000156  JMP        Anon7               ; 000002F4           | 4EFA 019C
+
++0006  00015A  CLR.W      -(A7)                                    | 4267
++0008  00015C  JSR        Anon26              ; 00000534           | 4EBA 03D6
++000C  000160  JMP        Anon26+$0040        ; 00000574           | 4EFA 0412
++0010  000164  MOVEM.L    D0-D7/A0-A6,-(A7)                        | 48E7 FFFE
++0014  000168  MOVEA.L    Anon65+$0016,A6     ; 00004258           | 2C7A 40EE
++0018  00016C  MOVEA.L    (A6),A1                                  | 2256
++001A  00016E  MOVEA.L    (A1),A1                                  | 2251
++001C  000170  MOVE.L     (A1),D1                                  | 2211
++001E  000172  CMP.L      Anon65+$001A,D1     ; 0000425C           | B2BA 40E8
++0022  000176  BNE.S      Anon4+$003E         ; 00000192           | 661A
++0024  000178  LEA        Anon10+$0008,A1     ; 0000034E           | 43FA 01D4
++0028  00017C  MOVE.L     $0014(A6),D1                             | 222E 0014
++002C  000180  CMP.L      (A1),D1                                  | B291
++002E  000182  BNE.S      Anon4+$003E         ; 00000192           | 660E
++0030  000184  MOVE.W     $0006(A6),D1                             | 322E 0006
++0034  000188  CMP.W      Anon24,D1           ; 000004F8           | B27A 036E
++0038  00018C  BNE        Anon8               ; 000002FC           | 6600 016E
++003C  000190  BEQ.S      Anon4+$004C         ; 000001A0           | 670E
++003E  000192  TST.L      D1                                       | 4A81
++0040  000194  BNE        Anon5+$003E         ; 00000254           | 6600 00BE
++0044  000198  TST.W      $0006(A6)                                | 4A6E 0006
++0048  00019C  BNE        Anon5+$003E         ; 00000254           | 6600 00B6
++004C  0001A0  JSR        Anon22              ; 0000048A           | 4EBA 02E8
++0050  0001A4  JSR        Anon22+$0052        ; 000004DC           | 4EBA 0336
++0054  0001A8  CLR.L      $1A(A1,D1.W)                             | 42B1 101A
++0058  0001AC  CLR.L      D6                                       | 4286
++005A  0001AE  MOVE.W     Anon65+$0012,D6     ; 00004254           | 3C3A 40A4
++005E  0001B2  JSR        Anon19              ; 00000466           | 4EBA 02B2
++0062  0001B6  LEA        Anon65+$003E,A1     ; 00004280           | 43FA 40C8
++0066  0001BA  CLR.W      (A1)                                     | 4251
++0068  0001BC  LEA        Anon65+$003A,A1     ; 0000427C           | 43FA 40BE
++006C  0001C0  MOVE.L     A7,(A1)                                  | 228F
++006E  0001C2  SUBA.L     #$000002C0,A7                            | 9FFC 0000 02C0
++0074  0001C8  LEA        Anon65+$0036,A1     ; 00004278           | 43FA 40AE
++0078  0001CC  MOVE.L     A7,(A1)                                  | 228F
++007A  0001CE  LEA        Anon65+$0034,A1     ; 00004276           | 43FA 40A6
++007E  0001D2  MOVE       SR,(A1)                                  | 40D1
++0080  0001D4  ORI.W      #$0300,SR                                | 007C 0300
++0084  0001D8  MOVE.W     Anon65+$0014,D6     ; 00004256           | 3C3A 407C
++0088  0001DC  CLR.W      D0                                       | 4240
++008A  0001DE  JSR        Anon9               ; 00000328           | 4EBA 0148
++008E  0001E2  TST.W      D0                                       | 4A40
++0090  0001E4  BMI.S      Anon4+$00A8         ; 000001FC           | 6B16
++0092  0001E6  MOVE.W     Anon65+$0014,D6     ; 00004256           | 3C3A 406E
++0096  0001EA  MOVEA.L    Anon65+$0036,A0     ; 00004278           | 207A 408C
++009A  0001EE  JSR        Anon15+$000C        ; 00000402           | 4EBA 0212
++009E  0001F2  CMPI.W     #$FFB7,D0                                | 0C40 FFB7
++00A2  0001F6  BEQ.S      Anon5               ; 00000216           | 671E
++00A4  0001F8  TST.W      D0                                       | 4A40
++00A6  0001FA  BEQ.S      Anon5               ; 00000216           | 671A
++00A8  0001FC  MOVE       Anon65+$0034,SR     ; 00004276           | 46FA 4078
++00AC  000200  MOVEA.L    Anon65+$003A,A7     ; 0000427C           | 2E7A 407A
++00B0  000204  LEA        Anon65+$001E,A6     ; 00004260           | 4DFA 405A
++00B4  000208  MOVE.W     Anon5,(A6)          ; 00000216           | 3CBA 000C	4260 = Anon5
++00B8  00020C  JSR        Anon12              ; 0000038A           | 4EBA 017C
++00BC  000210  MOVEM.L    (A7)+,D0-D7/A0-A6                        | 4CDF 7FFF
++00C0  000214  RTS                                                 | 4E75
+
+Anon5
++0000  000216  MOVE       Anon65+$0034,SR     ; 00004276           | 46FA 405E
++0004  00021A  MOVEA.L    Anon65+$0036,A0     ; 00004278           | 207A 405C
++0008  00021E  JSR        Anon8+$000A         ; 00000306           | 4EBA 00E6
++000C  000222  TST.W      D0                                       | 4A40
++000E  000224  BNE.S      Anon4+$00AC         ; 00000200           | 66DA
++0010  000226  MOVE.W     #$02BE,D0                                | 303C 02BE
++0014  00022A  CLR.L      D1                                       | 4281
++0016  00022C  CLR.L      D2                                       | 4282
++0018  00022E  MOVEA.L    Anon65+$0016,A6     ; 00004258           | 2C7A 4028
++001C  000232  MOVE.L     Anon10+$0008,D3     ; 0000034E           | 263A 011A
++0020  000236  CMP.L      $0014(A6),D3                             | B6AE 0014
++0024  00023A  BNE.S      Anon5+$0032         ; 00000248           | 660C
++0026  00023C  MOVE.W     $0006(A6),D1                             | 322E 0006
++002A  000240  CMP.W      Anon24,D1           ; 000004F8           | B27A 02B6
++002E  000244  BNE.S      Anon5+$003E         ; 00000254           | 660E
++0030  000246  BRA.S      Anon6               ; 0000027A           | 6032
++0032  000248  TST.L      $0014(A6)                                | 4AAE 0014
++0036  00024C  BNE.S      Anon5+$003E         ; 00000254           | 6606
++0038  00024E  TST.W      $0006(A6)                                | 4A6E 0006
++003C  000252  BEQ.S      Anon6               ; 0000027A           | 6726
++003E  000254  MOVE.W     #$1A44,D3                                | 363C 1A44
++0042  000258  CLR.L      D0                                       | 4280
++0044  00025A  MOVEA.L    D0,A0                                    | 2040
++0046  00025C  MOVE.L     #$83490044,(A0)+                         | 20FC 8349 0044
++004C  000262  DBF        D3,Anon5+$0046      ; 0000025C           | 51CB FFF8
++0050  000266  MOVE.W     #$21F3,D3                                | 363C 21F3
++0054  00026A  MOVE.L     (A1)+,(A6)+                              | 2CD9
++0056  00026C  DBF        D3,Anon5+$0054      ; 0000026A           | 51CB FFFC
++005A  000270  LEA        Anon65+$001E,A6     ; 00004260           | 4DFA 3FEE	&4260
++005E  000274  MOVE.W     Anon5+$003E,(A6)    ; 00000254           | 3CBA FFDE	*4260 = 
++0062  000278  RTS                                                 | 4E75
+
+Anon6
++0000  00027A  MOVE.B     $00(A0,D0.W),D3                          | 1630 0000
++0004  00027E  EOR.B      D3,D2                                    | B702
++0006  000280  ADD.W      D3,D1                                    | D243
++0008  000282  DBF        D0,Anon6            ; 0000027A           | 51C8 FFF6
++000C  000286  MOVE.W     Anon65+$003E,D7     ; 00004280           | 3E3A 3FF8
++0010  00028A  LEA        Anon65+$0020,A0     ; 00004262           | 41FA 3FD6
++0014  00028E  MOVE.W     D1,$00(A0,D7.W)                          | 3181 7000
++0018  000292  ADDQ.B     #$2,D7                                   | 5407
++001A  000294  MOVE.B     D2,$00(A0,D7.W)                          | 1182 7000
++001E  000298  ADDQ.B     #$2,D7                                   | 5407
++0020  00029A  LEA        Anon65+$003E,A1     ; 00004280           | 43FA 3FE4
++0024  00029E  MOVE.W     D7,(A1)                                  | 3287
++0026  0002A0  CMPI.B     #$14,D7                                  | 0C07 0014
++002A  0002A4  BLT        Anon4+$007A         ; 000001CE           | 6D00 FF28
++002E  0002A8  JSR        Anon12              ; 0000038A           | 4EBA 00E0
++0032  0002AC  CLR.W      D0                                       | 4240
++0034  0002AE  SUBQ.B     #$4,D7                                   | 5907
++0036  0002B0  MOVE.W     D7,D1                                    | 3207
++0038  0002B2  MOVE.L     $00(A0,D7.W),D6                          | 2C30 7000
++003C  0002B6  CMP.L      $00(A0,D1.W),D6                          | BCB0 1000
++0040  0002BA  BNE.S      Anon6+$0044         ; 000002BE           | 6602
++0042  0002BC  ADDQ.B     #$1,D0                                   | 5200
++0044  0002BE  SUBQ.B     #$4,D1                                   | 5901
++0046  0002C0  BPL.S      Anon6+$003C         ; 000002B6           | 6AF4
++0048  0002C2  SUBQ.B     #$4,D7                                   | 5907
++004A  0002C4  BPL.S      Anon6+$0036         ; 000002B0           | 6AEA
++004C  0002C6  CMPI.B     #$05,D0                                  | 0C00 0005
++0050  0002CA  BLT.S      Anon5+$003E         ; 00000254           | 6D88
++0052  0002CC  CMPI.B     #$07,D0                                  | 0C00 0007
++0056  0002D0  BGT        Anon4+$00AC         ; 00000200           | 6E00 FF2E
++005A  0002D4  MOVEA.L    Anon65+$003A,A7     ; 0000427C           | 2E7A 3FA6
++005E  0002D8  MOVEA.L    Anon65+$0016,A0     ; 00004258           | 207A 3F7E
++0062  0002DC  MOVE.W     Anon24,$0006(A0)    ; 000004F8           | 317A 021A 0006
++0068  0002E2  MOVE.L     Anon10+$0008,$0014(A0); 0000034E         | 217A 006A 0014
++006E  0002E8  LEA        Anon65+$001E,A6     ; 00004260           | 4DFA 3F76
++0072  0002EC  CLR.W      (A6)                                     | 4256
++0074  0002EE  MOVEM.L    (A7)+,D0-D7/A0-A6                        | 4CDF 7FFF
++0078  0002F2  RTS                                                 | 4E75
+
+Anon7
++0000  0002F4  LEA        Anon50+$0018,A1     ; 00003E1C           | 43FA 3B26
++0004  0002F8  CLR.W      (A1)                                     | 4251
++0006  0002FA  JMP        (A0)                                     | 4ED0
+
+Anon8
++0000  0002FC  LEA        Anon65+$001E,A6     ; 00004260           | 4DFA 3F62
++0004  000300  MOVE.W     Anon24,(A6)         ; 000004F8           | 3CBA 01F6
++0008  000304  BNE.S      Anon6+$0074         ; 000002EE           | 66E8
++000A  000306  CLR.B      D7                                       | 4207
++000C  000308  MOVE.L     (A0),D1                                  | 2210
++000E  00030A  MOVEQ      #$03,D0                                  | 7003
++0010  00030C  CLR.B      D2                                       | 4202
++0012  00030E  BRA.S      Anon8+$0018         ; 00000314           | 6004
++0014  000310  MOVE.B     $00(A0,D0.W),D1                          | 1230 0000
++0018  000314  MOVE.W     #$0008,D6                                | 3C3C 0008
++001C  000318  DBF        D6,Anon10           ; 00000346           | 51CE 002C
++0020  00031C  ADDQ.W     #$1,D0                                   | 5240
++0022  00031E  CMPI.W     #$02C2,D0                                | 0C40 02C2
++0026  000322  BNE.S      Anon8+$0014         ; 00000310           | 66EC
++0028  000324  CLR.W      D0                                       | 4240
++002A  000326  RTS                                                 | 4E75
+
+Anon9
++0000  000328  MOVE.W     D0,-(A7)                                 | 3F00
++0002  00032A  MOVE.W     #$0023,D7                                | 3E3C 0023
++0006  00032E  MOVE.W     (A7),D0                                  | 3017
++0008  000330  BSR.S      Anon11+$000E        ; 00000376           | 6144
++000A  000332  TST.W      D0                                       | 4A40
++000C  000334  BMI.S      Anon9+$0012         ; 0000033A           | 6B04
++000E  000336  CMP.W      D6,D2                                    | B446
++0010  000338  BEQ.S      Anon9+$001A         ; 00000342           | 6708
++0012  00033A  DBF        D7,Anon9+$0006      ; 0000032E           | 51CF FFF2
++0016  00033E  MOVE.W     #$FF9C,D0                                | 303C FF9C
++001A  000342  MOVE.W     (A7)+,D7                                 | 3E1F
++001C  000344  RTS                                                 | 4E75
+
+Anon10
++0000  000346  ROL.L      #$1,D1                                   | E399
++0002  000348  BCC.S      Anon10+$000C        ; 00000352           | 6408
++0004  00034A  CLR.B      D2                                       | 4202
++0006  00034C  BRA.S      Anon8+$001C         ; 00000318           | 60CA
++0008  00034E  OR.B       D0,D0                                    | 8000
++000A  000350  MOVE.B     (A2)+,A4                                 | 185A
++000C  000352  ADDQ.B     #$1,D2                                   | 5202
++000E  000354  CMPI.B     #$03,D2                                  | 0C02 0003
++0012  000358  BNE.S      Anon8+$001C         ; 00000318           | 66BE
++0014  00035A  ADDQ.B     #$1,D7                                   | 5207
++0016  00035C  CMPI.B     #$03,D7                                  | 0C07 0003
++001A  000360  BNE.S      Anon8+$001C         ; 00000318           | 66B6
++001C  000362  MOVE.W     #$FB9C,D0                                | 303C FB9C
++0020  000366  RTS                                                 | 4E75
+
+Anon11
++0000  000368  MOVE.W     Anon65+$001E,D0     ; 00004260           | 303A 3EF6
++0004  00036C  TST.W      D0                                       | 4A40
++0006  00036E  BEQ        Anon4               ; 00000154           | 6700 FDE4
++000A  000372  JMP        Anon2+$000A         ; 000000C2           | 4EFA FD4E
++000E  000376  TST.W      D0                                       | 4A40
++0010  000378  BNE.S      Anon11+$0018        ; 00000380           | 6606
++0012  00037A  MOVE.W     #$0001,D0                                | 303C 0001
++0016  00037E  BRA.S      Anon11+$001C        ; 00000384           | 6004
++0018  000380  MOVE.W     #$0003,D0                                | 303C 0003
++001C  000384  BSR.S      Anon14+$0002        ; 000003F0           | 616A
++001E  000386  BSR.S      Anon13              ; 000003DA           | 6152
++0020  000388  RTS                                                 | 4E75
+
+Anon12
++0000  00038A  MOVEM.L    D1/A0/A1,-(A7)                           | 48E7 40C0
++0004  00038E  MOVEQ      #$0E,D1                                  | 720E
++0006  000390  CLR.L      -(A7)                                    | 42A7
++0008  000392  DBF        D1,Anon12+$0006     ; 00000390           | 51C9 FFFC
++000C  000396  MOVEA.L    A7,A0                                    | 204F
++000E  000398  LEA        Anon10+$0008,A1     ; 0000034E           | 43FA FFB4
++0012  00039C  MOVE.L     A1,$0020(A0)                             | 2149 0020
++0016  0003A0  MOVE.L     #$00000200,$0024(A0)                     | 217C 0000 0200 0024
++001E  0003A8  MOVE.W     #$FFFB,$0018(A0)                         | 317C FFFB 0018
++0024  0003AE  CLR.L      D1                                       | 4281
++0026  0003B0  MOVE.W     Anon65+$0012,D1     ; 00004254           | 323A 3EA2
++002A  0003B4  MULU.W     #$000A,D1                                | C2FC 000A
++002E  0003B8  MOVE.L     D1,$002E(A0)                             | 2141 002E
++0032  0003BC  MOVEA.L    SonyVars,A1                              | 2278 0134
++0036  0003C0  MOVE.W     $0012(A1),$0016(A0)                      | 3169 0012 0016
++003C  0003C6  MOVE.W     #$0041,$002C(A0)                         | 317C 0041 002C
++0042  0003CC  _Read                          ; A002               | A002
++0044  0003CE  ADDA.L     #$0000003C,A7                            | DFFC 0000 003C
++004A  0003D4  MOVEM.L    (A7)+,D1/A0/A1                           | 4CDF 0302
++004E  0003D8  RTS                                                 | 4E75
+
+Anon13
++0000  0003DA  LEA        $009FFFFE,A6                             | 4DF9 009F FFFE
++0006  0003E0  LEA        Anon14,A5           ; 000003EE           | 4BFA 000C
++000A  0003E4  LEA        Anon15,A2           ; 000003F6           | 45FA 0010
++000E  0003E8  MOVE.L     JRdAddr,-(A7)                            | 2F38 022A
++0012  0003EC  RTS                                                 | 4E75
+
+Anon14
++0000  0003EE  DC.W       $FFFF               ; ????               | FFFF
++0002  0003F0  MOVE.L     JAdrDisk,-(A7)                           | 2F38 0252
++0006  0003F4  RTS                                                 | 4E75
+
+Anon15
++0000  0003F6  ADD.L      D2,-$6922(A2)                            | D5AA 96DE
++0004  0003FA  DC.W       $AAFF               ; TB 02FF            | AAFF
++0006  0003FC  DC.W       $F1D1               ; ????               | F1D1
++0008  0003FE  ADDA.L     (A1),A0                                  | D1D1
++000A  000400  CMPA.L     (A1),A0                                  | B1D1
++000C  000402  MOVEQ      #$30,D2             ; '0'                | 7430
++000E  000404  CLR.L      D3                                       | 4283
++0010  000406  LEA        Anon17,A2           ; 00000432           | 45FA 002A
++0014  00040A  MOVEQ      #$02,D1                                  | 7202
++0016  00040C  MOVE.B     (A4),D3                                  | 1614
++0018  00040E  BPL.S      Anon15+$0016        ; 0000040C           | 6AFC
++001A  000410  DBF        D2,Anon16           ; 0000041A           | 51CA 0008
++001E  000414  MOVE.W     $FFB9,D0                                 | 3038 FFB9
++0022  000418  RTS                                                 | 4E75
+
+Anon16
++0000  00041A  CMP.B      (A2)+,D3                                 | B61A
++0002  00041C  BNE.S      Anon15+$0010        ; 00000406           | 66E8
++0004  00041E  DBF        D1,Anon15+$0016     ; 0000040C           | 51C9 FFEC
++0008  000422  MOVE.B     (A4),D3                                  | 1614
++000A  000424  BPL.S      Anon16+$0008        ; 00000422           | 6AFC
++000C  000426  CMP.B      $00(A3,D3.W),D6                          | BC33 3000
++0010  00042A  BEQ.S      Anon17+$000C        ; 0000043E           | 6712
++0012  00042C  MOVE.W     $FC00,D0                                 | 3038 FC00
++0016  000430  RTS                                                 | 4E75
+
+Anon17
++0000  000432  ADD.L      D2,-$5222(A2)                            | D5AA ADDE
++0004  000436  DC.W       $AAFF               ; TB 02FF            | AAFF
++0006  000438  FBSEQ.L    Seg loader info+$D2D1; D2D1B70B          | F2D1 D2D1 B2D1
++000C  00043E  MOVE.L     #$000002BE,D4                            | 283C 0000 02BE
++0012  000444  MOVE.B     (A4),D3                                  | 1614
++0014  000446  BPL.S      Anon17+$0012        ; 00000444           | 6AFC
++0016  000448  MOVE.B     D3,(A0)+                                 | 10C3
++0018  00044A  DBF        D4,Anon17+$0012     ; 00000444           | 51CC FFF8
++001C  00044E  MOVEQ      #$01,D4                                  | 7801
++001E  000450  MOVE.B     (A4),D3                                  | 1614
++0020  000452  BPL.S      Anon17+$001E        ; 00000450           | 6AFC
++0022  000454  CMP.B      (A2)+,D3                                 | B61A
++0024  000456  BEQ.S      Anon18              ; 0000045E           | 6706
++0026  000458  MOVE.W     #$FFB7,D0                                | 303C FFB7
++002A  00045C  RTS                                                 | 4E75
+
+Anon18
++0000  00045E  DBF        D4,Anon17+$001E     ; 00000450           | 51CC FFF0
++0004  000462  MOVEQ      #$00,D0                                  | 7000
++0006  000464  RTS                                                 | 4E75
+
+Anon19
++0000  000466  CLR.B      DskErr                                   | 4238 0142
++0004  00046A  BSR.S      Anon20              ; 00000474           | 6108
++0006  00046C  TST.B      DskErr                                   | 4A38 0142
++000A  000470  BEQ.S      Anon19+$0006        ; 0000046C           | 67FA
++000C  000472  RTS                                                 | 4E75
+
+Anon20
++0000  000474  BSR.S      Anon21              ; 0000047C           | 6106
++0002  000476  ST         DskErr                                   | 50F8 0142
++0006  00047A  RTS                                                 | 4E75
+
+Anon21
++0000  00047C  BCLR       #$0B,D6                                  | 0886 000B
++0004  000480  MOVE.L     JSeek,-(A7)                              | 2F38 0236
++0008  000484  MOVE.L     JSetSpeed,-(A7)                          | 2F38 0256
++000C  000488  RTS                                                 | 4E75
+
+Anon22
++0000  00048A  MOVEA.L    SonyVars,A1                              | 2278 0134
++0004  00048E  ST         $0019(A1)                                | 50E9 0019
++0008  000492  BSR.S      Anon22+$0052        ; 000004DC           | 6148
++000A  000494  MOVE.B     #$02,$03(A1,D1.W)                        | 13BC 0002 1003
++0010  00049A  CLR.W      $001A(A1)                                | 4269 001A
++0014  00049E  MOVE.W     #$1400,D0                                | 303C 1400
++0018  0004A2  MOVE.W     $0012(A1),D1                             | 3229 0012
++001C  0004A6  CMPI.W     #$0001,D1                                | 0C41 0001
++0020  0004AA  BEQ.S      Anon22+$0026        ; 000004B0           | 6704
++0022  0004AC  MOVE.W     #$1600,D0                                | 303C 1600
++0026  0004B0  TST.B      $00(A0,D0.W)                             | 4A30 0000
++002A  0004B4  TST.B      $1200(A0)                                | 4A28 1200
++002E  0004B8  MOVEQ      #$08,D0                                  | 7008
++0030  0004BA  JSR        Anon14+$0002        ; 000003F0           | 4EBA FF34
++0034  0004BE  MOVE       SR,-(A7)                                 | 40E7
++0036  0004C0  ORI.W      #$0300,SR                                | 007C 0300
++003A  0004C4  TST.B      $1A00(A0)                                | 4A28 1A00
++003E  0004C8  MOVE.B     $1C00(A0),D0                             | 1028 1C00
++0042  0004CC  TST.B      $1800(A0)                                | 4A28 1800
++0046  0004D0  MOVE       (A7)+,SR                                 | 46DF
++0048  0004D2  TST.B      D0                                       | 4A00
++004A  0004D4  BPL.S      Anon21+$000C        ; 00000488           | 6AB2
++004C  0004D6  BSR.S      Anon24+$0002        ; 000004FA           | 6122
++004E  0004D8  MOVE.W     $0038(A1),D0                             | 3029 0038
++0052  0004DC  MOVEA.L    IWM,A0                                   | 2078 01E0
++0056  0004E0  MOVEA.L    SonyVars,A1                              | 2278 0134
++005A  0004E4  CMPI.W     #$0001,$0012(A1)                         | 0C69 0001 0012
++0060  0004EA  BEQ.S      Anon23              ; 000004F2           | 6706
++0062  0004EC  MOVE.W     #$008C,D1                                | 323C 008C
++0066  0004F0  RTS                                                 | 4E75
+
+Anon23
++0000  0004F2  MOVE.W     #$004A,D1                                | 323C 004A
++0004  0004F6  RTS                                                 | 4E75
+
+Anon24
++0000  0004F8  ADD.L      (A4),D1                                  | D294
++0002  0004FA  MOVE       SR,-(A7)                                 | 40E7
++0004  0004FC  ORI.W      #$0300,SR                                | 007C 0300
++0008  000500  TST.B      $0E00(A0)                                | 4A28 0E00
++000C  000504  TST.B      $0C00(A0)                                | 4A28 0C00
++0010  000508  RTE                                                 | 4E73
+
++0012  00050A  MOVE.W     #$0002,-(A7)                             | 3F3C 0002
++0016  00050E  JSR        Anon24+$001E        ; 00000516           | 4EBA 0006
++001A  000512  JMP        Anon25              ; 00000520           | 4EFA 000C
+
++001E  000516  MOVEA.L    (A7)+,A0                                 | 205F	get address
++0020  000518  MOVE.W     (A7)+,D0                                 | 301F	get word
++0022  00051A  JSR        Anon3+$0014         ; 0000010C           | 4EBA FBF0	check volume
++0026  00051E  JMP        (A0)                                     | 4ED0	jump back
+
+Anon25
++0000  000520  CLR.W      -(A7)                                    | 4267
++0002  000522  JSR        Anon26              ; 00000534           | 4EBA 0010
++0006  000526  JMP        Anon2               ; 000000B8           | 4EFA FB90
++000A  00052A  LEA        Anon50+$0018,A1     ; 00003E1C           | 43FA 38F0
++000E  00052E  MOVE.B     #$05,(A1)                                | 12BC 0005
++0012  000532  JMP        (A0)                                     | 4ED0
+
+* ...end of useless code
+
+Anon26
++0000  000534  LEA        Anon65+$0048,A1     ; 0000428A           | 43FA 3D54
++0004  000538  LEA        Anon65+$0016,A0     ; 00004258           | 41FA 3D1E
++0008  00053C  MOVE.L     A1,(A0)                                  | 2089
++000A  00053E  LEA        Anon65+$0044,A0     ; 00004286           | 41FA 3D46
++000E  000542  MOVE.L     A0,(A1)                                  | 2288
++0010  000544  LEA        Anon65+$0040,A1     ; 00004282           | 43FA 3D3C
++0014  000548  MOVE.L     A1,(A0)                                  | 2089
++0016  00054A  NOP                                                 | 4E71
++0018  00054C  NOP                                                 | 4E71
++001A  00054E  MOVEA.L    (A7)+,A0                                 | 205F
++001C  000550  JMP        Anon11              ; 00000368           | 4EFA FE16
++0020  000554  JMP        Anon28+$009A        ; 00002F1A           | 4EFA 29C4
++0024  000558  MOVE.W     Anon65+$0060,D0     ; 000042A2           | 303A 3D48
++0028  00055C  EORI.W     #$0001,D0                                | 0A40 0001
++002C  000560  JSR        Anon40              ; 00003986           | 4EBA 3424 draw dialog 3 "End on Load or New game"
++0030  000564  JMP        Anon3               ; 000000F8           | 4EFA FB92
+
+** entry point 3
+
++0034  000568  MOVE.W     #$0001,-(A7)                             | 3F3C 0001	 push 1
++0038  00056C  JSR        Anon24+$001E        ; 00000516           | 4EBA FFA8	check volume
++003C  000570  JMP        Anon4+$0006         ; 0000015A           | 4EFA FBE8
+
++0040  000574  MOVE.W     (A7)+,D0                                 | 301F
++0042  000576  BEQ        Anon28+$00A2        ; 00002F22           | 6700 29AA
++0046  00057A  JMP        Anon24+$0012        ; 0000050A           | 4EFA FF8E
+	see DATA
+
++2644  002B78  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A 04F8
++2648  002B7C  _SelectWindow                  ; A91F               | A91F
++264A  002B7E  LEA        Anon67+$0150,A0     ; 000044A2           | 41FA 1922
++264E  002B82  LEA        Anon29+$0806,A1     ; 0000373A           | 43FA 0BB6
++2652  002B86  MOVE.L     A0,(A1)                                  | 2288
++2654  002B88  JSR        Anon33+$001E        ; 00003850           | 4EBA 0CC6
++2658  002B8C  JSR        Anon29+$0810        ; 00003744           | 4EBA 0BB6
+
++265C  002B90  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 04E4
++2660  002B94  _TEIdle                        ; A9DA               | A9DA
++2662  002B96  _SystemTask                    ; A9B4               | A9B4
++2664  002B98  CLR.W      -(A7)                                    | 4267	space for result
++2666  002B9A  MOVE.W     #$FFFF,-(A7)                             | 3F3C FFFF	eventMask
++266A  002B9E  PEA        Anon29+$07BA        ; 000036EE           | 487A 0B4E	theEvent
++266E  002BA2  _GetNextEvent                  ; A970               | A970
++2670  002BA4  MOVE.W     (A7)+,D0                                 | 301F	get boolean
++2672  002BA6  BEQ.S      Anon26+$265C        ; 00002B90           | 67E8	loop if no event
+
++2674  002BA8  MOVE.W     Anon29+$07BA,D0     ; 000036EE           | 303A 0B44	get what
++2678  002BAC  ADD.W      D0,D0                                    | D040	*2
++267A  002BAE  MOVE.W     Anon26+$2682(D0.W),D0; 00002BB6          | 303B 0006	save *2
++267E  002BB2  JMP        Anon26+$2682(D0.W)  ; 00002BB6           | 4EFB 0002	jump to event, offset begins from below
++2682  002BB6  DC.W       $FFDA               ; '..'      formatted| FFDA	0
++2684  002BB8  DC.W       $037E               ; '.~'      formatted| 037E	mouseDown	2F34
++2686  002BBA  DC.W       $FFDA               ; '..'      formatted| FFDA	mouseUp
++2688  002BBC  DC.W       $0140               ; '.@'      formatted| 0140	keyDown	2CF6
++268A  002BBE  DC.W       $FFDA               ; '..'      formatted| FFDA	keyUp
++268C  002BC0  DC.W       $0126               ; '.&'      formatted| 0126	autoKey	2CDC
++268E  002BC2  DC.W       $00A4               ; '..'      formatted| 00A4	update	2C5A
++2690  002BC4  DC.W       $FFDA               ; '..'      formatted| FFDA	diskInserted
++2692  002BC6  DC.W       $0018               ; '..'      formatted| 0018	activate	2BCE
++2694  002BC8  DC.W       $FFDA               ; '..'      formatted| FFDA	network
++2696  002BCA  DC.W       $FFDA               ; '..'      formatted| FFDA	deviceDriver
++2698  002BCC  DC.W       $FFDA               ; '..'      formatted| FFDA	app1Evt
+
++269A  002BCE  MOVEA.L    Anon29+$07BC,A0     ; 000036F0           | 207A 0B20	activate
++269E  002BD2  CMPA.L     Anon29+$013E,A0     ; 00003072           | B1FA 049E
++26A2  002BD6  BNE.S      Anon26+$265C        ; 00002B90           | 66B8
++26A4  002BD8  MOVE.W     Anon29+$07C8,D0     ; 000036FC           | 303A 0B22
++26A8  002BDC  MOVE.W     D0,D1                                    | 3200
++26AA  002BDE  ANDI.W     #$0001,D0                                | 0240 0001
++26AE  002BE2  BEQ        Anon26+$26F2        ; 00002C26           | 6700 0042
++26B2  002BE6  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 048E
++26B6  002BEA  _TEActivate                    ; A9D8               | A9D8
++26B8  002BEC  MOVE.L     Anon29+$0126,-(A7)  ; 0000305A           | 2F3A 046C
++26BC  002BF0  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++26C0  002BF4  _EnableItem                    ; A939               | A939
++26C2  002BF6  MOVEQ      #$02,D4                                  | 7802
++26C4  002BF8  LEA        Anon29+$012A,A4     ; 0000305E           | 49FA 0464
++26C8  002BFC  MOVE.L     (A4)+,-(A7)                              | 2F1C
++26CA  002BFE  CLR.W      -(A7)                                    | 4267
++26CC  002C00  CMPI.B     #$03,D4                                  | 0C04 0003
++26D0  002C04  BNE.S      Anon26+$26D6        ; 00002C0A           | 6604
++26D2  002C06  _DisableItem                   ; A93A               | A93A
++26D4  002C08  BRA.S      Anon26+$26D8        ; 00002C0C           | 6002
++26D6  002C0A  _EnableItem                    ; A939               | A939
++26D8  002C0C  ADDQ.W     #$1,D4                                   | 5244
++26DA  002C0E  CMPI.B     #$05,D4                                  | 0C04 0005
++26DE  002C12  BNE.S      Anon26+$26C8        ; 00002BFC           | 66E8
++26E0  002C14  _DrawMenuBar                   ; A937               | A937
++26E2  002C16  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A 045A
++26E6  002C1A  _SelectWindow                  ; A91F               | A91F
++26E8  002C1C  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A 0454
++26EC  002C20  _SetPort                       ; A873               | A873
++26EE  002C22  JMP        Anon26+$265C        ; 00002B90           | 4EFA FF6C
++26F2  002C26  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 044E
++26F6  002C2A  _TEDeactivate                  ; A9D9               | A9D9
++26F8  002C2C  MOVE.L     Anon29+$0126,-(A7)  ; 0000305A           | 2F3A 042C
++26FC  002C30  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++2700  002C34  _DisableItem                   ; A93A               | A93A
++2702  002C36  LEA        Anon29+$012A,A4     ; 0000305E           | 49FA 0426
++2706  002C3A  MOVEQ      #$02,D4                                  | 7802
++2708  002C3C  MOVE.L     (A4)+,-(A7)                              | 2F1C
++270A  002C3E  CLR.W      -(A7)                                    | 4267
++270C  002C40  CMPI.B     #$03,D4                                  | 0C04 0003
++2710  002C44  BNE.S      Anon26+$2716        ; 00002C4A           | 6604
++2712  002C46  _EnableItem                    ; A939               | A939
++2714  002C48  BRA.S      Anon26+$2718        ; 00002C4C           | 6002
++2716  002C4A  _DisableItem                   ; A93A               | A93A
++2718  002C4C  ADDQ.W     #$1,D4                                   | 5244
++271A  002C4E  CMPI.B     #$05,D4                                  | 0C04 0005
++271E  002C52  BNE.S      Anon26+$2708        ; 00002C3C           | 66E8
++2720  002C54  _DrawMenuBar                   ; A937               | A937
++2722  002C56  JMP        Anon26+$265C        ; 00002B90           | 4EFA FF38
+
++2726  002C5A  MOVEA.L    Anon29+$07BC,A0     ; 000036F0           | 207A 0A94	update
++272A  002C5E  CMPA.L     Anon29+$013E,A0     ; 00003072           | B1FA 0412
++272E  002C62  BNE        Anon26+$274E        ; 00002C82           | 6600 001E
++2732  002C66  JSR        Anon30              ; 00003768           | 4EBA 0B00
++2736  002C6A  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A 0406
++273A  002C6E  _BeginUpDate                   ; A922               | A922
++273C  002C70  PEA        Anon29+$014A        ; 0000307E           | 487A 040C
++2740  002C74  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 0400
++2744  002C78  _TEUpdate                      ; A9D3               | A9D3
++2746  002C7A  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A 03F6
++274A  002C7E  _EndUpDate                     ; A923               | A923
++274C  002C80  BRA.S      Anon26+$277E        ; 00002CB2           | 6030
++274E  002C82  CMPA.L     Anon29+$013A,A0     ; 0000306E           | B1FA 03EA
++2752  002C86  BNE.S      Anon26+$2766        ; 00002C9A           | 6612
++2754  002C88  MOVE.L     Anon29+$013A,-(A7)  ; 0000306E           | 2F3A 03E4
++2758  002C8C  _BeginUpDate                   ; A922               | A922
++275A  002C8E  JSR        Anon42              ; 000039D0           | 4EBA 0D40
++275E  002C92  MOVE.L     Anon29+$013A,-(A7)  ; 0000306E           | 2F3A 03DA
++2762  002C96  _EndUpDate                     ; A923               | A923
++2764  002C98  BRA.S      Anon26+$277E        ; 00002CB2           | 6018
++2766  002C9A  CMPA.L     Anon29+$0136,A0     ; 0000306A           | B1FA 03CE
++276A  002C9E  BNE        Anon26+$265C        ; 00002B90           | 6600 FEF0
++276E  002CA2  MOVE.L     Anon29+$0136,-(A7)  ; 0000306A           | 2F3A 03C6
++2772  002CA6  _BeginUpDate                   ; A922               | A922
++2774  002CA8  JSR        Anon52+$0052        ; 00003EF2           | 4EBA 1248
++2778  002CAC  MOVE.L     Anon29+$0136,-(A7)  ; 0000306A           | 2F3A 03BC
++277C  002CB0  _EndUpDate                     ; A923               | A923
++277E  002CB2  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A 03BE
++2782  002CB6  _SetPort                       ; A873               | A873
++2784  002CB8  JMP        Anon26+$265C        ; 00002B90           | 4EFA FED6
+
++2788  002CBC  LEA        Anon29+$080E,A4     ; 00003742           | 49FA 0A84	get 3742
++278C  002CC0  MOVE.B     (A4),D5                                  | 1A14	D5 = *3742
++278E  002CC2  ADDQ.W     #$1,D5                                   | 5245	D5 += 1 and 3
++2790  002CC4  ANDI.B     #$03,D5                                  | 0205 0003
++2794  002CC8  BNE.S      Anon26+$279E        ; 00002CD2           | 6608	non zero, jump
++2796  002CCA  MOVE.W     #$0002,D0                                | 303C 0002	
++279A  002CCE  JSR        Anon40              ; 00003986           | 4EBA 0CB6	drawDialog("only letters and numbers")
++279E  002CD2  MOVE.B     D5,(A4)                                  | 1885	set 3742
++27A0  002CD4  MOVE.W     #$0001,-(A7)                             | 3F3C 0001	and beep
++27A4  002CD8  _SysBeep                       ; A9C8               | A9C8
++27A6  002CDA  BRA.S      Anon26+$277E        ; 00002CB2           | 60D6
+
++27A8  002CDC  MOVE.B     Anon29+$07C8,D0     ; 000036FC           | 103A 0A1E	autoKey event - get modifiers
++27AC  002CE0  CMPI.B     #$01,D0                                  | 0C00 0001	?
++27B0  002CE4  BEQ        Anon26+$265C        ; 00002B90           | 6700 FEAA
++27B4  002CE8  MOVE.B     Anon29+$07BF,D0     ; 000036F3           | 103A 0A09	message
++27B8  002CEC  CMPI.B     #$0D,D0                                  | 0C00 000D	CR?
++27BC  002CF0  BEQ        Anon26+$265C        ; 00002B90           | 6700 FE9E	yes, loop
++27C0  002CF4  BRA.S      Anon26+$27DC        ; 00002D10           | 601A	handle key
+
++27C2  002CF6  MOVE.B     Anon29+$07C8,D0     ; 000036FC           | 103A 0A04	keyDown event - get modifiers
++27C6  002CFA  CMPI.B     #$01,D0                                  | 0C00 0001	is it 1 again?
++27CA  002CFE  BNE.S      Anon26+$27DC        ; 00002D10           | 6610	nope, handle key
++27CC  002D00  CLR.L      -(A7)                                    | 42A7	handle menu key
++27CE  002D02  MOVE.W     Anon29+$07BE,-(A7)  ; 000036F2           | 3F3A 09EE
++27D2  002D06  _MenuKey                       ; A93E               | A93E
++27D4  002D08  JMP        Anon29+$002E        ; 00002F62           | 4EFA 0258
++27D8  002D0C  JMP        Anon28+$0096        ; 00002F16           | 4EFA 0208
+
++27DC  002D10  CLR.L      D1                                       | 4281	D1 = 0
++27DE  002D12  MOVE.B     Anon29+$07BF,D0     ; 000036F3           | 103A 09DF	get key code
++27E2  002D16  LEA        Anon29+$080F,A4     ; 00003743           | 49FA 0A2B	A4 = &3743 points to buffer index
++27E6  002D1A  LEA        Anon29+$066E,A3     ; 000035A2           | 47FA 0886	A3 = &35A2
++27EA  002D1E  MOVE.B     (A4),D1                                  | 1214	D1 = get buffer index
++27EC  002D20  CMPI.B     #$20,D0             ; ' '                | 0C00 0020	what key did we press?
++27F0  002D24  BEQ.S      Anon26+$283A        ; 00002D6E           | 6748	space
++27F2  002D26  CMPI.B     #$0D,D0                                  | 0C00 000D	
++27F6  002D2A  BEQ        Anon26+$2854        ; 00002D88           | 6700 005C	CR
++27FA  002D2E  CMPI.B     #$08,D0                                  | 0C00 0008
++27FE  002D32  BNE.S      Anon26+$280A        ; 00002D3E           | 660A
++2800  002D34  CMPI.B     #$00,D1                                  | 0C01 0000	ctrl-@
++2804  002D38  BEQ.S      Anon26+$27A0        ; 00002CD4           | 679A
++2806  002D3A  SUBQ.W     #$1,D1                                   | 5341	key--
++2808  002D3C  BRA.S      Anon26+$2846        ; 00002D7A           | 603C	save it
+
++280A  002D3E  CMPI.B     #$2F,D0             ; '/'                | 0C00 002F
++280E  002D42  BLE        Anon26+$2788        ; 00002CBC           | 6F00 FF78	only letters and numbers
++2812  002D46  CMPI.B     #$7B,D0             ; '{'                | 0C00 007B
++2816  002D4A  BGE        Anon26+$2788        ; 00002CBC           | 6C00 FF70	only letters and numbers
++281A  002D4E  CMPI.B     #$3A,D0             ; ':'                | 0C00 003A
++281E  002D52  BLT.S      Anon26+$283A        ; 00002D6E           | 6D1A
++2820  002D54  CMPI.B     #$41,D0             ; 'A'                | 0C00 0041
++2824  002D58  BLT        Anon26+$2788        ; 00002CBC           | 6D00 FF62	only letters and numbers
++2828  002D5C  CMPI.B     #$5A,D0             ; 'Z'                | 0C00 005A
++282C  002D60  BLE.S      Anon26+$283A        ; 00002D6E           | 6F0C
++282E  002D62  CMPI.B     #$61,D0             ; 'a'                | 0C00 0061
++2832  002D66  BLT        Anon26+$2788        ; 00002CBC           | 6D00 FF54	only letters and numbers
++2836  002D6A  SUBI.B     #$20,D0             ; ' '                | 0400 0020	make it uppercase
++283A  002D6E  MOVE.B     D0,$00(A3,D1.L)                          | 1780 1800	
++283E  002D72  ADDQ.W     #$1,D1                                   | 5241	D1++
++2840  002D74  CMPI.B     #$14,D1                                  | 0C01 0014	did we reach end of buffer?
++2844  002D78  BEQ.S      Anon26+$2854        ; 00002D88           | 670E	yes, check
++2846  002D7A  MOVE.B     D1,(A4)                                  | 1881	save D1 to *A4
++2848  002D7C  MOVE.W     D0,-(A7)                                 | 3F00	push key on stack
++284A  002D7E  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 02F6	push TEHandle
++284E  002D82  _TEKey                         ; A9DC               | A9DC	draw char
++2850  002D84  JMP        Anon26+$265C        ; 00002B90           | 4EFA FE0A	and loop
+
+* We pressed return or have reached the buffer end
+
++2854  002D88  MOVE.B     #$7C,$00(A3,D1.L)   ; '|'                | 17BC 007C 1800  put a trailing pipe
++285A  002D8E  MOVEM.L    D1/A3,-(A7)                              | 48E7 4010	
++285E  002D92  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 02E2
++2862  002D96  _TEDeactivate                  ; A9D9               | A9D9
++2864  002D98  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A 02D8
++2868  002D9C  _SetPort                       ; A873               | A873
++286A  002D9E  JSR        Anon37              ; 000038BE           | 4EBA 0B1E	scroll window
++286E  002DA2  MOVEM.L    (A7),D7/A6                               | 4CD7 4080
++2872  002DA6  ADDQ.W     #$2,D7                                   | 5447
++2874  002DA8  CLR.L      -(A7)                                    | 42A7
++2876  002DAA  MOVE.L     D7,-(A7)                                 | 2F07
++2878  002DAC  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 02C8
++287C  002DB0  _TESetSelect                   ; A9D1               | A9D1
++287E  002DB2  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 02C2
++2882  002DB6  _TEDelete                      ; A9D7               | A9D7
+
+* Prepare the string analysis
+
++2884  002DB8  MOVEM.L    (A7)+,D1/A3                              | 4CDF 0802	move memory to register, long, (A7), copy from D1 to A3
++2888  002DBC  LEA        Anon29+$080F,A0     ; 00003743           | 41FA 0985	how many chars did we type in?
++288C  002DC0  CLR.B      (A0)                                     | 4210	erase it
++288E  002DC2  CMPI.B     #$00,D1                                  | 0C01 0000	if 0 tell "I Beg..."
++2892  002DC6  BEQ.S      Anon26+$28DC        ; 00002E10           | 6748
+
++2894  002DC8  JSR        Anon26+$28E8        ; 00002E1C           | 4EBA 0052	get first non space char
++2898  002DCC  BEQ.S      Anon26+$28DC        ; 00002E10           | 6742	if RC only, also "I Beg..."
+
++289A  002DCE  LEA        Anon67+$1E52,A4     ; 000061A4           | 49FA 33D4	VOCABULARY VERBS
++289E  002DD2  CLR.W      D7                                       | 4247	D7 = 0
++28A0  002DD4  JSR        Anon27+$0006        ; 00002E2E           | 4EBA 0058	check word
+
++28A4  002DD8  LEA        Anon29+$0802,A2     ; 00003736           | 45FA 095C	A2 = &3736
++28A8  002DDC  MOVE.L     A0,(A2)+                                 | 24C8	save pointer to verb
++28AA  002DDE  LEA        Anon29+$080A,A1     ; 0000373E           | 43FA 095E	A1 = &373E
++28AE  002DE2  MOVE.W     D6,(A1)+                                 | 32C6	save verb index
++28B0  002DE4  MOVEQ      #$01,D6                                  | 7C01	commands can be verb only, so set default to 1 for ANY
+
++28B2  002DE6  CMPI.B     #$20,(A3)           ; ' '                | 0C13 0020	locate the start of the noun
++28B6  002DEA  BEQ.S      Anon26+$28C4        ; 00002DF8           | 670C	in the buffer
++28B8  002DEC  CMPI.B     #$7C,(A3)           ; '|'                | 0C13 007C
++28BC  002DF0  BEQ.S      Anon26+$28D6        ; 00002E0A           | 6718
++28BE  002DF2  ADDA.W     #$0001,A3                                | D6FC 0001
++28C2  002DF6  BRA.S      Anon26+$28B2        ; 00002DE6           | 60EE
+
++28C4  002DF8  JSR        Anon26+$28E8        ; 00002E1C           | 4EBA 0022	get first non space char
++28C8  002DFC  BEQ.S      Anon26+$28D6        ; 00002E0A           | 670C	analyze if none
++28CA  002DFE  LEA        Anon67+$1CE8,A4     ; 0000603A           | 49FA 323A	VOCABULARY NOUNS
++28CE  002E02  SUBQ.W     #$1,D7                                   | 5347	flag for verbs/nouns set to nouns
++28D0  002E04  JSR        Anon27+$0006        ; 00002E2E           | 4EBA 0028	check word
++28D4  002E08  MOVE.L     A0,(A2)                                  | 2488	save noun pointer
++28D6  002E0A  MOVE.W     D6,(A1)                                  | 3286	save noun index
++28D8  002E0C  JMP        Anon46+$007E        ; 00003BFC           | 4EFA 0DEE	go analyze combination
+
++28DC  002E10  LEA        Anon67+$017F,A4     ; 000044D1           | 49FA 16BF	draw "I Beg Your Pardon"
++28E0  002E14  JSR        Anon34              ; 00003870           | 4EBA 0A5A	string
++28E4  002E18  JMP        Anon26+$2644        ; 00002B78           | 4EFA FD5E
+
++28E8  002E1C  CMPI.B     #$20,(A3)           ; ' '                | 0C13 0020
++28EC  002E20  BEQ.S      Anon27              ; 00002E28           | 6706
++28EE  002E22  CMPI.B     #$7C,(A3)           ; '|'                | 0C13 007C
++28F2  002E26  RTS                                                 | 4E75
+
+Anon27
++0000  002E28  ADDA.W     #$0001,A3                                | D6FC 0001	*KEYIN++
++0004  002E2C  BRA.S      Anon26+$28E8        ; 00002E1C           | 60EE
+
+* check word
+
++0006  002E2E  MOVEQ      #$00,D6                                  | 7C00	index is 0
++0008  002E30  ADDQ.W     #$1,D6                                   | 5246	index++
++000A  002E32  MOVE.L     A3,-(A7)                                 | 2F0B	push address
++000C  002E34  BRA.S      Anon27+$0016        ; 00002E3E           | 6008	start
+
++000E  002E36  ADDA.W     #$0001,A3                                | D6FC 0001	next indexes
++0012  002E3A  ADDA.W     #$0001,A4                                | D8FC 0001
+
++0016  002E3E  MOVE.B     (A3),D0                                  | 1013	get one char from keyin
++0018  002E40  MOVE.B     (A4),D1                                  | 1214	get the other char from vocabulary
++001A  002E42  CMP.B      D0,D1                                    | B200	same?
++001C  002E44  BEQ.S      Anon27+$000E        ; 00002E36           | 67F0	loop
++001E  002E46  CMPI.B     #$2F,(A4)           ; '/'                | 0C14 002F	is that last char?
++0022  002E4A  BEQ.S      Anon27+$0054        ; 00002E7C           | 6730	...exit
++0024  002E4C  CMPI.B     #$2A,(A4)           ; '*'                | 0C14 002A	is that word separator?
++0028  002E50  BEQ.S      Anon27+$0054        ; 00002E7C           | 672A	...exit
++002A  002E52  CMPI.B     #$00,(A4)+                               | 0C1C 0000	is that end of table?
++002E  002E56  BEQ.S      Anon27+$0054        ; 00002E7C           | 6724	...exit
++0030  002E58  CMPI.B     #$7C,(A3)           ; '|'                | 0C13 007C	is that space from keyin?
++0034  002E5C  BNE.S      Anon27+$003C        ; 00002E64           | 6606	...no, loop
++0036  002E5E  CMPI.B     #$7C,(A4)           ; '|'                | 0C14 007C	same from vocabulary?
++003A  002E62  BEQ.S      Anon27+$0054        ; 00002E7C           | 6718	...yes, exit
++003C  002E64  MOVEA.L    (A7)+,A3                                 | 265F	restore address
++003E  002E66  MOVE.B     (A4)+,D0                                 | 101C	get char from vocabulary
++0040  002E68  CMPI.B     #$2F,D0             ; '/'                | 0C00 002F	is that end of word?
++0044  002E6C  BEQ.S      Anon27+$000A        ; 00002E32           | 67C4	...yes, loop
++0046  002E6E  CMPI.B     #$2A,D0             ; '*'                | 0C00 002A	is that word separator?
++004A  002E72  BEQ.S      Anon27+$0008        ; 00002E30           | 67BC	...yes, loop
++004C  002E74  CMPI.B     #$00,D0                                  | 0C00 0000	is that end of table?
++0050  002E78  BNE.S      Anon27+$003E        ; 00002E66           | 66EC	...no, loop
++0052  002E7A  BRA.S      Anon28              ; 00002E80           | 6004	...yes
++0054  002E7C  MOVEA.L    (A7)+,A0                                 | 205F	pull address
++0056  002E7E  RTS                                                 | 4E75
+
+Anon28
++0000  002E80  MOVEA.L    (A7)+,A0                                 | 205F
++0002  002E82  CMPI.W     #$0000,D7                                | 0C47 0000	Is it a Verb?
++0006  002E86  BNE.S      Anon28+$0050        ; 00002ED0           | 6648	No a noun (-1)
++0008  002E88  MOVEA.L    A3,A0                                    | 204B
++000A  002E8A  MOVE.B     (A0)+,D0                                 | 1018
++000C  002E8C  CMPI.B     #$49,D0             ; 'I'                | 0C00 0049	I for Inventory
++0010  002E90  BNE.S      Anon28+$0020        ; 00002EA0           | 660E
++0012  002E92  JSR        Anon28+$00A6        ; 00002F26           | 4EBA 0092
++0016  002E96  BNE.S      Anon28+$0020        ; 00002EA0           | 6608
++0018  002E98  JSR        Anon52              ; 00003EA0           | 4EBA 1006	
++001C  002E9C  JMP        Anon46+$0178        ; 00003CF6           | 4EFA 0E58
++0020  002EA0  MOVEA.L    A3,A0                                    | 204B
++0022  002EA2  MOVE.B     (A0)+,D0                                 | 1018
++0024  002EA4  LEA        Anon46+$002E,A1     ; 00003BAC           | 43FA 0D06
++0028  002EA8  MOVE.W     #$0002,D1                                | 323C 0002
++002C  002EAC  MOVE.B     (A1)+,D2                                 | 1419
++002E  002EAE  CMP.B      D0,D2                                    | B400
++0030  002EB0  BEQ.S      Anon28+$003C        ; 00002EBC           | 670A
++0032  002EB2  ADDQ.W     #$1,D1                                   | 5241
++0034  002EB4  CMPI.B     #$08,D1                                  | 0C01 0008
++0038  002EB8  BNE.S      Anon28+$002C        ; 00002EAC           | 66F2
++003A  002EBA  BRA.S      Anon28+$0050        ; 00002ED0           | 6014
++003C  002EBC  JSR        Anon28+$00A6        ; 00002F26           | 4EBA 0068
++0040  002EC0  BNE.S      Anon28+$0050        ; 00002ED0           | 660E
++0042  002EC2  LEA        Anon29+$080A,A0     ; 0000373E           | 41FA 087A
++0046  002EC6  MOVE.W     #$0003,(A0)+                             | 30FC 0003
++004A  002ECA  MOVE.W     D1,(A0)                                  | 3081
++004C  002ECC  JMP        Anon46+$007E        ; 00003BFC           | 4EFA 0D2E
++0050  002ED0  CLR.W      D5                                       | 4245
++0052  002ED2  LEA        Anon29+$068E,A6     ; 000035C2           | 4DFA 06EE
++0056  002ED6  LEA        Anon67+$013F,A0     ; 00004491           | 41FA 15B9	I Don't Know The
++005A  002EDA  MOVE.W     #$0011,D0                                | 303C 0011
++005E  002EDE  JSR        Anon44+$000E        ; 00003AEA           | 4EBA 0C0A
++0062  002EE2  MOVE.W     #$0006,D0                                | 303C 0006
++0066  002EE6  LEA        Anon67+$015D,A0     ; 000044AF           | 41FA 15C7	Verb
++006A  002EEA  CMPI.W     #$0000,D7                                | 0C47 0000	if D7 == 0 then it is a Verb
++006E  002EEE  BEQ.S      Anon28+$0074        ; 00002EF4           | 6704
++0070  002EF0  LEA        Anon67+$0157,A0     ; 000044A9           | 41FA 15B7	Noun
++0074  002EF4  JSR        Anon44+$000E        ; 00003AEA           | 4EBA 0BF4
++0078  002EF8  JSR        Anon41              ; 000039BA           | 4EBA 0AC0
++007C  002EFC  MOVE.B     #$22,(A6)+          ; '"'                | 1CFC 0022
++0080  002F00  MOVE.B     #$2E,(A6)           ; '.'                | 1CBC 002E
++0084  002F04  ADDQ.W     #$2,D5                                   | 5445
++0086  002F06  LEA        Anon29+$068E,A4     ; 000035C2           | 49FA 06BA
++008A  002F0A  JSR        Anon34+$0004        ; 00003874           | 4EBA 0968
++008E  002F0E  JMP        Anon26+$2644        ; 00002B78           | 4EFA FC68
+
+** entry point 2
+
++0092  002F12  JSR        Anon30+$003A        ; 000037A2           | 4EBA 088E	init game & reset tables
++0096  002F16  JMP        Anon26+$0034        ; 00000568           | 4EFA D650	
+
++009A  002F1A  MOVE.W     Anon65+$001E,D0     ; 00004260           | 303A 1344
++009E  002F1E  BNE        Anon26+$27D8        ; 00002D0C           | 6600 FDEC
++00A2  002F22  JMP        Anon46+$0178        ; 00003CF6           | 4EFA 0DD2
++00A6  002F26  MOVE.B     (A0),D0                                  | 1010
++00A8  002F28  CMPI.B     #$20,D0             ; ' '                | 0C00 0020
++00AC  002F2C  BEQ.S      Anon28+$00B2        ; 00002F32           | 6704
++00AE  002F2E  CMPI.B     #$7C,D0             ; '|'                | 0C00 007C
++00B2  002F32  RTS                                                 | 4E75
+
+Anon29
++0000  002F34  CLR.W      -(A7)                                    | 4267	mouseDown event
++0002  002F36  MOVE.L     Anon29+$07C4,-(A7)  ; 000036F8           | 2F3A 07C0
++0006  002F3A  PEA        Anon29+$07D0        ; 00003704           | 487A 07C8
++000A  002F3E  _FindWindow                    ; A92C               | A92C
++000C  002F40  MOVE.W     (A7)+,D0                                 | 301F
++000E  002F42  ADD.W      D0,D0                                    | D040
++0010  002F44  MOVE.W     Anon29+$0018(D0.W),D0; 00002F4C          | 303B 0006
++0014  002F48  JMP        Anon29+$0018(D0.W)  ; 00002F4C           | 4EFB 0002
++0018  002F4C  DC.W       $FC44               ; '.D'      formatted| FC44
++001A  002F4E  DC.W       $000E               ; '..'      formatted| 000E
++001C  002F50  DC.W       $00F6               ; '..'      formatted| 00F6
++001E  002F52  DC.W       $0104               ; '..'      formatted| 0104
++0020  002F54  DC.W       $FC44               ; '.D'      formatted| FC44
++0022  002F56  DC.W       $FC44               ; '.D'      formatted| FC44
++0024  002F58  DC.W       $FC44               ; '.D'      formatted| FC44
++0026  002F5A  CLR.L      -(A7)                                    | 42A7
++0028  002F5C  MOVE.L     Anon29+$07C4,-(A7)  ; 000036F8           | 2F3A 079A
++002C  002F60  _MenuSelect                    ; A93D               | A93D
+
++002E  002F62  LEA        Anon29+$07CA,A0     ; 000036FE           | 41FA 079A
++0032  002F66  MOVE.L     (A7)+,(A0)                               | 209F
++0034  002F68  BEQ        Anon26+$265C        ; 00002B90           | 6700 FC26
++0038  002F6C  CLR.L      D1                                       | 4281
++003A  002F6E  MOVE.W     Anon29+$07CC,D1     ; 00003700           | 323A 0790
++003E  002F72  MOVE.W     Anon29+$07CA,D0     ; 000036FE           | 303A 078A
++0042  002F76  SUBQ.W     #$1,D0                                   | 5340
++0044  002F78  ADD.W      D0,D0                                    | D040
++0046  002F7A  MOVE.W     Anon29+$004E(D0.W),D0; 00002F82          | 303B 0006
++004A  002F7E  JMP        Anon29+$004E(D0.W)  ; 00002F82           | 4EFB 0002
++004E  002F82  DC.W       $0016               ; '..'      formatted| 0016
++0050  002F84  DC.W       $0044               ; '.D'      formatted| 0044
++0052  002F86  DC.W       $0052               ; '.R'      formatted| 0052
++0054  002F88  DC.W       $0060               ; '.`'      formatted| 0060
++0056  002F8A  CLR.W      -(A7)                                    | 4267
++0058  002F8C  _HiliteMenu                    ; A938               | A938
++005A  002F8E  JMP        Anon26+$277E        ; 00002CB2           | 4EFA FD22
++005E  002F92  CLR.W      -(A7)                                    | 4267
++0060  002F94  _HiliteMenu                    ; A938               | A938
++0062  002F96  _ExitToShell                   ; A9F4               | A9F4
++0064  002F98  JSR        Anon31              ; 00003812           | 4EBA 0878	clear four bytes
++0068  002F9C  CMPI.W     #$0001,D1                                | 0C41 0001
++006C  002FA0  BNE.S      Anon29+$0078        ; 00002FAC           | 660A
++006E  002FA2  MOVE.W     #$0001,D0                                | 303C 0001	"About" dialog
++0072  002FA6  JSR        Anon40              ; 00003986           | 4EBA 09DE	
++0076  002FAA  BRA.S      Anon29+$0056        ; 00002F8A           | 60DE
++0078  002FAC  MOVE.L     Anon29+$0126,-(A7)  ; 0000305A           | 2F3A 00AC
++007C  002FB0  MOVE.W     Anon29+$07CC,-(A7)  ; 00003700           | 3F3A 074E
++0080  002FB4  PEA        Anon29+$07D4        ; 00003708           | 487A 0752
++0084  002FB8  _GetItem                       ; A946               | A946
++0086  002FBA  CLR.W      -(A7)                                    | 4267
++0088  002FBC  PEA        Anon29+$07D4        ; 00003708           | 487A 074A
++008C  002FC0  _OpenDeskAcc                   ; A9B6               | A9B6
++008E  002FC2  MOVE.W     (A7)+,D0                                 | 301F
++0090  002FC4  BRA.S      Anon29+$0056        ; 00002F8A           | 60C4
++0092  002FC6  SUBQ.W     #$1,D1                                   | 5341
++0094  002FC8  ADD.W      D1,D1                                    | D241
++0096  002FCA  MOVE.W     Anon29+$00F4(D1.W),D1; 00003028          | 323B 105C
++009A  002FCE  LEA        Anon29+$00F4(D1.W),A4; 00003028          | 49FB 1058
++009E  002FD2  BRA.S      Anon29+$00BA        ; 00002FEE           | 601A
++00A0  002FD4  SUBQ.W     #$1,D1                                   | 5341
++00A2  002FD6  CLR.W      -(A7)                                    | 4267
++00A4  002FD8  MOVE.W     D1,-(A7)                                 | 3F01
++00A6  002FDA  _SysEdit                       ; A9C2               | A9C2
++00A8  002FDC  MOVE.W     (A7)+,D0                                 | 301F
++00AA  002FDE  JMP        Anon29+$0056        ; 00002F8A           | 4EFA FFAA
++00AE  002FE2  SUBQ.W     #$1,D1                                   | 5341
++00B0  002FE4  ADD.W      D1,D1                                    | D241
++00B2  002FE6  MOVE.W     Anon29+$00FC(D1.W),D1; 00003030          | 323B 1048
++00B6  002FEA  LEA        Anon29+$00FC(D1.W),A4; 00003030          | 49FB 1044
++00BA  002FEE  MOVE.L     A4,-(A7)                                 | 2F0C
++00BC  002FF0  CLR.W      -(A7)                                    | 4267
++00BE  002FF2  _HiliteMenu                    ; A938               | A938
++00C0  002FF4  MOVEA.L    (A7)+,A4                                 | 285F
++00C2  002FF6  MOVE.B     Anon29+$080F,D0     ; 00003743           | 103A 074B
++00C6  002FFA  BNE.S      Anon29+$011C        ; 00003050           | 6654
++00C8  002FFC  MOVE.L     A4,-(A7)                                 | 2F0C
++00CA  002FFE  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A 0076
++00CE  003002  _TEDeactivate                  ; A9D9               | A9D9
++00D0  003004  MOVEA.L    (A7),A4                                  | 2857
++00D2  003006  LEA        Anon29+$080F,A3     ; 00003743           | 47FA 073B
++00D6  00300A  MOVE.B     (A4)+,(A3)                               | 169C
++00D8  00300C  CLR.W      D5                                       | 4245
++00DA  00300E  MOVE.B     (A3),D5                                  | 1A13
++00DC  003010  JSR        Anon34+$000E        ; 0000387E           | 4EBA 086C
++00E0  003014  MOVEA.L    (A7)+,A3                                 | 265F
++00E2  003016  CLR.L      D1                                       | 4281
++00E4  003018  MOVE.B     (A3)+,D1                                 | 121B
++00E6  00301A  ADDA.L     #$00000002,A3                            | D7FC 0000 0002
++00EC  003020  MOVEM.L    D1/A3,-(A7)                              | 48E7 4010
++00F0  003024  JMP        Anon26+$2864        ; 00002D98           | 4EFA FD72
++00F4  003028  MOVE.B     A1,(A3)                                  | 1689
++00F6  00302A  MOVE.B     (A6),(A3)                                | 1696
++00F8  00302C  ORI.B      #$16A3,D0                                | 0000 16A3
++00FC  003030  MOVE.B     -(A3),(A3)                               | 16A3
++00FE  003032  MOVE.B     $16BB(A7),(A3)                           | 16AF 16BB
++0102  003036  MOVE.B     D6,(A3)+                                 | 16C6
++0104  003038  MOVE.B     (A1),(A3)+                               | 16D1
++0106  00303A  MOVE.B     (A2)+,(A3)+                              | 16DA
++0108  00303C  ORI.B      #$16ED,D0                                | 0000 16ED
++010C  003040  MOVE.B     -(A5),(A3)+                              | 16E5
++010E  003042  PEA        Anon29+$07BA        ; 000036EE           | 487A 06AA
++0112  003046  MOVE.L     Anon29+$07D0,-(A7)  ; 00003704           | 2F3A 06BC
++0116  00304A  _SystemClick                   ; A9B3               | A9B3
++0118  00304C  JMP        Anon26+$277E        ; 00002CB2           | 4EFA FC64
++011C  003050  MOVE.W     #$0005,-(A7)                             | 3F3C 0005
++0120  003054  _SysBeep                       ; A9C8               | A9C8
++0122  003056  JMP        Anon26+$265C        ; 00002B90           | 4EFA FB38
+	see DATA
++0810  003744  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F930
++0814  003748  _TEDeactivate                  ; A9D9               | A9D9
++0816  00374A  MOVEA.L    Anon29+$013E,A0     ; 00003072           | 207A F926
++081A  00374E  ADDA.L     #$00000002,A0                            | D1FC 0000 0002
++0820  003754  LEA        Anon29+$07F4,A1     ; 00003728           | 43FA FFD2
++0824  003758  LEA        Anon46+$0056,A2     ; 00003BD4           | 45FA 047A
++0828  00375C  JSR        Anon30+$0012        ; 0000377A           | 4EBA 001C
++082C  003760  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F914
++0830  003764  _TEActivate                    ; A9D8               | A9D8
++0832  003766  RTS                                                 | 4E75
+
+Anon30
++0000  003768  MOVEA.L    Anon29+$013E,A1     ; 00003072           | 227A F908	fenêtre de gauche
++0004  00376C  ADDA.L     #$00000002,A1                            | D3FC 0000 0002
++000A  003772  LEA        Anon29+$07F4,A0     ; 00003728           | 41FA FFB4
++000E  003776  LEA        Anon46+$0056,A2     ; 00003BD4           | 45FA 045C
++0012  00377A  MOVE.L     A0,-(A7)                                 | 2F08	srcBits
++0014  00377C  MOVE.L     A1,-(A7)                                 | 2F09	dstBits
++0016  00377E  MOVE.L     A2,-(A7)                                 | 2F0A	srcRect
++0018  003780  MOVE.L     A2,-(A7)                                 | 2F0A	dstRect
++001A  003782  CLR.W      -(A7)                                    | 4267	mode (integer)
++001C  003784  CLR.L      -(A7)                                    | 42A7	maskRgn (handle)
++001E  003786  _CopyBits                      ; A8EC               | A8EC
++0020  003788  MOVE.W     Anon65+$001E,D0     ; 00004260           | 303A 0AD6
++0024  00378C  BEQ.S      Anon29+$0832        ; 00003766           | 67D8
+
++0026  00378E  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F8E6	
++002A  003792  _TEDispose                     ; A9CD               | A9CD
++002C  003794  MOVE.L     Anon29+$0146,-(A7)  ; 0000307A           | 2F3A F8E4
++0030  003798  _DisposeRgn                    ; A8D9               | A8D9
++0032  00379A  JSR        Anon30+$003A        ; 000037A2           | 4EBA 0006
++0036  00379E  JMP        Anon46+$0178        ; 00003CF6           | 4EFA 0556
+
+* init game
+
++003A  0037A2  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A F8CE	activate text window
++003E  0037A6  _SelectWindow                  ; A91F               | A91F
++0040  0037A8  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A F8C8
++0044  0037AC  _SetPort                       ; A873               | A873
++0046  0037AE  PEA        Anon46+$005E        ; 00003BDC           | 487A 042C	clear window rect
++004A  0037B2  _EraseRect                     ; A8A3               | A8A3
++004C  0037B4  CLR.L      -(A7)                                    | 42A7	create a new region
++004E  0037B6  _NewRgn                        ; A8D8               | A8D8
++0050  0037B8  LEA        Anon29+$0146,A0     ; 0000307A           | 41FA F8C0	save region handle
++0054  0037BC  MOVE.L     (A7)+,(A0)                               | 209F
++0056  0037BE  CLR.L      -(A7)                                    | 42A7
++0058  0037C0  PEA        Anon29+$014A        ; 0000307E           | 487A F8BC	call TextEdit with a rect
++005C  0037C4  PEA        Anon29+$014A        ; 0000307E           | 487A F8B8
++0060  0037C8  _TENew                         ; A9D2               | A9D2
++0062  0037CA  LEA        Anon29+$0142,A0     ; 00003076           | 41FA F8AA
++0066  0037CE  MOVE.L     (A7)+,(A0)                               | 209F	save text handle
++0068  0037D0  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F8A4	activate it
++006C  0037D4  _TEActivate                    ; A9D8               | A9D8
++006E  0037D6  MOVE.W     #$0016,D0                                | 303C 0016	clear 47C6 sur $16 words
++0072  0037DA  LEA        DEATH       ,A0     ; 000047C6           | 41FA 0FEA
++0076  0037DE  CLR.W      (A0)+                                    | 4258
++0078  0037E0  SUBQ.W     #$1,D0                                   | 5340
++007A  0037E2  BNE.S      Anon30+$0076        ; 000037DE           | 66FA
++007C  0037E4  LEA        Anon67+$0D40,A0     ; 00005092           | 41FA 18AC	copy $42 bytes of ref table to run table 
++0080  0037E8  LEA        Anon67+$0507,A6     ; 00004859           | 4DFA 106F
++0084  0037EC  MOVE.W     #$0042,D0                                | 303C 0042
++0088  0037F0  JSR        Anon44+$000E        ; 00003AEA           | 4EBA 02F8
++008C  0037F4  LEA        Anon67+$1C80,A0     ; 00005FD2           | 41FA 27DC	copy $67 bytes of ref table 2 to run table 2
++0090  0037F8  LEA        Anon67+$04A0,A6     ; 000047F2           | 4DFA 0FF8
++0094  0037FC  MOVE.W     #$0067,D0                                | 303C 0067
++0098  003800  JSR        Anon44+$000E        ; 00003AEA           | 4EBA 02E8
++009C  003804  JSR        Anon31              ; 00003812           | 4EBA 000C	clear four bytes
++00A0  003808  MOVE.W     #$0042,D0                                | 303C 0042	set description ID
++00A4  00380C  JSR        Anon45              ; 00003AF6           | 4EBA 02E8	printDescription($42)
++00A8  003810  RTS                                                 | 4E75
+
+Anon31 - Clear 4 bytes
++0000  003812  CLR.W      D4                                       | 4244	for(i=0; i<4, i++)
++0002  003814  LEA        Anon46+$007A,A0     ; 00003BF8           | 41FA 03E2	 *3BF8 = 0;
++0006  003818  CLR.B      (A0)+                                    | 4218
++0008  00381A  ADDQ.W     #$1,D4                                   | 5244
++000A  00381C  CMPI.B     #$04,D4                                  | 0C04 0004
++000E  003820  BNE.S      Anon31+$0006        ; 00003818           | 66F6
++0010  003822  _MaxMem                        ; A01D               | A01D
++0012  003824  RTS                                                 | 4E75
+
+Anon32 - Prepare randomize
++0000  003826  CLR.W      D7                                       | 4247
++0002  003828  MOVE.B     Ticks,D7                                 | 1E38 016A
++0006  00382C  MOVE.W     D7,RndSeed                               | 31C7 0156
++000A  003830  RTS                                                 | 4E75
+
+Anon33 - print a text (D0 holds the text index)
+
++0000  003832  LEA        Anon67+$0D82,A3     ; 000050D4           | 47FA 18A0	TEXTS
++0004  003836  CMPI.B     #$5C,(A3)+          ; '\'                | 0C1B 005C	get the start address
++0008  00383A  BNE.S      Anon33+$0004        ; 00003836           | 66FA
++000A  00383C  SUBQ.W     #$1,D0                                   | 5340
++000C  00383E  BNE.S      Anon33+$0004        ; 00003836           | 66F6
++000E  003840  MOVEA.L    A3,A4                                    | 284B
++0010  003842  CLR.L      D5                                       | 4285	the length is zeroed
++0012  003844  ADDQ.W     #$1,D5                                   | 5245	then calculated until next \
++0014  003846  CMPI.B     #$5C,(A3)+          ; '\'                | 0C1B 005C
++0018  00384A  BNE.S      Anon33+$0012        ; 00003844           | 66F8
++001A  00384C  SUBQ.W     #$1,D5                                   | 5345	len--
++001C  00384E  BRA.S      Anon34+$0004        ; 00003874           | 6024
+
++001E  003850  JSR        Anon37              ; 000038BE           | 4EBA 006C	scroll window
++0022  003854  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F820
++0026  003858  _TEActivate                    ; A9D8               | A9D8
++0028  00385A  MOVE.B     #$3E,D0             ; '>'                | 103C 003E
++002C  00385E  JSR        Anon33+$0034        ; 00003866           | 4EBA 0006
++0030  003862  MOVE.B     #$20,D0             ; ' '                | 103C 0020
++0034  003866  MOVE.W     D0,-(A7)                                 | 3F00
++0036  003868  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F80C
++003A  00386C  _TEKey                         ; A9DC               | A9DC
++003C  00386E  RTS                                                 | 4E75
+
+Anon34
++0000  003870  CLR.W      D5                                       | 4245
++0002  003872  MOVE.B     (A4)+,D5                                 | 1A1C
+
++0004  003874  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A F7FC
++0008  003878  _SetPort                       ; A873               | A873
++000A  00387A  JSR        Anon37              ; 000038BE           | 4EBA 0042	scroll window
++000E  00387E  MOVEA.L    A4,A3                                    | 264C
++0010  003880  CLR.L      D4                                       | 4284
++0012  003882  MOVE.W     #$0000,-(A7)                             | 3F3C 0000
++0016  003886  _TextFont                      ; A887               | A887
++0018  003888  CMPI.B     #$7C,(A4)+          ; '|'                | 0C1C 007C
++001C  00388C  BEQ.S      Anon35              ; 0000389C           | 670E
++001E  00388E  ADDQ.W     #$1,D4                                   | 5244
++0020  003890  SUBQ.W     #$1,D5                                   | 5345
++0022  003892  BNE.S      Anon34+$0018        ; 00003888           | 66F4
++0024  003894  CMPI.W     #$0000,D4                                | 0C44 0000
++0028  003898  BNE.S      Anon36              ; 000038B0           | 6616
++002A  00389A  RTS                                                 | 4E75
+
+Anon35
++0000  00389C  CMPI.W     #$0000,D4                                | 0C44 0000	do we have text to draw?
++0004  0038A0  BEQ.S      Anon35+$000A        ; 000038A6           | 6704	no, skip
++0006  0038A2  JSR        Anon36              ; 000038B0           | 4EBA 000C	draw text
++000A  0038A6  JSR        Anon37              ; 000038BE           | 4EBA 0016	scroll window
++000E  0038AA  SUBQ.W     #$1,D5                                   | 5345
++0010  0038AC  BNE.S      Anon34+$000E        ; 0000387E           | 66D0
++0012  0038AE  RTS                                                 | 4E75
+
+Anon36 - draw text
+
++0000  0038B0  MOVE.L     A3,-(A7)                                 | 2F0B	pointer to text
++0002  0038B2  MOVE.L     D4,-(A7)                                 | 2F04	length of text
++0004  0038B4  PEA        Anon29+$014A        ; 0000307E           | 487A F7C8	rectangle
++0008  0038B8  CLR.W      -(A7)                                    | 4267	justify left
++000A  0038BA  _TextBox                       ; A9CE               | A9CE	draw
++000C  0038BC  RTS                                                 | 4E75
+
+Anon37 - move window up
+
++0000  0038BE  MOVEA.L    Anon29+$013E,A0     ; 00003072           | 207A F7B2
++0004  0038C2  ADDA.L     #$00000002,A0                            | D1FC 0000 0002
++000A  0038C8  MOVE.L     A0,-(A7)                                 | 2F08
++000C  0038CA  MOVE.L     A0,-(A7)                                 | 2F08
++000E  0038CC  PEA        Anon46              ; 00003B7E           | 487A 02B0
++0012  0038D0  PEA        Anon46+$0008        ; 00003B86           | 487A 02B4
++0016  0038D4  CLR.W      -(A7)                                    | 4267
++0018  0038D6  CLR.L      -(A7)                                    | 42A7
++001A  0038D8  _CopyBits                      ; A8EC               | A8EC
++001C  0038DA  PEA        Anon29+$014A        ; 0000307E           | 487A F7A2
++0020  0038DE  _EraseRect                     ; A8A3               | A8A3
++0022  0038E0  RTS                                                 | 4E75
+
+Anon38 - Prepare the objects in room X
+
++0000  0038E2  MOVE.W     current_room,D6     ; 000047B6           | 3C3A 0ED2	get room index
+
+* Draw inventory
+
++0004  0038E6  LEA        Anon67+$04A0,A3     ; 000047F2           | 47FA 0F0A	table des objets
++0008  0038EA  LEA        Anon46+$0010,A4     ; 00003B8E           | 49FA 02A2	table de destination
++000C  0038EE  MOVE.W     #$0067,D7                                | 3E3C 0067	taille de la table d'A3
++0010  0038F2  MOVE.W     #$0001,D5                                | 3A3C 0001	compteur D5
++0014  0038F6  MOVE.B     (A3)+,D0                                 | 101B	prends la valeur de la table
++0016  0038F8  CMP.B      D6,D0                                    | B006	est-ce qu'elle correspond à la room ?
++0018  0038FA  BNE.S      Anon38+$001C        ; 000038FE           | 6602	non
++001A  0038FC  MOVE.B     D5,(A4)+                                 | 18C5	oui, sauve l'index
++001C  0038FE  ADDQ.W     #$1,D5                                   | 5245	index++
++001E  003900  SUBQ.W     #$1,D7                                   | 5347	D7--
++0020  003902  BNE.S      Anon38+$0014        ; 000038F6           | 66F2	on a fini ?
++0022  003904  MOVE.B     #$00,(A4)                                | 18BC 0000	oui, mets un 0 final
+
++0026  003908  LEA        Anon46+$0010,A4     ; 00003B8E           | 49FA 0284	table des objets trouves
++002A  00390C  LEA        Anon67+$177A,A3     ; 00005ACC           | 47FA 21BE	table des objets
++002E  003910  LEA        Anon29+$068E,A6     ; 000035C2           | 4DFA FCB0	table de destination ?
++0032  003914  MOVE.B     #$7C,D3             ; '|'                | 163C 007C	commence par un retour chariot
++0036  003918  MOVE.B     Anon64+$0002,D0     ; 00004178           | 103A 085E	
++003A  00391C  BNE.S      Anon38+$0046        ; 00003928           | 660A
++003C  00391E  MOVE.B     DARK        ,D0     ; 000047C7           | 103A 0EA7
++0040  003922  BNE.S      Anon39              ; 0000396C           | 6648
++0042  003924  MOVE.B     #$20,D3             ; ' '                | 163C 0020
++0046  003928  CLR.W      D7                                       | 4247
++0048  00392A  CLR.W      D6                                       | 4246
++004A  00392C  MOVE.B     (A4)+,D0                                 | 101C
++004C  00392E  BEQ.S      Anon38+$007E        ; 00003960           | 6730
++004E  003930  MOVE.W     D0,D1                                    | 3200
++0050  003932  SUB.W      D6,D0                                    | 9046
++0052  003934  SUBQ.W     #$1,D0                                   | 5340
++0054  003936  BEQ.S      Anon38+$0060        ; 00003942           | 670A
++0056  003938  CMPI.B     #$5C,(A3)+          ; '\'                | 0C1B 005C
++005A  00393C  BNE.S      Anon38+$0056        ; 00003938           | 66FA
++005C  00393E  SUBQ.W     #$1,D0                                   | 5340
++005E  003940  BNE.S      Anon38+$0056        ; 00003938           | 66F6
++0060  003942  CMPI.B     #$5C,(A3)           ; '\'                | 0C13 005C
++0064  003946  BEQ.S      Anon38+$006E        ; 00003950           | 6708
++0066  003948  MOVE.B     (A3)+,D0                                 | 101B
++0068  00394A  MOVE.B     D0,(A6)+                                 | 1CC0
++006A  00394C  ADDQ.W     #$1,D7                                   | 5247
++006C  00394E  BRA.S      Anon38+$0060        ; 00003942           | 60F2
+
++006E  003950  ADDA.W     #$0001,A3                                | D6FC 0001
++0072  003954  ADDQ.W     #$2,D7                                   | 5447
++0074  003956  MOVE.B     #$2E,(A6)+          ; '.'                | 1CFC 002E	final dot
++0078  00395A  MOVE.B     D3,(A6)+                                 | 1CC3
++007A  00395C  MOVE.W     D1,D6                                    | 3C01
++007C  00395E  BRA.S      Anon38+$004A        ; 0000392C           | 60CC
++007E  003960  CMPI.W     #$0000,D7                                | 0C47 0000
++0082  003964  BEQ.S      Anon39              ; 0000396C           | 6706
++0084  003966  MOVE.W     #$0000,D0                                | 303C 0000
++0088  00396A  RTS                                                 | 4E75
+
+Anon39
++0000  00396C  MOVE.B     Anon64+$0002,D0     ; 00004178           | 103A 080A
++0004  003970  BNE.S      Anon39+$0014        ; 00003980           | 660E
++0006  003972  LEA        Anon67+$0117,A0     ; 00004469           | 41FA 0AF5 I don't see anything
++000A  003976  MOVE.W     #$0016,D0                                | 303C 0016
++000E  00397A  MOVE.W     D0,D7                                    | 3E00
++0010  00397C  JSR        Anon44+$000E        ; 00003AEA           | 4EBA 016C
++0014  003980  MOVE.W     #$0001,D0                                | 303C 0001
++0018  003984  RTS                                                 | 4E75
+
+Anon40 - draw dialog
++0000  003986  CLR.L      -(A7)                                    | 42A7
++0002  003988  MOVE.W     D0,-(A7)                                 | 3F00
++0004  00398A  PEA        Anon29+$0512        ; 00003446           | 487A FABA
++0008  00398E  MOVE.L     #$FFFFFFFF,-(A7)                         | 2F3C FFFF FFFF
++000E  003994  _GetNewDialog                  ; A97C               | A97C
++0010  003996  MOVE.L     (A7)+,D6                                 | 2C1F
++0012  003998  MOVE.L     D6,-(A7)                                 | 2F06
++0014  00399A  _SetPort                       ; A873               | A873
++0016  00399C  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F6D8
++001A  0039A0  _TEDeactivate                  ; A9D9               | A9D9
++001C  0039A2  CLR.L      -(A7)                                    | 42A7
++001E  0039A4  PEA        Anon29+$07CE        ; 00003702           | 487A FD5C
++0022  0039A8  _ModalDialog                   ; A991               | A991
++0024  0039AA  MOVE.L     D6,-(A7)                                 | 2F06
++0026  0039AC  _CloseDialog                   ; A982               | A982
++0028  0039AE  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F6C6
++002C  0039B2  _TEActivate                    ; A9D8               | A9D8
++002E  0039B4  MOVE.W     Anon29+$07CE,D0     ; 00003702           | 303A FD4C
++0032  0039B8  RTS                                                 | 4E75
+
+Anon41
++0000  0039BA  CMPI.B     #$7C,(A3)           ; '|'                | 0C13 007C
++0004  0039BE  BEQ.S      Anon41+$0014        ; 000039CE           | 670E
++0006  0039C0  CMPI.B     #$20,(A3)           ; ' '                | 0C13 0020
++000A  0039C4  BEQ.S      Anon41+$0014        ; 000039CE           | 6708
++000C  0039C6  MOVE.B     (A3)+,D0                                 | 101B
++000E  0039C8  MOVE.B     D0,(A6)+                                 | 1CC0
++0010  0039CA  ADDQ.W     #$1,D5                                   | 5245
++0012  0039CC  BRA.S      Anon41              ; 000039BA           | 60EC
++0014  0039CE  RTS                                                 | 4E75
+
+Anon42
++0000  0039D0  MOVE.L     A6,-(A7)                                 | 2F0E
++0002  0039D2  BRA.S      Anon42+$000A        ; 000039DA           | 6006
+
++0004  0039D4  MOVE.L     A6,-(A7)                                 | 2F0E
++0006  0039D6  JSR        Anon52+$0058        ; 00003EF8           | 4EBA 0520
++000A  0039DA  MOVE.L     Anon29+$013A,-(A7)  ; 0000306E           | 2F3A F692
++000E  0039DE  _SetPort                       ; A873               | A873
++0010  0039E0  MOVE.B     DEATH       ,D0     ; 000047C6           | 103A 0DE4
++0014  0039E4  BEQ.S      Anon42+$003E        ; 00003A0E           | 6728
++0016  0039E6  MOVE.W     #$0000,-(A7)                             | 3F3C 0000
++001A  0039EA  _TextFont                      ; A887               | A887
++001C  0039EC  MOVE.W     #$0018,-(A7)                             | 3F3C 0018
++0020  0039F0  _TextSize                      ; A88A               | A88A
++0022  0039F2  PEA        Anon67+$0175        ; 000044C7           | 487A 0AD3		I'm Dead
++0026  0039F6  MOVE.L     #$00000009,-(A7)                         | 2F3C 0000 0009
++002C  0039FC  PEA        Anon46+$006E        ; 00003BEC           | 487A 01EE
++0030  003A00  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++0034  003A04  _TextBox                       ; A9CE               | A9CE
++0036  003A06  MOVE.W     #$0004,-(A7)                             | 3F3C 0004
++003A  003A0A  _TextFont                      ; A887               | A887
++003C  003A0C  BRA.S      Anon42+$00B4        ; 00003A84           | 6076
+
++003E  003A0E  MOVE.B     DARK        ,D0     ; 000047C7           | 103A 0DB7
++0042  003A12  BEQ.S      Anon42+$0050        ; 00003A20           | 670C
++0044  003A14  PEA        Anon67+$00D4        ; 00004426           | 487A 0A10		I Can't see in the dark!
++0048  003A18  MOVE.L     #$00000024,-(A7)                         | 2F3C 0000 0024	"Game Saved"
++004E  003A1E  BRA.S      Anon42+$0058        ; 00003A28           | 6008
+
++0050  003A20  MOVE.L     Anon67+$0466,-(A7)  ; 000047B8           | 2F3A 0D96	push start pointer of room description
++0054  003A24  MOVE.L     Anon67+$046A,-(A7)  ; 000047BC           | 2F3A 0D96	push length of room description
++0058  003A28  PEA        Anon46+$0036        ; 00003BB4           | 487A 018A	push rect
++005C  003A2C  MOVE.W     #$0001,-(A7)                             | 3F3C 0001	justify center (insidemac TextEdit III-181)
++0060  003A30  _TextBox                       ; A9CE               | A9CE
++0062  003A32  PEA        Anon46+$0036        ; 00003BB4           | 487A 0180	frame rectangle
++0066  003A36  _FrameRect                     ; A8A1               | A8A1
++0068  003A38  MOVE.W     #$0000,-(A7)                             | 3F3C 0000	set system font
++006C  003A3C  _TextFont                      ; A887               | A887
++006E  003A3E  PEA        Anon67+$012D        ; 0000447F           | 487A 0A3F	"Things that I see"
++0072  003A42  MOVE.L     #$00000012,-(A7)                         | 2F3C 0000 0012
++0078  003A48  PEA        Anon46+$003E        ; 00003BBC           | 487A 0172
++007C  003A4C  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++0080  003A50  _TextBox                       ; A9CE               | A9CE
+
++0082  003A52  JSR        Anon43              ; 00003A8E           | 4EBA 003A	...prepare the Exit string
++0086  003A56  PEA        Anon29+$068E        ; 000035C2           | 487A FB6A	pointer to text
++008A  003A5A  MOVE.L     D5,-(A7)                                 | 2F05	and length
++008C  003A5C  PEA        Anon46+$004E        ; 00003BCC           | 487A 016E	rect
++0090  003A60  MOVE.W     #$0001,-(A7)                             | 3F3C 0001	justify center
++0094  003A64  _TextBox                       ; A9CE               | A9CE
++0096  003A66  MOVE.W     #$0004,-(A7)                             | 3F3C 0004	font Monaco
++009A  003A6A  _TextFont                      ; A887               | A887
++009C  003A6C  MOVE.W     #$0009,-(A7)                             | 3F3C 0009	in size 9
++00A0  003A70  _TextSize                      ; A88A               | A88A
+
++00A2  003A72  JSR        Anon38              ; 000038E2           | 4EBA FE6E	...prepare objects on room
++00A6  003A76  PEA        Anon29+$068E        ; 000035C2           | 487A FB4A
++00AA  003A7A  MOVE.L     D7,-(A7)                                 | 2F07
++00AC  003A7C  PEA        Anon46+$0046        ; 00003BC4           | 487A 0146	rect
++00B0  003A80  MOVE.W     D0,-(A7)                                 | 3F00	justify
++00B2  003A82  _TextBox                       ; A9CE               | A9CE	draw text
++00B4  003A84  MOVE.W     #$000C,-(A7)                             | 3F3C 000C
++00B8  003A88  _TextSize                      ; A88A               | A88A
++00BA  003A8A  MOVEA.L    (A7)+,A6                                 | 2C5F
++00BC  003A8C  RTS                                                 | 4E75
+
+Anon43 - Prepare the exit string
+
++0000  003A8E  MOVE.W     Anon50+$0018,D0     ; 00003E1C           | 303A 038C	
++0004  003A92  BNE        Anon26+$2644        ; 00002B78           | 6600 F0E4	
++0008  003A96  LEA        Anon67+$00F8,A0     ; 0000444A           | 41FA 09B2	A0 = 'Exits:  '
++000C  003A9A  LEA        Anon29+$068E,A6     ; 000035C2           | 4DFA FB26	A6 = &outputString
++0010  003A9E  CLR.L      D5                                       | 4285	D5 = 0
++0012  003AA0  MOVE.W     #$0008,D0                                | 303C 0008	D0 = 8
++0016  003AA4  JSR        Anon44+$000E        ; 00003AEA           | 4EBA 0044	print the string (A0, D0)
++001A  003AA8  MOVE.B     DARK        ,D0     ; 000047C7           | 103A 0D1D
++001E  003AAC  BNE.S      Anon43+$0044        ; 00003AD2           | 6624
++0020  003AAE  LEA        Anon46+$002E,A0     ; 00003BAC           | 41FA 00FC	points to string NSEWUD
++0024  003AB2  LEA        Anon67+$046E,A1     ; 000047C0           | 43FA 0D0C	points to possible exits
++0028  003AB6  MOVE.W     #$0006,D0                                | 303C 0006	which is 6 chars
++002C  003ABA  MOVE.B     (A0)+,D2                                 | 1418	get char from above string
++002E  003ABC  CLR.W      D1                                       | 4241
++0030  003ABE  MOVE.B     (A1)+,D1                                 | 1219	get possible exit
++0032  003AC0  BEQ.S      Anon43+$0040        ; 00003ACE           | 670C	none
++0034  003AC2  MOVE.B     D2,(A6)+                                 | 1CC2	save the exit letter
++0036  003AC4  MOVE.B     #$2C,(A6)+          ; ','                | 1CFC 002C	add a comma
++003A  003AC8  MOVE.B     #$20,(A6)+          ; ' '                | 1CFC 0020	and a space
++003E  003ACC  ADDQ.W     #$3,D5                                   | 5645	D5 += 3 for destination string
++0040  003ACE  SUBQ.W     #$1,D0                                   | 5340
++0042  003AD0  BNE.S      Anon43+$002C        ; 00003ABA           | 66E8	loop--
++0044  003AD2  CMPI.B     #$08,D5                                  | 0C05 0008	0, 3, 6, 9, 12, 15
++0048  003AD6  BEQ.S      Anon44              ; 00003ADC           | 6704
++004A  003AD8  SUBQ.W     #$2,D5                                   | 5545	D5 -= 2
++004C  003ADA  RTS                                                 | 4E75
+
+Anon44 - copy D0 bytes from A0 to A6, final length in D5
++0000  003ADC  LEA        Anon67+$0100,A0     ; 00004452           | 41FA 0974	I See No Obvious Exits.
++0004  003AE0  LEA        Anon29+$068E,A6     ; 000035C2           | 4DFA FAE0
++0008  003AE4  CLR.L      D5                                       | 4285
++000A  003AE6  MOVE.W     #$0017,D0                                | 303C 0017
+
++000E  003AEA  MOVE.B     (A0)+,D1                                 | 1218
++0010  003AEC  MOVE.B     D1,(A6)+                                 | 1CC1
++0012  003AEE  ADDQ.W     #$1,D5                                   | 5245
++0014  003AF0  SUBQ.W     #$1,D0                                   | 5340
++0016  003AF2  BNE.S      Anon44+$000E        ; 00003AEA           | 66F6
++0018  003AF4  RTS                                                 | 4E75
+
+Anon45 - Get room description
+
++0000  003AF6  LEA        current_room,A6     ; 000047B6           | 4DFA 0CBE	the current room
++0004  003AFA  MOVE.W     D0,(A6)+                                 | 3CC0
++0006  003AFC  LEA        Anon67+$055A,A0     ; 000048AC           | 41FA 0DAE	DESCRIPTIONS
++000A  003B00  ADD.W      D0,D0                                    | D040	*2
++000C  003B02  SUBQ.W     #$1,D0                                   | 5340
++000E  003B04  MOVE.B     (A0)+,D1                                 | 1218
++0010  003B06  CMPI.B     #$5C,D1             ; '\'                | 0C01 005C	find heading \
++0014  003B0A  BNE.S      Anon45+$000E        ; 00003B04           | 66F8
++0016  003B0C  SUBQ.W     #$1,D0                                   | 5340
++0018  003B0E  BNE.S      Anon45+$000E        ; 00003B04           | 66F4
++001A  003B10  CLR.L      D5                                       | 4285
++001C  003B12  MOVE.L     A0,(A6)+                                 | 2CC8
++001E  003B14  MOVE.B     (A0)+,D1                                 | 1218
++0020  003B16  ADDQ.W     #$1,D5                                   | 5245
++0022  003B18  CMPI.B     #$5C,D1             ; '\'                | 0C01 005C	find trailing \
++0026  003B1C  BNE.S      Anon45+$001E        ; 00003B14           | 66F6
++0028  003B1E  SUBQ.W     #$1,D5                                   | 5345	now copy the possible directions
++002A  003B20  MOVE.L     D5,(A6)+                                 | 2CC5
++002C  003B22  MOVE.W     #$0006,D0                                | 303C 0006	length is 6
++0030  003B26  JSR        Anon44+$000E        ; 00003AEA           | 4EBA FFC2	copy directions
++0034  003B2A  CLR.W      D7                                       | 4247
++0036  003B2C  MOVE.W     current_room,D0     ; 000047B6           | 303A 0C88	get room index
++003A  003B30  SUBQ.W     #$1,D0                                   | 5340	-1
+
++003C  003B32  LEA        Anon67+$0507,A6     ; 00004859           | 4DFA 0D25	pointe la table de correspondance salle/image
++0040  003B36  MOVE.B     $00(A6,D0.W),D7                          | 1E36 0000	lit la valeur à l'index D0
++0044  003B3A  LEA        Anon67+$0462,A0     ; 000047B4           | 41FA 0C78	pointe sur l'image actuelle
++0048  003B3E  CMP.W      (A0),D7                                  | BE50	compare
++004A  003B40  BEQ.S      Anon45+$007A        ; 00003B70           | 672E	la même... exit
++004C  003B42  MOVE.W     D7,(A0)                                  | 3087	sauvegarde la nouvelle image
+
++004E  003B44  LEA        Anon46+$007A,A4     ; 00003BF8           | 49FA 00B2	points to $3BF8
++0052  003B48  CLR.W      D4                                       | 4244
++0054  003B4A  MOVE.B     $00(A4,D4.W),D1                          | 1234 4000
++0058  003B4E  CMP.B      D7,D1                                    | B207	compare la valeur de la table avec la room id
++005A  003B50  BEQ.S      Anon45+$007A        ; 00003B70           | 671E	pareil.
+
++005C  003B52  TST.B      D1                                       | 4A01
++005E  003B54  BEQ.S      Anon45+$0076        ; 00003B6C           | 6716
++0060  003B56  ADDQ.W     #$1,D4                                   | 5244
++0062  003B58  CMPI.B     #$04,D4                                  | 0C04 0004
++0066  003B5C  BNE.S      Anon45+$0054        ; 00003B4A           | 66EC
++0068  003B5E  MOVE.B     #$03,D4                                  | 183C 0003
++006C  003B62  CLR.B      $00(A4,D4.W)                             | 4234 4000
++0070  003B66  SUBQ.W     #$1,D4                                   | 5344
++0072  003B68  BNE.S      Anon45+$006C        ; 00003B62           | 66F8
++0074  003B6A  _MaxMem                        ; A01D               | A01D
++0076  003B6C  MOVE.B     D7,$00(A4,D4.W)                          | 1987 4000
+
++007A  003B70  MOVE.B     DARK        ,D0     ; 000047C7           | 103A 0C55	prend le drapeau à 47C7
++007E  003B74  BNE.S      Anon45+$0086        ; 00003B7C           | 6606	<>0, sort
++0080  003B76  LEA        DARK_2      ,A0     ; 00003BB2           | 41FA 003A	sinon met à 0 3BB2
++0084  003B7A  CLR.B      (A0)                                     | 4210
++0086  003B7C  RTS                                                 | 4E75
+
+Anon46 - analyze words
+
+	see DATA
+
++007E  003BFC  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A F474
++0082  003C00  _SetPort                       ; A873               | A873
++0084  003C02  LEA        Anon67+$203A,A6     ; 0000638C           | 4DFA 2788	A6 = &638C address of verb/noun combination
++0088  003C06  LEA        Anon64+$0003,A3     ; 00004179           | 47FA 0571	A3 = address
++008C  003C0A  CLR.B      (A3)                                     | 4213	*A3 = 0
++008E  003C0C  MOVE.W     Anon29+$080A,D7     ; 0000373E           | 3E3A FB30	D7 = *373E - verb index
++0092  003C10  MOVE.W     Anon29+$080C,D6     ; 00003740           | 3C3A FB2E	D6 = *3740 - noun index
++0096  003C14  CMPI.B     #$03,D7                                  | 0C07 0003	verb is GO , MOVE...
++009A  003C18  BNE.S      Anon46+$00E4        ; 00003C62           | 6648
++009C  003C1A  CMPI.B     #$07,D6                                  | 0C06 0007	noun is above DOWN
++00A0  003C1E  BGT.S      Anon46+$00E4        ; 00003C62           | 6E42	...skip
++00A2  003C20  CMPI.B     #$01,D6                                  | 0C06 0001	not ANY
++00A6  003C24  BEQ.S      Anon46+$00C0        ; 00003C3E           | 6718	but ANY...
+
+* Check direction
+
++00A8  003C26  CLR.W      D0                                       | 4240	clear index
++00AA  003C28  SUBQ.W     #$2,D6                                   | 5546	N=0, S=1, E=2, W=3, U=4, D=5
++00AC  003C2A  LEA        Anon67+$046E,A4     ; 000047C0           | 49FA 0B94	A4 = &47C0
++00B0  003C2E  MOVE.B     $00(A4,D6.W),D0                          | 1034 6000	get next room index
++00B4  003C32  BEQ.S      Anon46+$00C6        ; 00003C44           | 6710	if 0, cannot go in that direction
++00B6  003C34  JSR        Anon55+$009A        ; 00004064           | 4EBA 042E	get description
++00BA  003C38  LEA        Anon67+$033D,A4     ; 0000468F           | 49FA 0A55	"OK"
++00BE  003C3C  BRA.S      Anon46+$00DC        ; 00003C5A           | 601C
++00C0  003C3E  LEA        Anon67+$0213,A4     ; 00004565           | 49FA 0925	"I Need a Direction Too!"
++00C4  003C42  BRA.S      Anon46+$00DC        ; 00003C5A           | 6016
+
++00C6  003C44  MOVE.B     DARK        ,D0     ; 000047C7           | 103A 0B81	are we in the dark?
++00CA  003C48  BEQ.S      Anon46+$00D8        ; 00003C56           | 670C	no
++00CC  003C4A  LEA        Anon67+$0261,A4     ; 000045B3           | 49FA 0967	yes, SPLAT! I Fell Flat On My Face
++00D0  003C4E  JSR        Anon34              ; 00003870           | 4EBA FC20	draw string
++00D4  003C52  JSR        Anon54+$001A        ; 00003F66           | 4EBA 0312	_SysBeep and more
++00D8  003C56  LEA        Anon67+$022B,A4     ; 0000457D           | 49FA 0925	I Can't Go That Way!
+
++00DC  003C5A  JSR        Anon34              ; 00003870           | 4EBA FC14	draw string
++00E0  003C5E  JMP        Anon46+$0178        ; 00003CF6           | 4EFA 0096	continue
+
+* Check verb+noun combination
+
++00E4  003C62  MOVE.B     (A6)+,D0                                 | 101E	get first entry of the table
++00E6  003C64  CMP.B      D0,D7                                    | BE00	does it match the verb?
++00E8  003C66  BEQ.S      Anon46+$0118        ; 00003C96           | 672E	...yes
++00EA  003C68  MOVE.B     (A6)+,D0                                 | 101E
++00EC  003C6A  CMPI.B     #$B0,D0                                  | 0C00 00B0	is the an entry end?
++00F0  003C6E  BEQ.S      Anon46+$00E4        ; 00003C62           | 67F2	...yes, try the next one
++00F2  003C70  CMPI.B     #$F0,D0                                  | 0C00 00F0	is the the table end?
++00F6  003C74  BNE.S      Anon46+$00EA        ; 00003C68           | 66F2	...no, go on
+
++00F8  003C76  LEA        Anon67+$01FE,A4     ; 00004550           | 49FA 08D8	I Can't Do That Yet
++00FC  003C7A  MOVE.B     (A3),D0                                  | 1013	did we find a combination already?
++00FE  003C7C  BNE.S      Anon46+$0110        ; 00003C8E           | 6610	...yes
++0100  003C7E  CMPI.B     #$02,D7                                  | 0C07 0002	is verb above DROP/PUT?
++0104  003C82  BGT.S      Anon46+$010C        ; 00003C8A           | 6E06	...yes
++0106  003C84  LEA        Anon67+$0340,A4     ; 00004692           | 49FA 0A0C	"I'm Not Capable of Doing That"
++010A  003C88  BRA.S      Anon46+$00DC        ; 00003C5A           | 60D0
+
++010C  003C8A  LEA        Anon67+$02B7,A4     ; 00004609           | 49FA 097D	"I Don't Understand That!"
++0110  003C8E  JSR        Anon34              ; 00003870           | 4EBA FBE0	drawString
++0114  003C92  JMP        Anon26+$2644        ; 00002B78           | 4EFA EEE4	loop
+
++0118  003C96  MOVE.B     (A6)+,D0                                 | 101E	check second entry of the table
++011A  003C98  CMPI.B     #$01,D0                                  | 0C00 0001	is that 1 (b/c some commands do not need a noun)
++011E  003C9C  BEQ.S      Anon46+$0124        ; 00003CA2           | 6704
++0120  003C9E  CMP.B      D0,D6                                    | BC00	does the noun match?
++0122  003CA0  BNE.S      Anon46+$00EA        ; 00003C68           | 66C6	...no, loop in entry
+
++0124  003CA2  MOVE.B     #$01,(A3)                                | 16BC 0001	tell we found a combination
++0128  003CA6  CLR.W      D0                                       | 4240	D0 = 0
++012A  003CA8  MOVE.B     (A6)+,D0                                 | 101E	get code
++012C  003CAA  CMPI.B     #$A0,D0                                  | 0C00 00A0	is it #$A0 for action?
++0130  003CAE  BEQ        Anon50              ; 00003E04           | 6700 0154	yes, go to Anon50
++0134  003CB2  ADD.W      D0,D0                                    | D040	*2
++0136  003CB4  MOVE.W     Anon46+$0146(D0.W),D0; 00003CC4          | 303B 000E	save it
++013A  003CB8  JSR        Anon46+$0146(D0.W)  ; 00003CC4           | 4EBB 000A	call it
++013E  003CBC  CMPI.B     #$00,D0                                  | 0C00 0000	get result
++0142  003CC0  BEQ.S      Anon46+$012A        ; 00003CA8           | 67E6	good result? yes, continue
++0144  003CC2  BRA.S      Anon46+$00EA        ; 00003C68           | 60A4	no, continue to next entry
+
++0146  003CC4  DC.W       $0000               ; '..'      formatted| 0000 	 0 
++0148  003CC6  DC.W       $008E               ; '..'      formatted| 008E 3D52	 1 D0 = 0
++014A  003CC8  DC.W       $008E               ; '..'      formatted| 008E 3D52	 2 D0 = 0
++014C  003CCA  DC.W       $008E               ; '..'      formatted| 008E 3D52	 3 D0 = 0
++014E  003CCC  DC.W       $008E               ; '..'      formatted| 008E 3D52	 4 D0 = 0
++0150  003CCE  DC.W       $0092               ; '..'      formatted| 0092 3D56	 5 do I own the object?
++0152  003CD0  DC.W       $00A2               ; '..'      formatted| 00A2 3D66	 6 do I not own the object?
++0154  003CD2  DC.W       $00B2               ; '..'      formatted| 00B2 3D76	 7 am I in room?
++0156  003CD4  DC.W       $00C2               ; '..'      formatted| 00C2 3D86	 8 am I not in room?
++0158  003CD6  DC.W       $00CE               ; '..'      formatted| 00CE 3D92	 9 success if object is in the current room
++015A  003CD8  DC.W       $00D8               ; '..'      formatted| 00D8 3D9C	 A success if not
++015C  003CDA  DC.W       $00E4               ; '..'      formatted| 00E4 3DA8	 B 
++015E  003CDC  DC.W       $00EC               ; '..'      formatted| 00EC 3DB0	 C 
++0160  003CDE  DC.W       $00F4               ; '..'      formatted| 00F4 3DB8	 D 
++0162  003CE0  DC.W       $00FC               ; '..'      formatted| 00FC 3DC0	 E 
++0164  003CE2  DC.W       $0104               ; '..'      formatted| 0104 3DC8	 F 
++0166  003CE4  DC.W       $010C               ; '..'      formatted| 010C 3DD0	10 
++0168  003CE6  DC.W       $008C               ; '..'      formatted| 008C 3D50	11 D0 = getNextValue(A6)
++016A  003CE8  DC.W       $008C               ; '..'      formatted| 008C 3D50	12 D0 = getNextValue(A6)
++016C  003CEA  DC.W       $008C               ; '..'      formatted| 008C 3D50	13 D0 = getNextValue(A6)
++016E  003CEC  DC.W       $008C               ; '..'      formatted| 008C 3D50	14 D0 = getNextValue(A6)
++0170  003CEE  DC.W       $0114               ; '..'      formatted| 0114 3DD8	15 
++0172  003CF0  DC.W       $011C               ; '..'      formatted| 011C 3DE0	16 
++0174  003CF2  DC.W       $0124               ; '.$'      formatted| 0124 3DE8	17 
++0176  003CF4  DC.W       $012C               ; '.,'      formatted| 012C 3DF0	18 
+
+* THIS ROUTINE IS OFTENLY CALLED TO HANDLE CONDITIONS
+
++0178  003CF6  MOVE.W     Anon65+$001E,D0     ; 00004260           | 303A 0568	check flag ** Probable protection flag **
++017C  003CFA  BNE        Anon26+$2644        ; 00002B78           | 6600 EE7C	non zero, go to main loop
++0180  003CFE  CLR.W      -(A7)                                    | 4267	get a random number
++0182  003D00  _Random                        ; A861               | A861
++0184  003D02  CLR.L      D0                                       | 4280
++0186  003D04  MOVE.W     (A7)+,D0                                 | 301F
++0188  003D06  ANDI.W     #$007F,D0                                | 0240 007F	keep 7 bits
++018C  003D0A  CMPI.B     #$64,D0             ; 'd'                | 0C00 0064	compare with 100
++0190  003D0E  BGT.S      Anon46+$0178        ; 00003CF6           | 6EE6	loop if > 100
+
++0192  003D10  LEA        Anon64,A4           ; 00004176           | 49FA 0464	save random value
++0196  003D14  MOVE.W     D0,(A4)                                  | 3880	*4176 = D0
++0198  003D16  LEA        Anon67+$3720,A6     ; 00007A72           | 4DFA 3D5A	TABLE DES CONDITIONS
++019C  003D1A  MOVE.B     (A6)+,D1                                 | 121E	D1 = get value
++019E  003D1C  CMPI.B     #$F0,D1                                  | 0C01 00F0	end of table?
++01A2  003D20  BEQ        Anon26+$2644        ; 00002B78           | 6700 EE56	...yes
++01A6  003D24  MOVE.W     Anon64,D0           ; 00004176           | 303A 0450	D0 = *4176
++01AA  003D28  CMP.B      D1,D0                                    | B001	if D0 > D1 alors
++01AC  003D2A  BGT.S      Anon46+$01C8        ; 00003D46           | 6E1A	...yes, jump to the end of the line
++01AE  003D2C  MOVE.B     (A6)+,D0                                 | 101E	get next value
++01B0  003D2E  CMPI.B     #$A0,D0                                  | 0C00 00A0	is it #$A0? an action?
++01B4  003D32  BEQ        Anon50+$005E        ; 00003E62           | 6700 012E	...yes, jump to action
++01B8  003D36  ADD.W      D0,D0                                    | D040	*2
++01BA  003D38  MOVE.W     Anon46+$0146(D0.W),D0; 00003CC4          | 303B 008A
++01BE  003D3C  JSR        Anon46+$0146(D0.W)  ; 00003CC4           | 4EBB 0086	jump
++01C2  003D40  CMPI.B     #$00,D0                                  | 0C00 0000	check result
++01C6  003D44  BEQ.S      Anon46+$01AE        ; 00003D2C           | 67E6	loop if 0
++01C8  003D46  MOVE.B     (A6)+,D0                                 | 101E	get next value
++01CA  003D48  CMPI.B     #$B0,D0                                  | 0C00 00B0	did we reach the end of the table?
++01CE  003D4C  BNE.S      Anon46+$01C8        ; 00003D46           | 66F8	no
++01D0  003D4E  BRA.S      Anon46+$019C        ; 00003D1A           | 60CA	start a new line
+
+* CONDITIONS 11/12/13/14
+
++01D2  003D50  MOVE.B     (A6)+,D0                                 | 101E	11.12..13..14
+
+* CONDITIONS 1/2/3/4
+
++01D4  003D52  JMP        exit_ZERO           ; 00003DF8           | 4EFA 00A4	1..2..3..4 - retourne 0
+
+* CONDITION 5 - RETURN TRUE IF I DO NOT OWN THE OBJECT
+
++01D8  003D56  JSR        checkObject         ; 0000414E           | 4EBA 03F6	5 - drop/put
++01DC  003D5A  CMPI.B     #$FFFF,D1                                | 0C01 FFFF	did I own the object?
++01E0  003D5E  BNE        exit_ONE            ; 00003DFC           | 6600 009C	no, retourne 1
++01E4  003D62  JMP        exit_ZERO           ; 00003DF8           | 4EFA 0094	yes, retourne 0
+
+* CONDITION 6 - RETURN TRUE IF I OWN THE OBJECT
+
++01E8  003D66  JSR        checkObject         ; 0000414E           | 4EBA 03E6	6 - drop/put
++01EC  003D6A  CMPI.B     #$FFFF,D1                                | 0C01 FFFF	did I own the object?
++01F0  003D6E  BNE        exit_ZERO           ; 00003DF8           | 6600 0088	no, retourne 0
++01F4  003D72  JMP        exit_ONE            ; 00003DFC           | 4EFA 0088	yes, retourne 1
+
+* CONDITION 7 - CHECK I AM IN ROOM
+
++01F8  003D76  MOVE.B     (A6)+,D0                                 | 101E	7 - on which room am I
++01FA  003D78  MOVE.W     current_room,D1     ; 000047B6           | 323A 0A3C	get room index
+
+ONE_IF_DIFF
++01FE  003D7C  CMP.B      D0,D1                                    | B200	compare both values
++0200  003D7E  BNE        exit_ONE            ; 00003DFC           | 6600 007C	retourne 1 if different
++0204  003D82  JMP        exit_ZERO           ; 00003DF8           | 4EFA 0074	retourne 0 if equal
+
+* CONDITION 8 - CHECK I AM NOT IN ROOM
+
++0208  003D86  MOVE.B     (A6)+,D0                                 | 101E	8
++020A  003D88  MOVE.W     current_room,D1     ; 000047B6           | 323A 0A2C
+
+ZERO_IF_DIFF
++020E  003D8C  CMP.B      D0,D1                                    | B200
++0210  003D8E  BNE.S      exit_ZERO           ; 00003DF8           | 6668	retourne 0
++0212  003D90  BRA.S      exit_ONE            ; 00003DFC           | 606A	retourne 1
+
+* CONDITION 9 - CHECK OBJECT EXIST IN ROOM
+
++0214  003D92  JSR        checkObject         ; 0000414E           | 4EBA 03BA	9 get room ID from object ID
++0218  003D96  MOVE.W     current_room,D0     ; 000047B6           | 303A 0A1E	get current room
++021C  003D9A  BRA.S      ONE_IF_DIFF         ; 00003D7C           | 60E0	go compare - return 1 if different
+
+* CONDITION A - CHECK OBJECT DOES NOT EXIST IN ROOM
+
++021E  003D9C  JSR        checkObject         ; 0000414E           | 4EBA 03B0	A get room ID from object ID
++0222  003DA0  MOVE.W     current_room,D0     ; 000047B6           | 303A 0A14	get curent room
++0226  003DA4  JMP        ZERO_IF_DIFF        ; 00003D8C           | 4EFA FFE6	go compare - return 0 if different
+
+* CONDITION B - CHECK OBJECT EXIST OR IS WORN
+
++022A  003DA8  JSR        Anon46+$0214        ; 00003D92           | 4EBA FFE8	B if the object exists
++022E  003DAC  BNE.S      Anon46+$01DC        ; 00003D5A           | 66AC	am I wearing it?
++0230  003DAE  RTS                                                 | 4E75
+
+* CONDITION C - CHECK OBJECT IS NOT WORN
+
+Anon47
++0000  003DB0  JSR        Anon46+$021E        ; 00003D9C           | 4EBA FFEA	C if the object does not exist
++0004  003DB4  BNE.S      Anon46+$01DC        ; 00003D5A           | 66A4	am I wearing it?
++0006  003DB6  RTS                                                 | 4E75
+
+* CONDITION D - Does object exist? (ie. not zero)
+
+Anon48
++0000  003DB8  JSR        checkObject         ; 0000414E           | 4EBA 0394	D get room ID from object ID
++0004  003DBC  BNE.S      exit_ONE            ; 00003DFC           | 663E	retourne 1
++0006  003DBE  BRA.S      exit_ZERO           ; 00003DF8           | 6038	retourne 0
+
+* CONDITION E - Does object does not exist? (ie. not zero)
+
++0008  003DC0  JSR        checkObject         ; 0000414E           | 4EBA 038C	E get room ID from object ID
++000C  003DC4  BNE.S      exit_ZERO           ; 00003DF8           | 6632	retourne 0
++000E  003DC6  BRA.S      exit_ONE            ; 00003DFC           | 6034	retourne 1
+
+* CONDITION F - Is condition active?
+
++0010  003DC8  JSR        getFromP2           ; 00004168           | 4EBA 039E	F get condition active
++0014  003DCC  BNE.S      exit_ZERO           ; 00003DF8           | 662A	retourne 0
++0016  003DCE  BRA.S      exit_ONE            ; 00003DFC           | 602C	retourne 1
+
+* CONDITION 10 - Is condition not active?
+
++0018  003DD0  JSR        getFromP2           ; 00004168           | 4EBA 0396	10 get condition not active
++001C  003DD4  BNE.S      exit_ONE            ; 00003DFC           | 6626	retourne 1
++001E  003DD6  BRA.S      exit_ZERO           ; 00003DF8           | 6020	retourne 0
+
+* CONDITION 15 - CHECK OBJECT IS IN ROOM I AM IN
+
++0020  003DD8  JSR        checkObject         ; 0000414E           | 4EBA 0374	15 get room ID of object in table
++0024  003DDC  MOVE.B     (A6)+,D0                                 | 101E	get room ID
++0026  003DDE  BRA.S      ONE_IF_DIFF         ; 00003D7C           | 609C	go compare - return 0 if similar
+
+* CONDITION 16 - CHECK OBJECT IS NOT IN ROOM I AM IN
+
++0028  003DE0  JSR        checkObject         ; 0000414E           | 4EBA 036C	16 get room ID of object in table
++002C  003DE4  MOVE.B     (A6)+,D0                                 | 101E	get room ID
++002E  003DE6  BRA.S      ZERO_IF_DIFF        ; 00003D8C           | 60A4	go compare - return 1 if similar
+
+* CONDITION 17 - CHECK CONDITION IS MET
+
++0030  003DE8  JSR        getFromP1           ; 0000415E           | 4EBA 0374	17
++0034  003DEC  MOVE.B     (A6)+,D0                                 | 101E
++0036  003DEE  BRA.S      ONE_IF_DIFF         ; 00003D7C           | 608C	go compare - return 0 if similar
+
+* CONDITION 18 - CHECK CONDITION IS NOT MET
+
++0038  003DF0  JSR        getFromP1           ; 0000415E           | 4EBA 036C	18
++003C  003DF4  MOVE.B     (A6)+,D0                                 | 101E
++003E  003DF6  BRA.S      ZERO_IF_DIFF        ; 00003D8C           | 6094	go compare - return 1 if similar
+
+exit_ZERO
++0040  003DF8  CLR.L      D0                                       | 4280	Retourne 0
++0042  003DFA  RTS                                                 | 4E75
+
+Anon49 - Retourne 1
+exit_ONE
++0000  003DFC  MOVE.L     #$00000001,D0                            | 203C 0000 0001
++0006  003E02  RTS                                                 | 4E75
+
+HANDLE ACTION (WHEN WORD AFTER VERB,NOUN)
+
+Anon50
++0000  003E04  CLR.W      D0                                       | 4240
++0002  003E06  MOVE.B     (A6)+,D0                                 | 101E
++0004  003E08  CMPI.B     #$B0,D0                                  | 0C00 00B0
++0008  003E0C  BEQ        Anon46+$0178        ; 00003CF6           | 6700 FEE8
++000C  003E10  ADD.W      D0,D0                                    | D040
++000E  003E12  MOVE.W     Anon50+$0018(D0.W),D0; 00003E1C          | 303B 0008
++0012  003E16  JSR        Anon50+$0018(D0.W)  ; 00003E1C           | 4EBB 0004
++0016  003E1A  BRA.S      Anon50              ; 00003E04           | 60E8
+
++0018  003E1C  DC.W       $03E7               ; '..'      formatted| 03E7 4203	 0 return
++001A  003E1E  DC.W       $0064               ; '.d'      formatted| 0064 3E80	 1 draw the verb
++001C  003E20  DC.W       $006A               ; '.j'      formatted| 006A 3E86	 2 draw the noun
++001E  003E22  DC.W       $0062               ; '.b'      formatted| 0062 3E7E	 3 return
++0020  003E24  DC.W       $0084               ; '..'      formatted| 0084 3EA0	 4 inventory
++0022  003E26  DC.W       $00BC               ; '..'      formatted| 00BC 3ED8	 5 am I dead?
++0024  003E28  DC.W       $00C2               ; '..'      formatted| 00C2 3EDE	 6 set the dark flag
++0026  003E2A  DC.W       $00C6               ; '..'      formatted| 00C6 3EE2	 7 reset the dark flag
++0028  003E2C  DC.W       $0130               ; '.0'      formatted| 0130 3F4C	 8 save game
++002A  003E2E  DC.W       $0134               ; '.4'      formatted| 0134 3F50	 9 death
++002C  003E30  DC.W       $014A               ; '.J'      formatted| 014A 3F66	 A death with no flag
++002E  003E32  DC.W       $018E               ; '..'      formatted| 018E 3FAA	 B load game
++0030  003E34  DC.W       $0192               ; '..'      formatted| 0192 3FAE	 C quit
++0032  003E36  DC.W       $0198               ; '..'      formatted| 0198 3FB4	 D wait
++0034  003E38  DC.W       $0060               ; '.`'      formatted| 0060 3E7C	 E getNextByte
++0036  003E3A  DC.W       $01AE               ; '..'      formatted| 01AE 3FCA	 F print text
++0038  003E3C  DC.W       $01B6               ; '..'      formatted| 01B6 3FD2	10 take
++003A  003E3E  DC.W       $0216               ; '..'      formatted| 0216 4032	11 drop
++003C  003E40  DC.W       $0244               ; '.D'      formatted| 0244 4060	12 
++003E  003E42  DC.W       $0260               ; '.`'      formatted| 0260 407C	13 
++0040  003E44  DC.W       $027A               ; '.z'      formatted| 027A 4096	14 
++0042  003E46  DC.W       $028A               ; '..'      formatted| 028A 40A6	15 
++0044  003E48  DC.W       $02A0               ; '..'      formatted| 02A0 40BC	16 set condition
++0046  003E4A  DC.W       $02AA               ; '..'      formatted| 02AA 40C6	17 reset condition
++0048  003E4C  DC.W       $0060               ; '.`'      formatted| 0060 3E7C	18 getNextByte
++004A  003E4E  DC.W       $0060               ; '.`'      formatted| 0060 3E7C	19 getNextByte
++004C  003E50  DC.W       $0060               ; '.`'      formatted| 0060 3E7C	1A getNextByte
++004E  003E52  DC.W       $0060               ; '.`'      formatted| 0060 3E7C	1B getNextByte
++0050  003E54  DC.W       $0060               ; '.`'      formatted| 0060 3E7C	1C getNextByte
++0052  003E56  DC.W       $02B6               ; '..'      formatted| 02B6 40D2	1D 
++0054  003E58  DC.W       $005E               ; '.^'      formatted| 005E 3E7A	1E getNext2Bytes
++0056  003E5A  DC.W       $02D2               ; '..'      formatted| 02D2 40EE	1F 
++0058  003E5C  DC.W       $02FA               ; '..'      formatted| 02FA 4116	20 
++005A  003E5E  DC.W       $0316               ; '..'      formatted| 0316 4132	21 
++005C  003E60  DC.W       $0324               ; '.$'      formatted| 0324 4140	22 
+
++005E  003E62  CLR.W      D0                                       | 4240	clear result
++0060  003E64  MOVE.B     (A6)+,D0                                 | 101E	get next byte
++0062  003E66  CMPI.B     #$B0,D0                                  | 0C00 00B0	is it end of line?
++0066  003E6A  BEQ        Anon46+$019C        ; 00003D1A           | 6700 FEAE	yes, exit
++006A  003E6E  ADD.W      D0,D0                                    | D040	no, *2
++006C  003E70  MOVE.W     Anon50+$0018(D0.W),D0; 00003E1C          | 303B 00AA	do action again
++0070  003E74  JSR        Anon50+$0018(D0.W)  ; 00003E1C           | 4EBB 00A6
++0074  003E78  BRA.S      Anon50+$005E        ; 00003E62           | 60E8	loop
+
+* ACTION 1E - getNext2Bytes
+
++0076  003E7A  MOVE.B     (A6)+,D0                                 | 101E
+
+* ACTION E/18/19/1A/1B1C - getNextByte
+
++0078  003E7C  MOVE.B     (A6)+,D0                                 | 101E
+
+* ACTION 3 - RETURN
+
++007A  003E7E  RTS                                                 | 4E75
+
+Anon51
+
+* ACTION  1 - Draw verb
+
++0000  003E80  MOVEA.L    Anon29+$0802,A3     ; 00003736           | 267A F8B4	pointer to the verb
++0004  003E84  BRA.S      Anon51+$000A        ; 00003E8A           | 6004
+
+* ACTION 2 - Draw noun
+
++0006  003E86  MOVEA.L    Anon29+$0806,A3     ; 0000373A           | 267A F8B2	points to the noun
+
++000A  003E8A  MOVE.L     A6,-(A7)                                 | 2F0E	push A6
++000C  003E8C  LEA        Anon29+$068E,A6     ; 000035C2           | 4DFA F734	
++0010  003E90  MOVEA.L    A6,A4                                    | 284E
++0012  003E92  CLR.W      D5                                       | 4245
++0014  003E94  JSR        Anon41              ; 000039BA           | 4EBA FB24	set word limit
++0018  003E98  JSR        Anon34+$0004        ; 00003874           | 4EBA F9DA	draw string
+
++001C  003E9C  MOVEA.L    (A7)+,A6                                 | 2C5F	restore
++001E  003E9E  RTS                                                 | 4E75	and return
+
+Anon52
+
+* ACTION 4 - Inventory
+
++0000  003EA0  MOVE.L     A6,-(A7)                                 | 2F0E	push pointer
++0002  003EA2  LEA        Anon64+$0002,A2     ; 00004178           | 45FA 02D4	pointe sur Anon64+2
++0006  003EA6  MOVE.B     #$01,(A2)                                | 14BC 0001	met le drapeau à 1
++000A  003EAA  MOVE.W     #$FFFF,D6                                | 3C3C FFFF	set room index to -1
++000E  003EAE  JSR        Anon38+$0004        ; 000038E6           | 4EBA FA36
++0012  003EB2  CLR.B      (A2)                                     | 4212
++0014  003EB4  CMPI.B     #$00,D0                                  | 0C00 0000	a-t-on des objets?
++0018  003EB8  BNE.S      Anon52+$002E        ; 00003ECE           | 6614	non
+
++001A  003EBA  LEA        Anon67+$0163,A4     ; 000044B5           | 49FA 05F9	I'm Carrying
++001E  003EBE  JSR        Anon34              ; 00003870           | 4EBA F9B0
++0022  003EC2  LEA        Anon29+$068E,A4     ; 000035C2           | 49FA F6FE
++0026  003EC6  MOVE.W     D7,D5                                    | 3A07
++0028  003EC8  JSR        Anon34+$0004        ; 00003874           | 4EBA F9AA
++002C  003ECC  BRA.S      Anon51+$001C        ; 00003E9C           | 60CE
+
++002E  003ECE  LEA        Anon67+$02D0,A4     ; 00004622           | 49FA 0752	I'm Emptyhanded.
++0032  003ED2  JSR        Anon34              ; 00003870           | 4EBA F99C
++0036  003ED6  BRA.S      Anon51+$001C        ; 00003E9C           | 60C4
+
+* ACTION 5  - Refresh screen and exit
+
++0038  003ED8  JSR        Anon42+$0004        ; 000039D4           | 4EBA FAFA	tell "I'm dead"
++003C  003EDC  BRA.S      Anon53+$003C        ; 00003F44           | 6066	restore port
+
+* ACTION 6 - Set "in the dark" flag
+
++003E  003EDE  CLR.W      D0                                       | 4240
++0040  003EE0  BRA.S      Anon52+$0046        ; 00003EE6           | 6004
+
+* ACTION 7 - Reset "in the dark" flag
+
++0042  003EE2  MOVE.W     #$FFFF,D0                                | 303C FFFF
+
++0046  003EE6  LEA        DARK        ,A0     ; 000047C7           | 41FA 08DF	A0 = &47C7
++004A  003EEA  MOVE.B     (A0),D1                                  | 1210	D1 = *A0
++004C  003EEC  CMP.B      D0,D1                                    | B200	compare with D0
++004E  003EEE  BEQ.S      Anon52+$0058        ; 00003EF8           | 6708	same, go to 3EF8
++0050  003EF0  MOVE.B     D0,(A0)                                  | 1080	*A0 = D0
+
++0052  003EF2  LEA        DARK_2      ,A0     ; 00003BB2           | 41FA FCBE	A0 = &3BB2
++0056  003EF6  CLR.B      (A0)                                     | 4210	*A0 = 0 - clear $3BB2
+
++0058  003EF8  MOVE.W     Anon50+$0018,D0     ; 00003E1C           | 303A FF22	D0 = *3E1C
++005C  003EFC  BNE        Anon30+$0026        ; 0000378E           | 6600 F890	if not zero, 
++0060  003F00  MOVE.B     DARK_2      ,D0     ; 00003BB2           | 103A FCB0
++0064  003F04  BEQ.S      Anon53              ; 00003F08           | 6702	load picture
++0066  003F06  RTS                                                 | 4E75
+
+Anon53 - load an image
++0000  003F08  LEA        DARK_2      ,A0     ; 00003BB2           | 41FA FCA8
++0004  003F0C  MOVE.B     #$FFFF,(A0)                              | 10BC FFFF
++0008  003F10  MOVE.L     Anon29+$0136,-(A7)  ; 0000306A           | 2F3A F158
++000C  003F14  _SetPort                       ; A873               | A873
++000E  003F16  MOVE.B     DARK        ,D0     ; 000047C7           | 103A 08AF	if $47C7 = 0 then load image
++0012  003F1A  BEQ.S      Anon53+$001C        ; 00003F24           | 6708
++0014  003F1C  PEA        Anon46+$0066        ; 00003BE4           | 487A FCC6	else erase rectangle
++0018  003F20  _PaintRect                     ; A8A2               | A8A2
++001A  003F22  BRA.S      Anon53+$003C        ; 00003F44           | 6020
+
++001C  003F24  CLR.L      -(A7)                                    | 42A7
++001E  003F26  MOVE.L     #$50494354,-(A7)    ; 'PICT'             | 2F3C 5049 4354
++0024  003F2C  MOVE.W     Anon67+$0462,-(A7)  ; 000047B4           | 3F3A 0886	get picture index
++0028  003F30  _GetResource                   ; A9A0               | A9A0
++002A  003F32  LEA        Anon46+$0076,A0     ; 00003BF4           | 41FA FCC0
++002E  003F36  MOVE.L     (A7),(A0)                                | 2097
++0030  003F38  _LoadResource                  ; A9A2               | A9A2
++0032  003F3A  MOVE.L     Anon46+$0076,-(A7)  ; 00003BF4           | 2F3A FCB8
++0036  003F3E  PEA        Anon46+$0066        ; 00003BE4           | 487A FCA4
++003A  003F42  _DrawPicture                   ; A8F6               | A8F6	...draw picture
+
++003C  003F44  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A F12C
++0040  003F48  _SetPort                       ; A873               | A873
++0042  003F4A  RTS                                                 | 4E75
+
+Anon54 - save game & handle dialogs
+
+* ACTION 8 - SAVE GAME
+
++0000  003F4C  JMP        Anon64+$0004        ; 0000417A           | 4EFA 022C
+
+* ACTION 9 - DEATH
+
++0004  003F50  MOVE.B     #$01,D0                                  | 103C 0001	D0 = 1
++0008  003F54  LEA        DEATH       ,A0     ; 000047C6           | 41FA 0870	A0 = &47C6
++000C  003F58  MOVE.B     D0,(A0)                                  | 1080	*A0 = D0
+
++000E  003F5A  LEA        Anon67+$0173,A4     ; 000044C5           | 49FA 0569	"I'm Dead!"
++0012  003F5E  JSR        Anon34              ; 00003870           | 4EBA F910	print string
++0016  003F62  JMP        Anon52+$0038        ; 00003ED8           | 4EFA FF74	restart
+
+* ACTION A - DEAD DIALOG
+
++001A  003F66  MOVE.W     #$0004,D7                                | 3E3C 0004	dialog index
+
++001E  003F6A  MOVE.L     A6,-(A7)                                 | 2F0E
++0020  003F6C  MOVEA.L    (A7)+,A0                                 | 205F
++0022  003F6E  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++0026  003F72  _SysBeep                       ; A9C8               | A9C8
++0028  003F74  MOVE.W     D7,D0                                    | 3007	"End on death" dialog (see +001A)
++002A  003F76  JSR        Anon40              ; 00003986           | 4EBA FA0E	display dialog
++002E  003F7A  MOVEA.L    (A7)+,A6                                 | 2C5F
++0030  003F7C  CMPI.W     #$0003,D0                                | 0C40 0003	"yes" button
++0034  003F80  BEQ        Anon30+$0026        ; 0000378E           | 6700 F80C	--> play again
++0038  003F84  CMPI.W     #$0004,D0                                | 0C40 0004	"no" button
++003C  003F88  BEQ        Anon29+$005E        ; 00002F92           | 6700 F008	--> exit
++0040  003F8C  CMPI.W     #$0005,D0                                | 0C40 0005	"cancel" button
++0044  003F90  BNE        Anon30+$0026        ; 0000378E           | 6600 F7FC	--> others restart game
++0048  003F94  MOVE.L     A6,-(A7)                                 | 2F0E	cancel was pressed
++004A  003F96  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A F0DA
++004E  003F9A  _SetPort                       ; A873               | A873
++0050  003F9C  LEA        Anon67+$0421,A4     ; 00004773           | 49FA 07D5
++0054  003FA0  JSR        Anon34              ; 00003870           | 4EBA F8CE
++0058  003FA4  MOVEA.L    (A7)+,A6                                 | 2C5F
++005A  003FA6  JMP        Anon46+$0178        ; 00003CF6           | 4EFA FD4E
+
+* ACTION B - LOAD GAME
+
++005E  003FAA  JMP        Anon65+$0062        ; 000042A4           | 4EFA 02F8
+
+* ACTION C - Quit is death
+
++0062  003FAE  MOVE.W     #$0003,D7                                | 3E3C 0003	the dialog index
++0066  003FB2  BRA.S      Anon54+$001E        ; 00003F6A           | 60B6	jump
+
+* ACTION D - Wait
+
++0068  003FB4  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F0C0
++006C  003FB8  _TEDeactivate                  ; A9D9               | A9D9
++006E  003FBA  MOVEA.L    #$0000006C,A0                            | 207C 0000 006C
++0074  003FC0  _Delay                         ; A03B               | A03B
++0076  003FC2  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F0B2
++007A  003FC6  _TEActivate                    ; A9D8               | A9D8
++007C  003FC8  RTS                                                 | 4E75
+
+* ACTION F - print text
+
+Anon55
++0000  003FCA  CLR.W      D0                                       | 4240
++0002  003FCC  MOVE.B     (A6)+,D0                                 | 101E	get text 
++0004  003FCE  JMP        Anon33              ; 00003832           | 4EFA F862	print it
+
+* ACTION 10 - ADD OBJECT TO INVENTORY
+
++0008  003FD2  JSR        checkObject         ; 0000414E           | 4EBA 017A	return room ID of object ID
++000C  003FD6  MOVE.L     A6,-(A7)                                 | 2F0E	save pointer
++000E  003FD8  CMPI.B     #$FFFF,D1                                | 0C01 FFFF	do I have a match
++0012  003FDC  BNE.S      Anon55+$001C        ; 00003FE6           | 6608	yes, it is available
++0014  003FDE  LEA        Anon67+$01AB,A4     ; 000044FD           | 49FA 051D	no, it means I have it
++0018  003FE2  JMP        Anon52+$0032        ; 00003ED2           | 4EFA FEEE	tell "I already have it"
+
++001C  003FE6  MOVE.W     current_room,D2     ; 000047B6           | 343A 07CE	get current room
++0020  003FEA  CMP.B      D1,D2                                    | B401	am I on the same room as the object?
++0022  003FEC  BEQ.S      Anon55+$002C        ; 00003FF6           | 6708	yes, ok
++0024  003FEE  LEA        Anon67+$0194,A4     ; 000044E6           | 49FA 04F6	no, it is not visible
++0028  003FF2  JMP        Anon52+$0032        ; 00003ED2           | 4EFA FEDE	tell "I do not see it here"
+
++002C  003FF6  LEA        Anon67+$04A0,A4     ; 000047F2           | 49FA 07FA	points to the object table
++0030  003FFA  MOVE.W     #$0067,D3                                | 363C 0067	browse the object list
++0034  003FFE  CLR.W      D1                                       | 4241	nbCarried = 0
++0036  004000  MOVE.B     (A4)+,D2                                 | 141C	calculate how many objects we carry
++0038  004002  CMPI.B     #$FFFF,D2                                | 0C02 FFFF
++003C  004006  BNE.S      Anon55+$0040        ; 0000400A           | 6602
++003E  004008  ADDQ.W     #$1,D1                                   | 5241	nbCarried += 1
++0040  00400A  SUBQ.W     #$1,D3                                   | 5343
++0042  00400C  BNE.S      Anon55+$0036        ; 00004000           | 66F2
++0044  00400E  CMPI.B     #$07,D1                                  | 0C01 0007	do we carry less than 7 objects (ie. 6 max)?
++0048  004012  BLT.S      Anon55+$0052        ; 0000401C           | 6D08
++004A  004014  LEA        Anon67+$01CF,A4     ; 00004521           | 49FA 050B	tell "I'm Carrying Too Much"
++004E  004018  JMP        Anon52+$0032        ; 00003ED2           | 4EFA FEB8
+
++0052  00401C  MOVE.B     #$FFFF,$00(A0,D0.W)                      | 11BC FFFF 0000  tell I carry it now
++0058  004022  LEA        Anon67+$033D,A4     ; 0000468F           | 49FA 066B	
++005C  004026  JSR        Anon34              ; 00003870           | 4EBA F848	tell "OK"
++0060  00402A  JSR        Anon42+$0004        ; 000039D4           | 4EBA F9A8
++0064  00402E  JMP        Anon51+$001C        ; 00003E9C           | 4EFA FE6C
+
+* ACTION 11 - REMOVE OBJECT FROM INVENTORY
+
++0068  004032  JSR        checkObject         ; 0000414E           | 4EBA 011A	return room ID of object ID
++006C  004036  MOVE.L     A6,-(A7)                                 | 2F0E	push pointer
++006E  004038  MOVE.W     current_room,D2     ; 000047B6           | 343A 077C	get current room ID
++0072  00403C  CMP.B      D2,D1                                    | B202	is the object in the room?
++0074  00403E  BNE.S      Anon55+$007E        ; 00004048           | 6608	no, it is good
++0076  004040  LEA        Anon67+$0307,A4     ; 00004659           | 49FA 0617	tell "How can I drop something..."
++007A  004044  JMP        Anon52+$0032        ; 00003ED2           | 4EFA FE8C	return
+
++007E  004048  CMPI.B     #$FFFF,D1                                | 0C01 FFFF	am I carrying it?
++0082  00404C  BEQ.S      Anon55+$008C        ; 00004056           | 6708	yes
++0084  00404E  LEA        Anon67+$02E1,A4     ; 00004633           | 49FA 05E3	tell "I'm not carrying it"
++0088  004052  JMP        Anon52+$0032        ; 00003ED2           | 4EFA FE7E
+
++008C  004056  MOVE.W     current_room,D2     ; 000047B6           | 343A 075E	drop the room ID at index object ID
++0090  00405A  MOVE.B     D2,$00(A0,D0.W)                          | 1182 0000
++0094  00405E  BRA.S      Anon55+$0058        ; 00004022           | 60C2	return
+
+* ACTION 12 - SET NEW ROOM
+
++0096  004060  CLR.W      D0                                       | 4240
++0098  004062  MOVE.B     (A6)+,D0                                 | 101E
+
++009A  004064  MOVE.L     A6,-(A7)                                 | 2F0E
++009C  004066  JSR        Anon45              ; 00003AF6           | 4EBA FA8E	set room
++00A0  00406A  MOVEA.L    (A7)+,A6                                 | 2C5F
++00A2  00406C  MOVE.B     DARK        ,D0     ; 000047C7           | 103A 0759	get dark flag
++00A6  004070  BEQ.S      Anon55+$00B0        ; 0000407A           | 6708
++00A8  004072  LEA        Anon67+$0240,A4     ; 00004592           | 49FA 051E	say it is dark
++00AC  004076  JSR        Anon34              ; 00003870           | 4EBA F7F8
++00B0  00407A  RTS                                                 | 4E75
+
+Anon56
+
+* ACTION 13 - PRINT VALUE FROM CONDITION
+
++0000  00407C  CLR.L      D0                                       | 4280	print value from condition table
++0002  00407E  JSR        getFromP1           ; 0000415E           | 4EBA 00DE
++0006  004082  MOVE.L     A6,-(A7)                                 | 2F0E
++0008  004084  MOVE.B     D1,D0                                    | 1001
++000A  004086  CLR.W      -(A7)                                    | 4267
++000C  004088  LEA        Anon29+$068E,A0     ; 000035C2           | 41FA F538
++0010  00408C  _DECSTR68K                     ; A9EE               | A9EE
++0012  00408E  LEA        Anon29+$068E,A4     ; 000035C2           | 49FA F532
++0016  004092  JMP        Anon52+$0032        ; 00003ED2           | 4EFA FE3E
+
+* ACTION 14 - DROP OBJECT IN ROOM
+
++001A  004096  JSR        checkObject         ; 0000414E           | 4EBA 00B6
++001E  00409A  MOVE.W     current_room,D1     ; 000047B6           | 323A 071A
++0022  00409E  MOVE.B     D1,$00(A0,D0.W)                          | 1181 0000
++0026  0040A2  JMP        Anon52+$0038        ; 00003ED8           | 4EFA FE34
+
+* ACTION 15 - DELETE OBJECT AND REFRESH
+
++002A  0040A6  JSR        checkObject         ; 0000414E           | 4EBA 00A6
++002E  0040AA  MOVE.B     #$00,$00(A0,D0.W)                        | 11BC 0000 0000
++0034  0040B0  MOVE.W     current_room,D2     ; 000047B6           | 343A 0704
++0038  0040B4  CMP.B      D1,D2                                    | B401
++003A  0040B6  BEQ        Anon52+$0038        ; 00003ED8           | 6700 FE20
++003E  0040BA  RTS                                                 | 4E75
+
+Anon57
+
+* ACTION 16 - SET FLAG/POINTER TO ONE
+
++0000  0040BC  JSR        getFromP2           ; 00004168           | 4EBA 00AA
++0004  0040C0  MOVE.B     #$01,D2                                  | 143C 0001
++0008  0040C4  BRA.S      Anon57+$0010        ; 000040CC           | 6006
+
+* ACTION 17 - SET FLAG/POINTER TO ZERO
+
++000A  0040C6  JSR        getFromP2           ; 00004168           | 4EBA 00A0
++000E  0040CA  CLR.B      D2                                       | 4202
++0010  0040CC  MOVE.B     D2,$00(A0,D0.W)                          | 1182 0000
++0014  0040D0  RTS                                                 | 4E75
+
+Anon58
+
+* ACTION 1D - Make object and check death
+
++0000  0040D2  JSR        checkObject         ; 0000414E           | 4EBA 007A
++0004  0040D6  MOVE.B     (A6)+,D2                                 | 141E
++0006  0040D8  MOVE.B     D2,$00(A0,D0.W)                          | 1182 0000
++000A  0040DC  MOVE.W     current_room,D0     ; 000047B6           | 303A 06D8
++000E  0040E0  CMP.B      D0,D2                                    | B400
++0010  0040E2  BEQ        Anon52+$0038        ; 00003ED8           | 6700 FDF4
++0014  0040E6  CMP.B      D0,D1                                    | B200
++0016  0040E8  BEQ        Anon52+$0038        ; 00003ED8           | 6700 FDEE
++001A  0040EC  RTS                                                 | 4E75
+
+Anon59
+
+* ACTION 1F - Exchange objects
+
++0000  0040EE  JSR        checkObject         ; 0000414E           | 4EBA 005E
++0004  0040F2  MOVEA.L    A0,A1                                    | 2248
++0006  0040F4  MOVE.W     D0,D2                                    | 3400
++0008  0040F6  MOVE.B     D1,D3                                    | 1601
++000A  0040F8  JSR        checkObject         ; 0000414E           | 4EBA 0054
++000E  0040FC  MOVE.B     D3,$00(A0,D0.W)                          | 1183 0000
++0012  004100  MOVE.B     D1,$00(A1,D2.W)                          | 1381 2000
++0016  004104  MOVE.W     current_room,D2     ; 000047B6           | 343A 06B0
++001A  004108  CMP.B      D2,D3                                    | B602
++001C  00410A  BEQ        Anon52+$0038        ; 00003ED8           | 6700 FDCC
++0020  00410E  CMP.B      D2,D1                                    | B202
++0022  004110  BEQ        Anon52+$0038        ; 00003ED8           | 6700 FDC6
++0026  004114  RTS                                                 | 4E75
+
+Anon60
+
+* ACTION 20 - Change room
+
++0000  004116  CLR.W      D0                                       | 4240
++0002  004118  MOVE.B     (A6)+,D0                                 | 101E
++0004  00411A  SUBQ.W     #$1,D0                                   | 5340
++0006  00411C  LEA        Anon67+$0507,A1     ; 00004859           | 43FA 073B
++000A  004120  MOVE.B     (A6)+,$00(A1,D0.W)                       | 139E 0000
++000E  004124  MOVE.L     A6,-(A7)                                 | 2F0E
++0010  004126  JSR        Anon45+$0034        ; 00003B2A           | 4EBA FA02
++0014  00412A  JSR        Anon52+$0052        ; 00003EF2           | 4EBA FDC6
++0018  00412E  MOVEA.L    (A7)+,A6                                 | 2C5F
++001A  004130  RTS                                                 | 4E75
+
+Anon61
+
+* ACTION 21 - ADD VALUES
+
++0000  004132  JSR        getFromP1           ; 0000415E           | 4EBA 002A
++0004  004136  MOVE.B     (A6)+,D2                                 | 141E	
++0006  004138  ADD.B      D2,D1                                    | D202
++0008  00413A  MOVE.B     D1,$00(A0,D0.W)                          | 1181 0000
++000C  00413E  RTS                                                 | 4E75
+
+Anon62
+
+* ACTION 22 - SUBTRACT VALUES
+
++0000  004140  JSR        getFromP1           ; 0000415E           | 4EBA 001C
++0004  004144  MOVE.B     (A6)+,D2                                 | 141E
++0006  004146  SUB.B      D2,D1                                    | 9202
++0008  004148  BGE.S      Anon61+$0008        ; 0000413A           | 6CF0
++000A  00414A  CLR.B      D1                                       | 4201
++000C  00414C  BRA.S      Anon61+$0008        ; 0000413A           | 60EC
+
+* Check if object exists
+
+checkObject
++000E  00414E  LEA        Anon67+$04A0,A0     ; 000047F2           | 41FA 06A2	A0 = set pointer to object table
++0012  004152  CLR.W      D0                                       | 4240	D0 = index
++0014  004154  MOVE.B     (A6)+,D0                                 | 101E	D0 = object ID (can be 0 if not found)
++0016  004156  SUBQ.W     #$1,D0                                   | 5340	D0--
+
++0018  004158  MOVE.B     $00(A0,D0.W),D1                          | 1230 0000	D1 = tblO,D0-1
++001C  00415C  RTS                                                 | 4E75
+
+Anon63
+
+* Get condition value from index
+
+getFromP1
++0000  00415E  LEA        Anon67+$0476,A0     ; 000047C8           | 41FA 0668	A0 = &47C8
++0004  004162  CLR.W      D0                                       | 4240
++0006  004164  MOVE.B     (A6)+,D0                                 | 101E	D0 = condition ID
++0008  004166  BRA.S      Anon62+$0018        ; 00004158           | 60F0	*A0,D0 = D1
+
+getFromP2
++000A  004168  CLR.W      D0                                       | 4240
++000C  00416A  MOVE.B     (A6)+,D0                                 | 101E	D0 = condition ID
++000E  00416C  LEA        Anon67+$0480,A0     ; 000047D2           | 41FA 0664	A0 = &47D2
++0012  004170  MOVE.B     $00(A0,D0.W),D1                          | 1230 0000	*A0,D0 = D1
++0016  004174  RTS                                                 | 4E75
+
+Anon64 - Save game
+	See DATA
++0004  00417A  MOVE.L     A6,-(A7)                                 | 2F0E
++0006  00417C  JSR        Anon29+$0810        ; 00003744           | 4EBA F5C6
++000A  004180  JSR        Anon31              ; 00003812           | 4EBA F690	clear four bytes
++000E  004184  MOVE.L     Anon67,-(A7)        ; 00004352           | 2F3A 01CC
++0012  004188  PEA        Anon67+$042A        ; 0000477C           | 487A 05F2
++0016  00418C  PEA        Anon67+$0446        ; 00004798           | 487A 060A
++001A  004190  CLR.L      -(A7)                                    | 42A7
++001C  004192  PEA        Anon67+$0008        ; 0000435A           | 487A 01C6
++0020  004196  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++0024  00419A  _Pack3                         ; A9EA               | A9EA
++0026  00419C  MOVE.B     Anon67+$0008,D0     ; 0000435A           | 103A 01BC
++002A  0041A0  BEQ        Anon65+$000C        ; 0000424E           | 6700 00AC
++002E  0041A4  JSR        Anon66              ; 00004324           | 4EBA 017E
++0032  0041A8  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 01FA
++0036  0041AC  _Create    ,Immed              ; A208               | A208
++0038  0041AE  MOVE.W     Anon67+$0062,D0     ; 000043B4           | 303A 0204
++003C  0041B2  BEQ.S      Anon64+$0062        ; 000041D8           | 6724
++003E  0041B4  CMPI.W     #$FFDE,D0                                | 0C40 FFDE
++0042  0041B8  BEQ        Anon65              ; 00004242           | 6700 0088
++0046  0041BC  CMPI.W     #$FFDF,D0                                | 0C40 FFDF
++004A  0041C0  BEQ        Anon65+$0006        ; 00004248           | 6700 0086
++004E  0041C4  CMPI.W     #$FFD0,D0                                | 0C40 FFD0
++0052  0041C8  BNE.S      Anon64+$0062        ; 000041D8           | 660E
++0054  0041CA  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 01D8
++0058  0041CE  _RstFilLock,Immed              ; A242               | A242
++005A  0041D0  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 01D2
++005E  0041D4  _Delete    ,Immed              ; A209               | A209
++0060  0041D6  BRA.S      Anon64+$0032        ; 000041A8           | 60D0
++0062  0041D8  LEA        Anon67+$0084,A0     ; 000043D6           | 41FA 01FC
++0066  0041DC  _SetFileInfo,Immed             ; A20D               | A20D
++0068  0041DE  LEA        Anon67+$006D,A0     ; 000043BF           | 41FA 01DF
++006C  0041E2  MOVE.B     $0002,(A0)                               | 10B8 0002
++0070  0041E6  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 01BC
++0074  0041EA  _Open      ,Immed              ; A200               | A200
++0076  0041EC  LEA        Anon67+$0076,A0     ; 000043C8           | 41FA 01DA
++007A  0041F0  MOVE.L     #$00000107,(A0)                          | 20BC 0000 0107
++0080  0041F6  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 01AC
++0084  0041FA  _Allocate  ,Immed              ; A210               | A210
++0086  0041FC  MOVE.W     Anon67+$0062,D0     ; 000043B4           | 303A 01B6
++008A  004200  CMPI.W     #$FFDE,D0                                | 0C40 FFDE
++008E  004204  BEQ.S      Anon65              ; 00004242           | 673C
++0090  004206  LEA        Anon67+$0452,A0     ; 000047A4           | 41FA 059C
++0094  00420A  LEA        Anon67+$0072,A1     ; 000043C4           | 43FA 01B8
++0098  00420E  MOVE.L     A0,(A1)                                  | 2288
++009A  004210  LEA        Anon67+$007E,A0     ; 000043D0           | 41FA 01BE
++009E  004214  CLR.W      (A0)                                     | 4250
++00A0  004216  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 018C
++00A4  00421A  _Write     ,Immed              ; A203               | A203
++00A6  00421C  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 0186
++00AA  004220  _Close     ,Immed              ; A201               | A201
++00AC  004222  LEA        Anon67+$0064,A0     ; 000043B6           | 41FA 0192
++00B0  004226  CLR.L      (A0)                                     | 4290
++00B2  004228  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 017A
++00B6  00422C  _FlushVol  ,Immed              ; A213               | A213
++00B8  00422E  LEA        Anon67+$03DD,A4     ; 0000472F           | 49FA 04FF
++00BC  004232  MOVE.L     A4,-(A7)                                 | 2F0C
++00BE  004234  JSR        Anon30              ; 00003768           | 4EBA F532
++00C2  004238  MOVEA.L    (A7)+,A4                                 | 285F
++00C4  00423A  JSR        Anon34              ; 00003870           | 4EBA F634
++00C8  00423E  MOVEA.L    (A7)+,A6                                 | 2C5F
++00CA  004240  RTS                                                 | 4E75
+
+Anon65
++0000  004242  LEA        Anon67+$03EA,A4     ; 0000473C           | 49FA 04F8
++0004  004246  BRA.S      Anon64+$00BC        ; 00004232           | 60EA
++0006  004248  LEA        Anon67+$0403,A4     ; 00004755           | 49FA 050B
++000A  00424C  BRA.S      Anon64+$00BC        ; 00004232           | 60E4
++000C  00424E  LEA        Anon67+$0421,A4     ; 00004773           | 49FA 0523
++0010  004252  BRA.S      Anon64+$00BC        ; 00004232           | 60DE
+	see DATA
+
+* LOAD GAME
+
++0062  0042A4  MOVE.L     A6,-(A7)                                 | 2F0E
++0064  0042A6  JSR        Anon29+$0810        ; 00003744           | 4EBA F49C
++0068  0042AA  MOVE.L     Anon67,-(A7)        ; 00004352           | 2F3A 00A6
++006C  0042AE  CLR.L      -(A7)                                    | 42A7
++006E  0042B0  CLR.L      -(A7)                                    | 42A7
++0070  0042B2  MOVE.W     #$0001,-(A7)                             | 3F3C 0001
++0074  0042B6  PEA        Anon67+$0004        ; 00004356           | 487A 009E
++0078  0042BA  CLR.L      -(A7)                                    | 42A7
++007A  0042BC  PEA        Anon67+$0008        ; 0000435A           | 487A 009C
++007E  0042C0  MOVE.W     #$0002,-(A7)                             | 3F3C 0002
++0082  0042C4  _Pack3                         ; A9EA               | A9EA
++0084  0042C6  MOVE.B     Anon67+$0008,D0     ; 0000435A           | 103A 0092
++0088  0042CA  BEQ.S      Anon65+$000C        ; 0000424E           | 6782
++008A  0042CC  JSR        Anon66              ; 00004324           | 4EBA 0056
++008E  0042D0  LEA        Anon67+$006D,A0     ; 000043BF           | 41FA 00ED
++0092  0042D4  MOVE.B     $0001,(A0)                               | 10B8 0001
++0096  0042D8  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 00CA
++009A  0042DC  _Open      ,Immed              ; A200               | A200
++009C  0042DE  LEA        Anon67+$0076,A0     ; 000043C8           | 41FA 00E8
++00A0  0042E2  MOVE.L     #$00000107,(A0)                          | 20BC 0000 0107
++00A6  0042E8  LEA        Anon67+$0452,A0     ; 000047A4           | 41FA 04BA
++00AA  0042EC  LEA        Anon67+$0072,A1     ; 000043C4           | 43FA 00D6
++00AE  0042F0  MOVE.L     A0,(A1)                                  | 2288
++00B0  0042F2  LEA        Anon67+$007E,A0     ; 000043D0           | 41FA 00DC
++00B4  0042F6  CLR.W      (A0)                                     | 4250
++00B6  0042F8  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 00AA
++00BA  0042FC  _Read      ,Immed              ; A202               | A202
++00BC  0042FE  LEA        Anon67+$0052,A0     ; 000043A4           | 41FA 00A4
++00C0  004302  _Close     ,Immed              ; A201               | A201
++00C2  004304  MOVE.L     Anon29+$013E,-(A7)  ; 00003072           | 2F3A ED6C
++00C6  004308  _SetPort                       ; A873               | A873
++00C8  00430A  PEA        Anon46+$005E        ; 00003BDC           | 487A F8D0
++00CC  00430E  _EraseRect                     ; A8A3               | A8A3
++00CE  004310  JSR        Anon31              ; 00003812           | 4EBA F500	lear four bytes
++00D2  004314  MOVE.W     current_room,D0     ; 000047B6           | 303A 04A0
++00D6  004318  JSR        Anon45              ; 00003AF6           | 4EBA F7DC
++00DA  00431C  JSR        Anon52+$0052        ; 00003EF2           | 4EBA FBD4
++00DE  004320  MOVEA.L    (A7)+,A6                                 | 2C5F
++00E0  004322  RTS                                                 | 4E75
+
+Anon66
++0000  004324  LEA        Anon67+$0068,A0     ; 000043BA           | 41FA 0094
++0004  004328  MOVE.W     Anon67+$000E,(A0)   ; 00004360           | 30BA 0036
++0008  00432C  LEA        Anon67+$009A,A0     ; 000043EC           | 41FA 00BE
++000C  004330  MOVE.W     Anon67+$000E,(A0)   ; 00004360           | 30BA 002E
++0010  004334  LEA        Anon67+$006C,A0     ; 000043BE           | 41FA 0088
++0014  004338  CLR.B      (A0)                                     | 4210
++0016  00433A  LEA        Anon67+$009E,A0     ; 000043F0           | 41FA 00B4
++001A  00433E  CLR.B      (A0)                                     | 4210
++001C  004340  LEA        Anon67+$0012,A0     ; 00004364           | 41FA 0022
++0020  004344  LEA        Anon67+$0064,A1     ; 000043B6           | 43FA 0070
++0024  004348  MOVE.L     A0,(A1)                                  | 2288
++0026  00434A  LEA        Anon67+$0096,A1     ; 000043E8           | 43FA 009C
++002A  00434E  MOVE.L     A0,(A1)                                  | 2288
++002C  004350  RTS                                                 | 4E75
+
+Anon67
+	see DATA

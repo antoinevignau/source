@@ -257,18 +257,20 @@ MAX_TRIES	=	16
 
 	ds	\
 
-doTEST	lda	#T2_DISP_ON
+doTEST	lda	#T2
+	sta	theTIMER
+
+	lda	#T2_DISP_ON
 	jsr	setT2DISPLAY
 
 	@printSTRING	#strSHADOWOFF
 	stz	theLOOP
-	lda	#T2
-	sta	theTIMER
 ]lp	jsr	resetTIMER
 	jsr	startTIMER	;           6 =   6 (rts)
 	jsr	doTRB	; 6 + 400 + 6 = 412 (jsr + nop + rts)
 	jsr	stopTIMER	;     6 +  13 =  19 (jsr + lda + ldx + sta)
 	jsr	printTIMER	;               ---
+*	jsr	waitFORKEY
 	inc	theLOOP
 	lda	theLOOP
 	cmp	#MAX_TRIES
@@ -276,17 +278,17 @@ doTEST	lda	#T2_DISP_ON
 
 	lda	SHADOW	; activate SHR shadowing
 	and	#%1111_0111
+*	lda	#%0000_0000
 	sta	SHADOW
 	
 	@printSTRING	#strSHADOWON
 	stz	theLOOP
-	lda	#T2
-	sta	theTIMER
 ]lp	jsr	resetTIMER
 	jsr	startTIMER	;           6 =   6 (rts)
 	jsr	doTRB	; 6 + 400 + 6 = 412 (jsr + nop + rts)
 	jsr	stopTIMER	;     6 +  13 =  19 (jsr + lda + ldx + sta)
 	jsr	printTIMER	;               ---
+*	jsr	waitFORKEY
 	inc	theLOOP
 	lda	theLOOP
 	cmp	#MAX_TRIES
@@ -331,6 +333,12 @@ resetTIMER2	sta	theTIMER
 resetTIMER	ldx	theSLOT16
 	lda	theTIMER
 	sta	$c080,x
+	
+*	lda	#0	; I know STZ ;-)
+*	sta	valTIMER
+*	sta	valTIMER+1
+*	sta	valTIMER+2
+*	sta	valTIMER+3
 	rts
 
 *------- Start TIMER

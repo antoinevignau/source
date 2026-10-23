@@ -491,7 +491,7 @@ proCREATEGAME
 	adrl	pGAME	; pathname
 	dw	$c3	; access_code
 	dw	$5d	; file_type
-	adrl	$802e	; aux_type
+	adrl	$802c	; aux_type
 	ds	2	; storage_type
 	ds	4	; eof
 	ds	4	; resource_eof

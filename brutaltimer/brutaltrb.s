@@ -18,7 +18,8 @@ WNDBTM	=	$23
 CH	=	$24
 CV	=	$25
 
-saveCYAREG	=	$fd
+saveNEWVIDEO	=	$fc
+saveCYAREG	=	saveNEWVIDEO+1
 saveSHADOW	=	saveCYAREG+1
 theLOOP	=	saveSHADOW+1
 
@@ -26,6 +27,9 @@ maxY	=	22
 
 KBD	=	$C000
 KBDSTROBE	=	$C010
+RDVBLBAR	=	$C019
+NEWVIDEO	=	$C029
+CLOCKCTL	=	$C034
 SHADOW	=	$C035
 CYAREG	=	$C036
 
@@ -71,10 +75,17 @@ TRUE	=	255
 
 *-------------- CODE
 
+	clc
+	xce
+	sep	#$30
+	
 	jsr	HOME
 	lda	#maxY	; last line for status
 	sta	WNDBTM
 	@printSTRING	#strHELLO
+
+	lda	NEWVIDEO	; save video mode
+	sta	saveNEWVIDEO
 
 	lda	SHADOW	; save shadowing mode
 	sta	saveSHADOW
@@ -95,6 +106,10 @@ loopTEST	@printSTRING	#strMENU
 	
 	lda	saveCYAREG	; restore speed
 	sta	CYAREG
+	
+	sec
+	xce
+	sep	#$30
 	jmp	INIT
 
 noTEST0	cmp	#"1"	; set slot
@@ -106,8 +121,12 @@ noTEST1	cmp	#"2"	; set frequency
 	jmp	doSETFREQ
 
 noTEST2	cmp	#"3"	; perform test
-	bne	loopTEST
+	bne	noTEST3
 	jmp	doTEST
+
+noTEST3	cmp	#"4"
+	bne	loopTEST
+	jmp	doBORDER
 	
 *-------------- READ KEY
 
@@ -263,6 +282,10 @@ doTEST	lda	#T2
 	lda	#T2_DISP_ON
 	jsr	setT2DISPLAY
 
+	lda	NEWVIDEO
+	ora	#%1100_0000
+	sta	NEWVIDEO
+
 	@printSTRING	#strSHADOWOFF
 	stz	theLOOP
 ]lp	jsr	resetTIMER
@@ -270,7 +293,6 @@ doTEST	lda	#T2
 	jsr	doTRB	; 6 + 400 + 6 = 412 (jsr + nop + rts)
 	jsr	stopTIMER	;     6 +  13 =  19 (jsr + lda + ldx + sta)
 	jsr	printTIMER	;               ---
-*	jsr	waitFORKEY
 	inc	theLOOP
 	lda	theLOOP
 	cmp	#MAX_TRIES
@@ -278,7 +300,6 @@ doTEST	lda	#T2
 
 	lda	SHADOW	; activate SHR shadowing
 	and	#%1111_0111
-*	lda	#%0000_0000
 	sta	SHADOW
 	
 	@printSTRING	#strSHADOWON
@@ -288,7 +309,6 @@ doTEST	lda	#T2
 	jsr	doTRB	; 6 + 400 + 6 = 412 (jsr + nop + rts)
 	jsr	stopTIMER	;     6 +  13 =  19 (jsr + lda + ldx + sta)
 	jsr	printTIMER	;               ---
-*	jsr	waitFORKEY
 	inc	theLOOP
 	lda	theLOOP
 	cmp	#MAX_TRIES
@@ -296,13 +316,82 @@ doTEST	lda	#T2
 
 	lda	saveSHADOW	; stop shadowing
 	sta	SHADOW
-
+	lda	saveNEWVIDEO
+	sta	NEWVIDEO
+	
 	lda	#T2_DISP_OFF
 	jsr	setT2DISPLAY
 
 	jsr	waitFORKEY	;               437
 	jmp	loopTEST
 
+*-------------- BORDER TEST
+
+	ds	\
+	
+doBORDER
+
+	lda	saveSHADOW
+	sta	SHADOW
+
+	lda	NEWVIDEO
+	ora	#%1100_0000
+	sta	NEWVIDEO
+
+doBORDER_1	lda	CLOCKCTL
+	and	#%1111_0000
+	ora	#%0000_0000
+	sta	CLOCKCTL
+	
+]lp	bit	RDVBLBAR
+	bmi	]lp
+]lp	bit	RDVBLBAR
+	bpl	]lp
+
+	lda	CLOCKCTL
+	and	#%1111_0000
+	ora	#%0000_1111
+	sta	CLOCKCTL
+	
+	jsr	doTRB
+	lda	KBD
+	bpl	doBORDER_1
+	bit	KBDSTROBE
+
+*---
+
+	lda	SHADOW
+	and	#%1111_0111
+	sta	SHADOW
+	
+doBORDER_2	lda	CLOCKCTL
+	and	#%1111_0000
+	ora	#%0000_0000
+	sta	CLOCKCTL
+	
+]lp	bit	RDVBLBAR
+	bmi	]lp
+]lp	bit	RDVBLBAR
+	bpl	]lp
+
+	lda	CLOCKCTL
+	and	#%1111_0000
+	ora	#%0000_1111
+	sta	CLOCKCTL
+	
+	jsr	doTRB
+	lda	KBD
+	bpl	doBORDER_2
+	bit	KBDSTROBE
+
+*---
+
+	lda	saveSHADOW
+	sta	SHADOW
+	lda	saveNEWVIDEO
+	sta	NEWVIDEO
+	jmp	loopTEST
+	
 *-------------- THE TEST
 
 	ds	\	; page aligned
@@ -510,7 +599,8 @@ strHELLO	asc	"Brutal Timer TRB Test v0.@"8d
 strMENU	asc	8d
 	asc	"1- Set slot (#)"8d
 	asc	"2- Set frequency"8d
-	asc	"3- Perform test"8d
+	asc	"3- TRB with Timer"8d
+	asc	"4- TRB with Border"8d
 	asc	"Select entry (0 to exit) > "00
 
 strSETSLOT	asc	8d

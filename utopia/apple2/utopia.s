@@ -316,11 +316,31 @@ doCONDITION_14
 	jsr	getACTIONBYTE	; get next byte
 
 doCONDITION_0
+	jmp	exit_ZERO
+
+*------------------
+* 01 - CONTINUE IF NOT DARK
+*------------------
+
 doCONDITION_1
+doCONDITION_4
+	lda	DARK
+	cmp	#FALSE
+	beq	doCONDITION_149
+	jmp	exit_ONE
+doCONDITION_149	jmp	exit_ZERO
+
+*------------------
+* 02 - CONTINUE IF DARK
+*------------------
+
 doCONDITION_2
 doCONDITION_3
-doCONDITION_4
+	lda	DARK
+	cmp	#FALSE
+	beq	doCONDITION_239
 	jmp	exit_ZERO
+doCONDITION_239	jmp	exit_ONE
 
 *------------------
 * 05 - CONTINUE IF I CARRY THE ITEM
@@ -1110,7 +1130,7 @@ doACTION_1D	jsr	checkObject	; 23
 	jsr	getACTIONBYTE	; 12
 	sep	#$20
 	sta	D2
-	sta	tblO-1,x	; move object
+	sta	tblO-1,x	; put object
 	rep	#$20
 
 * Shall we refresh?
@@ -1121,8 +1141,7 @@ doACTION_1D	jsr	checkObject	; 23
 	cmp	D1	; the old one
 	beq	doACTION_1D1	; yes, refresh
 	rts
-doACTION_1D1	rts
-	jmp	printROOM	; yes, refresh
+doACTION_1D1	jmp	printROOM	; yes, refresh
 
 *------------------
 * GET NEXT 2 BYTES

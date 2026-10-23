@@ -272,6 +272,14 @@ tblACTIONS
 	hex	0151072CA00F90B0
 	hex	0327A00F170F81B0
 	hex	0706071E0D31A0142F0F4F0F07B0
+* 0706	LOOK UP
+* 071E	if i am in room 1E
+* 0D31	if the object 31 ("opening") does not exist
+* A0	then
+* 142F	create object 2F ("hole")
+* 0F4F	print "I see"
+* 0F07	print "something"
+* B0
 	hex	164705390F0D0F0CA00F040F7F090AB0
 	hex	164705390F0DA00F04170DB0
 	hex	033307230527A00F04122B1D3720050D12200F40B0
@@ -296,11 +304,56 @@ tblACTIONS
 	hex	013E0948A01048B0
 	hex	013E0949A01049B0
 	hex	132B052BA00F040F30B0
+* 132B	TIE ROPE
+* 052B	if i carry item 2B ("rope")
+* A0	then
+* 0F04	print "OK"
+* 0F30	print "Where?"
+* B0
 	hex	143E052B0547A01D47FE152B1D44FF1D45FF0F04B0
+* 143E	TO BOLT
+* 052B	if i carry item 2B ("rope")
+* 0547	if i carry item 47 ("bolt")
+* A0	then
+* 1D47FE	put object 47 ("bolt") at status FE
+* 152B	delete object 2B ("rope")
+* 1D44FF	put object 44 ("rope tied to bolt") at status CARRIED
+* 1D45FF	put object 45 ("other end of rope") at status CARRIED
+* 0F04	print "OK"
+* B0
 	hex	143E052B0548A01D48FE152B1D44FF1D45FF0F04B0
+* 143E	TO BOLT
+* 052B	if i carry item 2B ("rope")
+* 0548	if i carry item 48 ("bolt")
+* A0	then
+* 1D48FE	put object 48 ("bolt") at status FE
+* 152B	delete object 2B ("rope")
+* 1D44FF	put object 44 ("rope tied to bolt") at status CARRIED
+* 1D45FF	put object 45 ("other end of rope") at status CARRIED
+* 0F04	print "OK"
+* B0
 	hex	143E052B0549A01D49FE152B1D44FF1D45FF0F04B0
+* 143E	TO BOLT
+* 052B	if i carry item 2B ("rope")
+* 0549	if i carry item 49 ("bolt")
+* A0	then
+* 1D49FE	put object 49 ("bolt") at status FE
+* 152B	delete object 2B ("rope")
+* 1D44FF	put object 44 ("rope tied to bolt") at status CARRIED
+* 1D45FF	put object 45 ("other end of rope") at status CARRIED
+* 0F04	print "OK"
+* B0
 	hex	192A05300544A01D44FE160B15301D55FF0F04B0
 	hex	192A05300547A015301D47FE1D55FF0F04B0
+* 192A	TIE CROSSBOW
+* 0530	if I carry object 30 ("crossbow")
+* 0547	if I carry object 47 ("bolt")
+* A0	then
+* 1530	delete object ("crossbow")
+* 1D47FE	put object 47 ("bolt") at status FE
+* 1D55FF	put object 55 ("loaded crossbow") at status CARRIED
+* 0F04	print "OK"
+* B0
 	hex	192A05300548A015301D48FE1D55FF0F04B0
 	hex	023E0544A011441445B0
 	hex	013E0944A01044B0

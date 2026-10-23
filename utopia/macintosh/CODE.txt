@@ -3876,7 +3876,7 @@ Anon15
 +0020  003984  _EraseRect                     ; A8A3               | A8A3
 +0022  003986  RTS                                                 | 4E75
 Anon16
-+0000  003988  MOVE.W     Unknown data+$045C,D6; 00004D50          | 3C3A 13C6
++0000  003988  MOVE.W     SALLE             ,D6; 00004D50          | 3C3A 13C6
 +0004  00398C  LEA        Unknown data+$0498,A3; 00004D8C          | 47FA 13FE
 +0008  003990  LEA        Anon24,A4           ; 00003C24           | 49FA 0292
 +000C  003994  MOVE.W     #$0060,D7                                | 3E3C 0060
@@ -3895,7 +3895,7 @@ Anon16
 +0032  0039BA  MOVE.B     #$7C,D3             ; '|'                | 163C 007C
 +0036  0039BE  MOVE.B     Anon44+$0002,D0     ; 00004290           | 103A 08D0
 +003A  0039C2  BNE.S      Anon16+$0046        ; 000039CE           | 660A
-+003C  0039C4  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 139B
++003C  0039C4  MOVE.B     DARK,D0             ; 00004D61           | 103A 139B
 +0040  0039C8  BNE.S      Anon17              ; 00003A12           | 6648
 +0042  0039CA  MOVE.B     #$20,D3             ; ' '                | 163C 0020
 +0046  0039CE  CLR.W      D7                                       | 4247
@@ -3986,7 +3986,7 @@ Anon20
 +0036  003AAC  MOVE.W     #$0004,-(A7)                             | 3F3C 0004
 +003A  003AB0  _TextFont                      ; A887               | A887
 +003C  003AB2  BRA.S      Anon20+$00B4        ; 00003B2A           | 6076
-+003E  003AB4  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 12AB
++003E  003AB4  MOVE.B     DARK,D0             ; 00004D61           | 103A 12AB
 +0042  003AB8  BEQ.S      Anon20+$0050        ; 00003AC6           | 670C
 +0044  003ABA  PEA        Unknown data+$00EE  ; 000049E2           | 487A 0F26
 +0048  003ABE  MOVE.L     #$00000024,-(A7)                         | 2F3C 0000 0024
@@ -4031,7 +4031,7 @@ Anon21
 +0008  003B3C  CLR.L      D5                                       | 4285
 +000A  003B3E  MOVE.W     #$0008,D0                                | 303C 0008
 +000E  003B42  JSR        Anon22+$000E        ; 00003B88           | 4EBA 0044
-+0012  003B46  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 1219
++0012  003B46  MOVE.B     DARK,D0             ; 00004D61           | 103A 1219
 +0016  003B4A  BNE.S      Anon21+$003C        ; 00003B70           | 6624
 +0018  003B4C  LEA        Anon24+$001E,A0     ; 00003C42           | 41FA 00F4
 +001C  003B50  LEA        Unknown data+$0466,A1; 00004D5A          | 43FA 1208
@@ -4062,7 +4062,7 @@ Anon22
 +0016  003B90  BNE.S      Anon22+$000E        ; 00003B88           | 66F6
 +0018  003B92  RTS                                                 | 4E75
 Anon23
-+0000  003B94  LEA        Unknown data+$045C,A6; 00004D50          | 4DFA 11BA
++0000  003B94  LEA        SALLE             ,A6; 00004D50          | 4DFA 11BA
 +0004  003B98  MOVE.W     D0,(A6)+                                 | 3CC0
 +0006  003B9A  LEA        Unknown data+$0556,A0; 00004E4A          | 41FA 12AE
 +000A  003B9E  ADD.W      D0,D0                                    | D040
@@ -4085,7 +4085,7 @@ Anon23
 +0034  003BC8  MOVE.W     #$0006,D0                                | 303C 0006
 +0038  003BCC  JSR        Anon22+$000E        ; 00003B88           | 4EBA FFBA
 +003C  003BD0  CLR.W      D7                                       | 4247
-+003E  003BD2  MOVE.W     Unknown data+$045C,D0; 00004D50          | 303A 117C
++003E  003BD2  MOVE.W     SALLE,D0            ; 00004D50          | 303A 117C
 +0042  003BD6  SUBQ.W     #$1,D0                                   | 5340
 +0044  003BD8  LEA        Unknown data+$04F8,A6; 00004DEC          | 4DFA 1212
 +0048  003BDC  MOVE.B     $00(A6,D0.W),D7                          | 1E36 0000
@@ -4109,45 +4109,92 @@ Anon23
 +007A  003C0E  BNE.S      Anon23+$0074        ; 00003C08           | 66F8
 +007C  003C10  _MaxMem                        ; A01D               | A01D
 +007E  003C12  MOVE.B     D7,$00(A4,D4.W)                          | 1987 4000
-+0082  003C16  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 1149
++0082  003C16  MOVE.B     DARK,D0             ; 00004D61           | 103A 1149
 +0086  003C1A  BNE.S      Anon23+$008E        ; 00003C22           | 6606
 +0088  003C1C  LEA        Anon24+$0024,A0     ; 00003C48           | 41FA 002A
 +008C  003C20  CLR.B      (A0)                                     | 4210
 +008E  003C22  RTS                                                 | 4E75
 Anon24
-+0000  003C24  ORI.B      #$00,D0                                  | 0000 0000
-+0004  003C28  ORI.B      #$00,D0                                  | 0000 0000
-+0008  003C2C  ORI.B      #$00,D0                                  | 0000 0000
-+000C  003C30  ORI.B      #$00,D0                                  | 0000 0000
-+0010  003C34  ORI.B      #$00,D0                                  | 0000 0000
-+0014  003C38  ORI.B      #$00,D0                                  | 0000 0000
-+0018  003C3C  ORI.B      #$00,D0                                  | 0000 0000
-+001C  003C40  ORI.B      #$4E53,D0           ; 'S'                | 0000 4E53
-+0020  003C44  DC.W       $4557               ; ????               | 4557
-+0022  003C46  SUBQ.W     #$2,D4                                   | 5544
-+0024  003C48  ORI.B      #$10,D0                                  | 0000 0010
-+0028  003C4C  ORI.B      #$0140,D3           ; '@'                | 0003 0140
-+002C  003C50  BTST       D0,D2                                    | 0102
-+002E  003C52  ORI.B      #$03,D0                                  | 0000 0003
-+0032  003C56  DC.W       $0130               ; ????               | 0130
-+0034  003C58  BTST       D0,D2                                    | 0102
-+0036  003C5A  ORI.B      #$00,D0                                  | 0000 0000
-+003A  003C5E  ORI.B      #$F9,-(A0)                               | 0020 00F9
-+003E  003C62  ORI.B      #$00,-(A0)                               | 0020 0000
-+0042  003C66  ORI.B      #$F9,$35(A3,D0.W)                        | 0033 00F9 0035
-+0048  003C6C  ORI.B      #$91,D2                                  | 0002 0091
-+004C  003C70  CMP2.B     $00(A7,D0.W),D0                          | 00F7 0093 0000
-+0052  003C76  ORI.L      #$00F90000,-(A3)                         | 00A3 00F9 0000
-+0058  003C7C  ORI.B      #$0130,D2           ; '0'                | 0002 0130
-+005C  003C80  BTST       D0,D0                                    | 0100
-+005E  003C82  ORI.B      #$02,D0                                  | 0000 0002
-+0062  003C86  BCHG       D0,D0                                    | 0140
-+0064  003C88  BTST       D0,D0                                    | 0100
-+0066  003C8A  ORI.B      #$00,D0                                  | 0000 0000
-+006A  003C8E  ORI.L      #$00F90000,(A4)                          | 0094 00F9 0000
-+0070  003C94  ORI.B      #$A9,D0                                  | 0000 00A9
-+0074  003C98  CMP2.B     $00000000,D0                             | 00F9 0000 0000 0000
-+007C  003CA0  ORI.B      #$00,D0                                  | 0000 0000
++0000  003C24  DC.B       $00                 ; '.'       formatted| 00
++0001  003C25  DC.B       $00                 ; '.'       formatted| 00
++0002  003C26  DC.B       $00                 ; '.'       formatted| 00
++0003  003C27  DC.B       $00                 ; '.'       formatted| 00
++0004  003C28  DC.B       $00                 ; '.'       formatted| 00
++0005  003C29  DC.B       $00                 ; '.'       formatted| 00
++0006  003C2A  DC.B       $00                 ; '.'       formatted| 00
++0007  003C2B  DC.B       $00                 ; '.'       formatted| 00
++0008  003C2C  DC.B       $00                 ; '.'       formatted| 00
++0009  003C2D  DC.B       $00                 ; '.'       formatted| 00
++000A  003C2E  DC.B       $00                 ; '.'       formatted| 00
++000B  003C2F  DC.B       $00                 ; '.'       formatted| 00
++000C  003C30  DC.B       $00                 ; '.'       formatted| 00
++000D  003C31  DC.B       $00                 ; '.'       formatted| 00
++000E  003C32  DC.B       $00                 ; '.'       formatted| 00
++000F  003C33  DC.B       $00                 ; '.'       formatted| 00
++0010  003C34  DC.B       $00                 ; '.'       formatted| 00
++0011  003C35  DC.B       $00                 ; '.'       formatted| 00
++0012  003C36  DC.B       $00                 ; '.'       formatted| 00
++0013  003C37  DC.B       $00                 ; '.'       formatted| 00
++0014  003C38  DC.B       $00                 ; '.'       formatted| 00
++0015  003C39  DC.B       $00                 ; '.'       formatted| 00
++0016  003C3A  DC.B       $00                 ; '.'       formatted| 00
++0017  003C3B  DC.B       $00                 ; '.'       formatted| 00
++0018  003C3C  DC.B       $00                 ; '.'       formatted| 00
++0019  003C3D  DC.B       $00                 ; '.'       formatted| 00
++001A  003C3E  DC.B       $00                 ; '.'       formatted| 00
++001B  003C3F  DC.B       $00                 ; '.'       formatted| 00
++001C  003C40  DC.B       $00                 ; '.'       formatted| 00
++001D  003C41  DC.B       $00                 ; '.'       formatted| 00
++001E  003C42  DC.W       $4E53               ; 'NS'      formatted| 4E53
++0020  003C44  DC.W       $4557               ; 'EW'      formatted| 4557
++0022  003C46  DC.W       $5544               ; 'UD'      formatted| 5544
++0024  003C48  DC.W       $0000               ; '..'      formatted| 0000
++0026  003C4A  DC.W       $0010               ; '..'      formatted| 0010
++0028  003C4C  DC.W       $0003               ; '..'      formatted| 0003
++002A  003C4E  DC.W       $0140               ; '.@'      formatted| 0140
++002C  003C50  DC.W       $0102               ; '..'      formatted| 0102
++002E  003C52  DC.W       $0000               ; '..'      formatted| 0000
++0030  003C54  DC.W       $0003               ; '..'      formatted| 0003
++0032  003C56  DC.W       $0130               ; '.0'      formatted| 0130
++0034  003C58  DC.W       $0102               ; '..'      formatted| 0102
++0036  003C5A  DC.W       $0000               ; '..'      formatted| 0000
++0038  003C5C  DC.W       $0000               ; '..'      formatted| 0000
++003A  003C5E  DC.W       $0020               ; '. '      formatted| 0020
++003C  003C60  DC.W       $00F9               ; '..'      formatted| 00F9
++003E  003C62  DC.W       $0020               ; '. '      formatted| 0020
++0040  003C64  DC.W       $0000               ; '..'      formatted| 0000
++0042  003C66  DC.W       $0033               ; '.3'      formatted| 0033
++0044  003C68  DC.W       $00F9               ; '..'      formatted| 00F9
++0046  003C6A  DC.W       $0035               ; '.5'      formatted| 0035
++0048  003C6C  DC.W       $0002               ; '..'      formatted| 0002
++004A  003C6E  DC.W       $0091               ; '..'      formatted| 0091
++004C  003C70  DC.W       $00F7               ; '..'      formatted| 00F7
++004E  003C72  DC.W       $0093               ; '..'      formatted| 0093
++0050  003C74  DC.W       $0000               ; '..'      formatted| 0000
++0052  003C76  DC.W       $00A3               ; '..'      formatted| 00A3
++0054  003C78  DC.W       $00F9               ; '..'      formatted| 00F9
++0056  003C7A  DC.W       $0000               ; '..'      formatted| 0000
++0058  003C7C  DC.W       $0002               ; '..'      formatted| 0002
++005A  003C7E  DC.W       $0130               ; '.0'      formatted| 0130
++005C  003C80  DC.W       $0100               ; '..'      formatted| 0100
++005E  003C82  DC.W       $0000               ; '..'      formatted| 0000
++0060  003C84  DC.W       $0002               ; '..'      formatted| 0002
++0062  003C86  DC.W       $0140               ; '.@'      formatted| 0140
++0064  003C88  DC.W       $0100               ; '..'      formatted| 0100
++0066  003C8A  DC.W       $0000               ; '..'      formatted| 0000
++0068  003C8C  DC.W       $0000               ; '..'      formatted| 0000
++006A  003C8E  DC.W       $0094               ; '..'      formatted| 0094
++006C  003C90  DC.W       $00F9               ; '..'      formatted| 00F9
++006E  003C92  DC.W       $0000               ; '..'      formatted| 0000
++0070  003C94  DC.W       $0000               ; '..'      formatted| 0000
++0072  003C96  DC.W       $00A9               ; '..'      formatted| 00A9
++0074  003C98  DC.W       $00F9               ; '..'      formatted| 00F9
++0076  003C9A  DC.W       $0000               ; '..'      formatted| 0000
++0078  003C9C  DC.W       $0000               ; '..'      formatted| 0000
++007A  003C9E  DC.W       $0000               ; '..'      formatted| 0000
++007C  003CA0  DC.W       $0000               ; '..'      formatted| 0000
++007E  003CA2  DC.W       $0000               ; '..'      formatted| 0000
+
 +0080  003CA4  JSR        Anon52              ; 00004576           | 4EBA 08D0
 +0084  003CA8  MOVEA.L    (A7)+,A0                                 | 205F
 +0086  003CAA  JMP        Anon30              ; 00003F76           | 4EFA 02CA
@@ -4175,7 +4222,7 @@ Anon24
 +00CE  003CF2  BRA.S      Anon24+$00EC        ; 00003D10           | 601C
 +00D0  003CF4  LEA        Unknown data+$0245,A4; 00004B39          | 49FA 0E43
 +00D4  003CF8  BRA.S      Anon24+$00EC        ; 00003D10           | 6016
-+00D6  003CFA  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 1065
++00D6  003CFA  MOVE.B     DARK,D0             ; 00004D61           | 103A 1065
 +00DA  003CFE  BEQ.S      Anon24+$00E8        ; 00003D0C           | 670C
 +00DC  003D00  LEA        Unknown data+$0293,A4; 00004B87          | 49FA 0E85
 +00E0  003D04  JSR        Anon12              ; 00003916           | 4EBA FC10
@@ -4217,17 +4264,33 @@ Anon24
 +014E  003D72  CMPI.B     #$00,D0                                  | 0C00 0000
 +0152  003D76  BEQ.S      Anon24+$013A        ; 00003D5E           | 67E6
 +0154  003D78  BRA.S      Anon24+$00FA        ; 00003D1E           | 60A4
-+0156  003D7A  ORI.B      #$90,D0                                  | 0000 0090
-+015A  003D7E  ORI.L      #$009C0090,(A4)+                         | 009C 009C 0090
-+0160  003D84  ORI.L      #$00B800C8,$00D8(A0)                     | 00A8 00B8 00C8 00D8
-+0168  003D8C  CMP2.B     -(A4),D0                                 | 00E4 00EE
-+016C  003D90  CMP2.B     Anon26+$001A,D0     ; 00003E9E           | 00FA 0102 010A
-+0172  003D96  BTST       D0,(A2)                                  | 0112
-+0174  003D98  BTST       D0,(A2)+                                 | 011A
-+0176  003D9A  BTST       D0,-(A2)                                 | 0122
-+0178  003D9C  ORI.L      #$008E008E,A6                            | 008E 008E 008E
-+017E  003DA2  ORI.L      #$012A0132,A6                            | 008E 012A 0132
-+0184  003DA8  BTST       D0,Anon28+$001C     ; 00003EEC           | 013A 0142
+
++0156  003D7A  DC.W       $0000               ; '..'      formatted| 0000  0 N/A
++0158  003D7C  DC.W       $0090               ; '..'      formatted| 0090  1 3E0A
++015A  003D7E  DC.W       $009C               ; '..'      formatted| 009C  2 3E16
++015C  003D80  DC.W       $009C               ; '..'      formatted| 009C  3 3E16
++015E  003D82  DC.W       $0090               ; '..'      formatted| 0090  4 3E0A
++0160  003D84  DC.W       $00A8               ; '..'      formatted| 00A8  5 3E22
++0162  003D86  DC.W       $00B8               ; '..'      formatted| 00B8  6 3E32
++0164  003D88  DC.W       $00C8               ; '..'      formatted| 00C8  7 3E42
++0166  003D8A  DC.W       $00D8               ; '..'      formatted| 00D8  8 3E52
++0168  003D8C  DC.W       $00E4               ; '..'      formatted| 00E4  9 3E5E
++016A  003D8E  DC.W       $00EE               ; '..'      formatted| 00EE  A 3E68
++016C  003D90  DC.W       $00FA               ; '..'      formatted| 00FA  B 3E74
++016E  003D92  DC.W       $0102               ; '..'      formatted| 0102  C 3E7C
++0170  003D94  DC.W       $010A               ; '..'      formatted| 010A  D 3E84
++0172  003D96  DC.W       $0112               ; '..'      formatted| 0112  E 3E8C
++0174  003D98  DC.W       $011A               ; '..'      formatted| 011A  F 3E94
++0176  003D9A  DC.W       $0122               ; '."'      formatted| 0122 10 3E9C
++0178  003D9C  DC.W       $008E               ; '..'      formatted| 008E 11 3E08
++017A  003D9E  DC.W       $008E               ; '..'      formatted| 008E 12 3E08
++017C  003DA0  DC.W       $008E               ; '..'      formatted| 008E 13 3E08
++017E  003DA2  DC.W       $008E               ; '..'      formatted| 008E 14 3E08
++0180  003DA4  DC.W       $012A               ; '.*'      formatted| 012A 15 3EA4
++0182  003DA6  DC.W       $0132               ; '.2'      formatted| 0132 16 3EAC
++0184  003DA8  DC.W       $013A               ; '.:'      formatted| 013A 17 3EB4
++0186  003DAA  DC.W       $0142               ; '.B'      formatted| 0142 18 3EBC
+
 +0188  003DAC  LEA        Anon24+$0156,A0     ; 00003D7A           | 41FA FFCC
 +018C  003DB0  MOVE.W     (A0),D0                                  | 3010
 +018E  003DB2  BNE        Anon2+$2B02         ; 00002BC8           | 6600 EE14
@@ -4259,74 +4322,138 @@ Anon24
 +01DC  003E00  CMPI.B     #$B0,D0                                  | 0C00 00B0
 +01E0  003E04  BNE.S      Anon24+$01DA        ; 00003DFE           | 66F8
 +01E2  003E06  BRA.S      Anon24+$01AE        ; 00003DD2           | 60CA
+
+* CONDITIONS 11/12/13/14
+
 +01E4  003E08  MOVE.B     (A6)+,D0                                 | 101E
-+01E6  003E0A  JSR        Anon41+$000E        ; 00004252           | 4EBA 0446
-+01EA  003E0E  BEQ        Anon26+$0040        ; 00003EC4           | 6700 00B4
-+01EE  003E12  JMP        Anon27              ; 00003EC8           | 4EFA 00B4
-+01F2  003E16  JSR        Anon41+$000E        ; 00004252           | 4EBA 043A
-+01F6  003E1A  BEQ        Anon27              ; 00003EC8           | 6700 00AC
-+01FA  003E1E  JMP        Anon26+$0040        ; 00003EC4           | 4EFA 00A4
-+01FE  003E22  JSR        Anon42+$000C        ; 00004266           | 4EBA 0442
+
+* CONDITIONS 1/4
+
++01E6  003E0A  JSR        getDarkByte         ; 00004252           | 4EBA 0446
++01EA  003E0E  BEQ        exit_ZERO           ; 00003EC4           | 6700 00B4
++01EE  003E12  JMP        exit_ONE            ; 00003EC8           | 4EFA 00B4
+
+* CONDITIONS 2/3
+
++01F2  003E16  JSR        getDarkByte         ; 00004252           | 4EBA 043A
++01F6  003E1A  BEQ        exit_ONE            ; 00003EC8           | 6700 00AC
++01FA  003E1E  JMP        exit_ZERO           ; 00003EC4           | 4EFA 00A4
+
+* CONDITION 5
+
++01FE  003E22  JSR        getFromObject       ; 00004266           | 4EBA 0442
 +0202  003E26  CMPI.B     #$FFFF,D1                                | 0C01 FFFF
-+0206  003E2A  BNE        Anon27              ; 00003EC8           | 6600 009C
-+020A  003E2E  JMP        Anon26+$0040        ; 00003EC4           | 4EFA 0094
-+020E  003E32  JSR        Anon42+$000C        ; 00004266           | 4EBA 0432
++0206  003E2A  BNE        exit_ONE            ; 00003EC8           | 6600 009C
++020A  003E2E  JMP        exit_ZERO           ; 00003EC4           | 4EFA 0094
+
+* CONDITION 6
+
++020E  003E32  JSR        getFromObject       ; 00004266           | 4EBA 0432
 +0212  003E36  CMPI.B     #$FFFF,D1                                | 0C01 FFFF
-+0216  003E3A  BNE        Anon26+$0040        ; 00003EC4           | 6600 0088
-+021A  003E3E  JMP        Anon27              ; 00003EC8           | 4EFA 0088
++0216  003E3A  BNE        exit_ZERO           ; 00003EC4           | 6600 0088
++021A  003E3E  JMP        exit_ONE            ; 00003EC8           | 4EFA 0088
+
+* CONDITION 7
+
 +021E  003E42  MOVE.B     (A6)+,D0                                 | 101E
-+0220  003E44  MOVE.W     Unknown data+$045C,D1; 00004D50          | 323A 0F0A
++0220  003E44  MOVE.W     SALLE,D1            ; 00004D50          | 323A 0F0A
 +0224  003E48  CMP.B      D0,D1                                    | B200
-+0226  003E4A  BNE        Anon27              ; 00003EC8           | 6600 007C
-+022A  003E4E  JMP        Anon26+$0040        ; 00003EC4           | 4EFA 0074
++0226  003E4A  BNE        exit_ONE            ; 00003EC8           | 6600 007C
++022A  003E4E  JMP        exit_ZERO           ; 00003EC4           | 4EFA 0074
+
+* CONDITION 8 
+
 +022E  003E52  MOVE.B     (A6)+,D0                                 | 101E
-+0230  003E54  MOVE.W     Unknown data+$045C,D1; 00004D50          | 323A 0EFA
++0230  003E54  MOVE.W     SALLE,D1            ; 00004D50          | 323A 0EFA
 +0234  003E58  CMP.B      D0,D1                                    | B200
-+0236  003E5A  BNE.S      Anon26+$0040        ; 00003EC4           | 6668
-+0238  003E5C  BRA.S      Anon27              ; 00003EC8           | 606A
-+023A  003E5E  JSR        Anon42+$000C        ; 00004266           | 4EBA 0406
-+023E  003E62  MOVE.W     Unknown data+$045C,D0; 00004D50          | 303A 0EEC
++0236  003E5A  BNE.S      exit_ZERO           ; 00003EC4           | 6668
++0238  003E5C  BRA.S      exit_ONE            ; 00003EC8           | 606A
+
+* CONDITION 9
+
++023A  003E5E  JSR        getFromObject       ; 00004266           | 4EBA 0406
++023E  003E62  MOVE.W     SALLE,D0            ; 00004D50          | 303A 0EEC
 +0242  003E66  BRA.S      Anon24+$0224        ; 00003E48           | 60E0
-+0244  003E68  JSR        Anon42+$000C        ; 00004266           | 4EBA 03FC
-+0248  003E6C  MOVE.W     Unknown data+$045C,D0; 00004D50          | 303A 0EE2
+
+* CONDITION A
+
++0244  003E68  JSR        getFromObject       ; 00004266           | 4EBA 03FC
++0248  003E6C  MOVE.W     SALLE,D0            ; 00004D50          | 303A 0EE2
 +024C  003E70  JMP        Anon24+$0234        ; 00003E58           | 4EFA FFE6
+
+* CONDITION B
+
 +0250  003E74  JSR        Anon24+$023A        ; 00003E5E           | 4EBA FFE8
 +0254  003E78  BNE.S      Anon24+$0202        ; 00003E26           | 66AC
 +0256  003E7A  RTS                                                 | 4E75
+
+* CONDITION C
+
 Anon25
 +0000  003E7C  JSR        Anon24+$0244        ; 00003E68           | 4EBA FFEA
 +0004  003E80  BNE.S      Anon24+$0202        ; 00003E26           | 66A4
 +0006  003E82  RTS                                                 | 4E75
+
+* CONDITION D
+
 Anon26
-+0000  003E84  JSR        Anon42+$000C        ; 00004266           | 4EBA 03E0
-+0004  003E88  BNE.S      Anon27              ; 00003EC8           | 663E
-+0006  003E8A  BRA.S      Anon26+$0040        ; 00003EC4           | 6038
-+0008  003E8C  JSR        Anon42+$000C        ; 00004266           | 4EBA 03D8
-+000C  003E90  BNE.S      Anon26+$0040        ; 00003EC4           | 6632
-+000E  003E92  BRA.S      Anon27              ; 00003EC8           | 6034
++0000  003E84  JSR        getFromObject       ; 00004266           | 4EBA 03E0
++0004  003E88  BNE.S      exit_ONE            ; 00003EC8           | 663E
++0006  003E8A  BRA.S      exit_ZERO           ; 00003EC4           | 6038
+
+* CONDITION E
+
++0008  003E8C  JSR        getFromObject       ; 00004266           | 4EBA 03D8
++000C  003E90  BNE.S      exit_ZERO           ; 00003EC4           | 6632
++000E  003E92  BRA.S      exit_ONE            ; 00003EC8           | 6034
+
+* CONDITION F
+
 +0010  003E94  JSR        Anon43+$000A        ; 00004280           | 4EBA 03EA
-+0014  003E98  BNE.S      Anon26+$0040        ; 00003EC4           | 662A
-+0016  003E9A  BRA.S      Anon27              ; 00003EC8           | 602C
++0014  003E98  BNE.S      exit_ZERO           ; 00003EC4           | 662A
++0016  003E9A  BRA.S      exit_ONE            ; 00003EC8           | 602C
+
+* CONDITION 10
+
 +0018  003E9C  JSR        Anon43+$000A        ; 00004280           | 4EBA 03E2
-+001C  003EA0  BNE.S      Anon27              ; 00003EC8           | 6626
-+001E  003EA2  BRA.S      Anon26+$0040        ; 00003EC4           | 6020
-+0020  003EA4  JSR        Anon42+$000C        ; 00004266           | 4EBA 03C0
++001C  003EA0  BNE.S      exit_ONE            ; 00003EC8           | 6626
++001E  003EA2  BRA.S      exit_ZERO           ; 00003EC4           | 6020
+
+* CONDITION 15
+
++0020  003EA4  JSR        getFromObject       ; 00004266           | 4EBA 03C0
 +0024  003EA8  MOVE.B     (A6)+,D0                                 | 101E
 +0026  003EAA  BRA.S      Anon24+$0224        ; 00003E48           | 609C
-+0028  003EAC  JSR        Anon42+$000C        ; 00004266           | 4EBA 03B8
+
+* CONDITION 16
+
++0028  003EAC  JSR        getFromObject       ; 00004266           | 4EBA 03B8
 +002C  003EB0  MOVE.B     (A6)+,D0                                 | 101E
 +002E  003EB2  BRA.S      Anon24+$0234        ; 00003E58           | 60A4
+
+* CONDITION 17
+
 +0030  003EB4  JSR        Anon43              ; 00004276           | 4EBA 03C0
 +0034  003EB8  MOVE.B     (A6)+,D0                                 | 101E
 +0036  003EBA  BRA.S      Anon24+$0224        ; 00003E48           | 608C
+
+* CONDITION 18
+
 +0038  003EBC  JSR        Anon43              ; 00004276           | 4EBA 03B8
 +003C  003EC0  MOVE.B     (A6)+,D0                                 | 101E
 +003E  003EC2  BRA.S      Anon24+$0234        ; 00003E58           | 6094
+
+exit_ZERO
+
 +0040  003EC4  CLR.L      D0                                       | 4280
 +0042  003EC6  RTS                                                 | 4E75
+
+exit_ONE
+
 Anon27
 +0000  003EC8  MOVE.L     #$00000001,D0                            | 203C 0000 0001
 +0006  003ECE  RTS                                                 | 4E75
+
 Anon28
 +0000  003ED0  MOVE.W     (A7)+,D0                                 | 301F
 +0002  003ED2  BEQ        Anon7               ; 000030B4           | 6700 F1E0
@@ -4339,24 +4466,43 @@ Anon28
 +0018  003EE8  MOVE.W     Anon28+$0022(D0.W),D0; 00003EF2          | 303B 0008
 +001C  003EEC  JSR        Anon28+$0022(D0.W)  ; 00003EF2           | 4EBB 0004
 +0020  003EF0  BRA.S      Anon28+$000A        ; 00003EDA           | 60E8
-+0022  003EF2  ORI.B      #$64,D0             ; 'd'                | 0000 0064
-+0026  003EF6  ORI.W      #$0062,$009C(A2)                         | 006A 0062 009C
-+002C  003EFC  CMP2.B     $00F4(A2),D0                             | 00EA 00F0 00F4
-+0032  003F02  BCHG       D0,(A6)                                  | 0156
-+0034  003F04  BCHG       D0,(A2)+                                 | 015A
-+0036  003F06  DC.W       $0170               ; ????               | 0170
-+0038  003F08  BCLR       D0,($01BE0060,ZA4,D0.W)                  | 01B4 01B8 01BE 0060
-+0040  003F10  BSET       D0,(A4)                                  | 01D4
-+0042  003F12  BSET       D0,(A4)+                                 | 01DC
-+0044  003F14  ANDI.B     #$026A,CCR          ; 'j'                | 023C 026A
-+0048  003F18  ANDI.L     #$02A802B8,A6                            | 028E 02A8 02B8
-+004E  003F1E  CMP2.W     A6,D0                                    | 02CE 02D8
-+0052  003F22  ORI.W      #$0060,-(A0)                             | 0060 0060
-+0056  003F26  ORI.W      #$0060,-(A0)                             | 0060 0060
-+005A  003F2A  ORI.W      #$02E4,-(A0)                             | 0060 02E4
-+005E  003F2E  ORI.W      #$0300,(A6)+                             | 005E 0300
-+0062  003F32  BTST       D1,$0344(A0)                             | 0328 0344
-+0066  003F36  BCHG       D1,(A2)                                  | 0352
+
++0022  003EF2  DC.W       $0000               ; '..'      formatted| 0000 00 3EF2 N/A
++0024  003EF4  DC.W       $0064               ; '.d'      formatted| 0064 01 3F56 
++0026  003EF6  DC.W       $006A               ; '.j'      formatted| 006A 02 3F5C 
++0028  003EF8  DC.W       $0062               ; '.b'      formatted| 0062 03 3F54 return
++002A  003EFA  DC.W       $009C               ; '..'      formatted| 009C 04 3F8E 
++002C  003EFC  DC.W       $00EA               ; '..'      formatted| 00EA 05 3FDC 
++002E  003EFE  DC.W       $00F0               ; '..'      formatted| 00F0 06 3FE2 
++0030  003F00  DC.W       $00F4               ; '..'      formatted| 00F4 07 3FE6 
++0032  003F02  DC.W       $0156               ; '.V'      formatted| 0156 08 4048 
++0034  003F04  DC.W       $015A               ; '.Z'      formatted| 015A 09 404C 
++0036  003F06  DC.W       $0170               ; '.p'      formatted| 0170 0A 4062 
++0038  003F08  DC.W       $01B4               ; '..'      formatted| 01B4 0B 40A6 
++003A  003F0A  DC.W       $01B8               ; '..'      formatted| 01B8 0C 40AA 
++003C  003F0C  DC.W       $01BE               ; '..'      formatted| 01BE 0D 40B0 
++003E  003F0E  DC.W       $0060               ; '.`'      formatted| 0060 0E 3F52 getNextByte
++0040  003F10  DC.W       $01D4               ; '..'      formatted| 01D4 0F 40C6 
++0042  003F12  DC.W       $01DC               ; '..'      formatted| 01DC 10 40CE 
++0044  003F14  DC.W       $023C               ; '.<'      formatted| 023C 11 412E 
++0046  003F16  DC.W       $026A               ; '.j'      formatted| 026A 12 415C 
++0048  003F18  DC.W       $028E               ; '..'      formatted| 028E 13 4180 
++004A  003F1A  DC.W       $02A8               ; '..'      formatted| 02A8 14 419A 
++004C  003F1C  DC.W       $02B8               ; '..'      formatted| 02B8 15 41AA delete object
++004E  003F1E  DC.W       $02CE               ; '..'      formatted| 02CE 16 41C0 set P2 flag to one
++0050  003F20  DC.W       $02D8               ; '..'      formatted| 02D8 17 41CA set P2 flag to zero
++0052  003F22  DC.W       $0060               ; '.`'      formatted| 0060 18 3F52 getNextByte
++0054  003F24  DC.W       $0060               ; '.`'      formatted| 0060 19 3F52 getNextByte
++0056  003F26  DC.W       $0060               ; '.`'      formatted| 0060 1A 3F52 getNextByte
++0058  003F28  DC.W       $0060               ; '.`'      formatted| 0060 1B 3F52 getNextByte
++005A  003F2A  DC.W       $0060               ; '.`'      formatted| 0060 1C 3F52 getNextByte
++005C  003F2C  DC.W       $02E4               ; '..'      formatted| 02E4 1D 41D6 put object and refresh
++005E  003F2E  DC.W       $005E               ; '.^'      formatted| 005E 1E 3F50 getNext2Bytes
++0060  003F30  DC.W       $0300               ; '..'      formatted| 0300 1F 41F2 
++0062  003F32  DC.W       $0328               ; '.('      formatted| 0328 20 421A 
++0064  003F34  DC.W       $0344               ; '.D'      formatted| 0344 21 4236 
++0066  003F36  DC.W       $0352               ; '.R'      formatted| 0352 22 4244 
+
 +0068  003F38  CLR.W      D0                                       | 4240
 +006A  003F3A  MOVE.B     (A6)+,D0                                 | 101E
 +006C  003F3C  CMPI.B     #$B0,D0                                  | 0C00 00B0
@@ -4393,11 +4539,12 @@ Anon31
 +0000  003F8E  MOVE.L     A6,-(A7)                                 | 2F0E
 +0002  003F90  MOVE.W     Anon47+$000C,D0     ; 000042F4           | 303A 0362
 +0006  003F94  BNE        Anon2+$2B02         ; 00002BC8           | 6600 EC32
-+000A  003F98  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 0DC7
++000A  003F98  MOVE.B     DARK,D0             ; 00004D61           | 103A 0DC7
 +000E  003F9C  TST.B      D0                                       | 4A00
 +0010  003F9E  BEQ.S      Anon31+$0018        ; 00003FA6           | 6706
 +0012  003FA0  LEA        Unknown data+$017D,A4; 00004A71          | 49FA 0ACF
 +0016  003FA4  BRA.S      Anon31+$0048        ; 00003FD6           | 6030
+
 +0018  003FA6  LEA        Anon44+$0002,A2     ; 00004290           | 45FA 02E8
 +001C  003FAA  MOVE.B     #$01,(A2)                                | 14BC 0001
 +0020  003FAE  MOVE.W     #$FFFF,D6                                | 3C3C FFFF
@@ -4411,15 +4558,23 @@ Anon31
 +003C  003FCA  MOVE.W     D7,D5                                    | 3A07
 +003E  003FCC  JSR        Anon12+$0004        ; 0000391A           | 4EBA F94C
 +0042  003FD0  BRA.S      Anon29+$001C        ; 00003F72           | 60A0
+
 +0044  003FD2  LEA        Unknown data+$0302,A4; 00004BF6          | 49FA 0C22
 +0048  003FD6  JSR        Anon12              ; 00003916           | 4EBA F93E
 +004C  003FDA  BRA.S      Anon29+$001C        ; 00003F72           | 6096
+
 +004E  003FDC  JSR        Anon20+$0004        ; 00003A7A           | 4EBA FA9C
 +0052  003FE0  BRA.S      Anon32+$003C        ; 00004040           | 605E
+
+* ACTION 6
+
 +0054  003FE2  CLR.W      D0                                       | 4240
 +0056  003FE4  BRA.S      Anon31+$005C        ; 00003FEA           | 6004
+
+* ACTION 7
+
 +0058  003FE6  MOVE.W     #$FFFF,D0                                | 303C FFFF
-+005C  003FEA  LEA        Unknown data+$046D,A0; 00004D61          | 41FA 0D75
++005C  003FEA  LEA        DARK,A0             ; 00004D61           | 41FA 0D75
 +0060  003FEE  MOVE.B     (A0),D1                                  | 1210
 +0062  003FF0  CMP.B      D0,D1                                    | B200
 +0064  003FF2  BEQ.S      Anon31+$006E        ; 00003FFC           | 6708
@@ -4434,7 +4589,7 @@ Anon32
 +0004  004008  MOVE.B     #$FFFF,(A0)                              | 10BC FFFF
 +0008  00400C  MOVE.L     Anon7+$0066,-(A7)   ; 0000311A           | 2F3A F10C
 +000C  004010  _SetPort                       ; A873               | A873
-+000E  004012  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 0D4D
++000E  004012  MOVE.B     DARK,D0             ; 00004D61           | 103A 0D4D
 +0012  004016  BEQ.S      Anon32+$001C        ; 00004020           | 6708
 +0014  004018  PEA        Anon24+$0066        ; 00003C8A           | 487A FC70
 +0018  00401C  _PaintRect                     ; A8A2               | A8A2
@@ -4495,13 +4650,13 @@ Anon34
 +0000  0040C6  CLR.W      D0                                       | 4240
 +0002  0040C8  MOVE.B     (A6)+,D0                                 | 101E
 +0004  0040CA  JMP        Anon11              ; 000038D8           | 4EFA F80C
-+0008  0040CE  JSR        Anon42+$000C        ; 00004266           | 4EBA 0196
++0008  0040CE  JSR        getFromObject       ; 00004266           | 4EBA 0196
 +000C  0040D2  MOVE.L     A6,-(A7)                                 | 2F0E
 +000E  0040D4  CMPI.B     #$FFFF,D1                                | 0C01 FFFF
 +0012  0040D8  BNE.S      Anon34+$001C        ; 000040E2           | 6608
 +0014  0040DA  LEA        Unknown data+$01DD,A4; 00004AD1          | 49FA 09F5
 +0018  0040DE  JMP        Anon31+$0048        ; 00003FD6           | 4EFA FEF6
-+001C  0040E2  MOVE.W     Unknown data+$045C,D2; 00004D50          | 343A 0C6C
++001C  0040E2  MOVE.W     SALLE             ,D2; 00004D50          | 343A 0C6C
 +0020  0040E6  CMP.B      D1,D2                                    | B401
 +0022  0040E8  BEQ.S      Anon34+$002C        ; 000040F2           | 6708
 +0024  0040EA  LEA        Unknown data+$01C6,A4; 00004ABA          | 49FA 09CE
@@ -4524,9 +4679,9 @@ Anon34
 +005C  004122  JSR        Anon12              ; 00003916           | 4EBA F7F2
 +0060  004126  JSR        Anon20+$0004        ; 00003A7A           | 4EBA F952
 +0064  00412A  JMP        Anon29+$001C        ; 00003F72           | 4EFA FE46
-+0068  00412E  JSR        Anon42+$000C        ; 00004266           | 4EBA 0136
++0068  00412E  JSR        getFromObject       ; 00004266           | 4EBA 0136
 +006C  004132  MOVE.L     A6,-(A7)                                 | 2F0E
-+006E  004134  MOVE.W     Unknown data+$045C,D2; 00004D50          | 343A 0C1A
++006E  004134  MOVE.W     SALLE             ,D2; 00004D50          | 343A 0C1A
 +0072  004138  CMP.B      D2,D1                                    | B202
 +0074  00413A  BNE.S      Anon34+$007E        ; 00004144           | 6608
 +0076  00413C  LEA        Unknown data+$0339,A4; 00004C2D          | 49FA 0AEF
@@ -4535,7 +4690,7 @@ Anon34
 +0082  004148  BEQ.S      Anon34+$008C        ; 00004152           | 6708
 +0084  00414A  LEA        Unknown data+$0313,A4; 00004C07          | 49FA 0ABB
 +0088  00414E  JMP        Anon31+$0048        ; 00003FD6           | 4EFA FE86
-+008C  004152  MOVE.W     Unknown data+$045C,D2; 00004D50          | 343A 0BFC
++008C  004152  MOVE.W     SALLE             ,D2; 00004D50          | 343A 0BFC
 +0090  004156  MOVE.B     D2,$00(A0,D0.W)                          | 1182 0000
 +0094  00415A  BRA.S      Anon34+$0058        ; 0000411E           | 60C2
 +0096  00415C  MOVE.W     Anon47+$000C,D0     ; 000042F4           | 303A 0196
@@ -4545,7 +4700,7 @@ Anon34
 +00A2  004168  MOVE.L     A6,-(A7)                                 | 2F0E
 +00A4  00416A  JSR        Anon23              ; 00003B94           | 4EBA FA28
 +00A8  00416E  MOVEA.L    (A7)+,A6                                 | 2C5F
-+00AA  004170  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 0BEF
++00AA  004170  MOVE.B     DARK,D0             ; 00004D61           | 103A 0BEF
 +00AE  004174  BEQ.S      Anon34+$00B8        ; 0000417E           | 6708
 +00B0  004176  LEA        Unknown data+$0272,A4; 00004B66          | 49FA 09EE
 +00B4  00417A  JSR        Anon12              ; 00003916           | 4EBA F79A
@@ -4560,43 +4715,55 @@ Anon35
 +0010  004190  _DECSTR68K                     ; A9EE               | A9EE
 +0012  004192  LEA        Anon7+$059A,A4      ; 0000364E           | 49FA F4BA
 +0016  004196  JMP        Anon31+$0048        ; 00003FD6           | 4EFA FE3E
-+001A  00419A  JSR        Anon42+$000C        ; 00004266           | 4EBA 00CA
-+001E  00419E  MOVE.W     Unknown data+$045C,D1; 00004D50          | 323A 0BB0
++001A  00419A  JSR        getFromObject       ; 00004266           | 4EBA 00CA
++001E  00419E  MOVE.W     SALLE,D1            ; 00004D50           | 323A 0BB0
 +0022  0041A2  MOVE.B     D1,$00(A0,D0.W)                          | 1181 0000
 +0026  0041A6  JMP        Anon31+$004E        ; 00003FDC           | 4EFA FE34
-+002A  0041AA  JSR        Anon42+$000C        ; 00004266           | 4EBA 00BA
+
+* ACTION 15 - DELETE OBJECT
+
++002A  0041AA  JSR        getFromObject       ; 00004266           | 4EBA 00BA
 +002E  0041AE  MOVE.B     #$00,$00(A0,D0.W)                        | 11BC 0000 0000
-+0034  0041B4  MOVE.W     Unknown data+$045C,D2; 00004D50          | 343A 0B9A
++0034  0041B4  MOVE.W     SALLE             ,D2; 00004D50          | 343A 0B9A
 +0038  0041B8  CMP.B      D1,D2                                    | B401
 +003A  0041BA  BEQ        Anon31+$004E        ; 00003FDC           | 6700 FE20
 +003E  0041BE  RTS                                                 | 4E75
 Anon36
+
+* ACTION 16 - SET P2 FLAG TO ONE
+
 +0000  0041C0  JSR        Anon43+$000A        ; 00004280           | 4EBA 00BE
 +0004  0041C4  MOVE.B     #$01,D2                                  | 143C 0001
 +0008  0041C8  BRA.S      Anon36+$0010        ; 000041D0           | 6006
+
+* ACTION 17 - SET P2 FLAG TO ZERO
+
 +000A  0041CA  JSR        Anon43+$000A        ; 00004280           | 4EBA 00B4
 +000E  0041CE  CLR.B      D2                                       | 4202
 +0010  0041D0  MOVE.B     D2,$00(A0,D0.W)                          | 1182 0000
 +0014  0041D4  RTS                                                 | 4E75
+
+* ACTION 1D - CREATE OBJECT AND REFRESH
+
 Anon37
-+0000  0041D6  JSR        Anon42+$000C        ; 00004266           | 4EBA 008E
++0000  0041D6  JSR        getFromObject       ; 00004266           | 4EBA 008E
 +0004  0041DA  MOVE.B     (A6)+,D2                                 | 141E
 +0006  0041DC  MOVE.B     D2,$00(A0,D0.W)                          | 1182 0000
-+000A  0041E0  MOVE.W     Unknown data+$045C,D0; 00004D50          | 303A 0B6E
++000A  0041E0  MOVE.W     SALLE,D0            ; 00004D50           | 303A 0B6E
 +000E  0041E4  CMP.B      D0,D2                                    | B400
 +0010  0041E6  BEQ        Anon31+$004E        ; 00003FDC           | 6700 FDF4
 +0014  0041EA  CMP.B      D0,D1                                    | B200
 +0016  0041EC  BEQ        Anon31+$004E        ; 00003FDC           | 6700 FDEE
 +001A  0041F0  RTS                                                 | 4E75
 Anon38
-+0000  0041F2  JSR        Anon42+$000C        ; 00004266           | 4EBA 0072
++0000  0041F2  JSR        getFromObject       ; 00004266           | 4EBA 0072
 +0004  0041F6  MOVEA.L    A0,A1                                    | 2248
 +0006  0041F8  MOVE.W     D0,D2                                    | 3400
 +0008  0041FA  MOVE.B     D1,D3                                    | 1601
-+000A  0041FC  JSR        Anon42+$000C        ; 00004266           | 4EBA 0068
++000A  0041FC  JSR        getFromObject       ; 00004266           | 4EBA 0068
 +000E  004200  MOVE.B     D3,$00(A0,D0.W)                          | 1183 0000
 +0012  004204  MOVE.B     D1,$00(A1,D2.W)                          | 1381 2000
-+0016  004208  MOVE.W     Unknown data+$045C,D2; 00004D50          | 343A 0B46
++0016  004208  MOVE.W     SALLE             ,D2; 00004D50          | 343A 0B46
 +001A  00420C  CMP.B      D2,D3                                    | B602
 +001C  00420E  BEQ        Anon31+$004E        ; 00003FDC           | 6700 FDCC
 +0020  004212  CMP.B      D2,D1                                    | B202
@@ -4606,7 +4773,7 @@ Anon39
 +0000  00421A  CLR.W      D0                                       | 4240
 +0002  00421C  MOVE.B     (A6)+,D0                                 | 101E
 +0004  00421E  SUBQ.W     #$1,D0                                   | 5340
-+0006  004220  LEA        Unknown data+$04F8,A1; 00004DEC          | 43FA 0BCA
++0006  004220  LEA        Unknown data+$04F8,A1; 00004DEC          | 43FA 0BCA	getFromRoom
 +000A  004224  MOVE.B     (A6)+,$00(A1,D0.W)                       | 139E 0000
 +000E  004228  MOVE.L     A6,-(A7)                                 | 2F0E
 +0010  00422A  JSR        Anon23+$003C        ; 00003BD0           | 4EBA F9A4
@@ -4626,27 +4793,33 @@ Anon41
 +0008  00424C  BGE.S      Anon40+$0008        ; 0000423E           | 6CF0
 +000A  00424E  CLR.B      D1                                       | 4201
 +000C  004250  BRA.S      Anon40+$0008        ; 0000423E           | 60EC
-+000E  004252  MOVE.B     Unknown data+$046D,D0; 00004D61          | 103A 0B0D
+
+* GET DARK VALUE
+
++000E  004252  MOVE.B     DARK,D0             ; 00004D61           | 103A 0B0D	getDarkByte
 +0012  004256  TST.B      D0                                       | 4A00
 +0014  004258  RTS                                                 | 4E75
+
 Anon42
 +0000  00425A  MOVE.W     #$0002,-(A7)                             | 3F3C 0002
 +0004  00425E  JSR        Anon44+$0004        ; 00004292           | 4EBA 0032
 +0008  004262  JMP        Anon6+$0066         ; 00003002           | 4EFA ED9E
-+000C  004266  LEA        Unknown data+$0498,A0; 00004D8C          | 41FA 0B24
+
++000C  004266  LEA        Unknown data+$0498,A0; 00004D8C          | 41FA 0B24	getFromObject
 +0010  00426A  CLR.W      D0                                       | 4240
 +0012  00426C  MOVE.B     (A6)+,D0                                 | 101E
 +0014  00426E  SUBQ.W     #$1,D0                                   | 5340
 +0016  004270  MOVE.B     $00(A0,D0.W),D1                          | 1230 0000
 +001A  004274  RTS                                                 | 4E75
 Anon43
-+0000  004276  LEA        Unknown data+$046E,A0; 00004D62          | 41FA 0AEA
++0000  004276  LEA        Unknown data+$046E,A0; 00004D62          | 41FA 0AEA	getFromP1
 +0004  00427A  CLR.W      D0                                       | 4240
 +0006  00427C  MOVE.B     (A6)+,D0                                 | 101E
 +0008  00427E  BRA.S      Anon42+$0016        ; 00004270           | 60F0
+
 +000A  004280  CLR.W      D0                                       | 4240
 +000C  004282  MOVE.B     (A6)+,D0                                 | 101E
-+000E  004284  LEA        Unknown data+$0478,A0; 00004D6C          | 41FA 0AE6
++000E  004284  LEA        Unknown data+$0478,A0; 00004D6C          | 41FA 0AE6	getFromP2
 +0012  004288  MOVE.B     $00(A0,D0.W),D1                          | 1230 0000
 +0016  00428C  RTS                                                 | 4E75
 Anon44
@@ -4860,7 +5033,7 @@ Anon49
 +0080  00451C  PEA        Anon24+$005E        ; 00003C82           | 487A F764
 +0084  004520  _EraseRect                     ; A8A3               | A8A3
 +0086  004522  JSR        Anon9+$0082         ; 000038B8           | 4EBA F394
-+008A  004526  MOVE.W     Unknown data+$045C,D0; 00004D50          | 303A 0828
++008A  004526  MOVE.W     SALLE,D0            ; 00004D50          | 303A 0828
 +008E  00452A  JSR        Anon23              ; 00003B94           | 4EBA F668
 +0092  00452E  JSR        Anon31+$0068        ; 00003FF6           | 4EBA FAC6
 +0096  004532  MOVEA.L    (A7)+,A6                                 | 2C5F

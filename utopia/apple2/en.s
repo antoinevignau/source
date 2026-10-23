@@ -60,7 +60,7 @@ strSAVEGAME	asc	0d'Save game (slot 1-9)? '00	; ** new ** save game (slot 1-9)?
 tblN	dfb	00
 	dfb	01,02,03,04,05,06,07,08,09,09,10,11,12,12,13,13	
 	dfb	14,15,16,17,17,18,19,20,21,22,23,24,24,25,26,27
-	dfb	28,29,20,30,31,31,32,33,34,35,36,36,37,38,39,40
+	dfb	28,29,29,30,31,31,32,33,34,35,36,36,37,38,39,40
 	dfb	41,42,43,44,44,45,46,47,48,49,49,50,51,52,53,53
 	dfb	54,55,55,56,57,58,59,60,61,62,63,63,64,64,65,65
 	dfb	66,67,68,69,69,70,71,71,72,73,74,75,76,77,78,78
@@ -301,7 +301,7 @@ tblTEXTS
 	asc	'\Button Glows Bright'
 	asc	'\Red.'
 	asc	'\Green.'
-	asc	'\-CLICK-'
+	asc	'\-CLICK-'	; 10
 	asc	'\The Ship is on a Collision'0d'Course With a Planetoid!!'0d
 	asc	'\Say Again & Use a Color Instead.'
 	asc	'\Sorry, It'27's Screwed Down.'
@@ -310,15 +310,14 @@ tblTEXTS
 	asc	'\It Shatters in My Hand!'
 	asc	'\Sorry.'
 	asc	'\Tell Me How?'
-	asc	'\Welcome to UTOPIA'0d'Another Macintosh Adventure'0d'By William Demas'0d0d
-	asc	'Apple IIgs version'0d'by Brutal Deluxe Software'0d0d	; ** new av **
+	asc	'\Welcome to UTOPIA'0d'Another Macintosh Adventure'0d'By William Demas'0d0d'Apple IIgs version'0d'by Brutal Deluxe Software'0d0d	; ** new av **
 	asc	'\ALERT!  Cruiser Malfunction!'
 	asc	'\This Liquid Isn'27't Water. My'0d'Whole Body Goes Numb and I Drown!'0d0d
 	asc	'\It Says: Summon the Guardian'0d'of This Land and He Will'0d'Transport You Ac... The Rest'0d'of The Page is Missing!!'0d0d
 	asc	'\Loud Noise Causes a Cave-in!'0d
 	asc	'\A Strange Figure Appears...'
 	asc	'\He SQUASHES Me!!'0d
-	asc	'\Ogre SCREAMS!'
+	asc	'\Ogre SCREAMS!'	; 20
 	asc	'\He Slumps Over and Dies.'
 	asc	'\It Contains'
 	asc	'\Bolts'
@@ -334,7 +333,7 @@ tblTEXTS
 	asc	'\At What?  Like: '22'AT TREE'220d
 	asc	'\He Gets ANGRY!!'
 	asc	'\ZAP'
-	asc	'\Where?'
+	asc	'\Where?'	; 30
 	asc	'\It Contains'
 	asc	'\a Strange Liquid.'
 	asc	'\Got Him!'
@@ -350,7 +349,7 @@ tblTEXTS
 	asc	'\It Deflects Off of His Shield.'
 	asc	'\He Takes it and'0d'Wanders Off...'0d
 	asc	'\I Sink Like a Rock.'
-	asc	'\I Float Across'0d'to the Other Side...'
+	asc	'\I Float Across'0d'to the Other Side...'	; 40
 	asc	'\It Says:  ..ross the Lake.'0d'Price for This Service is'0d'9 Gold Coins.'0d
 	asc	'\What Do You Know!!'0d'I Did it !!!'0d
 	asc	'\The Amphora Falls'0d'and Shatters.'
@@ -366,7 +365,7 @@ tblTEXTS
 	asc	'\9'
 	asc	'\Coins'
 	asc	'\I See'
-	asc	'\He'27's After Me!!'
+	asc	'\He'27's After Me!!'	; 50
 	asc	'\Lands on My Neck and'
 	asc	'\Alligator'
 	asc	'\He'27's Sitting Up'0d'Against the Wall.'

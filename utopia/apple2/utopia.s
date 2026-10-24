@@ -15,14 +15,14 @@
 
 *-------------- Game
 
-NB_ACTIONS	=	36	; number of actions (AV += 2)
+NB_ACTIONS	=	35	; number of actions (AV += 1)
 NB_CAR	=	32	; authorize words of 32 chars
 NB_P1	=	10	; nombre de conditions
 NB_P2	=	32	; nombre de conditions
 LEN_WORD	=	4	; but limit to 4
 MAX_LEN	=	70	; max length of string
 
-MAX_CARRIED	=	7	; max number of objects I carry
+MAX_CARRIED	=	8	; max number of objects I carry (should be 7 but walkthrough does not help)
 
 ZERO	=	0
 ONE	=	1
@@ -83,7 +83,8 @@ REPLAY	@CLS	#0
 *-------------- MAIN LOOP
 
 :100	jsr	checkCONDITIONS
-	
+*	jsr	DEBUG
+
 :1120	@PRINT	#wMESSAGE;#strCOMMANDE
 	@INPUT	#TEXTBUFFER;#MAX_LEN
 	jsr	:6000	; cherche les mots
@@ -244,7 +245,34 @@ REPLAY	@CLS	#0
 
 doCONDITIONS_1	jsr	$bdbd
 	jmp	:1650	; test return code
-	
+
+*-----------------------------------
+* DEBUG
+*-----------------------------------
+*
+*DEBUG	lda	MO$1
+*	jsr	printDEBUG
+*	sta	strCOMMANDE+1
+*	lda	MO$2
+*	jsr	printDEBUG
+*	sta	strCOMMANDE+4
+*	rts
+*
+*printDEBUG	and	#$ff
+*	pha
+*	PushLong	#strDEBUG
+*	PushWord	#2
+*	PushWord	#FALSE
+*	_Int2Dec
+*	
+*	lda	strDEBUG
+*	ora	#'00'
+*	rts
+*
+*---
+*
+*strDEBUG	ds	3
+*
 *-----------------------------------
 * GET NEXT ACTION CODE
 *-----------------------------------

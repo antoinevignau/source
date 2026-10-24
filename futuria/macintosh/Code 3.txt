@@ -1634,13 +1634,13 @@ Anon48
 +001C  003DD4  BNE.S      exit_ONE            ; 00003DFC           | 6626	retourne 1
 +001E  003DD6  BRA.S      exit_ZERO           ; 00003DF8           | 6020	retourne 0
 
-* CONDITION 15 - CHECK OBJECT IS IN ROOM I AM IN
+* CONDITION 15 - CHECK OBJECT IS IN REQUESTED ROOM
 
 +0020  003DD8  JSR        checkObject         ; 0000414E           | 4EBA 0374	15 get room ID of object in table
 +0024  003DDC  MOVE.B     (A6)+,D0                                 | 101E	get room ID
 +0026  003DDE  BRA.S      ONE_IF_DIFF         ; 00003D7C           | 609C	go compare - return 0 if similar
 
-* CONDITION 16 - CHECK OBJECT IS NOT IN ROOM I AM IN
+* CONDITION 16 - CHECK OBJECT IS NOT IN REQUESTED ROOM
 
 +0028  003DE0  JSR        checkObject         ; 0000414E           | 4EBA 036C	16 get room ID of object in table
 +002C  003DE4  MOVE.B     (A6)+,D0                                 | 101E	get room ID
@@ -1738,12 +1738,12 @@ Anon50
 
 Anon51
 
-* ACTION  1 - Draw verb
+* ACTION  1 - DRAW VERB
 
 +0000  003E80  MOVEA.L    Anon29+$0802,A3     ; 00003736           | 267A F8B4	pointer to the verb
 +0004  003E84  BRA.S      Anon51+$000A        ; 00003E8A           | 6004
 
-* ACTION 2 - Draw noun
+* ACTION 2 - DRAW NOUN
 
 +0006  003E86  MOVEA.L    Anon29+$0806,A3     ; 0000373A           | 267A F8B2	points to the noun
 
@@ -1759,7 +1759,7 @@ Anon51
 
 Anon52
 
-* ACTION 4 - Inventory
+* ACTION 4 - INVENTORY
 
 +0000  003EA0  MOVE.L     A6,-(A7)                                 | 2F0E	push pointer
 +0002  003EA2  LEA        Anon64+$0002,A2     ; 00004178           | 45FA 02D4	pointe sur Anon64+2
@@ -1842,7 +1842,7 @@ Anon54 - save game & handle dialogs
 
 +0000  003F4C  JMP        Anon64+$0004        ; 0000417A           | 4EFA 022C
 
-* ACTION 9 - DEATH
+* ACTION 9 - PREPARE TO DIE
 
 +0004  003F50  MOVE.B     #$01,D0                                  | 103C 0001	D0 = 1
 +0008  003F54  LEA        DEATH       ,A0     ; 000047C6           | 41FA 0870	A0 = &47C6
@@ -1852,7 +1852,7 @@ Anon54 - save game & handle dialogs
 +0012  003F5E  JSR        Anon34              ; 00003870           | 4EBA F910	print string
 +0016  003F62  JMP        Anon52+$0038        ; 00003ED8           | 4EFA FF74	restart
 
-* ACTION A - DEAD DIALOG
+* ACTION A - SHOW DIALOG
 
 +001A  003F66  MOVE.W     #$0004,D7                                | 3E3C 0004	dialog index
 
@@ -1881,12 +1881,12 @@ Anon54 - save game & handle dialogs
 
 +005E  003FAA  JMP        Anon65+$0062        ; 000042A4           | 4EFA 02F8
 
-* ACTION C - Quit is death
+* ACTION C - DIE
 
 +0062  003FAE  MOVE.W     #$0003,D7                                | 3E3C 0003	the dialog index
 +0066  003FB2  BRA.S      Anon54+$001E        ; 00003F6A           | 60B6	jump
 
-* ACTION D - Wait
+* ACTION D - WAIT
 
 +0068  003FB4  MOVE.L     Anon29+$0142,-(A7)  ; 00003076           | 2F3A F0C0
 +006C  003FB8  _TEDeactivate                  ; A9D9               | A9D9
@@ -1896,7 +1896,7 @@ Anon54 - save game & handle dialogs
 +007A  003FC6  _TEActivate                    ; A9D8               | A9D8
 +007C  003FC8  RTS                                                 | 4E75
 
-* ACTION F - print text
+* ACTION F - PRINT TEXT
 
 Anon55
 +0000  003FCA  CLR.W      D0                                       | 4240
@@ -2018,7 +2018,7 @@ Anon57
 
 Anon58
 
-* ACTION 1D - Make object and check death
+* ACTION 1D - Make object and refresh
 
 +0000  0040D2  JSR        checkObject         ; 0000414E           | 4EBA 007A
 +0004  0040D6  MOVE.B     (A6)+,D2                                 | 141E

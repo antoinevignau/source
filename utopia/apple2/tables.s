@@ -304,6 +304,13 @@ tblACTIONS
 	hex	071D05220D49A00F4F0F780F79B0
 	hex	071D0522A00F7CB0
 	hex	013E05220D47A014471047B0
+* 013E	TAKE BOLT
+* 0522	if i carry object 22 ("leather bag")
+* 0D47	if object 47 ("bolt") does not exist
+* A0	then
+* 1447	create object 47 ("bolt") in current room
+* 1047	add object 47 ("bolt") to my inventory
+* B0
 	hex	013E05220D48A014481048B0
 	hex	013E05220D49A014491049B0
 	hex	023E0547A01147B0
@@ -320,8 +327,7 @@ tblACTIONS
 * 0F30	print "Where?"
 * B0
 
-*	hex	143E052B0547A01D47FE152B1D44FF1D45FF0F04B0
-	hex	143E052BA01D47FE152B1D44FF1D45FF0F04B0	; ** new AV **
+	hex	143E052B0547A01D47FE152B1D44FF1D45FF0F04B0
 * 143E	TO BOLT
 * 052B	if i carry item 2B ("rope")
 * 0547	if i carry item 47 ("bolt")

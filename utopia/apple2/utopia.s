@@ -1,5 +1,5 @@
 *
-* Futuria
+* Utopia
 * by William Demas
 *
 * (c) 1985, Unicorn Software
@@ -22,7 +22,7 @@ NB_P2	=	32	; nombre de conditions
 LEN_WORD	=	4	; but limit to 4
 MAX_LEN	=	70	; max length of string
 
-MAX_CARRIED	=	8	; max number of objects I carry (should be 7 but walkthrough does not help)
+MAX_CARRIED	=	7	; max number of objects I carry (should be 7 but walkthrough does not help)
 
 ZERO	=	0
 ONE	=	1
@@ -46,7 +46,7 @@ wISSUES	=	4
 
 tblWINDOW1	dw	1,40,1,25	; messages
 tblWINDOW2	dw	41,80,15,16	; description
-tblWINDOW3	dw	41,80,17,24	; objects
+tblWINDOW3	dw	41,80,18,24	; objects
 tblWINDOW4	dw	41,80,25,25	; exits/issues
 
 *-----------------------------------
@@ -1870,7 +1870,60 @@ printDE_91	jsr	getWHATEVER	; get an address or null if not found
 
 printDE_10	jsr	LEN	; get its length
 
-	pha		; centre la chaîne
+	cmp	#40	; if the string is long
+	bcs	printDE_LONG	; it is not centered
+	
+	jsr	centerME
+	ldy	#1
+	lda	#wDESCRIPTION
+	jsr	LOCATE
+
+	lda	dpFROM	; affiche la chaîne centrée
+	jmp	PRINT_ALT
+
+	
+printDE_LONG	sep	#$20
+	ldy	#0
+]lp	lda	(dpFROM),y
+	sta	TEXTBUFFER,y
+	iny
+	cmp	#chrDOT
+	bne	]lp
+	lda	#chrNULL
+	sta	TEXTBUFFER,y
+	sty	I	; save index
+	rep	#$20
+
+	lda	#1
+	sta	J
+	jsr	printDE_PLEASE
+	
+	sep	#$20
+	ldy	I
+	ldx	#0
+]lp	lda	(dpFROM),y
+	sta	TEXTBUFFER,x
+	cmp	#chrBACKSLASH
+	beq	printDE_END
+	iny
+	inx
+	bne	]lp
+printDE_END	lda	#chrNULL
+	sta	TEXTBUFFER,x
+	rep	#$20
+
+	inc	J	; line two below...
+	
+printDE_PLEASE	lda	#TEXTBUFFER	; print the first line
+	jsr	LEN
+	jsr	centerME
+	ldy	J
+	lda	#wDESCRIPTION
+	jsr	LOCATE
+	lda	#TEXTBUFFER
+	jmp	PRINT_ALT
+	
+centerME	pha		; centre la chaîne
 	lda	#40
 	sec
 	sbc	1,s
@@ -1878,12 +1931,7 @@ printDE_10	jsr	LEN	; get its length
 	tax
 	inx
 	pla
-	ldy	#1
-	lda	#wDESCRIPTION
-	jsr	LOCATE
-
-	lda	dpFROM	; affiche la chaîne centrée
-	jmp	PRINT_ALT
+	rts
 	
 *-----------------------------------
 * GET WHATEVER :-)

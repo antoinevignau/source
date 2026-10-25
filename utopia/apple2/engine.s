@@ -1,13 +1,10 @@
 *
-* Le cimetière des ocelots
+* Locomotive Engine
 *
-* (c) 2026, Turk182
 * (c) 2026, Brutal Deluxe Software
 *
 
 	mx	%00
-
-*--- Il faudra changer la couleur 2 de la palette en #$800
 
 *-------------------------------
 * EQUATES

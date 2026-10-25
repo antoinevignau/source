@@ -159,23 +159,16 @@ GET ROPE
 GET CROSSBOW
 
 LOOK UP
-
- The following three actions were missing from
- the current walkthrough and are necessary to
- tie the rope to the bolt...
-
-DROP DISRUPTOR
-TAKE LEATHER BAG
-TAKE BOLT
-
+DROP DISRUPTOR		<-- new action (b/c it is not used but should have been at **)
+TAKE LEATHER BAG	<-- new action (b/c it is needed to TAKE BOLT)
+TAKE BOLT		<-- new action (b/c it is needed TO BOLT)
 TIE ROPE
 TO BOLT
 LOAD CROSSBOW
-
 SHOOT CROSSBOW
 AT HOLE
-
-GET COIN
+DROP LEATHER BAG	<-- new action (b/c shoot crossbow leaves loaded crossbow active for below)
+GET COIN		<-- so that it makes room to GET COIN
 
 CLIMB ROPE
 D
@@ -186,8 +179,8 @@ N
 E
 GO CAVE
 E
-SHOOT CROSSBOW
-AT OGRE (surviving ogre dies)
+SHOOT CROSSBOW		<-- ** should have use SHOOT DISRUPTOR instead
+AT OGRE (surviving ogre dies)	<-- but death would happen very often!!
 
 GO HOLE
 S

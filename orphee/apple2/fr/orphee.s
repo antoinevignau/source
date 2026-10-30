@@ -586,7 +586,7 @@ windowLIEU
 	dw	65,204
 
 windowIMAGE
-	dw	68,0
+	dw	69,0
 	dw	200,204
 
 windowOBJET
@@ -645,6 +645,13 @@ showBORDER	sep	#$20
 	rep	#$20
 	rts
 
+*---------------
+
+showTEXT	@PRINT	#wMESSAGE;#strPAINT
+	rts
+
+strPAINT	asc	'PAINT '00
+	
 *-----------------------------------
 * VERIFI
 *-----------------------------------
@@ -1011,8 +1018,8 @@ GRAPHEOK	lda	#bufIMAGE
 	sta	dpFROM
 	
 	PushLong	#windowIMAGE
-	PushWord	#-1
-	PushWord	#0
+	PushWord	#$1111
+	PushWord	#$0000
 	_SpecialRect
 
 *--- Boucle principale
@@ -1035,10 +1042,15 @@ spLOOP	ldy	#0
 	bcs	spOTHER
 
 	lda	#GFX_MAX_Y
+	dec
 	sec
 	sbc	theA
+	asl
+	lsr
 	sta	theY	; <192 alors DRAW
 	lda	theB
+	asl
+	lsr
 	sta	theX
 	jsr	DRAW_O
 	jmp	skip2
@@ -1068,19 +1080,29 @@ spOTHER	lda	theA
 	beq	spECRIT
 
 spPAINT	lda	theC
+	asl
+	lsr
 	sta	fillX
 	lda	#GFX_MAX_Y
+	dec
 	sec
 	sbc	theB
+	asl
+	lsr
 	sta	fillY
 	jsr	FILL_O
 	jmp	skip3
 
 spPLOT	lda	theC
+	asl
+	lsr
 	sta	theX
 	lda	#GFX_MAX_Y
+	dec
 	sec
 	sbc	theB
+	asl
+	lsr
 	sta	theY
 	jsr	PLOT_O
 	jmp	skip3
@@ -1088,31 +1110,34 @@ spPLOT	lda	theC
 spINK	iny
 	lda	(dpFROM),y
 	and	#$ff
-	sta	theINK2	; ink2
+	sta	theINK2
 	iny
 	lda	(dpFROM),y
 	and	#$ff
-	sta	theINK3	; ink3
+	sta	theINK3
 	
 *	@BORDER	theB
-*	@INK	#0;theB	
-*	@INK	#1;theC
-*	@GFXPAPER	theB
-*	@GFXPEN	theC	
-*	@INK	#2;theINK2
-*	@INK	#3;theINK3
+	@INK	#0;theB
+	@INK	#1;theC
+	@INK	#2;theINK2
+	@INK	#3;theINK3
 	jmp	skip5
 
 spECRIT	lda	theC
+	asl
+	lsr
 	pha
 	lda	#GFX_MAX_Y+8
+	dec
 	sec
 	sbc	theB
+	asl
+	lsr
 	pha
 	_MoveTo
 
-*	@PAPER	#0;theE1
-*	@PEN	#0;theE2
+	@PAPER	#0;theE1
+	@PEN	#0;theE2
 	
 	PushWord	#0
 	_GetTextMode
@@ -1162,7 +1187,7 @@ PLOT_O	PushWord	theX	; On dŽplace le curseur seulement
 	PushWord	theY
 	_MoveTo
 	
-*	@GFXPEN	theE2
+	@GFXPEN	theE2
 	
 	PushWord	theX	; On trace un point
 	PushWord	theY
@@ -1180,16 +1205,18 @@ DRAW_O	PushWord	theX	; On trace une ligne
 
 resMode	=	%0001_0000000000_10
 
-FILL_O	lda	theE2	; sets the pattern to use
-*	lda	a2gsCOLOR,x
-*	and	#$ff
+FILL_O	lda	theE1
+	asl
+	asl
+	clc
+	adc	theE2
 	asl
 	asl
 	asl
 	asl
 	asl
 	clc
-	adc	#blackPATTERN
+	adc	#fillPATTERNS
 	sta	patternPtr
 
 	PushLong	#srcLocInfoPtr
@@ -1228,15 +1255,165 @@ fillCOLOR	ds	2
 srcLocInfoPtr	dw	mode320	; mode 320
 	adrl	ptr012000
 	dw	160
-	dw	68,0,200,204
+	dw	0,0,200,320
 
-srcRect	dw	68,0,200,204
+srcRect	dw	69,0,200,204
 
-patternPtr	adrl	blackPATTERN ; pointer to pattern
+patternPtr	adrl	fillPATTERNS	; pointer to pattern
 
 leakTblPtr	dw	1
-	dw	$FFFF	; color 0 is concerned
-	
+	dw	$0000	; color 0 is concerned
+
+fillPATTERNS	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+	hex	00000000
+
+	hex	01010101
+	hex	10101010
+	hex	01010101
+	hex	10101010
+	hex	01010101
+	hex	10101010
+	hex	01010101
+	hex	10101010
+
+	hex	02020202
+	hex	20202020
+	hex	02020202
+	hex	20202020
+	hex	02020202
+	hex	20202020
+	hex	02020202
+	hex	20202020
+
+	hex	03030303
+	hex	30303030
+	hex	03030303
+	hex	30303030
+	hex	03030303
+	hex	30303030
+	hex	03030303
+	hex	30303030
+
+*---
+
+	hex	10101010
+	hex	01010101
+	hex	10101010
+	hex	01010101
+	hex	10101010
+	hex	01010101
+	hex	10101010
+	hex	01010101
+
+	hex	11111111
+	hex	11111111
+	hex	11111111
+	hex	11111111
+	hex	11111111
+	hex	11111111
+	hex	11111111
+	hex	11111111
+
+	hex	12121212
+	hex	21212121
+	hex	12121212
+	hex	21212121
+	hex	12121212
+	hex	21212121
+	hex	12121212
+	hex	21212121
+
+	hex	13131313
+	hex	31313131
+	hex	13131313
+	hex	31313131
+	hex	13131313
+	hex	31313131
+	hex	13131313
+	hex	31313131
+
+*---
+
+	hex	20202020
+	hex	02020202
+	hex	20202020
+	hex	02020202
+	hex	20202020
+	hex	02020202
+	hex	20202020
+	hex	02020202
+
+	hex	21212121
+	hex	12121212
+	hex	21212121
+	hex	12121212
+	hex	21212121
+	hex	12121212
+	hex	21212121
+	hex	12121212
+
+	hex	22222222
+	hex	22222222
+	hex	22222222
+	hex	22222222
+	hex	22222222
+	hex	22222222
+	hex	22222222
+	hex	22222222
+
+	hex	23232323
+	hex	32323232
+	hex	23232323
+	hex	32323232
+	hex	23232323
+	hex	32323232
+	hex	23232323
+	hex	32323232
+
+*---
+
+	hex	30303030
+	hex	03030303
+	hex	30303030
+	hex	03030303
+	hex	30303030
+	hex	03030303
+	hex	30303030
+	hex	03030303
+
+	hex	31313131
+	hex	13131313
+	hex	31313131
+	hex	13131313
+	hex	31313131
+	hex	13131313
+	hex	31313131
+	hex	13131313
+
+	hex	32323232
+	hex	23232323
+	hex	32323232
+	hex	23232323
+	hex	32323232
+	hex	23232323
+	hex	32323232
+	hex	23232323
+
+	hex	33333333
+	hex	33333333
+	hex	33333333
+	hex	33333333
+	hex	33333333
+	hex	33333333
+	hex	33333333
+	hex	33333333
+
 *-----------------------------------
 * CLEARW
 *-----------------------------------

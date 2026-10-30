@@ -1372,8 +1372,13 @@ checkWORDS_MO	lda	#44	; ".
 *-----------------------------------
 
 :6000	stz	N	; index
-	stz	X$1	; longueur premier mot
-	stz	X$2	; longueur second mot
+
+	ldx	#0
+]lp	stz	X$1,x	; longueur premier mot
+	stz	X$2,x	; longueur second mot
+	inx
+	cpx	#NB_CAR
+	bcc	]lp
 
 	lda	#1	; par défaut, index des mots
 	sta	MO$1	; mais si 0 en retour

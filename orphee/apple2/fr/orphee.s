@@ -261,7 +261,6 @@ PLAY	@MODE	#1
 	
 REPLAY	jsr	PRESENT
 	jsr	INIT_ALL
-	jsr	RIRE
 
 *-----------------------------------
 * MAIN LOOP
@@ -320,12 +319,11 @@ SOMBR	@get_objsal	#6
 SOMBRE	lda	#TRUE
 	sta	fgSOMBRE
 
+	@draw	#picSALSOM
 	@CLS	#wINVENTAIRE
 	@CLS	#wPERSONNAGE
 	@CLS	#wSALLE
 	
-	@draw	#picSALSOM
-
 *-----------------------------------
 
 DEPA2	jsr	VERIFI
@@ -341,22 +339,24 @@ DEPA2_1	@CLS	#wINVENTAIRE
 	lda	SALLE	; affiche les objets
 	sta	N	; de la salle
 	jsr	LISTE
-	
+
+* Affiche les personnages présents dans la salle
+
 	@CLS	#wPERSONNAGE
 	@PRINT	#wPERSONNAGE;#strPERSONNAGES
 
 	lda	#FALSE
 	sta	DRAP
 	ldx	#1
-]lp	sep	#$20
-	lda	PERSSAL-1,x
+]lp	lda	PERSSAL-1,x
+	and	#$ff
 	cmp	SALLE
 	beq	IMPRIM
 DEPA2_2	inx
 	cpx	#NBPERSONNAGE
 	bcc	]lp
 	beq	]lp
-	rep	#$20
+*	rep	#$20
 
 	lda	DRAP
 	cmp	#TRUE
@@ -365,11 +365,9 @@ DEPA2_2	inx
 NESSUN	@PRINT	#wPERSONNAGE;#strAUCUN
 	jmp	DEPA3
 
-	mx	%10
+*	mx	%10
 	
 IMPRIM	stx	IX
-	rep	#$20
-
 	txa
 	ldy	#PERSONNAGE$
 	jsr	CHERC
@@ -377,7 +375,6 @@ IMPRIM	stx	IX
 	
 	lda	#TRUE
 	sta	DRAP
-	sep	#$20
 	ldx	IX
 	bra	DEPA2_2
 
@@ -432,11 +429,11 @@ ATTEN_1	jmp	REPLAY	; return to the IIgs
 * MORT
 *-----------------------------------
 
-MORT	@PRINT	#wMESSAGE;#strRETURN
+MORT	@draw	#picMORT
+	@PRINT	#wMESSAGE;#strRETURN
 	@CLS	#wINVENTAIRE
 	@CLS	#wPERSONNAGE
 	@CLS	#wSALLE
-	@draw	#picMORT
 	jsr	RIRE
 	jsr	MUSMORT
 	jmp	REJOU
@@ -509,7 +506,9 @@ CHERC_2	tya		; return the pointer
 * RETOBJ
 *-----------------------------------
 
-RETOBJ	txa
+RETOBJ	RTS
+
+	txa
 	sep	#$20
 	ldy	#1
 ]lp	cmp	PERSOBJ-1,y
@@ -540,7 +539,7 @@ PASICI	@PRINT	#wMESSAGE;#strPASICI
 *-----------------------------------
 * NOOBJ
 *-----------------------------------
-* Vous ne pouvez pas poser ce que vous n'avez pas
+* Vous ne pouvez pas porter ce que vous n'avez pas
 
 NOOBJ	@PRINT	#wMESSAGE;#strNOTOWNED
 
@@ -1089,6 +1088,7 @@ PRESENT	ldal	HORIZCNT	; affiche image 119 ou 120
 	@PRINT	#wINVENTAIRE;#phrase05
 
 	@INKEY
+	jsr	RIRE
 	@CLS	#wMESSAGE
 	@CLS	#wINVENTAIRE
 	rts
@@ -1097,10 +1097,10 @@ PRESENT	ldal	HORIZCNT	; affiche image 119 ou 120
 * VICTOI
 *-----------------------------------
 
-VICTOI	@CLS	#wINVENTAIRE
+VICTOI	@draw	#picVICTOIRE
+	@CLS	#wINVENTAIRE
 	@CLS	#wPERSONNAGE
 	@CLS	#wSALLE
-	@draw	#picVICTOIRE
 	jsr	MUSVIC
 	jmp	REJOU
 
@@ -1627,7 +1627,7 @@ IMPOSS_2	lda	DRAP
 	rts
 
 *-----------------------------------
-* CONDIT
+* CONDIT (A..Z)
 *-----------------------------------
 
 CONDIT	lda	#FALSE	; on a trouvé un mot
@@ -1695,7 +1695,7 @@ TESTCO_14	sec
 * TOUTES LES CONDITIONS
 *-----------------------------------
 
-*---------- A - EST-ON DANS LA SALLE ?
+*---------- A 41 - EST-ON DANS LA SALLE ?
 
 CONDA	cpx	SALLE
 	beq	CONDA_1
@@ -1704,7 +1704,7 @@ CONDA	cpx	SALLE
 CONDA_1	clc
 	rts
 
-*---------- B - OBJET DANS LA SALLE OU PORTé ?
+*---------- B 42 - OBJET DANS LA SALLE OU PORTé ?
 
 CONDB	sep	#$20
 	lda	OBJSAL-1,x
@@ -1719,7 +1719,7 @@ CONDB_1	rep	#$20
 	clc
 	rts
 
-*---------- C - OBJET PAS DANS LA SALLE OU PAS PORTé ?
+*---------- C 43 - OBJET PAS DANS LA SALLE OU PAS PORTé ?
 
 CONDC	sep	#$20
 	lda	OBJSAL-1,x
@@ -1734,7 +1734,7 @@ CONDC_1	rep	#$20
 	sec
 	rts
 
-*---------- D - OBJET PORTé ?
+*---------- D 44 - OBJET PORTé ?
 
 CONDD	sep	#$20
 	lda	OBJSAL-1,x
@@ -1747,7 +1747,7 @@ CONDD_1	rep	#$20
 	clc
 	rts
 
-*---------- E - POINTEUR ACTIF ?
+*---------- E 45 - POINTEUR ACTIF ?
 
 CONDE	sep	#$20
 	lda	P-1,x
@@ -1760,7 +1760,7 @@ CONDE_1	rep	#$20
 	clc
 	rts
 
-*---------- F - POINTEUR INACTIF ?
+*---------- F 46 - POINTEUR INACTIF ?
 
 CONDF	sep	#$20
 	lda	P-1,x
@@ -1773,12 +1773,13 @@ CONDF_1	rep	#$20
 	clc
 	rts
 
-*---------- G - CONDITION ACTIVE ?
+*---------- G 47 - COMPTEUR ACTIF ?
 
 CONDG	sep	#$20
 	lda	C-1,x
-	cmp	#<TRUE
-	beq	CONDG_1
+	bne	CONDG_1
+*	cmp	#<TRUE
+*	beq	CONDG_1
 	rep	#$20
 	sec
 	rts
@@ -1786,7 +1787,7 @@ CONDG_1	rep	#$20
 	clc
 	rts
 
-*---------- H - RANDOM < N ALORS OK
+*---------- H 48 - RANDOM < N ALORS OK
 
 CONDH	sta	N
 	jsr	RANDOM
@@ -1799,7 +1800,7 @@ CONDH	sta	N
 CONDH_1	sec
 	rts
 
-*---------- I - N'EST PAS DANS LA SALLE
+*---------- I 49 - N'EST PAS DANS LA SALLE
 
 CONDI	cpx	SALLE
 	bne	CONDI_1
@@ -1808,7 +1809,7 @@ CONDI	cpx	SALLE
 CONDI_1	clc
 	rts
 
-*---------- J - PERSONNAGE DANS LA SALLE ?
+*---------- J 4A - PERSONNAGE DANS LA SALLE ?
 
 CONDJ	lda	PERSSAL-1,x
 	and	#$ff
@@ -1819,7 +1820,7 @@ CONDJ	lda	PERSSAL-1,x
 CONDJ_1	clc
 	rts
 
-*---------- K - PERSONNAGE PAS DANS LA SALLE ?
+*---------- K 4B - PERSONNAGE PAS DANS LA SALLE ?
 
 CONDK	lda	PERSSAL-1,x
 	and	#$ff
@@ -1830,7 +1831,7 @@ CONDK	lda	PERSSAL-1,x
 CONDK_1	clc
 	rts
 
-*---------- L - PERSONNAGE PORTE L'OBJET DEMANDE ?
+*---------- L 4C - PERSONNAGE PORTE L'OBJET DEMANDE ?
 
 CONDL	lda	PERSOBJ-1,x
 	and	#$ff
@@ -1844,7 +1845,7 @@ CONDL	lda	PERSOBJ-1,x
 CONDL_1	clc
 	rts
 
-*---------- M - PERSONNAGE NE PORTE PAS L'OBJET DEMANDE ?
+*---------- M 4D - PERSONNAGE NE PORTE PAS L'OBJET DEMANDE ?
 
 CONDM	lda	PERSOBJ-1,x
 	and	#$ff
@@ -1922,7 +1923,7 @@ AFFIC3	sta	N
 CLEARF	rts
 
 *-----------------------------------
-* ACTION
+* ACTION (a..z)
 *-----------------------------------
 
 ACTION	cmp	#chrEOL
@@ -2027,7 +2028,7 @@ TESTAC_28	cmp	#$7c
 TESTAC_29	jmp	ACTIONM	; retourne à DEPA1
 
 *-----------------------------------
-* TOUTES LES ACTIONS
+* TOUTES LES ACTIONS (a..z)
 *-----------------------------------
 
 *---------- #$7c - QUITTER
@@ -2046,12 +2047,12 @@ ACTIONQUITTER	@PRINT	#wMESSAGE;#strQUITTER
 ACTIONQU_1	clc
 	rts
 
-*---------- A - INVENTAIRE
+*---------- a 61 - INVENTAIRE
 
 ACTIONA	@CLS	#wINVENTAIRE
 	@PRINT	#wINVENTAIRE;#strOBJETSPORTES
 
-	lda	#<TRUE	; affiche les objets portés
+	lda	#TRUE	; affiche les objets portés
 	sta	N
 
 LISTE	ldx	#1	; les inits
@@ -2061,8 +2062,7 @@ LISTE	ldx	#1	; les inits
 
 	ldx	IX
 ]lp	lda	OBJSAL-1,x	; prend l'objet X
-	and	#$ff
-	cmp	N	; dans la salle ou porté (TRUE)
+	cmp	N	; dans la salle ou porté (<TRUE)
 	bne	LISTE_1	; non
 
 	txa		; oui, affiche le
@@ -2086,31 +2086,42 @@ LISTE_1	inc	IX	; prochain objet
 	@PRINT	#wINVENTAIRE;#strAUCUN
 
 AUCUN_1	lda	N
-	cmp	#<TRUE
+	cmp	#TRUE
 	bne	AUCUN_2
 	@INKEY		; pause clavier pour inventaire
 AUCUN_2	clc
 	rts
 
-*---------- B - PREND UN OBJET
+*---------- b 62 - PREND UN OBJET
 
 ACTIONB	jsr	getCONDITION	; check object
 	tax
+	sep	#$20
 	lda	OBJSAL-1,x
-	and	#$ff
 	cmp	#<TRUE
 	bne	ACTIONB_1
+	rep	#$20
 	jmp	DEJOBJ	; on l'a déjà
+
+	mx	%10
+	
 ACTIONB_1	cmp	SALLE
 	beq	ACTIONB_2
+	rep	#$20
 	jmp	PASICI	; pas ici
+
+	mx	%10
+	
 ACTIONB_2	lda	NBOBJ
 	cmp	#MAXPORTES
 	bcc	ACTIONB_3
 	beq	ACTIONB_3
+	rep	#$20
 	jmp	TROOBJ	; on en porte trop
-ACTIONB_3	sep	#$20
-	lda	#<TRUE
+
+	mx	%10
+	
+ACTIONB_3	lda	#<TRUE
 	sta	OBJSAL-1,x
 	inc	NBOBJ
 	rep	#$20
@@ -2118,24 +2129,27 @@ ACTIONB_3	sep	#$20
 	clc
 	rts
 
-*---------- C - POSER UN OBJET POSSEDE DANS LA SALLE COURANTE
+*---------- c 63 - POSER UN OBJET POSSEDE DANS LA SALLE COURANTE
 
 ACTIONC	jsr	getCONDITION
 	tax
+	sep	#$20
 	lda	OBJSAL-1,x
-	and	#$ff
 	cmp	#<TRUE
 	beq	ACTIONC_1
+	rep	#$20
 	jmp	NOOBJ	; on ne l'a pas
-ACTIONC_1	sep	#$20
-	lda	SALLE
+
+	mx	%10
+
+ACTIONC_1	lda	SALLE
 	sta	OBJSAL-1,x
 	rep	#$20
 	dec	NBOBJ
 	clc
 	rts
 
-*---------- D - AFFICHE UNE DESCRIPTION
+*---------- d 64 - AFFICHE UNE DESCRIPTION
 
 ACTIOND	jsr	getCONDITION
 	ldy	#MESSAGE$
@@ -2144,7 +2158,7 @@ ACTIOND	jsr	getCONDITION
 	clc
 	rts
 
-*---------- E - ACTIVE LE POINTEUR M
+*---------- e 65 - ACTIVE LE POINTEUR M
 
 ACTIONE	jsr	getCONDITION
 	tax
@@ -2155,7 +2169,7 @@ ACTIONE	jsr	getCONDITION
 	clc
 	rts
 
-*---------- F - DESACTIVE LE POINTEUR M
+*---------- f 66 - DESACTIVE LE POINTEUR M
 
 ACTIONF	jsr	getCONDITION
 	tax
@@ -2166,7 +2180,7 @@ ACTIONF	jsr	getCONDITION
 	clc
 	rts
 
-*---------- G - FIXE LE COMPTEUR M A LA VALEUR N
+*---------- g 67 - FIXE LE COMPTEUR M A LA VALEUR N
 
 ACTIONG	jsr	getCONDITION	; get M
 	tax
@@ -2177,7 +2191,7 @@ ACTIONG	jsr	getCONDITION	; get M
 	clc
 	rts
 
-*---------- H - DETRUIT L'OBJET M
+*---------- h 68 - DETRUIT L'OBJET M
 
 ACTIONH	jsr	getCONDITION
 	tax
@@ -2188,42 +2202,42 @@ ACTIONH	jsr	getCONDITION
 	clc
 	rts
 
-*---------- I - PROCHAINE SALLE
+*---------- i 69 - PROCHAINE SALLE
 
 ACTIONI	jsr	getCONDITION
 	sta	SALLE
 	clc
 	rts
 
-*---------- J - AFFICHE D'ACCORD
+*---------- j 6A - AFFICHE D'ACCORD
 
 ACTIONJ	@PRINT	#wMESSAGE;#strDACCORD	; jmp below...
 	
-*---------- K - RETOURNE A DEPA2
+*---------- k 6B - RETOURNE A DEPA2
 
 ACTIONK	lda	#DEPA2
 	sec
 	rts
 
-*---------- L - RETOURNE A DEPA3
+*---------- l 6C - RETOURNE A DEPA3
 
 ACTIONL	lda	#DEPA3
 	sec
 	rts
 	
-*---------- M - RETOURNE A DEPA1
+*---------- m 6D - RETOURNE A DEPA1
 
 ACTIONM	lda	#DEPA1
 	sec
 	rts
 
-*---------- N - MORT
+*---------- n 6E - MORT
 
 ACTIONN	lda	#MORT
 	sec
 	rts
 
-*---------- O - POSE UN OBJET DANS LA SALLE COURANTE (CREATION)
+*---------- o 6F - POSE UN OBJET DANS LA SALLE COURANTE (CREATION)
 
 ACTIONO	jsr	getCONDITION
 	tax
@@ -2234,7 +2248,7 @@ ACTIONO	jsr	getCONDITION
 	clc
 	rts
 
-*---------- P - POSE PERSONNAGE ET OBJET
+*---------- p 70 - POSE PERSONNAGE ET OBJET
 
 ACTIONP	jsr	getCONDITION
 	tax
@@ -2251,7 +2265,7 @@ ACTIONP_1	rep	#$20
 	clc
 	rts
 
-*---------- Q - DETRUIT PERSONNAGE ET OBJET M
+*---------- q 71 - DETRUIT PERSONNAGE ET OBJET M
 
 ACTIONQ	jsr	getCONDITION
 	tax
@@ -2263,7 +2277,7 @@ ACTIONQ	jsr	getCONDITION
 	clc
 	rts
 
-*---------- R - DONNER UN OBJET A UN PERSONNAGE
+*---------- r 72 - DONNER UN OBJET A UN PERSONNAGE
 
 ACTIONR	jsr	getCONDITION
 	tax		; index de personnage
@@ -2276,22 +2290,29 @@ ACTIONR	jsr	getCONDITION
 	cmp	N	; même index ?
 	bne	ACTIONR_1	; non
 	jmp	AIDEJA	; oui, le perso le porte déjà
-ACTIONR_1	lda	N	; est-ce un objet ?
-	cmp	#FALSE
+
+ACTIONR_1	sep	#$20
+	lda	N	; est-ce un objet ?
+	cmp	#<FALSE
 	beq	ACTIONR_2	; non, vide
+	rep	#$20
 	jmp	DEJAUN	; oui, le porte porte déjà un objet
 
+	mx	%10
+	
 ACTIONR_2	lda	OBJSAL-1,y	; est-ce que l'objet est en salle ?
-	and	#$ff
 	cmp	SALLE	; oui
 	beq	ACTIONR_4
 	cmp	#<TRUE	; ou le porte-t-on ?
 	beq	ACTIONR_3	; oui
+	rep	#$20
 	jmp	PASICI	; non, erreur
+
+	mx	%10
+
 ACTIONR_3	dec	NBOBJ	; si on porte, on le retire
 
-ACTIONR_4	sep	#$20
-	lda	SALLE	; le personnage reçoit la salle
+ACTIONR_4	lda	SALLE	; le personnage reçoit la salle
 	sta	PERSSAL-1,x	; et l'index de l'objet
 	tya
 	sta	PERSOBJ-1,x
@@ -2301,17 +2322,20 @@ ACTIONR_4	sep	#$20
 	clc
 	rts
 
-*---------- S - RETIRER UN OBJET A UN PERSONNAGE ET POSE LE EN SALLE
+*---------- s 73 - RETIRER UN OBJET A UN PERSONNAGE ET POSE LE EN SALLE
 
 ACTIONS	jsr	getCONDITION
 	tax
+	sep	#$20
 	lda	PERSOBJ-1,x
-	and	#$ff
-	cmp	#FALSE
+	cmp	#<FALSE
 	bne	ACTIONS_1
+	rep	#$20
 	jmp	PASOBJ
-ACTIONS_1	sep	#$20
-	tay
+
+	mx	%10
+	
+ACTIONS_1	tay
 	lda	#FALSE
 	sta	PERSOBJ-1,x
 	lda	SALLE
@@ -2320,7 +2344,7 @@ ACTIONS_1	sep	#$20
 	clc
 	rts
 
-*---------- T - SAUVE UNE PARTIE
+*---------- t 74 - SAUVE UNE PARTIE
 
 ACTIONT	@PRINT	#wMESSAGE;#strSAVE
 	jsr	slotGAME
@@ -2338,7 +2362,7 @@ ACTIONT_END	@WAIT	#60
 	sec
 	rts
 
-*---------- U - CHARGE UNE PARTIE
+*---------- u 75 - CHARGE UNE PARTIE
 
 ACTIONU	@PRINT	#wMESSAGE;#strLOAD
 	jsr	slotGAME
@@ -2369,32 +2393,33 @@ slotGAME	@INKEY
 slotGAME_ERR	sec
 	rts
 
-*---------- V - DECREMENTE UNE CONDITION
+*---------- v 76 - DECREMENTE UN COMPTEUR
 
 ACTIONV	jsr	getCONDITION
 	tax
 	lda	C-1,x
 	and	#$ff
-	cmp	#1
-	bcc	ACTIONV_1
 	beq	ACTIONV_1
+*	cmp	#1
+*	bcc	ACTIONV_1
+*	beq	ACTIONV_1
 	sep	#$20
 	dec	C-1,x
 	rep	#$20
 ACTIONV_1	clc
 	rts
 
-*---------- W - JOUE DE LA SYNTHESE SONORE
+*---------- w 77 - JOUE DE LA SYNTHESE SONORE
 
 ACTIONW	clc
 	rts
 
-*---------- X - JOUE DES BRUITS
+*---------- x 78 - JOUE DES BRUITS
 
 ACTIONX	clc
 	rts
 
-*---------- Y - INVERSE LES POINTEURS DES DEUX IMAGES
+*---------- y 79 - INVERSE LES POINTEURS DES DEUX IMAGES
 
 ACTIONY	jsr	getCONDITION	; 1ère image
 	tax
@@ -2412,7 +2437,7 @@ ACTIONY	jsr	getCONDITION	; 1ère image
 	clc
 	rts
 
-*---------- Z - VICTOIRE
+*---------- z 7A - VICTOIRE
 
 ACTIONZ	lda	#VICTOI
 	sec
@@ -2488,7 +2513,20 @@ MUSPRE
 * RIRE
 *-----------------------------------
 
-RIRE	rts
+RIRE	lda	#pRIRE
+	jsr	loadBIGFILE
+	bcc	RIRE_1
+	rts
+
+RIRE_1	sty	waveSTART
+	stx	waveSTART+2
+	sta	waveSIZE
+	ldy	#380
+	jmp	SOUND
+
+*---
+
+pRIRE	strl	'8/data/sons/rire.snd'
 
 *-----------------------------------
 * GESTION DES ISSUES
@@ -2653,7 +2691,7 @@ INIT_ALL	sep	#$20
 
 GET_SALSOMB	lda	SALSOMB-1,x
 	and	#$ff
-	cmp	#<TRUE
+	cmp	#TRUE
 	bne	GET_SALSOMB_1
 	lda	#TRUE
 GET_SALSOMB_1	rts
@@ -2665,7 +2703,7 @@ SET_SALSOMB	sep	#$20
 
 GET_OBJSAL	lda	OBJSAL-1,x
 	and	#$ff
-	cmp	#<TRUE
+	cmp	#TRUE
 	bne	GET_OBJSAL_1
 	lda	#TRUE
 GET_OBJSAL_1	rts
@@ -2677,7 +2715,7 @@ SET_OBJSAL	sep	#$20
 	
 GET_PERSSAL	lda	PERSSAL-1,x
 	and	#$ff
-	cmp	#<TRUE
+	cmp	#TRUE
 	bne	GET_PERSSAL_1
 	lda	#TRUE
 GET_PERSSAL_1	rts
@@ -2805,8 +2843,8 @@ OBJSAL	ds	NBOBJET	; dans quelle salle se trouve l'objet d'index X
 PERSSAL	ds	NBPERSONNAGE	; dans quelle salle se trouve le personnage d'index X
 PERSOBJ	ds	NBPERSONNAGE	; l'objet possédé par un personnage
 ADR	ds	NBSALLE	; on met les indexes des salles pour les images
-C	ds	NBCONDITIONS	; toutes les conditions
-P	ds	NBPOINTEURS	; toutes les "énigmes"
+C	ds	NBCONDITIONS	; tous les compteurs (les valeurs 0..n)
+P	ds	NBPOINTEURS	; tous les pointeurs (les drapeaux activés ou non)
 
 FIN_DATA
 

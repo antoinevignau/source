@@ -16,7 +16,7 @@
 strCOMMANDE	asc	'000000000000 >'00
 strIMPOSSIBLE	asc	'Impossible'00
 strDACCORD	asc	'D'27'accord'00
-strNOTOWNED	asc	'Vous ne pouvez pas porter ce que vous n'27'avez pas'00
+strNOTOWNED	asc	'Vous ne pouvez pas poser ce que vous n'27'avez pas'00
 strTROPPORTER	asc	'Vous ne pouvez porter tant'00
 strVOUSLAVEZ	asc	'Vous l'27'avez d'8e'j'8800
 strPASPLUS	asc	'Je ne porte pas plus d'27'un objet'00
@@ -67,13 +67,13 @@ strPROMPT	asc	'>'00
 
 NBOBJET	=	32
 
-refOBJSAL	dfb	000,002,000,000,003,024,046,048,045,016
+refOBJSAL	dfb	002,000,000,003,024,046,048,045,016
 	dfb	013,026,068,000,078,080,007,000,070,073
 	dfb	094,099,090,000,000,000,109,113,000,000
 	dfb	000,075
 
 OBJET$
-OB$1	asc	'^'00
+*OB$1	asc	'^'00
 OB$2	asc	'UNE GOURDE'00
 OB$3	asc	'UNE GOURDE PLEINE'00
 OB$4	asc	'UNE HARPE'00

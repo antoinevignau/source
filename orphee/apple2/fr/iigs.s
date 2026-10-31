@@ -96,7 +96,7 @@ chrEOL	=	$ff
 chrYES	=	'O'	; FR
 chrNO	=	'N'
 
-TRUE	=	$ffff
+TRUE	=	$00ff
 FALSE	=	$0000
 
 *----------------------- Color index
@@ -552,6 +552,80 @@ RANDOM	pha
 * LOAD/SAVE
 *-----------------------------------
 
+*------------------------------
+* LOAD A BIG FILE (>64K)
+*------------------------------
+
+loadBIGFILE	sta	proOPEN+4	; A contains the filename pointer
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcc	loadBIGFILE_1
+	rts
+
+loadBIGFILE_1	lda	proOPEN+2	; get file ID
+	sta	proREAD+2
+	sta	proCLOSE+2
+
+	lda	proEOF	; get length
+	sta	proREAD+8
+	lda	proEOF+2
+	sta	proREAD+10
+
+	lda	proHANDLE	; clear memory if needed
+	ora	proHANDLE+2
+	beq	loadBIGFILE_2
+
+	PushLong	proHANDLE
+	_DisposeHandle
+	
+loadBIGFILE_2	pha
+	pha
+	PushLong	proEOF
+	PushWord	myID
+	PushWord	#%11000000_00001100	; no special memory, page aligned
+	PushLong	#0
+	_NewHandle
+	phd		; dereference handle
+	tsc		; to get RAM pointer
+	tcd
+	lda	[3]
+	sta	proREAD+4
+	sta	proPOINTER
+	ldy	#2
+	lda	[3],y
+	sta	proREAD+6
+	sta	proPOINTER+2
+	pld
+	pla
+	sta	proHANDLE
+	pla
+	sta	proHANDLE+2
+	bcs	lbf_err
+
+	jsl	GSOS
+	dw	$2012
+	adrl	proREAD
+
+	sta	proERR
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+	
+	ldx	proPOINTER+2
+	ldy	proPOINTER
+	lda	proEOF+1	; nb of pages
+	clc
+	rts
+
+lbf_err	sta	proERR
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+	sec
+	rts
+
 *-----------------------------------
 * LOAD/SAVE
 *-----------------------------------
@@ -754,6 +828,8 @@ fgSOUND	ds	2
 *----------------------------------- GS/OS
 
 proERR	ds	2	; GS/OS error code
+proHANDLE	ds	4	; file handle
+proPOINTER	ds	4	; file pointer
 
 proOPEN	dw	12
 	ds	2

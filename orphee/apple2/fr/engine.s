@@ -511,6 +511,7 @@ DRAW	txa
 	
 	phy
 	lda	#GFX_HEIGHT
+	dec
 	sec
 	sbc	1,s
 	lsr
@@ -531,6 +532,7 @@ MOVE	txa
 
 	phy
 	lda	#GFX_HEIGHT
+	dec
 	sec
 	sbc	1,s
 	lsr
@@ -585,9 +587,6 @@ CLS	sta	theSTREAM
 	sta	clsRECT+2
 	
 	lda	tblWINDOW+2,y	; X2
-*	cmp	tblWINDOW,y
-*	bne	CLS_DIFFX
-*	inc
 CLS_DIFFX	asl
 	tax
 	lda	tblX,x
@@ -602,9 +601,6 @@ CLS_DIFFX	asl
 	sta	clsRECT
 
 	lda	tblWINDOW+6,y	; Y2
-*	cmp	tblWINDOW+4,y
-*	bne	CLS_DIFFY
-*	inc		; Y2+=1
 CLS_DIFFY	asl
 	tax
 	lda	tblY,x
@@ -617,14 +613,7 @@ CLS_DIFFY	asl
 	lda	#DFT_Y
 	sta	tblWINDOW+10,y
 
-*	lda	tblWINDOW+12,y	; PAPER
-*	asl
-*	tax
-*	lda	tblFULLCOLOR,x
-	
 	PushLong	#clsRECT	; and finally, clear the window
-*	pha
-*	pha
 	PushWord	#^blackPATTERN
 	lda	tblWINDOW+12,y
 	asl
@@ -1240,13 +1229,6 @@ PRINT	sta             theSTREAM
 	stx	GET_CHAR+3
 	rep	#$10
 
-*	PushWord	#$0800
-*	PushWord	#32768		; Amstrad.8
-*	PushWord	#0
-*	_InstallFont
-*	PushWord	#modeOr
-*	_SetTextMode
-
 PRINT_OUTER	jsr	setSTREAMXY	; set the XY SHR coordinates
 PRINT_INNER	jsr	setSTREAMPAPER	; set the background color
 	jsr	setSTREAMPEN	; set the foreground color
@@ -1256,74 +1238,9 @@ PRINT_LOOP	jsr	GET_CHAR	; get a character
 	bne	PRINT1	; end of string
 PRINT_EXIT	rts
 
-PRINT1	cmp	#chrRETURN	; >$0d, print char
-	bcc	PRINT_FN
-	jsr	COUT	; print character
+PRINT1	jsr	COUT	; print character
 	bcs	PRINT_EXIT	; if flagX or flagY is met
 	bra	PRINT_LOOP	; and loop
-
-PRINT_FN	cmp	#eINK	; handle INK change
-	bne	PRINT3
-	jsr	GET_CHAR
-	tax
-	jsr	GET_CHAR
-	tay
-	jsr	INK
-	bra	PRINT_LOOP
-
-PRINT3	cmp	#ePEN	; handle PEN change
-	bne	PRINT4
-	jsr	GET_CHAR
-	jsr	engPEN
-	bra	PRINT_INNER
-	
-PRINT4	cmp	#ePAPER	; handle PAPER change
-	bne	PRINT5
-	jsr	GET_CHAR
-	jsr	engPAPER
-	bra	PRINT_INNER
-
-PRINT5	cmp	#eLOCATE	; handle LOCATE change
-	bne	PRINT6
-	jsr	GET_CHAR
-	tax
-	jsr	GET_CHAR
-	tay
-	jsr	engLOCATE
-	bra	PRINT_OUTER
-
-PRINT6	cmp	#eBORDER	; handle PAPER change
-	bne	PRINT7
-	jsr	GET_CHAR
-	jsr	BORDER
-	bra	PRINT_LOOP
-
-PRINT7	cmp	#eCLS	; handle CLS change
-	bne	PRINT8
-	jsr	engCLS
-	brl	PRINT_OUTER
-	
-PRINT8	cmp	#eMODE	; handle MODE change
-	bne	PRINT9
-	jsr	GET_CHAR
-	jsr	MODE
-	brl	PRINT_OUTER
-
-PRINT9	cmp	#eWAIT
-	bne	PRINT_LOOP0
-	jsr	GET_CHAR
-	jsr	nowWAIT_ALT
-	brl	PRINT_LOOP
-
-PRINT_LOOP0	cmp	#eSOUND
-	bne	PRINT_NOTFN
-	jsr	GET_CHAR
-	tax
-	jsr	GET_CHAR
-	tay
-	jsr	GET_CHAR
-	jsr	SOUND
-PRINT_NOTFN	brl	PRINT_LOOP
 	
 *--- Get a character
 
@@ -1341,9 +1258,7 @@ COUT	and             #$ff
 	beq	COUT1
 	
 	pha		; draw the character
-                
                 jsr             GOTOXY
-
 	_DrawChar
 	
 *----------- next X position

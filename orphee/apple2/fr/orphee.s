@@ -104,6 +104,130 @@ wMESSAGE	=	4
 * on affiche les personnages en défilant
 *
 
+************************************
+* The following code to load and
+* save all original pictures as
+* apple iigs SHR screens
+************************************
+
+	lda	#116
+	sta	picINDEX
+	stz	fgFILL
+
+]lp	PushLong	#rectangle
+	PushLong	#blackPATTERN
+	_FillRect
+
+	lda	picINDEX
+	jsr	GRAPHE
+notakey	@INKEY
+	cmp	#'F'
+	bne	notfill
+	
+	lda	fgFILL
+	eor	#TRUE
+	sta	fgFILL
+	bra	]lp
+
+notfill	cmp	#'Q'
+	bne	notquit
+	jmp	QUIT
+
+notquit	cmp	#chrRETURN
+	bne	notsave
+	jsr	savePIC
+	inc	picINDEX
+	bra	]lp
+
+notsave	cmp	#'P'
+	bne	notakey
+	dec	picINDEX
+	bra	]lp
+
+*---
+
+picINDEX	ds	2
+fgFILL	ds	2
+rectangle	dw	0,0,200,320
+
+*---
+
+*-----------------------------------
+* SAUVE UNE IMAGE
+*-----------------------------------
+
+savePIC	sep	#$20	; copy suffix
+	ldx	#0
+]lp	lda	pSALLE,x
+	sta	pSALLE2,x
+	inx
+	cpx	#8
+	bcc	]lp
+	rep	#$20
+
+	lda	pIMAGE	; strl length
+	sta	pIMAGE2
+
+*---
+
+	jsl	GSOS
+	dw	$2002
+	adrl	proDESTROYPIC2
+	
+	jsl	GSOS
+	dw	$2001
+	adrl	proCREATEPIC2
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPENPIC2
+
+	lda	proOPENPIC2+2
+	sta	proWRITEPIC2+2
+	sta	proCLOSE2+2
+	
+	jsl	GSOS
+	dw	$2013
+	adrl	proWRITEPIC2
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE2
+	rts
+
+*---
+
+pIMAGE2	strl	'8/pics/images/'
+pSALLE2	asc	'D'
+	ds	7	; xxx.BIN
+
+proOPENPIC2	dw	2
+	ds	2
+	adrl	pIMAGE2
+
+proWRITEPIC2	dw	4	; 0 - pcount
+	ds	2	; 2 - ref_num
+	adrl	ptrE12000	; 4 - data_buffer
+	adrl	32768	; 8 - request_count
+	ds	4	; C - transfer_count
+
+proCLOSE2	dw	1
+	ds	2
+
+*--- For the game party
+
+proCREATEPIC2	dw	7	; pcount
+	adrl	pIMAGE2	; pathname
+	dw	$c3	; access_code
+	dw	$c1	; file_type
+	ds	4	; aux_type
+	ds	2	; storage_type
+	adrl	32768	; eof
+	ds	4	; resource_eof
+
+proDESTROYPIC2	dw	1	; pcount
+	adrl	pIMAGE2	; pathname
+
 *-----------------------------------
 * CODE BASIC EN ASM :-)
 *-----------------------------------
@@ -116,8 +240,6 @@ PLAY	@MODE	#1
 	@PAPER	#0;#0	; blanc
 	@PEN	#0;#1	; noir
 	
-	@CLS	#0
-
 	@WINDOW	#wINVENTAIRE;#tblWINDOW1	; pour l'inventaire
 	@PAPER	#wINVENTAIRE;#0
 	@PEN	#wINVENTAIRE;#1
@@ -134,6 +256,9 @@ PLAY	@MODE	#1
 	@PAPER	#wMESSAGE;#0
 	@PEN	#wMESSAGE;#1
 
+	@GFXPAPER	#0	; background color
+	@GFXPEN	#1	; foreground color
+	
 REPLAY	jsr	PRESENT
 	jsr	INIT_ALL
 	jsr	RIRE
@@ -154,13 +279,15 @@ DEPA1	ldx	#1	; est-on dans une salle sombre ?
 	
 CALCUL			; inutile
 	
-DESSIN	lda	SALLE
+DESSIN	ldx	SALLE	; parce qu'on peut inverser
+	lda	ADR-1,x	; des salles
+	jsr	GRAPHE
+	jsr	FENETR
+
+	lda	SALLE
 	ldy	#SALLE$
 	jsr	CHERC
 	jsr	AFFIC3
-	ldx	SALLE	; parce qu'on peut inverser
-	lda	ADR-1,x	; des salles
-	jsr	GRAPHE
 	jsr	ISSUE
 	jmp	DEPA2
 
@@ -499,9 +626,7 @@ FINDMO_3	rep	#$20	; on n'a pas trouvé
 * FENETR
 *-----------------------------------
 
-FENETR	@GFXPEN	#1	; noir
-
-	stz	IX
+FENETR	stz	IX
 	
 FENETR_1	ldx	IX	; 1. plot
 	ldy	CODFEN+2,x
@@ -534,17 +659,18 @@ FENETR_2	ldx	IY	; 2. draw 4 lines
 	clc
 	adc	#10*2
 	sta	IX
-	cmp	#100	; 10*2*5
+	cmp	#80	; 10*2*5 - was 100
 	bcc	FENETR_1
 	rts
 
 *--- Data
 
-CODFEN	dw	0,0	; les coordonnées des fenetres
-	dw	0,262
-	dw	406,262
-	dw	406,0
-	dw	0,0
+CODFEN
+*	dw	0,0	; les coordonnées des fenetres
+*	dw	0,260	; was 262
+*	dw	406,260	; was 262
+*	dw	406,0
+*	dw	0,0
 
 	dw	0,268	; 0,134
 	dw	406,268	; 203,134
@@ -947,20 +1073,20 @@ PACAPI	@PRINT	#wMESSAGE;#strPBCOMPRENDRE
 * PRESENT
 *-----------------------------------
 
-PRESENT	jsr	FENETR
-
-	@CLS	#wMESSAGE
-	@LOCATE	#wMESSAGE;#1;#5
-	@PRINT	#wMESSAGE;#phrase01
-	@CLS	#wINVENTAIRE
-	@LOCATE	#wINVENTAIRE;#1;#11
-	@PRINT	#wINVENTAIRE;#phrase05
-
-	ldal	HORIZCNT	; affiche image 119 ou 120
+PRESENT	ldal	HORIZCNT	; affiche image 119 ou 120
 	and	#%00000001
-yurk 	clc
+ 	clc
 	adc	#picVOYAGE
 	jsr	GRAPHE
+
+	jsr	FENETR
+
+*	@CLS	#wMESSAGE
+	@LOCATE	#wMESSAGE;#1;#5
+	@PRINT	#wMESSAGE;#phrase01
+*	@CLS	#wINVENTAIRE
+	@LOCATE	#wINVENTAIRE;#1;#11
+	@PRINT	#wINVENTAIRE;#phrase05
 
 	@INKEY
 	@CLS	#wMESSAGE
@@ -1003,8 +1129,17 @@ GETCOM	@PRINT	#wMESSAGE;#strRETURN
 GRAPHE	jsr	loadPIC	; charge une image (16-bits)
 	bcc	GRAPHEOK
 	rts
-	
-GRAPHEOK	lda	#bufIMAGE
+
+GRAPHEOK
+	rts
+
+************************************************
+* The following code runs fine
+* but the SeedFill algorithm is so slow
+* that it takes 50 seconds to display a pic!
+************************************************
+
+	lda	#bufIMAGE
 	sta	dpFROM
 
 	ldy	#2	; nombre de pas dans une image
@@ -1203,9 +1338,13 @@ DRAW_O	PushWord	theX	; On trace une ligne
 
 *-----------------------------------
 
-resMode	=	%0001_0000000000_10
+resMode	=	%0000_0000000000_10
 
-FILL_O	lda	theE1
+FILL_O	lda	fgFILL
+	beq	FILL_OK
+	rts
+
+FILL_OK	lda	theE1
 	asl
 	asl
 	clc
@@ -1253,7 +1392,7 @@ fillY	ds	2
 fillCOLOR	ds	2
 
 srcLocInfoPtr	dw	mode320	; mode 320
-	adrl	ptr012000
+	adrl	ptrE12000
 	dw	160
 	dw	0,0,200,320
 
@@ -2585,52 +2724,39 @@ noCHAR2	lda	strSALLE+2
 noCHAR3	rep	#$20
 	txa
 	clc
-	adc	#19	; on ajoute
+	adc	#16	; (was 19) on ajoute
 	sta	pIMAGE	; la longueur par défaut
 
-	lda	#'.B'
+	lda	#'.L'	; '.B'
 	sta	pSALLE+1,x
-	lda	#'IN'
+	lda	#'Z4'	; 'IN'
 	sta	pSALLE+3,x
 
 *--- Open/Read/Write
 
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPENPIC
+	lda	#pIMAGE
+	ldx	ptrUNPACK+2
+	ldy	ptrUNPACK
+	jsr	loadFILE
 	bcs	loadPIC99
 
-	lda	proOPENPIC+2
-	sta	proREADPIC+2
-	sta	proCLOSE+2
-	
-	jsl	GSOS
-	dw	$2012
-	adrl	proREADPIC
-	
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE
+	lda	proEOF
+	jsr	unpackLZ4
 
+	PushLong	ptrIMAGE
+	PushLong	ptrSCREEN
+	PushLong	#32768
+	_BlockMove
+	
 loadPIC99	rts
 
 *---
 
 strSALLE	ds	3	; len max d'une salle
 
-pIMAGE	strl	'8/data/images/'
-pSALLE	asc	'D'
-	ds	7	; xxx.BIN
-
-proOPENPIC	dw	2
-	ds	2
-	adrl	pIMAGE
-
-proREADPIC	dw	4	; 0 - pcount
-	ds	2	; 2 - ref_num
-	adrl	bufIMAGE	; 4 - data_buffer
-	adrl	2048	; 8 - request_count
-	ds	4	; C - transfer_count
+pIMAGE	strl	'8/data/lz4/'	; 11
+pSALLE	asc	'D'	;  1
+	ds	7	;  4 xxx.LZ4 (was BIN)
 
 *-----------------------------------
 * DATA

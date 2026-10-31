@@ -275,9 +275,9 @@ okTOOL	_HideMenuBar
 	PushWord	#0
 	_GetMasterSCB
 	pla
-	bmi	okSHADOW	; shadowing is on if bit 15 is set
+	bpl	okSHADOW	; shadowing is on if bit 15 is set
 
-	lda	#^ptrE12000	; shadowing is off, use slow RAM
+	lda	#^ptr012000	; shadowing is off, use slow RAM
 	sta	srcLocInfoPtr+4
 	sta	ptrSCREEN+2
 	
@@ -333,6 +333,133 @@ meQUIT1	PushWord myID
 *-----------------------------------
 * UNE BELLE BIBLIOTHEQUE
 *-----------------------------------
+
+*------------------------------
+* UNPACK LZ4 FILE
+*------------------------------
+
+* unpackLZ4
+*  Unpacks a LZ4 file
+*  Uses the two pointers:
+*   - ptrUNPACK: packed image
+*   - ptrIMAGE: temp unpack zone
+*
+* Entry:
+*  A: packed data size
+*  Y: offset of the data to unpack
+
+* Exit:
+*  A: unpacked data size
+*
+
+unpackLZ4	sta	LZ4_Limit+1
+	
+*	lda	ptrUNPACK	; that should make it usable at every source offset
+*	sty	LZ4_ReadToken+1
+*	sty	LZ4_Match_1+1
+*	sty	LZ4_GetLength_1+1
+
+	sep	#$20
+
+	lda	ptrUNPACK+2	; Source
+	sta	LZ4_Literal_3+2
+	sta	LZ4_ReadToken+3
+	sta	LZ4_Match_1+3
+	sta	LZ4_GetLength_1+3
+
+	lda	ptrIMAGE+2	; Destination
+	sta	LZ4_Literal_3+1
+	sta	LZ4_Match_5+1
+	sta	LZ4_Match_5+2
+
+	rep	#$20
+
+*--
+
+	ldy	ptrIMAGE	; Init Target unpacked Data offset
+	ldx	#16	; Offset after header
+
+LZ4_ReadToken	LDAL	$AA0000,X	; Read Token Byte
+	INX
+	STA	LZ4_Match_2+1
+	
+*----------------
+
+LZ4_Literal	AND	#$00F0	; >>> Process Literal Bytes <<<
+	BEQ	LZ4_Limit	; No Literal
+	CMP	#$00F0
+	BNE	LZ4_Literal_1
+	JSR	LZ4_GetLengthLit	; Compute Literal Length with next bytes
+	BRA	LZ4_Literal_2
+LZ4_Literal_1	LSR		; Literal Length use the 4 bit
+	LSR
+	LSR
+	LSR
+
+LZ4_Literal_2	DEC		; Copy A+1 Bytes
+LZ4_Literal_3	MVN	$AA,$BB	; Copy Literal Bytes from packed data buffer
+	PHK		; X and Y are auto incremented
+	PLB
+
+*----------------
+
+LZ4_Limit	CPX	#$AAAA	; End Of Packed Data buffer ?
+	BEQ	LZ4_End
+
+*----------------
+
+LZ4_Match	TYA		; >>> Process Match Bytes <<<
+	SEC
+LZ4_Match_1	SBCL	$AA0000,X	; Match Offset
+	INX
+	INX
+	STA	LZ4_Match_4+1
+
+LZ4_Match_2	LDA	#$0000	; Current Token Value
+	AND	#$000F
+	CMP	#$000F
+	BNE	LZ4_Match_3
+	JSR	LZ4_GetLengthMat	; Compute Match Length with next bytes
+LZ4_Match_3	CLC
+	ADC	#$0003	; Minimum Match Length is 4 (-1 for the MVN)
+	PHX
+LZ4_Match_4	LDX	#$AAAA	; Match Byte Offset
+LZ4_Match_5	MVN	$BB,$BB	; Copy Match Bytes from unpacked data buffer
+	PHK		; X and Y are auto incremented
+	PLB
+	PLX
+	BRA	LZ4_ReadToken
+
+*----------------
+
+LZ4_GetLengthLit
+	LDA	#$000F	; Compute Variable Length (Literal or Match)
+LZ4_GetLengthMat
+	STA	LZ4_GetLength_2+1
+LZ4_GetLength_1
+	LDAL	$AA0000,X	; Read Length Byte
+	INX
+	AND	#$00FF
+	CMP	#$00FF
+	BNE	LZ4_GetLength_3
+	CLC
+LZ4_GetLength_2
+	ADC	#$000F
+	STA	LZ4_GetLength_2+1
+	BRA	LZ4_GetLength_1
+LZ4_GetLength_3
+	ADC	LZ4_GetLength_2+1
+	RTS
+
+*----------------
+
+LZ4_End	sty	LZ4_length	; Y = length of unpacked data
+	ldx	LZ4_length+2
+	rts
+
+*--- Data
+
+LZ4_length	ds	4
 
 *------------------------------
 * ATTEND QUELQUES VBLs
@@ -424,6 +551,39 @@ RANDOM	pha
 *-----------------------------------
 * LOAD/SAVE
 *-----------------------------------
+
+*-----------------------------------
+* LOAD/SAVE
+*-----------------------------------
+
+loadFILE	sta	proOPEN+4
+	sty	proREAD+4
+	stx	proREAD+6
+
+	jsl	GSOS
+	dw	$2010
+	adrl	proOPEN
+	bcs	loadFILE_KO
+	
+	lda	proOPEN+2
+	sta	proREAD+2
+	sta	proCLOSE+2
+
+	lda	proEOF
+	sta	proREAD+8
+
+	jsl	GSOS
+	dw	$2012
+	adrl	proREAD
+	php
+	
+	jsl	GSOS
+	dw	$2014
+	adrl	proCLOSE
+	plp
+	
+loadFILE_KO	lda	proEOF
+	rts
 
 *----------------------------------- Open
 
@@ -534,7 +694,7 @@ myDP	ds	2
 
 bramBORDER	ds	2
 
-ptrSCREEN	adrl	ptr012000	; l'Žcran actif
+ptrSCREEN	adrl	ptrE12000	; l'Žcran actif
 
 ptrTEXT	adrl	$00000000	; 32k bank 1
 ptrBACKGND	adrl	$00008000	; 32k
@@ -594,6 +754,26 @@ fgSOUND	ds	2
 *----------------------------------- GS/OS
 
 proERR	ds	2	; GS/OS error code
+
+proOPEN	dw	12
+	ds	2
+	adrl	proOPEN
+	ds	2
+	ds	2
+	ds	2
+	ds	2
+	ds	4
+	ds	2
+	ds	8
+	ds	8
+	ds	4
+proEOF	ds	4
+
+proREAD	dw	4	; 0 - pcount
+	ds	2	; 2 - ref_num
+	ds	4	; 4 - data_buffer @ptrUNPACK
+	ds	4	; 8 - request_count
+	ds	4	; C - transfer_count
 
 proCLOSE	dw	1	; pcount
 	ds	2	; ID

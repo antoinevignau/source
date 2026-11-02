@@ -14,8 +14,8 @@
 *
 *		0001020304AA
 
-TBLANALYSE
-ANALYSE$	hex	001600000061FF		; INVENTAIRE (a)
+TBLACTIONS
+ACTIONS$	hex	001600000061FF		; INVENTAIRE (a)
 	hex	0000000100410C4602650269136DFF	; NORD (A)
 	hex	0000000300410F4602650269136DFF	; EST (A)
 	hex	000000020041124602650269136DFF	; SUD (A)
@@ -198,11 +198,26 @@ ANALYSE$	hex	001600000061FF		; INVENTAIRE (a)
 	hex	000A00030A411C44016301680164E56BFF
 	hex	000A00030A411C680164E56BFF
 	hex	000A001F00450E4301642D6BFF
+* 000A001F00	PRENDRE EAU
+* 450E	E continue if P,E is true
+* 4301	C continue if object $01 ("gourde") is in the room or carried
+* 642D	d print "vous n'avez pas de récipient"
+* 6B	k return to DEPA2
+* FF
 	hex	000A00240041144301642D6BFF
 	hex	000A001F00450F4301642D6BFF
 	hex	000A002400411444016517630168016F0262026AFF
 	hex	000A00240041144D0101651768016F026AFF
 	hex	000A001F00450E4401630168016F0262026AFF
+* 000A001F00	PRENDRE EAU
+* 450E	E continue if P,E is true
+* 4401	C continue if object $01 ("gourde") is carried
+* 6301	c drop object $01 ("gourde") in current room
+* 6801	h delete object $01 ("gourde")
+* 6F02	o drop object $02 ("gourde pleine") in current room
+* 6202	b take object $02 ("gourde pleine")
+* 6A	j print "d'accord" & return to DEPA2
+* FF
 	hex	000A001F00450E4D010168016F026AFF
 	hex	000A001F00450F44016516630168016F0262026AFF
 	hex	000A001F00450F4D0101651668016F026AFF
@@ -272,7 +287,24 @@ ANALYSE$	hex	001600000061FF		; INVENTAIRE (a)
 	hex	001100210041334615421E64416EFF
 	hex	00110021004133461564426BFF
 	hex	001200210041334615421D64436705006F0379333565156DFF
+* 0012002100	TUE SIRENE
+* 4133	A continue if current room is $33
+* 4615	F continue if P,15 if false
+* 421D	B continue if object $1D ("la grosse branche") is in current room or if I carry it
+* 6443	d print "vous fracassez..."
+* 670500	g set C,5 to 0
+* 6F03	o put object $03 ("harpe") in current room
+* 793335	y exchange room 33/35
+* 6515	e set P,15 to true
+* 6D	continue to DEPA1
+* FF
 	hex	00120021004133461564446BFF
+* 0012002100	TUE SIRENE
+* 4133	A continue if current room is $33
+* 4615	F continue if P,15 if false
+* 6444	d print "vous n'avez rien pour la tuer"
+* 6B	continue to DEPA2
+* FF
 	hex	00120022004133451864456BFF
 	hex	00110022004133451864456BFF
 	hex	002100380A412C451A780164466EFF
@@ -506,13 +538,27 @@ ANALYSE$	hex	001600000061FF		; INVENTAIRE (a)
 	hex	2F2D005203416A4A01461F645E6BFF
 	hex	2F2D005203416A4A0164AF653271096BFF
 	hex	002A002F0041364520640E6BFF
+* 002A002F00	DELIVRE YURK
+* 4136	A is this room $36 (54)
+* 4520	E continue if P,$20 is true
+* 640E	d print "c'est déjà fait"
+* 6B	return to DEPA2
+* FF	
 	hex	002A002F004136652079363764B06DFF
+* 002A002F00	DELIVRE YURK
+* 4136	A is this room $36 (54)
+* 6520	e set P,$20 to true
+* 793637	y exchange room $36 (54) with room $37 (55)
+* 64B0	d print "yurk vous remercie, il promet de vous aider"
+* 6D	return to DEPA1
+* FF	
 *	hex	004700000064B464B574FF	; SAVE
 	hex	004700000074FF	; SAVE
 *	hex	004600000064B364BB75FF	; LOAD
 	hex	004600000075FF	; LOAD
 
 	hex	005B0000007CFF	; QUITTER
+	hex	005C0000007DFF	; RECOMMENCER/REJOUER
 
 	hex	004400000064B26EFF
 	hex	0008004400411C44056715016305680564B76BFF
@@ -595,6 +641,14 @@ ANALYSE$	hex	001600000061FF		; INVENTAIRE (a)
 
 TBLCONDITIONS
 CONDITION$	hex	4629450145204C010664DD70016DFF	; F29/E01/E20/L0106/f4D/p01 Yurk vient de pénétrer dans la salle il l'éclaire, retour DEPA1
+* 4629	F continue if P,29 is FALSE
+* 4501	E continue if P,1 is TRUE
+* 4520	E continue if P,20 is TRUE
+* 4C0106	L continue if personnage $01 ("yurk") holds object $06 ("torche")
+* 64DD	d print "Yurk vient de pénétrer dans la salle..."
+* 7001	p pose Yurk dans la salle courante
+* 6D	M return to DEPA1
+* FF	; F29/E01/E20/L0106/f4D/p01 Yurk vient de pénétrer dans la salle il l'éclaire, retour DEPA1
 	hex	4629450145204C010E64DD70016DFF
 	hex	462945204954495549424943494C494D491E49717001FF
 	hex	41264C01024A01640373016802FF

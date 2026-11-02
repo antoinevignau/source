@@ -96,8 +96,10 @@ chrEOL	=	$ff
 chrYES	=	'O'	; FR
 chrNO	=	'N'
 
-TRUE	=	$00ff
-FALSE	=	$0000
+ZERO	=	0
+ONE	=	1
+FALSE	=	0
+TRUE	=	255
 
 *----------------------- Color index
 

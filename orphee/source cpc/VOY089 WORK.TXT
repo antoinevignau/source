@@ -14,6 +14,8 @@
       OBJSAL:      #8190	OBJSAL.BIN - Numéro de salle où se trouve l'objet d'index X
       PERSSALOBJ:  #81B0	PERSSAL.BIN - charge en #81B1
       PERSOBJ:     #81BB	PERSOBJ.BIN
+      C:           #81C6
+      P:           #81E0
       PERSNOM:     #8223	PERSNOM.BIN / PERS.BIN
       ADR:         #82BA	ADR.BIN - charge en #82B8
       PERSAL:      #83AB	PERSSAL.BIN - commence par 00 00
@@ -124,12 +126,12 @@
   830         JR   DEPA2
 
   840 SOMBR:  LD   HL,SALLE	; regarde les objets et la salle
-  850         LD   A,(#8196)	; #8190+6
+  850         LD   A,(#8196)	; #OBJSAL+6
   860         CP   (HL)
   870         JR   Z,CALCUL
   880         CP   255
   890         JR   Z,CALCUL
-  900         LD   A,(#819E)	; #8190+14
+  900         LD   A,(#819E)	; #OBJSAL+14
   910         CP   (HL)
   920         JR   Z,CALCUL
   930         CP   255		; déjà pris ?
@@ -176,12 +178,12 @@
  1330         LD   A,3
  1340         LD   B,9
  1350         LD   E,0
- 1360 PERSO:  LD   C,B
- 1370         LD   HL,#81B0
+ 1360 PERSO:  LD   C,B	; 9
+ 1370         LD   HL,#PERSSALOBJ
  1380         LD   B,0
- 1390         ADD  HL,BC
- 1400         LD   D,A
- 1410         LD   A,(HL)
+ 1390         ADD  HL,BC	; PERSSALOBJ,9
+ 1400         LD   D,A	; 3
+ 1410         LD   A,(HL)	; 
  1420 MODF:   CP   255
  1430         CALL Z,IMPRM
  1440         LD   B,C
@@ -408,7 +410,7 @@
  3430 VERIFI: LD   HL,#73F0	; ptr COND.BIN
  3440         LD   IX,#84A9	; index sujet/verbe
  3450         LD   IY,SALLE	; la salle
- 3460 VERIF1: LD   DE,#8190	; OBJSAL
+ 3460 VERIF1: LD   DE,#OBJSAL	; OBJSAL
  3470         LD   A,(HL)
  3480         CP   97		; si val ptr < 97
  3490         JP   P,VERIF3	; alors VERIF3
@@ -654,13 +656,13 @@
 
 * Initialisation des variables
 
- 5730 INIT:   LD   HL,#81C6	; 81C6..+91 octets à 0
+ 5730 INIT:   LD   HL,#C	; 81C6..+91 octets à 0
  5740         LD   B,91
  5750 INI1:   LD   (HL),0
  5760         INC  HL
  5770         DJNZ INI1
  5780         LD   HL,#83AB	; 83AB -> 81B0 sur 22 octets
- 5790         LD   DE,#81B0	; PERSSAL + PERSOBJ
+ 5790         LD   DE,#PERSSALOBJ	; PERSSAL + PERSOBJ
  5800         LD   BC,22
  5810         LDIR
  5820         LD   HL,#84B3	; 84B3 -> 82BA sur 240 octets
@@ -668,7 +670,7 @@
  5840         LD   BC,240
  5850         LDIR
  5860         LD   HL,#844C	; 844C -> 8190 sur 32 octets
- 5870         LD   DE,#8190	; #8190
+ 5870         LD   DE,#OBJSAL	; #OBJSAL
  5880         LD   BC,32
  5890         LDIR
  5900         LD   A,1		; 1
@@ -1103,7 +1105,7 @@
 
 * On a trouvé une action, on vérifie maintenant les conditions
 
- 9940 CONDIT: LD   DE,#8190
+ 9940 CONDIT: LD   DE,#OBJSAL
  9945         LD   (IX-2),0	; flag à 0
  9950         INC  HL		; ptr action++
  9960         LD   A,(HL)	; charge valeur
@@ -1139,7 +1141,7 @@
 10260         CP   "L"
 10270         JP   Z,CONDL
 10280 CONDM:  PUSH HL		; sauve HL
-10290         LD   HL,#81BB	; 81BB,x
+10290         LD   HL,#PERSOBJ	; 81BB,x
 10300         LD   B,0
 10310         ADD  HL,BC
 10320         LD   A,(HL)
@@ -1184,7 +1186,7 @@
 10710         CP   255		; compare with -1
 10720         RET
 10730 CONDE:  PUSH HL		; same
-10740         LD   HL,#81E0	; P,x
+10740         LD   HL,#P	; P,x
 10750         LD   B,0
 10760         ADD  HL,BC
 10770         LD   A,(HL)
@@ -1192,7 +1194,7 @@
 10790         CP   1		; compare with 1
 10800         RET
 10810 CONDF:  PUSH HL		; same
-10820         LD   HL,#81E0	; P,x
+10820         LD   HL,#P	; P,x
 10830         LD   B,0
 10840         ADD  HL,BC
 10850         LD   A,(HL)
@@ -1200,7 +1202,7 @@
 10870         CP   0		; compare with 0
 10880         RET
 10890 CONDG:  PUSH HL		; same
-10900         LD   HL,#81C6	; C,x
+10900         LD   HL,#C	; C,x
 10910         LD   B,0
 10920         ADD  HL,BC
 10930         LD   A,(HL)
@@ -1222,7 +1224,7 @@
 11090         JR   INVERZ	; inverse, dans tous les cas
 11100 CONDJ:  PUSH HL		; save HL
 11110         LD   B,0
-11120         LD   HL,#81B0	; 81B0,x
+11120         LD   HL,#PERSSALOBJ	; 81B0,x
 11130         ADD  HL,BC
 11140         LD   A,(HL)	; put in A
 11150         POP  HL		; restore ptr
@@ -1230,7 +1232,7 @@
 11170         RET
 11180 CONDK:  PUSH HL		; save HL
 11190         LD   B,0
-11200         LD   HL,#81B0	; 81B0,x
+11200         LD   HL,#PERSSALOBJ	; 81B0,x
 11210         ADD  HL,BC
 11220         LD   A,(HL)	; put in A
 11230         POP  HL		; restore ptr
@@ -1238,7 +1240,7 @@
 11250         JR   INVERZ	; inverse pour sortir
 11260 CONDL:  PUSH HL		; save HL
 11270         LD   B,0
-11280         LD   HL,#81BB	; 81BB,x
+11280         LD   HL,#PERSOBJ	; 81BB,x
 11290         ADD  HL,BC
 11300         LD   A,(HL)	; put in A
 11310         POP  HL		; restore ptr
@@ -1378,7 +1380,7 @@
 
 * Action S - Pose un objet porté dans la salle
 
-12560 ACTIOs: LD   HL,#81BB	; pose objet porte dans salle
+12560 ACTIOs: LD   HL,#PERSOBJ	; pose objet porte dans salle
 12570         ADD  HL,BC
 12580         LD   A,(HL)
 12590         CP   0		; a-t-on l'objet ?
@@ -1386,7 +1388,7 @@
 12610         LD   (HL),0	; libère le
 12620         LD   C,A
 12630         LD   A,(SALLE)
-12640         LD   HL,#8190	; OBJSAL,x = SALLE
+12640         LD   HL,#OBJSAL	; OBJSAL,x = SALLE
 12650         ADD  HL,BC
 12660         LD   (HL),A
 12670         AND  A
@@ -1394,7 +1396,7 @@
 
 * Action B - Prend un objet
 
-12690 ACTIOb: LD   HL,#8190	; prend un objet
+12690 ACTIOb: LD   HL,#OBJSAL	; prend un objet
 12700         ADD  HL,BC
 12710         LD   A,(HL)
 12720         CP   255		; a-t-on deja l'objet ?
@@ -1413,7 +1415,7 @@
 
 * Action C - Dépose un objet
 
-12850 ACTIOc: LD   HL,#8190	; dépose un objet
+12850 ACTIOc: LD   HL,#OBJSAL	; dépose un objet
 12860         ADD  HL,BC
 12870         LD   A,(HL)
 12880         CP   255		; a-t-on deja l'objet ?
@@ -1436,7 +1438,7 @@
 
 * Action E - Active pointeur N
 
-13020 ACTIOe: LD   HL,#81E0	; active pointeur N
+13020 ACTIOe: LD   HL,#P	; active pointeur N
 13030         ADD  HL,BC
 13040         LD   (HL),1	; P,x = 1
 13050         AND  A
@@ -1444,7 +1446,7 @@
 
 * Action F - Désactive pointeur N
 
-13070 ACTIOf: LD   HL,#81E0	; desactive pointeur N
+13070 ACTIOf: LD   HL,#P	; desactive pointeur N
 13080         ADD  HL,BC
 13090         LD   (HL),0	; P,x = 0
 13100         AND  A
@@ -1458,13 +1460,13 @@
 13150         PUSH HL
 13160         PUSH DE
 13170         LD   D,(HL)
-13180         LD   HL,#81C6	; C,x
+13180         LD   HL,#C	; C,x
 13190         ADD  HL,BC
 13200         LD   (HL),D
 13210         AND  A
 13220         RET
 
-13230 ACTIOh: LD   HL,#8190	; repose l'objet
+13230 ACTIOh: LD   HL,#OBJSAL	; repose l'objet
 13240         ADD  HL,BC
 13250         LD   (HL),0
 13260         CALL RETOBJ
@@ -1502,7 +1504,7 @@
 
 * Action O - Pose un objet dans la salle
 
-13480 ACTIOo: LD   HL,#8190	; pose objet dans la salle
+13480 ACTIOo: LD   HL,#OBJSAL	; pose objet dans la salle
 
 13490 ACTIo1: ADD  HL,BC	; pose objet ou personnage
 13500         LD   A,(SALLE)
@@ -1512,27 +1514,27 @@
 
 * Action P - Pose un personnage et un objet dans la salle
 
-13540 ACTIOp: LD   HL,#81B0	; pose personnage dans la salle
+13540 ACTIOp: LD   HL,#PERSSALOBJ	; pose personnage dans la salle
 13550         CALL ACTIo1
-13560         LD   HL,#81BB	; et les objets
+13560         LD   HL,#PERSOBJ	; et les objets
 13570         ADD  HL,BC
 13580         LD   C,(HL)
 13590         JR   ACTIOo
 
 * Action Q - Perd un personnage et un objet
 
-13600 ACTIOq: LD   HL,#81B0	; perd personnage
+13600 ACTIOq: LD   HL,#PERSSALOBJ	; perd personnage
 13610         ADD  HL,BC
 13620         LD   (HL),0
-13630         LD   HL,#81BB	; perd objet
+13630         LD   HL,#PERSOBJ	; perd objet
 13640         ADD  HL,BC
 13650         LD   (HL),0
 13660         AND  A
 13670         RET
 
-* Action R - Pose un objet
+* Action R - Pose un objet de personnage
 
-13680 ACTIOr: LD   HL,#81BB	; pose un objet
+13680 ACTIOr: LD   HL,#PERSOBJ	; prend un objet
 13690         ADD  HL,BC
 13700         LD   A,(HL)	; 81BB,x
 13701         EX   DE,HL	; échange
@@ -1546,7 +1548,7 @@
 13709         JP   Z,AIDEJA	; JE L'AI DEJA
 13710         CP   0		; aucun
 13720         JP   NZ,DEJAUN	; si, mais JE NE PORTE PAS PLUS D'UN OBJET
-13740         LD   HL,#8190	; quels sont les objets en salle ?
+13740         LD   HL,#OBJSAL	; quels sont les objets en salle ?
 13745         LD   B,0
 13750         ADD  HL,BC
 13755         LD   (#83E4),HL	; sauve le pointeur
@@ -1561,7 +1563,7 @@
 13900 ACTIr1: EX   DE,HL	; récup l'adresse
 13910         LD   (HL),C	; pose l'objet
 13920         LD   A,(IY+0)	; récupère la salle
-13940         LD   HL,(#83E4)	; récupère l'adresse
+13940         LD   HL,(#83E4)	; récupère l'adresse sauvegardée
 13950         LD   (HL),A	; sauve la salle
 13960         AND  A		; zéro
 13970         RET		; retour
@@ -1580,7 +1582,7 @@
 14070         LD   B,31	;	; $1F
 14080         LD   E,0
 14090 ACTa:   LD   C,B
-14100         LD   HL,#8190	; pointeur vers les objets
+14100         LD   HL,#OBJSAL	; pointeur vers les objets
 14110         LD   B,0		; $00
 14120         ADD  HL,BC
 14130         LD   D,A		; 9 -> D
@@ -1647,7 +1649,7 @@
 14680 ACTIOu: CALL #BB18	; charge une partie
 14690         LD   HL,#4150	; PA
 14700         LD   (#84B1),HL
-14710         LD   DE,#8190
+14710         LD   DE,#OBJSAL
 14720         CALL CHARGE
 14725         CALL #BB18
 14730         XOR  A
@@ -1658,7 +1660,7 @@
 
 * Action V - Decremente une condition
 
-14780 ACTIOv: LD   HL,#81C6	; C,x
+14780 ACTIOv: LD   HL,#C	; C,x
 14790         ADD  HL,BC
 14800         LD   A,(HL)	; compare 2
 14810         CP   2
@@ -1694,11 +1696,11 @@
 15030 SAUVE:  LD   HL,#4150	; PA
 15040         LD   (#84B1),HL
 15050         LD   HL,#84B1
-15060         LD   DE,#8190
+15060         LD   DE,#OBJSAL
 15070         LD   B,2
 15080         CALL #BC8C	; CAS OUT OPEN
 15090         JR   NC,ERREUR
-15100         LD   HL,#8190	; $8190
+15100         LD   HL,#OBJSAL	; $8190
 15110         LD   BC,0	; exe address 0
 15120         LD   A,2	; binaire
 15130         LD   DE,#500	; 500 octets
@@ -1898,7 +1900,7 @@
 
 16880 PASICI: LD   HL,#7FCA	; JE NE VOIS PAS CELA ICI
 16890         JP   NOO1
-16900 RETOBJ: LD   HL,#81BB	; les objets portes
+16900 RETOBJ: LD   HL,#PERSOBJ	; les objets portes
 16910         LD   B,0
 16920 RETOB2: LD   A,(HL)	; prend l'index de l'objet
 16930         CP   C		; est-ce celui en question ?

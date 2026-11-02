@@ -23,7 +23,7 @@ strPASPLUS	asc	'Je ne porte pas plus d'27'un objet'00
 strPORTERIEN	asc	'Je ne porte rien'00
 strAUCUN	asc	'AUCUN'00
 strOBJETSPRESENTS asc	'OBJETS PRESENTS :'0d00
-strOBJETSPORTES	asc	'OBJETS PORTES :'0d00
+strOBJETSPORTES	asc	'OBJETS PORTES   :'0d00
 strLOAD	asc	'Charger quelle partie (1-9) ? '00
 strSAVE	asc	'Enregistrer sous quelle partie (1-9) ? '00
 strLOADNOTOK	asc	0d'ERREUR DE CHARGEMENT'0d00
@@ -65,55 +65,54 @@ strPROMPT	asc	'>'00
 * Les objets dans les salles
 *
 
-NBOBJET	=	32
+NBOBJET	=	31
 
-refOBJSAL	dfb	002,000,000,003,024,046,048,045,016
-	dfb	013,026,068,000,078,080,007,000,070,073
-	dfb	094,099,090,000,000,000,109,113,000,000
-	dfb	000,075
+refOBJSAL	dfb	002,000,000,003,024,046,048,045,016,013
+	dfb	026,068,000,078,080,007,000,070,073,094
+	dfb	099,090,000,000,000,109,113,000,000,000
+	dfb	075
 
 OBJET$
-*OB$1	asc	'^'00
-OB$2	asc	'UNE GOURDE'00
-OB$3	asc	'UNE GOURDE PLEINE'00
-OB$4	asc	'UNE HARPE'00
+OB$1	asc	'UNE GOURDE'00
+OB$2	asc	'UNE GOURDE PLEINE'00
+OB$3	asc	'UNE HARPE'00
+OB$4	asc	'UNE CLE EN RUBIS'00
 OB$5	asc	'UNE CLE EN RUBIS'00
-OB$6	asc	'UNE CLE EN RUBIS'00
-OB$7	asc	'UNE TORCHE'00
-OB$8	asc	'UNE HACHE'00
-OB$9	asc	'UN FLACON MAGIQUE'00
-OB$10	asc	'UN BALAI'00
-OB$11	asc	'UNE CLE EN OR'00
-OB$12	asc	'UNE PELLE'00
-OB$13	asc	'UN COFFRE'00
-OB$14	asc	'UNE EPEE'00
-OB$15	asc	'UNE TORCHE'00
-OB$16	asc	'UNE CORDE'00
+OB$6	asc	'UNE TORCHE'00
+OB$7	asc	'UNE HACHE'00
+OB$8	asc	'UN FLACON MAGIQUE'00
+OB$9	asc	'UN BALAI'00
+OB$10	asc	'UNE CLE EN OR'00
+OB$11	asc	'UNE PELLE'00
+OB$12	asc	'UN COFFRE'00
+OB$13	asc	'UNE EPEE'00
+OB$14	asc	'UNE TORCHE'00
+OB$15	asc	'UNE CORDE'00
+OB$16	asc	'UNE DEMI-ETOILE'00
 OB$17	asc	'UNE DEMI-ETOILE'00
-OB$18	asc	'UNE DEMI-ETOILE'00
-OB$19	asc	'DES CORDELETTES'00
-OB$20	asc	'UNE MACHETTE'00
-OB$21	asc	'UN SABOT MAGIQUE'00
-OB$22	asc	'UN OEIL DE VERRE'00
-OB$23	asc	'UNE BAGUE'00
-OB$24	asc	'UNE LIANE'00
-OB$25	asc	'UN PAPIER'00
-OB$26	asc	'DES PIECES D'27'OR'00
-OB$27	asc	'UNE OPALE'00
-OB$28	asc	'UN AUTEL'00
-OB$29	asc	'UN RADEAU'00
-OB$30	asc	'LA GROSSE BRANCHE'00
-OB$31	asc	'UNE BRANCHE'00
-OB$32	asc	'UNE LOUPE GEANTE'00
+OB$18	asc	'DES CORDELETTES'00
+OB$19	asc	'UNE MACHETTE'00
+OB$20	asc	'UN SABOT MAGIQUE'00
+OB$21	asc	'UN OEIL DE VERRE'00
+OB$22	asc	'UNE BAGUE'00
+OB$23	asc	'UNE LIANE'00
+OB$24	asc	'UN PAPIER'00
+OB$25	asc	'DES PIECES D'27'OR'00
+OB$26	asc	'UNE OPALE'00
+OB$27	asc	'UN AUTEL'00
+OB$28	asc	'UN RADEAU'00
+OB$29	asc	'LA GROSSE BRANCHE'00
+OB$30	asc	'UNE BRANCHE'00
+OB$31	asc	'UNE LOUPE GEANTE'00
 
 *
 * Les personnages
 *
 
-NBPERSONNAGE	=	9
+NBPERSONNAGE	=	11
 
-refPERSSAL	dfb	054,003,056,029,099,100,065,019,106	; Miniu la socière (index 2) est dans la salle 3
-refPERSOBJ	dfb	000,004,000,000,021,000,000,000,000	; Yurk (index 1), de la salle 54, n'a pas d'objet
+refPERSSAL	dfb	000,054,003,056,029,099,100,065,019,106,000	; Miniu la socière (index 2) est dans la salle 3
+refPERSOBJ	dfb	000,000,004,000,000,021,000,000,000,000,000	; Yurk (index 1), de la salle 54, n'a pas d'objet
 					; Bellus (index 5) de la salle 99, a un oeil de verre
 PERSONNAGE$
 PE$1	asc	'YURK LE DRAGON'00	;  54  0
@@ -196,11 +195,7 @@ SUJET$	@asc	51;'BILLY'
 * Les verbes
 *
 
-tblVL$	hex	bd
-tblVH$	hex	bd
-tblV	hex	bd
-
-NBVERBE	=	107
+NBVERBE	=	123
 
 VERBE$	@asc	05;'M    '
 	@asc	05;'MONTE'
@@ -209,14 +204,14 @@ VERBE$	@asc	05;'M    '
 	@asc	06;'D    '
 	@asc	06;'DESCE'
 	@asc	07;'ENTRE'
-	@asc	12;'MARCH'
-	@asc	12;'AVANC'
+	@asc	08;'OUVRE'
 	@asc	10;'PREND'
 	@asc	10;'RAMAS'
 	@asc	11;'POSE '
 	@asc	11;'POSER'
 	@asc	11;'LAISS'
-	@asc	08;'OUVRE'
+	@asc	12;'MARCH'
+	@asc	12;'AVANC'
 	@asc	13;'FERME'
 	@asc	13;'CLORE'
 	@asc	14;'DEVER'
@@ -225,15 +220,19 @@ VERBE$	@asc	05;'M    '
 	@asc	17;'FRAPP'
 	@asc	17;'ATTAQ'
 	@asc	17;'ASSOM'
+	@asc	18;'ACHEV'
 	@asc	18;'TUE  '
+	@asc	18;'TUER '
 	@asc	19;'LIS  '
 	@asc	19;'LIRE '
 	@asc	20;'REMPL'
 	@asc	21;'VIDE '
 	@asc	21;'VIDER'
 	@asc	22;'I    '
+	@asc	22;'INV  '
 	@asc	22;'INVEN'
 	@asc	22;'LISTE'
+	@asc	23;'EXAMI'
 	@asc	23;'REGAR'
 	@asc	23;'R    '
 	@asc	24;'POUSS'
@@ -279,9 +278,8 @@ VERBE$	@asc	05;'M    '
 	@asc	50;'ATTEN'
 	@asc	50;'PATIE'
 	@asc	51;'SORS '
+	@asc	51;'SORTI'
 	@asc	51;'RESSO'
-	@asc	18;'ACHEV'
-	@asc	23;'EXAMI'
 	@asc	52;'DIRE '
 	@asc	52;'DIS  '
 	@asc	52;'DIT  '
@@ -307,6 +305,7 @@ VERBE$	@asc	05;'M    '
 	@asc	65;'ENFIL'
 	@asc	65;'CHAUS'
 	@asc	65;'METS '
+	@asc	65;'METTR'
 	@asc	66;'FROTT'
 	@asc	67;'CONTO'
 	@asc	68;'SUICI'
@@ -319,6 +318,8 @@ VERBE$	@asc	05;'M    '
 	@asc	72;'COUPE'
 	@asc	90;'MUSIQ'
 	@asc	91;'QUITT'
+	@asc	92;'RECOM'
+	@asc	92;'REJOU'
 	dfb	chrNULL
 
 *
@@ -546,7 +547,7 @@ DE$47	asc	'UNE GROTTE SOMBRE'00
 DE$48	asc	'LE REPAIRE DU BOURREAU'00
 DE$49	asc	'ENCORE UNE GROTTE'00
 DE$50	asc	'VERS LA SORTIE'00
-DE$51	asc	'LE LAC AU MONascE'00
+DE$51	asc	'LE LAC AU MONSTRE'00
 DE$52	asc	'^'00
 DE$53	asc	'^'00
 DE$54	asc	'LA PRISON DE YURK'00

@@ -18,9 +18,9 @@ picSALSOM	=	116	; salle obscure
 picMORT	=	117	; mort
 picVICTOIRE	=	118	; victoire
 picVOYAGE	=	119	; voyage aux enfers
-picORPHEE	=	120	; orphée
+picORPHEE	=	120	; orph√©e
 
-FIRST_ROOM	=	1	; salle de démarrage
+FIRST_ROOM	=	1	; salle de d√©marrage
 
 MAX_LEN	=	32
 NB_CAR	=	16	; max size of a word
@@ -29,6 +29,8 @@ LEN_WORD	=	5	; but limit to 4
 NBCONDITIONS	=	26
 NBPOINTEURS	=	67
 MAXPORTES	=	7	; pas plus de 7 objets
+
+CARRIED	=	255	; objet port√©
 
 iSUJET	=	1	; 
 iVERBE	=	2	; 
@@ -51,57 +53,20 @@ wMESSAGE	=	4
 	dfb	#]1
 	eom
 
-@print	mac
-	jsr	RETURN
-	<<<
-
 @draw	mac
 	jsr	GRAPHE
 	<<<
 
-@get_salsomb	mac
-	ldx	#]1
-	jsr	GET_SALSOMB
-	<<<
-	
-@set_salsomb	mac
-	ldx	]1
-	lda	]2
-	jsr	SET_SALSOMB
-	<<<
-	
-@get_objsal	mac
-	ldx	#]1
-	jsr	GET_OBJSAL
-	<<<
-
-@set_objsal	mac
-	ldx	]1
-	lda	]2
-	jsr	SET_OBJSAL
-	<<<
-	
-@get_perssal	mac
-	ldx	#]1
-	jsr	GET_PERSSAL
-	<<<
-
-@set_perssal	mac
-	ldx	]1
-	lda	]2
-	jsr	SET_PERSSAL
-	<<<
-	
 *-----------------------------------
 * Ordre d'affichage
 *
 * on affiche le titre de l'image
 * on affiche l'image
 * on affiche les issues
-* on efface la fenêtre objet
-* on affiche les objets en défilant
-* on efface la fenêtre personnage
-* on affiche les personnages en défilant
+* on efface la fen√™tre objet
+* on affiche les objets en d√©filant
+* on efface la fen√™tre personnage
+* on affiche les personnages en d√©filant
 *
 
 ************************************
@@ -292,23 +257,36 @@ DESSIN	ldx	SALLE	; parce qu'on peut inverser
 
 *-----------------------------------
 
-SOMBR	@get_objsal	#6
+SOMBR	
+*	@get_objsal	#6
+	ldx	#6
+	lda	SALSOMB-1,x
+	and	#$ff
 	cmp	SALLE
 	beq	CALCUL
 	cmp	#TRUE
 	beq	CALCUL
 	
-	@get_objsal	#14
+*	@get_objsal	#14
+	ldx	#14
+	lda	SALSOMB-1,x
+	and	#$ff
 	cmp	SALLE
 	beq	CALCUL
 	cmp	#TRUE
 	beq	CALCUL
 	
-	@get_perssal	#1
+*	@get_perssal	#1
+	ldx	#1
+	lda	PERSSAL-1,x
+	and	#$ff
 	cmp	SALLE
 	bne	SOMBRE
 	
-	lda	L81BC
+*	lda	L81BC
+	ldx	#1
+	lda	PERSOBJ-1,x
+	and	#$ff
 	cmp	#6
 	beq	CALCUL
 	cmp	#14
@@ -337,10 +315,10 @@ DEPA2_1	@CLS	#wINVENTAIRE
 	@PRINT	#wINVENTAIRE;#strOBJETSPRESENTS
 	
 	lda	SALLE	; affiche les objets
-	sta	N	; de la salle
+	sta	NN	; de la salle
 	jsr	LISTE
 
-* Affiche les personnages présents dans la salle
+* Affiche les personnages pr√©sents dans la salle
 
 	@CLS	#wPERSONNAGE
 	@PRINT	#wPERSONNAGE;#strPERSONNAGES
@@ -356,7 +334,6 @@ DEPA2_2	inx
 	cpx	#NBPERSONNAGE
 	bcc	]lp
 	beq	]lp
-*	rep	#$20
 
 	lda	DRAP
 	cmp	#TRUE
@@ -365,14 +342,14 @@ DEPA2_2	inx
 NESSUN	@PRINT	#wPERSONNAGE;#strAUCUN
 	jmp	DEPA3
 
-*	mx	%10
-	
 IMPRIM	stx	IX
 	txa
 	ldy	#PERSONNAGE$
 	jsr	CHERC
 	jsr	AFFIC2
-	
+
+	@PRINT	#wPERSONNAGE;#strRETURN
+
 	lda	#TRUE
 	sta	DRAP
 	ldx	IX
@@ -383,7 +360,7 @@ IMPRIM	stx	IX
 *-----------------------------------8
 
 DEPA3	jsr	GETCOM	; saisie des caracteres
-	jsr	DCRIPT	; déchiffre la chaîne saisie
+	jsr	DCRIPT	; d√©chiffre la cha‚Äùne saisie
 	jsr	showSALLE
 	
 	lda	SUJET
@@ -455,20 +432,20 @@ MVT	lda	SALLE	; pointe sur la table
 	bne	MVT_1
 	rep	#$20
 	sec
-	rts		; on sort sans avoir trouvé
+	rts		; on sort sans avoir trouv√©
 
 	mx	%10
 	
 MVT_1	cmp	COD
 	bne	MVT_2	; pas la bonne direction
 
-	iny		; direction trouvée
-	lda	(dpFROM),y	; récupère la salle
+	iny		; direction trouv√©e
+	lda	(dpFROM),y	; r√©cup√®re la salle
 	sta	SALLE
 	rep	#$20
 	clc
 	pla
-	jmp	DEPA1	; on sort en ayant trouvé
+	jmp	DEPA1	; on sort en ayant trouv√©
 
 	mx	%10
 	
@@ -481,7 +458,7 @@ MVT_2	iny		; +2
 *-----------------------------------
 * CHERC
 *-----------------------------------
-* A: index cherchée
+* A: index cherch√©e
 * Y: pointeur vers table
 
 CHERC	cmp	#0
@@ -506,13 +483,11 @@ CHERC_2	tya		; return the pointer
 * RETOBJ
 *-----------------------------------
 
-RETOBJ	RTS
-
-	txa
+RETOBJ	txa		; index de l'objet
 	sep	#$20
 	ldy	#1
-]lp	cmp	PERSOBJ-1,y
-	beq	RETOBJ_1
+]lp	cmp	PERSOBJ-1,y	; port√© par un personnage ?
+	beq	RETOBJ_1	; oui, saute
 	inx
 	cpx	#NBPERSONNAGE
 	bcc	]lp
@@ -522,8 +497,8 @@ RETOBJ	RTS
 	
 	mx	%10
 
-RETOBJ_1	lda	#FALSE
-	sta	PERSOBJ-1,x
+RETOBJ_1	lda	#FALSE	; oui, retire-le
+	sta	PERSOBJ-1,y
 	rep	#$20
 	rts
 
@@ -558,7 +533,7 @@ TROOBJ	@PRINT	#wMESSAGE;#strTROPPORTER
 *-----------------------------------
 * DEJOBJ
 *-----------------------------------
-* Vous l'avez déjà
+* Vous l'avez d√©j√†
 
 DEJOBJ	@PRINT	#wMESSAGE;#strVOUSLAVEZ
 	bra	OBJ_EXIT
@@ -582,7 +557,7 @@ PASOBJ	@PRINT	#wMESSAGE;#strPORTERIEN
 *-----------------------------------
 * AIDEJA
 *-----------------------------------
-* Je l'ai déjà
+* Je l'ai d√©j√†
 
 AIDEJA	@PRINT	#wMESSAGE;#strAIDEJA
 	bra	OBJ_EXIT
@@ -612,7 +587,7 @@ FINDMO_2	rep	#$20
 	tay
 	rts
 
-FINDMO_3	rep	#$20	; on n'a pas trouvé
+FINDMO_3	rep	#$20	; on n'a pas trouv√©
 	lda	dpFROM	; met le prochain mot
 	clc
 	adc	#LEN_WORD+1	; 5+1 = 6
@@ -665,7 +640,7 @@ FENETR_2	ldx	IY	; 2. draw 4 lines
 *--- Data
 
 CODFEN
-*	dw	0,0	; les coordonnées des fenetres
+*	dw	0,0	; les coordonn√©es des fenetres
 *	dw	0,260	; was 262
 *	dw	406,260	; was 262
 *	dw	406,0
@@ -770,13 +745,6 @@ showBORDER	sep	#$20
 	rep	#$20
 	rts
 
-*---------------
-
-showTEXT	@PRINT	#wMESSAGE;#strPAINT
-	rts
-
-strPAINT	asc	'PAINT '00
-	
 *-----------------------------------
 * VERIFI
 *-----------------------------------
@@ -787,14 +755,15 @@ VERIFI	lda	#TBLCONDITIONS
 	sta	dpCONDITIONS+2
 	
 VERIFI_1	jsr	getCONDITION
-VERIFI_1BIS	cmp	#'a'	; teste une action
+VERIFI_1BIS	sta	N	; the costly missing STA
+	cmp	#'a'	; teste une action
 	bcs	VERIFI_3	; oui
 	
 	jsr	TESTCO	; non, une condition "A".."Z"
 	bcc	VERIFI_1
 
 VERIFI_2	jsr	getCONDITION	; erreur, boucle
-	cmp	#chrEOL	; jusqu'à la fin
+	cmp	#chrEOL	; jusqu'√† la fin
 	bne	VERIFI_2	; de la ligne
 	
 VERIFI_4	jsr	getCONDITION	; prend la nouvelle
@@ -817,7 +786,7 @@ VERIFI_5	jsr	getCONDITION
 *-----------------------------------
 
 RETROU	lda	#SUJET$	; cherche WORDBUFFER
-	jsr	FINDMO	; dans les différentes listes...
+	jsr	FINDMO	; dans les diff√©rentes listes...
 	cmp	#chrNULL
 	beq	RETROU_1
 	ldx	#iSUJET	; 1
@@ -855,7 +824,7 @@ RETROU_5	lda	#ARTICLE$
 * TEST
 *-----------------------------------
 
-TEST	lda	nbMOTS	; nombre de mots trouvés
+TEST	lda	nbMOTS	; nombre de mots trouv√©s
 	beq	TEST_1
 	rts
 TEST_1	pla		; aucun !
@@ -865,7 +834,7 @@ TEST_1	pla		; aucun !
 * ZERO
 *-----------------------------------
 
-ZERO	stz	SUJET
+ZERO_CODE	stz	SUJET
 	stz	VERBE
 	stz	ATTRIBUT
 	stz	COD
@@ -873,7 +842,7 @@ ZERO	stz	SUJET
 	stz	ADJECTIF
 	
 	stz	endMOTS	; plus de mots si TRUE
-	stz	nbMOTS	; nombre de mots trouvés
+	stz	nbMOTS	; nombre de mots trouv√©s
 	stz	fgATTRIBUT
 	stz	TEXT_X	; index courant dans TEXTBUFFER
 	rts
@@ -886,7 +855,7 @@ SPACE	sep	#$20	; remplit la zone du mot
 	ldx	#0	; par des espaces
 	lda	#chrSPACE	; pour faciliter la
 ]lp	sta	WORDBUFFER,x	; comparaison des
-	inx		; résultats avec
+	inx		; r√©sultats avec
 	cpx	#LEN_WORD	; cinq lettres
 	bcc	]lp
 	rep	#$20
@@ -896,7 +865,7 @@ SPACE	sep	#$20	; remplit la zone du mot
 * DCRIPT
 *-----------------------------------
 
-DCRIPT	jsr	ZERO
+DCRIPT	jsr	ZERO_CODE
 
 DCRIPT_1	jsr	SPACE	; efface la zone du mot cible
 	jsr	NEXTMO	; cherche un mot, recopie-le
@@ -913,13 +882,13 @@ DCRIPT_1	jsr	SPACE	; efface la zone du mot cible
 *-----------------------------------
 
 TESTMO	jsr	RETROU	; cherche parmi les 5 tables
-	cmp	#chrNULL	; on n'a pas trouvé
+	cmp	#chrNULL	; on n'a pas trouv√©
 	bne	TESTMO_1
 	jmp	PACAPI	; on n'a pas compris
 
 * A/Y: index, X: type (1..6)
 
-TESTMO_1	inc	nbMOTS	; nombre de mots trouvés++
+TESTMO_1	inc	nbMOTS	; nombre de mots trouv√©s++
 
 	cpx	#iARTICLE	; 6
 	bne	DCRIPT_4
@@ -1013,13 +982,13 @@ NEXTMO	sep	#$20
 	cmp	#chrNULL
 	beq	NEXTMO_1
 	cmp	#chrSPACE
-	bne	NEXTMO_2	; on a trouvé un caractère
+	bne	NEXTMO_2	; on a trouv√© un caract√®re
 	inx
 	cpx	lenSTRING
 	bcc	]lp
 
 NEXTMO_1	rep	#$20
-	lda	#TRUE	; retourne sans avoir trouvé
+	lda	#TRUE	; retourne sans avoir trouv√©
 	sta	endMOTS
 	sec	
 	rts
@@ -1044,8 +1013,8 @@ NEXTMO_2	ldy	#0
 	cpy	#LEN_WORD
 	bcc	]lp
 
-NEXTMO_3	lda	TEXTBUFFER,x	; on est là, on peut avoir
-	cmp	#chrNULL	; coupé un mot, ie <>_ ou \0
+NEXTMO_3	lda	TEXTBUFFER,x	; on est l√†, on peut avoir
+	cmp	#chrNULL	; coup√© un mot, ie <>_ ou \0
 	beq	NEXTMO_4
 	cmp	#chrSPACE
 	beq	NEXTMO_4
@@ -1053,7 +1022,7 @@ NEXTMO_3	lda	TEXTBUFFER,x	; on est là, on peut avoir
 	cpx	lenSTRING
 	bcc	NEXTMO_3
 	
-NEXTMO_4	rep	#$20	; retourne en ayant trouvé
+NEXTMO_4	rep	#$20	; retourne en ayant trouv√©
 	stx	TEXT_X
 	clc
 	rts
@@ -1139,15 +1108,15 @@ GRAPHEOK
 * that it takes 50 seconds to display a pic!
 ************************************************
 
-	lda	#bufIMAGE
-	sta	dpFROM
+*	lda	#bufIMAGE
+*	sta	dpFROM
 
 	ldy	#2	; nombre de pas dans une image
 	lda	(dpFROM),y
 	sta	maxSTEPS
 	stz	theSTEP
 	
-	lda	dpFROM	; on se met au début des images
+	lda	dpFROM	; on se met au d√©but des images
 	clc
 	adc	#4
 	sta	dpFROM
@@ -1190,7 +1159,7 @@ spLOOP	ldy	#0
 	jsr	DRAW_O
 	jmp	skip2
 
-*--- Gère les autres cas
+*--- G√®re les autres cas
 
 spOTHER	lda	theA
 	and	#%00110000	; 16
@@ -1318,7 +1287,7 @@ drawEXIT	rts
 
 *-----------------------------------
 
-PLOT_O	PushWord	theX	; On déplace le curseur seulement
+PLOT_O	PushWord	theX	; On d√©place le curseur seulement
 	PushWord	theY
 	_MoveTo
 	
@@ -1563,8 +1532,10 @@ CLEARW	rts
 * ANALYS
 *-----------------------------------
 
-ANALYS	lda	#TBLANALYSE
+ANALYS	lda	#TBLACTIONS
 	sta	dpCONDITIONS
+	lda	#^TBLACTIONS
+	sta	dpCONDITIONS+2
 
 MOTS	jsr	getCONDITION
 MOTS_1	cmp	SUJET
@@ -1601,7 +1572,7 @@ MOTS_5	jsr	getCONDITION
 	
 *----------
 
-NOUVEL	jsr	getCONDITION	; va jusqu'à la fin de la ligne
+NOUVEL	jsr	getCONDITION	; va jusqu'√† la fin de la ligne
 	cmp	#chrEOL
 	bne	NOUVEL
 	
@@ -1613,7 +1584,7 @@ FIN	jsr	getCONDITION	; nouvelle ligne, fin de table ?
 
 *---------- 
 
-IMPOSS	lda	motPASTROUVE	; fin de table, a-t-on trouvé ?
+IMPOSS	lda	motPASTROUVE	; fin de table, a-t-on trouv√© ?
 	cmp	#TRUE
 	beq	IMPOSS_2
 IMPOSS_1	@PRINT	#wMESSAGE;#strIMPOSSIBLE
@@ -1630,7 +1601,7 @@ IMPOSS_2	lda	DRAP
 * CONDIT (A..Z)
 *-----------------------------------
 
-CONDIT	lda	#FALSE	; on a trouvé un mot
+CONDIT	lda	#FALSE	; on a trouv√© un mot
 	sta	motPASTROUVE
 	
 CONDIT_1	jsr	getCONDITION
@@ -1638,11 +1609,11 @@ CONDIT_1	jsr	getCONDITION
 	bcs	CONDIT_2	; oui
 	sta	N
 
-	jsr	getCONDITION
-	tax
-	jsr	TESTCO
-	bcs	NOUVEL	; on boucle si OK
-	bcc	CONDIT_1	; sinon, on sort
+	jsr	getCONDITION	; prend le second param√®tre
+	tax		; registre C sur le Z80
+	jsr	TESTCO	; teste la condition
+	bcs	NOUVEL	; on sort si retenue
+	bcc	CONDIT_1	; on continue sans retenue
 
 CONDIT_2	jmp	ACTION
 
@@ -1651,43 +1622,43 @@ CONDIT_2	jmp	ACTION
 TESTCO	lda	N
 	cmp	#'A'
 	bne	TESTCO_2
-	jmp	CONDA
+	brl	CONDA
 TESTCO_2	cmp	#'B'
 	bne	TESTCO_3
-	jmp	CONDB
+	brl	CONDB
 TESTCO_3	cmp	#'C'
 	bne	TESTCO_4
-	jmp	CONDC
+	brl	CONDC
 TESTCO_4	cmp	#'D'
 	bne	TESTCO_5
-	jmp	CONDD
+	brl	CONDD
 TESTCO_5	cmp	#'E'
 	bne	TESTCO_6
-	jmp	CONDE
+	brl	CONDE
 TESTCO_6	cmp	#'F'
 	bne	TESTCO_7
-	jmp	CONDF
+	brl	CONDF
 TESTCO_7	cmp	#'G'
 	bne	TESTCO_8
-	jmp	CONDG
+	brl	CONDG
 TESTCO_8	cmp	#'H'
 	bne	TESTCO_9
-	jmp	CONDH
+	brl	CONDH
 TESTCO_9	cmp	#'I'
 	bne	TESTCO_10
-	jmp	CONDI
+	brl	CONDI
 TESTCO_10	cmp	#'J'
 	bne	TESTCO_11
-	jmp	CONDJ
+	brl	CONDJ
 TESTCO_11	cmp	#'K'
 	bne	TESTCO_12
-	jmp	CONDK
+	brl	CONDK
 TESTCO_12	cmp	#'L'
 	bne	TESTCO_13
-	jmp	CONDL
+	brl	CONDL
 TESTCO_13	cmp	#'M'
 	bne	TESTCO_14
-	jmp	CONDM
+	brl	CONDM
 TESTCO_14	sec
 	rts
 	
@@ -1704,13 +1675,13 @@ CONDA	cpx	SALLE
 CONDA_1	clc
 	rts
 
-*---------- B 42 - OBJET DANS LA SALLE OU PORTé ?
+*---------- B 42 - OBJET DANS LA SALLE OU PORT√© ?
 
 CONDB	sep	#$20
 	lda	OBJSAL-1,x
 	cmp	SALLE
 	beq	CONDB_1
-	cmp	#<TRUE
+	cmp	#CARRIED
 	beq	CONDB_1
 	rep	#$20
 	sec
@@ -1719,13 +1690,13 @@ CONDB_1	rep	#$20
 	clc
 	rts
 
-*---------- C 43 - OBJET PAS DANS LA SALLE OU PAS PORTé ?
+*---------- C 43 - OBJET PAS DANS LA SALLE OU PAS PORT√© ?
 
 CONDC	sep	#$20
 	lda	OBJSAL-1,x
 	cmp	SALLE
 	beq	CONDC_1
-	cmp	#<TRUE
+	cmp	#CARRIED
 	beq	CONDC_1
 	rep	#$20
 	clc
@@ -1734,11 +1705,11 @@ CONDC_1	rep	#$20
 	sec
 	rts
 
-*---------- D 44 - OBJET PORTé ?
+*---------- D 44 - OBJET PORT√© ?
 
 CONDD	sep	#$20
 	lda	OBJSAL-1,x
-	cmp	#<TRUE
+	cmp	#CARRIED
 	beq	CONDD_1
 	rep	#$20
 	sec
@@ -1751,7 +1722,7 @@ CONDD_1	rep	#$20
 
 CONDE	sep	#$20
 	lda	P-1,x
-	cmp	#<TRUE
+	cmp	#ONE
 	beq	CONDE_1
 	rep	#$20
 	sec
@@ -1764,7 +1735,7 @@ CONDE_1	rep	#$20
 
 CONDF	sep	#$20
 	lda	P-1,x
-	cmp	#<FALSE
+	cmp	#ZERO
 	beq	CONDF_1
 	rep	#$20
 	sec
@@ -1777,9 +1748,8 @@ CONDF_1	rep	#$20
 
 CONDG	sep	#$20
 	lda	C-1,x
-	bne	CONDG_1
-*	cmp	#<TRUE
-*	beq	CONDG_1
+	cmp	#ONE
+	beq	CONDG_1
 	rep	#$20
 	sec
 	rts
@@ -1930,7 +1900,7 @@ ACTION	cmp	#chrEOL
 	bne	ACTION_1
 	rts
 
-ACTION_1	jsr	TESTAC	; on exécute
+ACTION_1	jsr	TESTAC	; on ex√©cute
 	bcc	ACTION_3	; on continue
 	
 	sta	ACTION_2+1	; on sort
@@ -1943,93 +1913,102 @@ ACTION_3	jsr	getCONDITION
 
 TESTAC	cmp	#'a'
 	bne	TESTAC_2
-	jmp	ACTIONA
+	brl	ACTIONA
 TESTAC_2	cmp	#'b'
 	bne	TESTAC_3
-	jmp	ACTIONB
+	brl	ACTIONB
 TESTAC_3	cmp	#'c'
 	bne	TESTAC_4
-	jmp	ACTIONC
+	brl	ACTIONC
 TESTAC_4	cmp	#'d'
 	bne	TESTAC_5
-	jmp	ACTIOND
+	brl	ACTIOND
 TESTAC_5	cmp	#'e'
 	bne	TESTAC_6
-	jmp	ACTIONE
+	brl	ACTIONE
 TESTAC_6	cmp	#'f'
 	bne	TESTAC_7
-	jmp	ACTIONF
+	brl	ACTIONF
 TESTAC_7	cmp	#'g'
 	bne	TESTAC_8
-	jmp	ACTIONG
+	brl	ACTIONG
 TESTAC_8	cmp	#'h'
 	bne	TESTAC_9
-	jmp	ACTIONH
+	brl	ACTIONH
 TESTAC_9	cmp	#'i'
 	bne	TESTAC_10
-	jmp	ACTIONI
+	brl	ACTIONI
 TESTAC_10	cmp	#'z'
 	bne	TESTAC_11
-	jmp	ACTIONZ
+	brl	ACTIONZ
 TESTAC_11	cmp	#$7b	; {
 	bne	TESTAC_12
-	jmp	ACTION0
+	brl	ACTION0
 TESTAC_12	cmp	#'j'
 	bne	TESTAC_13
-	jmp	ACTIONJ
+	brl	ACTIONJ
 TESTAC_13	cmp	#'k'
 	bne	TESTAC_14
-	jmp	ACTIONK
+	brl	ACTIONK
 TESTAC_14	cmp	#'w'
 	bne	TESTAC_15
-	jmp	ACTIONW
+	brl	ACTIONW
 TESTAC_15	cmp	#'x'
 	bne	TESTAC_16
-	jmp	ACTIONX
+	brl	ACTIONX
 TESTAC_16	cmp	#'l'
 	bne	TESTAC_17
-	jmp	ACTIONL
+	brl	ACTIONL
 TESTAC_17	cmp	#'v'
 	bne	TESTAC_18
-	jmp	ACTIONV
+	brl	ACTIONV
 TESTAC_18	cmp	#'m'
 	bne	TESTAC_19
-	jmp	ACTIONM
+	brl	ACTIONM
 TESTAC_19	cmp	#'y'
 	bne	TESTAC_20
-	jmp	ACTIONY
+	brl	ACTIONY
 TESTAC_20	cmp	#'n'
 	bne	TESTAC_21
-	jmp	ACTIONN
+	brl	ACTIONN
 TESTAC_21	cmp	#'o'
 	bne	TESTAC_22
-	jmp	ACTIONO
+	brl	ACTIONO
 TESTAC_22	cmp	#'p'
 	bne	TESTAC_23
-	jmp	ACTIONP
+	brl	ACTIONP
 TESTAC_23	cmp	#'t'
 	bne	TESTAC_24
-	jmp	ACTIONT
+	brl	ACTIONT
 TESTAC_24	cmp	#'q'
 	bne	TESTAC_25
-	jmp	ACTIONQ
+	brl	ACTIONQ
 TESTAC_25	cmp	#'u'
 	bne	TESTAC_26
-	jmp	ACTIONU
+	brl	ACTIONU
 TESTAC_26	cmp	#'r'
 	bne	TESTAC_27
-	jmp	ACTIONR
+	brl	ACTIONR
 TESTAC_27	cmp	#'s'
 	bne	TESTAC_28
-	jmp	ACTIONS
-TESTAC_28	cmp	#$7c
+	brl	ACTIONS
+TESTAC_28	cmp	#$7c	; ** new av **
 	bne	TESTAC_29
-	jmp	ACTIONQUITTER
-TESTAC_29	jmp	ACTIONM	; retourne à DEPA1
+	brl	ACTIONQUITTER
+TESTAC_29	cmp	#$7d
+	bne	TESTAC_30
+	brl	ACTIONREJOUER
+TESTAC_30	brl	ACTION_3	; boucle
 
 *-----------------------------------
 * TOUTES LES ACTIONS (a..z)
 *-----------------------------------
+
+*---------- #$7d - REJOUER
+
+ACTIONREJOUER	lda	#REJOU
+	sec
+	rts
 
 *---------- #$7c - QUITTER
 
@@ -2043,7 +2022,6 @@ ACTIONQUITTER	@PRINT	#wMESSAGE;#strQUITTER
 	lda	#QUIT	; return to the IIgs
 	sec
 	rts
-
 ACTIONQU_1	clc
 	rts
 
@@ -2052,23 +2030,26 @@ ACTIONQU_1	clc
 ACTIONA	@CLS	#wINVENTAIRE
 	@PRINT	#wINVENTAIRE;#strOBJETSPORTES
 
-	lda	#TRUE	; affiche les objets portés
-	sta	N
+	lda	#CARRIED	; affiche les objets port√©s
+	sta	NN
 
 LISTE	ldx	#1	; les inits
 	stx	IX
-	lda	#FALSE	; aucun objet trouvé
+	lda	#FALSE	; aucun objet trouv√©
 	sta	DRAP
 
 	ldx	IX
 ]lp	lda	OBJSAL-1,x	; prend l'objet X
-	cmp	N	; dans la salle ou porté (<TRUE)
+	and	#$ff	; the costly missing AND
+	cmp	NN	; dans la salle ou port√© (CARRIED)
 	bne	LISTE_1	; non
 
 	txa		; oui, affiche le
 	ldy	#OBJET$
 	jsr	CHERC
 	jsr	AFFIC1
+
+	@PRINT	#wINVENTAIRE;#strRETURN
 
 	lda	#TRUE
 	sta	DRAP
@@ -2080,12 +2061,12 @@ LISTE_1	inc	IX	; prochain objet
 	beq	]lp
 
 	lda	DRAP	; on sort, a-t-on
-	cmp	#FALSE	; trouvé un objet ?
+	cmp	#FALSE	; trouv√© un objet ?
 	bne	AUCUN_1	; oui
 
 	@PRINT	#wINVENTAIRE;#strAUCUN
 
-AUCUN_1	lda	N
+AUCUN_1	lda	NN
 	cmp	#TRUE
 	bne	AUCUN_2
 	@INKEY		; pause clavier pour inventaire
@@ -2098,17 +2079,17 @@ ACTIONB	jsr	getCONDITION	; check object
 	tax
 	sep	#$20
 	lda	OBJSAL-1,x
-	cmp	#<TRUE
+	cmp	#CARRIED
 	bne	ACTIONB_1
 	rep	#$20
-	jmp	DEJOBJ	; on l'a déjà
+	brl	DEJOBJ	; on l'a d√©j√†
 
 	mx	%10
 	
 ACTIONB_1	cmp	SALLE
 	beq	ACTIONB_2
 	rep	#$20
-	jmp	PASICI	; pas ici
+	brl	PASICI	; pas ici
 
 	mx	%10
 	
@@ -2117,11 +2098,11 @@ ACTIONB_2	lda	NBOBJ
 	bcc	ACTIONB_3
 	beq	ACTIONB_3
 	rep	#$20
-	jmp	TROOBJ	; on en porte trop
+	brl	TROOBJ	; on en porte trop
 
 	mx	%10
 	
-ACTIONB_3	lda	#<TRUE
+ACTIONB_3	lda	#CARRIED
 	sta	OBJSAL-1,x
 	inc	NBOBJ
 	rep	#$20
@@ -2135,10 +2116,10 @@ ACTIONC	jsr	getCONDITION
 	tax
 	sep	#$20
 	lda	OBJSAL-1,x
-	cmp	#<TRUE
+	cmp	#CARRIED
 	beq	ACTIONC_1
 	rep	#$20
-	jmp	NOOBJ	; on ne l'a pas
+	brl	NOOBJ	; on ne l'a pas
 
 	mx	%10
 
@@ -2163,7 +2144,7 @@ ACTIOND	jsr	getCONDITION
 ACTIONE	jsr	getCONDITION
 	tax
 	sep	#$20
-	lda	#<TRUE
+	lda	#ONE
 	sta	P-1,x
 	rep	#$20
 	clc
@@ -2174,7 +2155,7 @@ ACTIONE	jsr	getCONDITION
 ACTIONF	jsr	getCONDITION
 	tax
 	sep	#$20
-	lda	#FALSE
+	lda	#ZERO
 	sta	P-1,x
 	rep	#$20
 	clc
@@ -2199,6 +2180,7 @@ ACTIONH	jsr	getCONDITION
 	lda	#FALSE
 	sta	OBJSAL-1,x
 	rep	#$20
+	jsr	RETOBJ	; en X l'index de l'objet
 	clc
 	rts
 
@@ -2256,11 +2238,11 @@ ACTIONP	jsr	getCONDITION
 	lda	SALLE
 	sta	PERSSAL-1,x	; pose le personnage
 	
-	lda	PERSOBJ-1,x	; prend l'index de l'objet
+	ldy	PERSOBJ-1,x	; prend l'index de l'objet
 	beq	ACTIONP_1	; DEBUG
-	tax
+	tay
 	lda	SALLE
-	sta	OBJSAL-1,x	; pose l'objet dans la salle
+	sta	OBJSAL-1,y	; pose l'objet dans la salle
 ACTIONP_1	rep	#$20
 	clc
 	rts
@@ -2277,7 +2259,7 @@ ACTIONQ	jsr	getCONDITION
 	clc
 	rts
 
-*---------- r 72 - DONNER UN OBJET A UN PERSONNAGE
+*---------- r 72 - POSE UN OBJET
 
 ACTIONR	jsr	getCONDITION
 	tax		; index de personnage
@@ -2287,32 +2269,32 @@ ACTIONR	jsr	getCONDITION
 	
 	jsr	getCONDITION
 	tay		; index de l'objet
-	cmp	N	; même index ?
+	cmp	N	; m√™me index ?
 	bne	ACTIONR_1	; non
-	jmp	AIDEJA	; oui, le perso le porte déjà
+	brl	AIDEJA	; oui, le perso le porte d√©j√†
 
 ACTIONR_1	sep	#$20
 	lda	N	; est-ce un objet ?
-	cmp	#<FALSE
+	cmp	#FALSE
 	beq	ACTIONR_2	; non, vide
 	rep	#$20
-	jmp	DEJAUN	; oui, le porte porte déjà un objet
+	brl	DEJAUN	; oui, le personnage porte d√©j√† un objet
 
 	mx	%10
 	
 ACTIONR_2	lda	OBJSAL-1,y	; est-ce que l'objet est en salle ?
 	cmp	SALLE	; oui
 	beq	ACTIONR_4
-	cmp	#<TRUE	; ou le porte-t-on ?
+	cmp	#CARRIED	; ou le porte-t-on ?
 	beq	ACTIONR_3	; oui
 	rep	#$20
-	jmp	PASICI	; non, erreur
+	brl	PASICI	; non, erreur
 
 	mx	%10
 
 ACTIONR_3	dec	NBOBJ	; si on porte, on le retire
 
-ACTIONR_4	lda	SALLE	; le personnage reçoit la salle
+ACTIONR_4	lda	SALLE	; le personnage re√ßoit la salle
 	sta	PERSSAL-1,x	; et l'index de l'objet
 	tya
 	sta	PERSOBJ-1,x
@@ -2328,10 +2310,10 @@ ACTIONS	jsr	getCONDITION
 	tax
 	sep	#$20
 	lda	PERSOBJ-1,x
-	cmp	#<FALSE
+	cmp	#FALSE
 	bne	ACTIONS_1
 	rep	#$20
-	jmp	PASOBJ
+	brl	PASOBJ
 
 	mx	%10
 	
@@ -2397,31 +2379,31 @@ slotGAME_ERR	sec
 
 ACTIONV	jsr	getCONDITION
 	tax
-	lda	C-1,x
-	and	#$ff
-	beq	ACTIONV_1
-*	cmp	#1
-*	bcc	ACTIONV_1
-*	beq	ACTIONV_1
 	sep	#$20
+	lda	C-1,x
+	cmp	#ONE
+	bcc	ACTIONV_1
+	beq	ACTIONV_1
 	dec	C-1,x
-	rep	#$20
-ACTIONV_1	clc
+ACTIONV_1	rep	#$20
+	clc
 	rts
 
 *---------- w 77 - JOUE DE LA SYNTHESE SONORE
 
-ACTIONW	clc
+ACTIONW	jsr	getCONDITION
+	clc
 	rts
 
 *---------- x 78 - JOUE DES BRUITS
 
-ACTIONX	clc
+ACTIONX	jsr	getCONDITION
+	clc
 	rts
 
 *---------- y 79 - INVERSE LES POINTEURS DES DEUX IMAGES
 
-ACTIONY	jsr	getCONDITION	; 1ère image
+ACTIONY	jsr	getCONDITION	; 1√®re image
 	tax
 	jsr	getCONDITION	; 2nde image
 	tay
@@ -2610,10 +2592,11 @@ IS_SORTIE	asl
 
 IS_FIN	rts
 
-*---------- Affiche une virgule de séparation
+*---------- Affiche une virgule de s√©paration
 
-VIRG	bit	DRAP
-	bpl	VIR
+VIRG	lda	DRAP
+	cmp	#TRUE
+	bne	VIR
 
 	@PRINT	#wMESSAGE;#strCOMMA
 	
@@ -2686,46 +2669,6 @@ INIT_ALL	sep	#$20
 *-----------------------------------
 
 *-----------------------------------
-* GET/SET
-*-----------------------------------
-
-GET_SALSOMB	lda	SALSOMB-1,x
-	and	#$ff
-	cmp	#TRUE
-	bne	GET_SALSOMB_1
-	lda	#TRUE
-GET_SALSOMB_1	rts
-
-SET_SALSOMB	sep	#$20
-	sta	SALSOMB-1,x
-	rep	#$20
-	rts
-
-GET_OBJSAL	lda	OBJSAL-1,x
-	and	#$ff
-	cmp	#TRUE
-	bne	GET_OBJSAL_1
-	lda	#TRUE
-GET_OBJSAL_1	rts
-
-SET_OBJSAL	sep	#$20
-	sta	OBJSAL-1,x
-	rep	#$20
-	rts
-	
-GET_PERSSAL	lda	PERSSAL-1,x
-	and	#$ff
-	cmp	#TRUE
-	bne	GET_PERSSAL_1
-	lda	#TRUE
-GET_PERSSAL_1	rts
-
-SET_PERSSAL	sep	#$20
-	sta	PERSSAL-1,x
-	rep	#$20
-	rts
-
-*-----------------------------------
 * CHARGE UNE IMAGE
 *-----------------------------------
 
@@ -2763,7 +2706,7 @@ noCHAR3	rep	#$20
 	txa
 	clc
 	adc	#16	; (was 19) on ajoute
-	sta	pIMAGE	; la longueur par défaut
+	sta	pIMAGE	; la longueur par d√©faut
 
 	lda	#'.L'	; '.B'
 	sta	pSALLE+1,x
@@ -2781,9 +2724,21 @@ noCHAR3	rep	#$20
 	lda	proEOF
 	jsr	unpackLZ4
 
-	PushLong	ptrIMAGE
-	PushLong	ptrSCREEN
-	PushLong	#32768
+*	PushLong	ptrIMAGE
+	lda	ptrIMAGE+2
+	pha
+	lda	ptrIMAGE
+	clc
+	adc	#69*160
+	pha
+*	PushLong	ptrSCREEN
+	lda	ptrSCREEN+2
+	pha
+	lda	ptrSCREEN
+	clc
+	adc	#69*160
+	pha
+	PushLong	#32768-11040
 	_BlockMove
 	
 loadPIC99	rts
@@ -2805,7 +2760,7 @@ WORDBUFFER	ds	MAX_LEN+1
 
 *-----------------------------------
 
-*--- Données diverses
+*--- Donn√©es diverses
 
 DRAP	ds	2
 IX	ds	2
@@ -2813,6 +2768,7 @@ IY	ds	2
 IZ	ds	2
 N	ds	2
 NL	ds	2
+NN	ds	2
 SLOT$	ds	2	; slot de load/save + trailing 00
 
 MOT
@@ -2825,15 +2781,14 @@ ATTRIBUT	ds	2	; 6
 
 fgATTRIBUT	ds	2
 endMOTS	ds	2	; plus de mots si TRUE
-motPASTROUVE	ds	2	; on a trouvé une correspondance ou pas (TRUE)
-nbMOTS	ds	2	; nombre de mots trouvés
+motPASTROUVE	ds	2	; on a trouv√© une correspondance ou pas (TRUE)
+nbMOTS	ds	2	; nombre de mots trouv√©s
 
 TEXT_X	ds	2	; index dans TEXTBUFFER
 
 fgSOMBRE	ds	2
-L81BC	ds	2
 
-*--- Données du jeu
+*--- Donn√©es du jeu
 
 DEBUT_DATA
 
@@ -2841,10 +2796,10 @@ SALLE	ds	2
 NBOBJ	ds	2
 OBJSAL	ds	NBOBJET	; dans quelle salle se trouve l'objet d'index X
 PERSSAL	ds	NBPERSONNAGE	; dans quelle salle se trouve le personnage d'index X
-PERSOBJ	ds	NBPERSONNAGE	; l'objet possédé par un personnage
+PERSOBJ	ds	NBPERSONNAGE	; l'objet poss√©d√© par un personnage
 ADR	ds	NBSALLE	; on met les indexes des salles pour les images
 C	ds	NBCONDITIONS	; tous les compteurs (les valeurs 0..n)
-P	ds	NBPOINTEURS	; tous les pointeurs (les drapeaux activés ou non)
+P	ds	NBPOINTEURS	; tous les pointeurs (les drapeaux activ√©s ou non)
 
 FIN_DATA
 
@@ -2866,5 +2821,7 @@ paletteCPC	dw	$0000,$0005,$000F,$0D00,$0D05,$0D0F,$0F00,$0F05,$0F0F,$00D0
 	dw	$0005,$00F5
 
 *---
-
-bufIMAGE	ds	2048
+*
+*bufIMAGE	ds	2048
+*
+*--- End of code

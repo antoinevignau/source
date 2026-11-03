@@ -2238,7 +2238,7 @@ ACTIONP	jsr	getCONDITION
 	lda	SALLE
 	sta	PERSSAL-1,x	; pose le personnage
 	
-	ldy	PERSOBJ-1,x	; prend l'index de l'objet
+	lda	PERSOBJ-1,x	; prend l'index de l'objet
 	beq	ACTIONP_1	; DEBUG
 	tay
 	lda	SALLE

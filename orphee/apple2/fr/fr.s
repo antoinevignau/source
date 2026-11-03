@@ -109,10 +109,10 @@ OB$31	asc	'UNE LOUPE GEANTE'00
 * Les personnages
 *
 
-NBPERSONNAGE	=	11
+NBPERSONNAGE	=	9
 
-refPERSSAL	dfb	000,054,003,056,029,099,100,065,019,106,000	; Miniu la socière (index 2) est dans la salle 3
-refPERSOBJ	dfb	000,000,004,000,000,021,000,000,000,000,000	; Yurk (index 1), de la salle 54, n'a pas d'objet
+refPERSSAL	dfb	054,003,056,029,099,100,065,019,106	; Miniu la socière (index 2) est dans la salle 3
+refPERSOBJ	dfb	000,004,000,000,021,000,000,000,000	; Yurk (index 1), de la salle 54, n'a pas d'objet
 					; Bellus (index 5) de la salle 99, a un oeil de verre
 PERSONNAGE$
 PE$1	asc	'YURK LE DRAGON'00	;  54  0

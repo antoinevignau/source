@@ -38,7 +38,7 @@ strQUITTER	asc	'Voulez-vous quitter (O/N) ? '00
 strREJOUER	asc	'Voulez-vous rejouer (O/N) ? '00
 strPASICI	asc	'Je ne vois pas cela ici'00
 strAIDEJA	asc	'Je l'27'ai d'8e'j'8800
-strISSUES	asc	'Issue(s) principale(s): '00
+strISSUES	asc	0d'Issue(s) principale(s): '00
 strNORD	asc	'N'00
 strSUD	asc	'S'00
 strEST	asc	'E'00
@@ -65,14 +65,15 @@ strPROMPT	asc	'>'00
 * Les objets dans les salles
 *
 
-NBOBJET	=	31
+NBOBJET	=	32
 
-refOBJSAL	dfb	002,000,000,003,024,046,048,045,016,013
-	dfb	026,068,000,078,080,007,000,070,073,094
-	dfb	099,090,000,000,000,109,113,000,000,000
-	dfb	075
+refOBJSAL	dfb	000,002,000,000,003,024,046,048,045,016
+	dfb	013,026,068,000,078,080,007,000,070,073
+	dfb	094,099,090,000,000,000,109,113,000,000
+	dfb	000,075
 
 OBJET$
+	asc	'^'00
 OB$1	asc	'UNE GOURDE'00
 OB$2	asc	'UNE GOURDE PLEINE'00
 OB$3	asc	'UNE HARPE'00
@@ -109,12 +110,13 @@ OB$31	asc	'UNE LOUPE GEANTE'00
 * Les personnages
 *
 
-NBPERSONNAGE	=	9
+NBPERSONNAGE	=	10
 
-refPERSSAL	dfb	054,003,056,029,099,100,065,019,106	; Miniu la socière (index 2) est dans la salle 3
-refPERSOBJ	dfb	000,004,000,000,021,000,000,000,000	; Yurk (index 1), de la salle 54, n'a pas d'objet
+refPERSSAL	dfb	0,054,003,056,029,099,100,065,019,106	; Miniu la socière (index 2) est dans la salle 3
+refPERSOBJ	dfb	0,000,004,000,000,021,000,000,000,000	; Yurk (index 1), de la salle 54, n'a pas d'objet
 					; Bellus (index 5) de la salle 99, a un oeil de verre
 PERSONNAGE$
+	asc	'^'00
 PE$1	asc	'YURK LE DRAGON'00	;  54  0
 PE$2	asc	'MINIU LA SORCIERE'00	;   3  4 = clé en rubis, 3 = harpe
 PE$3	asc	'YOP LE DEMON'00	;  56  0
@@ -497,6 +499,7 @@ phrase13	asc	'PATRICE GUERLAIS'00
 NBSALLE	=	115
 
 SALLE$
+	asc	'^'00
 DE$1	asc	'L'27'ENTREE DES ENFERS'00
 DE$2	asc	'DANS LA FORET'00
 DE$3	asc	'CHEZ LA SORCIERE'00
@@ -620,7 +623,8 @@ DE$115	asc	'OUF! UNE SORTIE A L'27'OUEST'00
 
 NBREPONSE	=	229
 
-MESSAGE$	
+MESSAGE$
+	asc	'^'00
 RE$1	asc	'VOUS AVEZ SOIF, VOUS VIDEZ VOTRE GOURDE D'27'UN TRAIT'00
 RE$2	asc	'VOUS N'27'AVEZ RIEN A BOIRE, VOUS MOURREZ DE SOIF.'00
 RE$3	asc	'YURK A SOIF, IL VIDE LA GOURDE!'00

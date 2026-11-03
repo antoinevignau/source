@@ -167,36 +167,38 @@
  1220         CALL #BB5A
  1230         LD   A,(SALLE)
  1240         CALL LISTE
- 1250         LD   A,2
+ 
+ 1250         LD   A,2	; clear PERSONNAGE window
  1260         CALL CLEARF
  1270         LD   HL,#7FA8	; affiche PERSONNAGES
  1280         CALL AFFIC2
  1290         LD   A,10
  1300         CALL #BB5A
- 1310         LD   A,(SALLE)
- 1320         LD   (MODF+1),A
- 1330         LD   A,3
- 1340         LD   B,9
- 1350         LD   E,0
- 1360 PERSO:  LD   C,B	; 9
+ 1310         LD   A,(SALLE)	; get current room
+ 1320         LD   (MODF+1),A	; auto-mod code
+ 1330         LD   A,3	; A=3 (number of lines)
+ 1340         LD   B,9	; B=9 (number of personnages)
+ 1350         LD   E,0	: E=0 (flag)
+ 1360 PERSO:  LD   C,B	; current personnage
  1370         LD   HL,#PERSSALOBJ
  1380         LD   B,0
  1390         ADD  HL,BC	; PERSSALOBJ,9
- 1400         LD   D,A	; 3
- 1410         LD   A,(HL)	; 
- 1420 MODF:   CP   255
- 1430         CALL Z,IMPRM
- 1440         LD   B,C
- 1450         LD   A,D
- 1460         DJNZ PERSO
- 1470         LD   A,E
- 1480         CP   0
- 1490         CALL Z,NESSUN
- 1500         LD   A,D
- 1510         CP   0
- 1520         CALL NZ,SCRO
- 1530         JR   DEPA3
- 1540 NESSUN: LD   HL,#7F36	; AUCUN OBJET PRESENT
+ 1400         LD   D,A	; save A in D
+ 1410         LD   A,(HL)	; A = PERSSALOBJ,9
+ 1420 MODF:   CP   255	; if A=SALLE then
+ 1430         CALL Z,IMPRM	; print personnage
+ 1440         LD   B,C	; B = 9 car C = 9
+ 1450         LD   A,D	; restore A
+ 1460         DJNZ PERSO	; loop
+ 1470         LD   A,E	; get flag
+ 1480         CP   0	; found one?
+ 1490         CALL Z,NESSUN	; no, say it
+ 1500         LD   A,D	; did we display 3?
+ 1510         CP   0	
+ 1520         CALL NZ,SCRO	; no, scroll
+ 1530         JR   DEPA3	; yes, next step
+
+ 1540 NESSUN: LD   HL,#7F36	; AUCUN
  1550         PUSH DE
  1560         CALL AFFIC2
  1570         POP  DE
@@ -204,16 +206,17 @@
  1590         RET  Z
  1600         DEC  D
  1610         RET
- 1620 IMPRM:  LD   A,D
- 1630         CP   0
- 1640         JR   Z,NODEC
- 1650         DEC  D
- 1660 NODEC:  LD   E,1
+
+ 1620 IMPRM:  LD   A,D	; nb of perso displayed
+ 1630         CP   0	; zero ?
+ 1640         JR   Z,NODEC	; oui
+ 1650         DEC  D	; non, 2
+ 1660 NODEC:  LD   E,1	; E=1 (flag)
  1670         LD   HL,#8223	; @YURK LE DRAGON
  1680         PUSH BC
  1690         PUSH DE
- 1700         CALL CHERC
- 1710         CALL AFFIC2
+ 1700         CALL CHERC	; find it
+ 1710         CALL AFFIC2	; print name
  1720         POP  DE
  1730         POP  BC
  1740         RET

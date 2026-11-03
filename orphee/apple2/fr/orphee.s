@@ -56,6 +56,7 @@ wMESSAGE	=	4
 	eom
 
 @draw	mac
+	lda	#]1
 	jsr	GRAPHE
 	<<<
 
@@ -255,6 +256,12 @@ DESSIN	ldx	SALLE	; parce qu'on peut inverser
 	jsr	GRAPHE
 	jsr	FENETR
 
+	ldx	#1	; dŽsactive le mode sombre
+	sep	#$20
+	lda	#ZERO
+	sta	P,x
+	rep	#$20
+	
 	lda	SALLE
 	ldy	#SALLE$
 	jsr	CHERC
@@ -296,8 +303,11 @@ SOMBR	ldx	#6
 
 *-----------------------------------
 
-SOMBRE	lda	#TRUE
-	sta	fgSOMBRE
+SOMBRE	ldx	#1	; active le mode sombre
+	sep	#$20
+	lda	#ONE
+	sta	P,x
+	rep	#$20
 
 	@draw	#picSALSOM
 	@CLS	#wINVENTAIRE
@@ -308,8 +318,10 @@ SOMBRE	lda	#TRUE
 
 DEPA2	jsr	VERIFI
 
-	lda	fgSOMBRE
-	cmp	#TRUE
+	ldx	#1	; mode sombre activŽ ?
+	lda	P,x
+	and	#$ff
+	cmp	#ONE
 	bne	DEPA2_1
 	brl	DEPA3
 
@@ -756,6 +768,8 @@ VERIFI_1BIS	sta	N	; the costly missing STA
 	cmp	#'a'	; teste une action
 	bcs	VERIFI_3	; oui
 	
+	jsr	getCONDITION	; prend le second paramtre
+	tax		; registre C sur le Z80
 	jsr	TESTCO	; non, une condition "A".."Z"
 	bcc	VERIFI_1
 
@@ -2030,7 +2044,7 @@ ACTIONA	@CLS	#wINVENTAIRE
 	lda	#CARRIED	; affiche les objets portŽs
 	sta	NN
 
-LISTE	ldx	#FIRST_INDEX	; les inits
+LISTE	ldx	#FIRST_INDEX+1	; les inits
 	stx	IX
 	lda	#FALSE	; aucun objet trouvŽ
 	sta	DRAP
@@ -2055,7 +2069,6 @@ LISTE_1	inc	IX	; prochain objet
 	ldx	IX
 	cpx	#NBOBJET
 	bcc	]lp
-*	beq	]lp	; b/c 0 counts
 
 	lda	DRAP	; on sort, a-t-on
 	cmp	#FALSE	; trouvŽ un objet ?
@@ -2625,7 +2638,7 @@ INIT_ALL	sep	#$30
 	cpx	#NBPERSONNAGE
 	bcc	]lp
 
-	ldx	#0	; les indexes des images
+	ldx	#1	; les indexes des images
 ]lp	txa		; 1, 2, ..., 114, 115
 	sta	ADR,x
 	inx
@@ -2787,25 +2800,17 @@ nbMOTS	ds	2	; nombre de mots trouvŽs
 
 TEXT_X	ds	2	; index dans TEXTBUFFER
 
-fgSOMBRE	ds	2
-
 *--- DonnŽes du jeu
 
 DEBUT_DATA
 
 SALLE	ds	2
 NBOBJ	ds	2
-	ASC	"-OBJSAL-"
 OBJSAL	ds	NBOBJET	; dans quelle salle se trouve l'objet d'index X
-	ASC	"-PERSAL-"
 PERSSAL	ds	NBPERSONNAGE	; dans quelle salle se trouve le personnage d'index X
-	ASC	"-PEROBJ-"
 PERSOBJ	ds	NBPERSONNAGE	; l'objet possŽdŽ par un personnage
-	ASC	"-ADRESS-"
-ADR	ds	NBSALLE	; on met les indexes des salles pour les images
-	ASC	"-COMPTE-"
+ADR	ds	NBSALLE+1	; on met les indexes des salles pour les images
 C	ds	NBCOMPTEURS	; tous les compteurs (les valeurs 0..n)
-	ASC	"-POINTE-"
 P	ds	NBPOINTEURS	; tous les pointeurs (les drapeaux activŽs ou non)
 
 FIN_DATA

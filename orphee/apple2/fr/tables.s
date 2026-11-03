@@ -650,7 +650,21 @@ CONDITION$	hex	4629450145204C010664DD70016DFF	; F29/E01/E20/L0106/f4D/p01 Yurk v
 * 6D	M return to DEPA1
 * FF	; F29/E01/E20/L0106/f4D/p01 Yurk vient de pénétrer dans la salle il l'éclaire, retour DEPA1
 	hex	4629450145204C010E64DD70016DFF
+
 	hex	462945204954495549424943494C494D491E49717001FF
+* 4629	F continue if P,29 is false
+* 4520	E continue if P,20 is true (I have Yurk)
+* 4954	I continue if not in room $54
+* 4955	I continue if not in room $55
+* 4942	I continue if not in room $42
+* 4943	I continue if not in room $43
+* 494C	I continue if not in room $4C
+* 494D	I continue if not in room $4D
+* 491E	I continue if not in room $1E
+* 4971	I continue if not in room $71
+* 7001	p pose Yurk dans la salle courante
+* FF
+
 	hex	41264C01024A01640373016802FF
 	hex	4126430264026EFF
 	hex	4126461646176401630268026F016201FF
@@ -775,7 +789,7 @@ TBLISSUE	dfb	0
 	dfb	%11010000
 	dfb	%01100000
 	dfb	%11000000
-	dfb	%01000000
+	dfb	%01000000	; 10
 	dfb	%11010000
 	dfb	%10110000
 	dfb	%11100000
@@ -785,7 +799,7 @@ TBLISSUE	dfb	0
 	dfb	%01110000
 	dfb	%01100000
 	dfb	%11010000
-	dfb	%10010000
+	dfb	%10010000	; 20
 	dfb	%11110000
 	dfb	%01100000
 	dfb	%10010000
@@ -795,7 +809,7 @@ TBLISSUE	dfb	0
 	dfb	%01100000
 	dfb	%00010010
 	dfb	%00000001
-	dfb	%00000000
+	dfb	%00000000	; 30
 	dfb	%10010000
 	dfb	%00110000
 	dfb	%10100000
@@ -805,13 +819,13 @@ TBLISSUE	dfb	0
 	dfb	%11010000
 	dfb	%11110000
 	dfb	%11000000
-	dfb	%01000000
+	dfb	%01000000	; 40
 	dfb	%10110000
 	dfb	%00110000
 	dfb	%11000000
 	dfb	%01000000
 	dfb	%11100000
-	dfb	%11000000
+	dfb	%11000000	; 46
 	dfb	%01010000
 	dfb	%01100000
 	dfb	%11000000
@@ -942,7 +956,7 @@ MO$42	dfb	3,037,0
 MO$43	dfb	1,044,2,041,0
 MO$44	dfb	2,043,0
 MO$45	dfb	1,046,2,058,3,041,0
-MO$46	dfb	1,047,2,045,0
+MO$46	dfb	1,047,2,045,0	; NORD EN 47
 MO$47	dfb	2,046,4,048,0
 MO$48	dfb	2,049,3,047,0
 MO$49	dfb	1,048,2,050,0

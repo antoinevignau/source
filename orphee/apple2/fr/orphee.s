@@ -77,125 +77,122 @@ wMESSAGE	=	4
 * save all original pictures as
 * apple iigs SHR screens
 ************************************
-
-	lda	#116
-	sta	picINDEX
-	stz	fgFILL
-
-]lp	PushLong	#rectangle
-	PushLong	#blackPATTERN
-	_FillRect
-
-	lda	picINDEX
-	jsr	GRAPHE
-notakey	@INKEY
-	cmp	#'F'
-	bne	notfill
-	
-	lda	fgFILL
-	eor	#TRUE
-	sta	fgFILL
-	bra	]lp
-
-notfill	cmp	#'Q'
-	bne	notquit
-	jmp	QUIT
-
-notquit	cmp	#chrRETURN
-	bne	notsave
-	jsr	savePIC
-	inc	picINDEX
-	bra	]lp
-
-notsave	cmp	#'P'
-	bne	notakey
-	dec	picINDEX
-	bra	]lp
-
+*
+*	lda	#116
+*	sta	picINDEX
+*	stz	fgFILL
+*
+*]lp	PushLong	#rectangle
+*	PushLong	#blackPATTERN
+*	_FillRect
+*
+*	lda	picINDEX
+*	jsr	GRAPHE
+*notakey	@INKEY
+*	cmp	#'F'
+*	bne	notfill
+*	
+*	lda	fgFILL
+*	eor	#TRUE
+*	sta	fgFILL
+*	bra	]lp
+*
+*notfill	cmp	#'Q'
+*	bne	notquit
+*	jmp	QUIT
+*
+*notquit	cmp	#chrRETURN
+*	bne	notsave
+*	jsr	savePIC
+*	inc	picINDEX
+*	bra	]lp
+*
+*notsave	cmp	#'P'
+*	bne	notakey
+*	dec	picINDEX
+*	bra	]lp
+*
 *---
-
-picINDEX	ds	2
-fgFILL	ds	2
-rectangle	dw	0,0,200,320
-
-*---
-
+*
+*picINDEX	ds	2
+*rectangle	dw	0,0,200,320
+*
 *-----------------------------------
 * SAUVE UNE IMAGE
 *-----------------------------------
-
-savePIC	sep	#$30	; copy suffix
-	ldx	#0
-]lp	lda	pSALLE,x
-	sta	pSALLE2,x
-	inx
-	cpx	#8
-	bcc	]lp
-	rep	#$30
-
-	lda	pIMAGE	; strl length
-	sta	pIMAGE2
-
+*
+*savePIC	sep	#$30	; copy suffix
+*	ldx	#0
+*]lp	lda	pSALLE,x
+*	sta	pSALLE2,x
+*	inx
+*	cpx	#8
+*	bcc	]lp
+*	rep	#$30
+*
+*	lda	pIMAGE	; strl length
+*	sta	pIMAGE2
+*
 *---
-
-	jsl	GSOS
-	dw	$2002
-	adrl	proDESTROYPIC2
-	
-	jsl	GSOS
-	dw	$2001
-	adrl	proCREATEPIC2
-
-	jsl	GSOS
-	dw	$2010
-	adrl	proOPENPIC2
-
-	lda	proOPENPIC2+2
-	sta	proWRITEPIC2+2
-	sta	proCLOSE2+2
-	
-	jsl	GSOS
-	dw	$2013
-	adrl	proWRITEPIC2
-	
-	jsl	GSOS
-	dw	$2014
-	adrl	proCLOSE2
-	rts
-
+*
+*	jsl	GSOS
+*	dw	$2002
+*	adrl	proDESTROYPIC2
+*	
+*	jsl	GSOS
+*	dw	$2001
+*	adrl	proCREATEPIC2
+*
+*	jsl	GSOS
+*	dw	$2010
+*	adrl	proOPENPIC2
+*
+*	lda	proOPENPIC2+2
+*	sta	proWRITEPIC2+2
+*	sta	proCLOSE2+2
+*	
+*	jsl	GSOS
+*	dw	$2013
+*	adrl	proWRITEPIC2
+*	
+*	jsl	GSOS
+*	dw	$2014
+*	adrl	proCLOSE2
+*	rts
+*
 *---
-
-pIMAGE2	strl	'8/pics/images/'
-pSALLE2	asc	'D'
-	ds	7	; xxx.BIN
-
-proOPENPIC2	dw	2
-	ds	2
-	adrl	pIMAGE2
-
-proWRITEPIC2	dw	4	; 0 - pcount
-	ds	2	; 2 - ref_num
-	adrl	ptrE12000	; 4 - data_buffer
-	adrl	32768	; 8 - request_count
-	ds	4	; C - transfer_count
-
-proCLOSE2	dw	1
-	ds	2
-
+*
+*pIMAGE2	strl	'8/pics/images/'
+*pSALLE2	asc	'D'
+*	ds	7	; xxx.BIN
+*
+*proOPENPIC2	dw	2
+*	ds	2
+*	adrl	pIMAGE2
+*
+*proWRITEPIC2	dw	4	; 0 - pcount
+*	ds	2	; 2 - ref_num
+*	adrl	ptrE12000	; 4 - data_buffer
+*	adrl	32768	; 8 - request_count
+*	ds	4	; C - transfer_count
+*
+*proCLOSE2	dw	1
+*	ds	2
+*
 *--- For the game party
-
-proCREATEPIC2	dw	7	; pcount
-	adrl	pIMAGE2	; pathname
-	dw	$c3	; access_code
-	dw	$c1	; file_type
-	ds	4	; aux_type
-	ds	2	; storage_type
-	adrl	32768	; eof
-	ds	4	; resource_eof
-
-proDESTROYPIC2	dw	1	; pcount
-	adrl	pIMAGE2	; pathname
-
+*
+*proCREATEPIC2	dw	7	; pcount
+*	adrl	pIMAGE2	; pathname
+*	dw	$c3	; access_code
+*	dw	$c1	; file_type
+*	ds	4	; aux_type
+*	ds	2	; storage_type
+*	adrl	32768	; eof
+*	ds	4	; resource_eof
+*
+*proDESTROYPIC2	dw	1	; pcount
+*	adrl	pIMAGE2	; pathname
+*
 *-----------------------------------
 * CODE BASIC EN ASM :-)
 *-----------------------------------
@@ -229,6 +226,11 @@ PLAY	@MODE	#1
 	
 REPLAY	jsr	PRESENT
 	jsr	INIT_ALL
+
+	lda	#GRAPHE
+	stal	$310
+	lda	#^GRAPHE
+	stal	$312
 
 *-----------------------------------
 * MAIN LOOP
@@ -1103,13 +1105,38 @@ GETCOM	@PRINT	#wMESSAGE;#strRETURN
 *  2 : BORDER/INK0/INK1/INK2/INK3 +5
 *  3 : PRINT (A STRING UNTIL FF) +n
 *
-	
-GRAPHE	jsr	loadPIC	; charge une image (16-bits)
+
+GRAPHE	and	#$ff
+	sta	picINDEX
+	jsr	loadPIC	; charge une image (16-bits)
 	bcc	GRAPHEOK
 	rts
 
-GRAPHEOK
+GRAPHEOK	ldal	$e19e00	; beurk
+	stal	$e19e1e	
+
+	ldx	picINDEX
+	lda	picBORDER,x
+	and	#$ff
+	stal	$302
+	jsr	BORDER
+	clc
 	rts
+
+*--- This is the border index in the Amstrad CPC image
+
+picINDEX	ds	2
+
+picBORDER	hex	0F06151A0D061A140D14071514140F14
+	hex	1409090609140914141407141414140D
+	hex	0D0D140B140D090D0A0D0A140B0D140A
+	hex	0D140D09090910100B0B0D0A0D140D0A
+	hex	070D131314090909090A0F14180F0B14
+	hex	14070F1414090C1A1919141918190910
+	hex	10101414141414141418181410141414
+	hex	150B0F0F00051A020F
+
+
 
 ************************************************
 * The following code runs fine
@@ -1365,6 +1392,7 @@ theINK3	ds	2
 
 *----------- FILL
 
+fgFILL	ds	2
 fillX	ds	2
 fillY	ds	2
 fillCOLOR	ds	2
@@ -2728,9 +2756,10 @@ noCHAR3	rep	#$30
 	ldx	ptrUNPACK+2
 	ldy	ptrUNPACK
 	jsr	loadFILE
-	bcs	loadPIC99
-
-	lda	proEOF
+	bcc	loadPIC99
+	rts
+	
+loadPIC99	lda	proEOF
 	jsr	unpackLZ4
 
 *	PushLong	ptrIMAGE
@@ -2749,11 +2778,7 @@ noCHAR3	rep	#$30
 	pha
 	PushLong	#32768-11040
 	_BlockMove
-
-	ldal	$e19e00	; beurk
-	stal	$e19e1e
-	
-loadPIC99	rts
+	rts
 
 *---
 

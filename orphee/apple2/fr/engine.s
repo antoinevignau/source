@@ -550,9 +550,11 @@ engBORDER	lda	theSTREAM
 
 BORDER	asl
 	tax
-	lda	iigsINK,x
+*	lda	iigsINK,x
+	lda	tblBORDER,x
 	and	#$ff
                 sta             theBORDER
+	stal	$300
 	pha
 	PushWord	#$1c
 	_WriteBParam
@@ -1762,33 +1764,33 @@ whitePATTERN	ds	32,$ff
 
 *--- Border table
 
-tblBORDER	dw	0	;'Black' color message number
-	dw	2	;'Deep Red' color message number
-	dw	7	;'Dark Blue' color message number
-	dw	1	;'Purple' color message number
-	dw	3	;'Dark Green' color message number
-	dw	3	;'Dark Gray' color message number
-	dw	1	;'Medium Blue' color message number
-	dw	3	;'Light Blue' color message number
-	dw	8	;'Brown' color message number
-	dw	4	;'Orange' color message number
-	dw	8	;'Light Gray' color message number
-	dw	6	;'Pink' color message number
-	dw	1	;'Light Green' color message number3
-	dw	5	;'Yellow' color message number
-	dw	6	;'Aquamarine' color message number
-	dw	9	;'White' color message number
-	dw	11
-	dw	11
-	dw	12
-	dw	12
-	dw	14
-	dw	12
-	dw	12
-	dw	14
-	dw	13
-	dw	13
-	dw	15
+tblBORDER	dw	0	;  0= 'Black' color message number
+	dw	2	;  1= 'Deep Red' color message number
+	dw	6	;  2= 'Dark Blue' color message number
+	dw	1	;  3= 'Purple' color message number
+	dw	3	;  4= 'Dark Green' color message number
+	dw	3	;  5= 'Dark Gray' color message number
+	dw	1	;  6= 'Medium Blue' color message number
+	dw	3	;  7= 'Light Blue' color message number
+	dw	8	;  8= 'Brown' color message number
+	dw	4	;  9= 'Orange' color message number
+	dw	8	;  A= 'Light Gray' color message number
+	dw	6	;  B= 'Pink' color message number
+	dw	1	;  C= 'Light Green' color message number3
+	dw	5	;  D= 'Yellow' color message number
+	dw	6	;  E= 'Aquamarine' color message number
+	dw	9	;  F= 'White' color message number
+	dw	11	; 10
+	dw	11	; 11
+	dw	12	; 12
+	dw	12	; 13
+	dw	14	; 14
+	dw	12	; 15
+	dw	12	; 16
+	dw	14	; 17
+	dw	13	; 18
+	dw	13	; 19
+	dw	15	; 1A
 
 *--- Keyboard
 

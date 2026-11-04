@@ -230,11 +230,6 @@ PLAY	@MODE	#1
 REPLAY	jsr	PRESENT
 	jsr	INIT_ALL
 
-	lda	#DEBUT_DATA
-	stal	$300
-	lda	#^DEBUT_DATA
-	stal	$302
-	
 *-----------------------------------
 * MAIN LOOP
 *-----------------------------------
@@ -247,7 +242,6 @@ DEPA1	ldx	#FIRST_INDEX	; est-on dans une salle sombre ?
 	inx
 	cpx	#NBSALSOMB
 	bcc	]lp
-*	beq	]lp
 	
 CALCUL			; inutile
 	
@@ -310,6 +304,7 @@ SOMBRE	ldx	#1	; active le mode sombre
 	rep	#$20
 
 	@draw	#picSALSOM
+	jsr	FENETR
 	@CLS	#wINVENTAIRE
 	@CLS	#wPERSONNAGE
 	@CLS	#wSALLE
@@ -373,8 +368,8 @@ IMPRIM	stx	IX
 
 DEPA3	jsr	GETCOM	; saisie des caracteres
 	jsr	DCRIPT	; déchiffre la chaîne saisie
-	jsr	showSALLE
-	
+*	jsr	showSALLE
+
 	lda	SUJET
 	cmp	#FALSE
 	bne	DEPA31	; CP 0 ... JR NZ,DEPA31
@@ -419,6 +414,7 @@ ATTEN_1	jmp	REPLAY	; return to the IIgs
 *-----------------------------------
 
 MORT	@draw	#picMORT
+	jsr	FENETR
 	@PRINT	#wMESSAGE;#strRETURN
 	@CLS	#wINVENTAIRE
 	@CLS	#wPERSONNAGE
@@ -882,7 +878,7 @@ DCRIPT_1	jsr	SPACE	; efface la zone du mot cible
 	jsr	NEXTMO	; cherche un mot, recopie-le
 	
 	lda	endMOTS
-	cmp	#TRUE
+	cmp	#ONE
 	beq	TEST	; on sort
 
 	jsr	TESTMO	; est-il dans les tables ?
@@ -905,34 +901,31 @@ TESTMO_1	inc	nbMOTS	; nombre de mots trouvés++
 	bne	DCRIPT_4
 
 	lda	endMOTS
-	cmp	#TRUE
+	cmp	#ONE
 	bne	DCRIPT_9
 	jmp	SYNERR
 
 DCRIPT_4	cpx	#iATTRIBUT	; 5
 	bne	DCRIPT_5
-	
-	lda	endMOTS
-	cmp	#TRUE
+	lda	#ONE
+	cmp	endMOTS
 	beq	DCRIPT_SYNERR
-	lda	fgATTRIBUT
-	cmp	#TRUE
-	beq	DCRIPT_SYNERR
-	lda	#TRUE
-	sta	fgATTRIBUT
+	cmp	fgATTRIBUT	; avait-on un attribut ?
+	beq	DCRIPT_SYNERR	; oui, erreur
+	sta	fgATTRIBUT	; non, dis qu'on en a un
 	jmp	DCRIPT_9
 
 DCRIPT_5	cpx	#iVERBE	; 2
 	bne	DCRIPT_6
 	lda	fgATTRIBUT
-	cmp	#TRUE
+	cmp	#ONE
 	beq	DCRIPT_SYNERR
 	lda	VERBE
 	bne	DCRIPT_SYNERR
 	sty	VERBE
 
 DCR_FIN	lda	endMOTS
-	cmp	#TRUE
+	cmp	#ONE
 	bne	DCRIPT_9
 	rts
 
@@ -950,25 +943,26 @@ DCRIPT_6	cpx	#iADJECTIF	; 4
 DCRIPT_7	cpx	#iCOD	; 3
 	bne	DCRIPT_8
 	lda	fgATTRIBUT
-	cmp	#TRUE
+	cmp	#ONE
 	bne	DCR_COD
 
-DCR_A	lda	ATTRIBUT
+DCR_A	lda	ARTICLE
 	bne	SYNERR
-	sty	ATTRIBUT
-	stz	fgATTRIBUT
+	sty	ARTICLE
+	lda	#ZERO
+	sta	fgATTRIBUT
 	jmp	DCR_FIN
 
 DCR_COD	lda	COD
 	bne	SYNERR
 	sty	COD
-	jmp	DCR_FIN
+DCR_COD_DEJA	jmp	DCR_FIN
 
-DCRIPT_8	cpx	nbMOTS
+DCRIPT_8	cpx	nbMOTS	; dernier mot
 	beq	DCR_SUJ
-	cpx	fgATTRIBUT
-	bne	DCR_COD
-	jmp	DCR_A
+	cpx	fgATTRIBUT	; ai-deja un attribut ?
+	bne	DCR_COD	; oui
+	jmp	DCR_A	; non
 
 DCR_SUJ	lda	SUJET
 	bne	SYNERR
@@ -982,7 +976,7 @@ DCR_SUJ	lda	SUJET
 SYNERR	@PRINT	#wMESSAGE;#strPBGRAMMAIRE
 	pla
 	jmp	DEPA3
-	
+
 *-----------------------------------
 * NEXTMO
 *-----------------------------------
@@ -999,7 +993,7 @@ NEXTMO	sep	#$30
 	bcc	]lp
 
 NEXTMO_1	rep	#$30
-	lda	#TRUE	; retourne sans avoir trouvé
+	lda	#ONE	; retourne sans avoir trouvé
 	sta	endMOTS
 	sec	
 	rts
@@ -1035,6 +1029,8 @@ NEXTMO_3	lda	TEXTBUFFER,x	; on est là, on peut avoir
 	
 NEXTMO_4	rep	#$30	; retourne en ayant trouvé
 	stx	TEXT_X
+	lda	#ZERO
+	sta	endMOTS
 	clc
 	rts
 
@@ -1046,6 +1042,7 @@ NEXTMO_4	rep	#$30	; retourne en ayant trouvé
 
 PACAPI	@PRINT	#wMESSAGE;#strPBCOMPRENDRE
 	@PRINT	#wMESSAGE;#TEXTBUFFER
+	@PRINT	#wMESSAGE;#strRETURN
 	rts
 
 *-----------------------------------
@@ -1078,6 +1075,7 @@ PRESENT	ldal	HORIZCNT	; affiche image 119 ou 120
 *-----------------------------------
 
 VICTOI	@draw	#picVICTOIRE
+	jsr	FENETR
 	@CLS	#wINVENTAIRE
 	@CLS	#wPERSONNAGE
 	@CLS	#wSALLE
@@ -1863,8 +1861,8 @@ AFFICH	rts
 *-----------------------------------
 
 AFFIC0	sta	N
-	@PRINT	#wMESSAGE;#strRETURN
 	@PRINT	#wMESSAGE;N
+	@PRINT	#wMESSAGE;#strRETURN
 	rts
 
 *-----------------------------------
@@ -1889,11 +1887,11 @@ AFFIC2	sta	N
 
 AFFIC3	sta	N
 	@CLS	#wSALLE
-	lda	SALLE
-	and	#$ff
-	jsr	getDEBUG
-	@PRINT	#wSALLE;#strDEBUG
-	@PRINT	#wSALLE;#strSPACE
+*	lda	SALLE
+*	and	#$ff
+*	jsr	getDEBUG
+*	@PRINT	#wSALLE;#strDEBUG
+*	@PRINT	#wSALLE;#strSPACE
 	@PRINT	#wSALLE;N
 	rts
 

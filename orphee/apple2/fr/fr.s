@@ -13,7 +13,8 @@
 * Les chaines diverses
 *
 
-strCOMMANDE	asc	'000000000000 >'00
+*strCOMMANDE	asc	'000000000000>'00
+strCOMMANDE	asc	'>'00
 strIMPOSSIBLE	asc	'Impossible'00
 strDACCORD	asc	'D'27'accord'00
 strNOTOWNED	asc	'Vous ne pouvez pas poser ce que vous n'27'avez pas'00
@@ -21,9 +22,9 @@ strTROPPORTER	asc	'Vous ne pouvez porter tant'00
 strVOUSLAVEZ	asc	'Vous l'27'avez d'8e'j'8800
 strPASPLUS	asc	'Je ne porte pas plus d'27'un objet'00
 strPORTERIEN	asc	'Je ne porte rien'00
-strAUCUN	asc	'AUCUN'00
-strOBJETSPRESENTS asc	'OBJETS PRESENTS :'0d00
-strOBJETSPORTES	asc	'OBJETS PORTES   :'0d00
+strAUCUN	asc	'Aucun'00
+strOBJETSPRESENTS asc	'OBJETS PR'83'SENTS :'0d00
+strOBJETSPORTES	asc	'OBJETS PORT'83'S   :'0d00
 strLOAD	asc	'Charger quelle partie (1-9) ? '00
 strSAVE	asc	'Enregistrer sous quelle partie (1-9) ? '00
 strLOADNOTOK	asc	0d'ERREUR DE CHARGEMENT'0d00
@@ -38,7 +39,7 @@ strQUITTER	asc	'Voulez-vous quitter (O/N) ? '00
 strREJOUER	asc	'Voulez-vous rejouer (O/N) ? '00
 strPASICI	asc	'Je ne vois pas cela ici'00
 strAIDEJA	asc	'Je l'27'ai d'8e'j'8800
-strISSUES	asc	0d'Issue(s) principale(s): '00
+strISSUES	asc	'Issue(s) principale(s): '00
 strNORD	asc	'N'00
 strSUD	asc	'S'00
 strEST	asc	'E'00
@@ -74,37 +75,37 @@ refOBJSAL	dfb	000,002,000,000,003,024,046,048,045,016
 
 OBJET$
 	asc	'^'00
-OB$1	asc	'UNE GOURDE'00
-OB$2	asc	'UNE GOURDE PLEINE'00
-OB$3	asc	'UNE HARPE'00
-OB$4	asc	'UNE CLE EN RUBIS'00
-OB$5	asc	'UNE CLE EN RUBIS'00
-OB$6	asc	'UNE TORCHE'00
-OB$7	asc	'UNE HACHE'00
-OB$8	asc	'UN FLACON MAGIQUE'00
-OB$9	asc	'UN BALAI'00
-OB$10	asc	'UNE CLE EN OR'00
-OB$11	asc	'UNE PELLE'00
-OB$12	asc	'UN COFFRE'00
-OB$13	asc	'UNE EPEE'00
-OB$14	asc	'UNE TORCHE'00
-OB$15	asc	'UNE CORDE'00
-OB$16	asc	'UNE DEMI-ETOILE'00
-OB$17	asc	'UNE DEMI-ETOILE'00
-OB$18	asc	'DES CORDELETTES'00
-OB$19	asc	'UNE MACHETTE'00
-OB$20	asc	'UN SABOT MAGIQUE'00
-OB$21	asc	'UN OEIL DE VERRE'00
-OB$22	asc	'UNE BAGUE'00
-OB$23	asc	'UNE LIANE'00
-OB$24	asc	'UN PAPIER'00
-OB$25	asc	'DES PIECES D'27'OR'00
-OB$26	asc	'UNE OPALE'00
-OB$27	asc	'UN AUTEL'00
-OB$28	asc	'UN RADEAU'00
-OB$29	asc	'LA GROSSE BRANCHE'00
-OB$30	asc	'UNE BRANCHE'00
-OB$31	asc	'UNE LOUPE GEANTE'00
+OB$1	asc	'Une gourde'00
+OB$2	asc	'Une gourde pleine'00
+OB$3	asc	'Une harpe'00
+OB$4	asc	'Une cl'8e' en rubis'00
+OB$5	asc	'Une cl'8e' en rubis'00
+OB$6	asc	'Une torche'00
+OB$7	asc	'Une h'89'che'00
+OB$8	asc	'Un flacon magique'00
+OB$9	asc	'Un balai'00
+OB$10	asc	'Une cl'8e' en or'00
+OB$11	asc	'Une pelle'00
+OB$12	asc	'Un coffre'00
+OB$13	asc	'Une '8e'p'8e'e'00
+OB$14	asc	'Une torche'00
+OB$15	asc	'Une corde'00
+OB$16	asc	'Une demi-'8e'toile'00
+OB$17	asc	'Une demi-'8e'toile'00
+OB$18	asc	'Des cordelettes'00
+OB$19	asc	'Une machette'00
+OB$20	asc	'Un sabot magique'00
+OB$21	asc	'Un oeil de verre'00
+OB$22	asc	'Une bague'00
+OB$23	asc	'Une liane'00
+OB$24	asc	'Un papier'00
+OB$25	asc	'Des pi'8f'ces d'27'or'00
+OB$26	asc	'Une opale'00
+OB$27	asc	'Un autel'00
+OB$28	asc	'Un radeau'00
+OB$29	asc	'La grosse branche'00
+OB$30	asc	'Une branche'00
+OB$31	asc	'Une loupe g'8e'ante'00
 
 *
 * Les personnages
@@ -117,15 +118,15 @@ refPERSOBJ	dfb	0,000,004,000,000,021,000,000,000,000	; Yurk (index 1), de la sal
 					; Bellus (index 5) de la salle 99, a un oeil de verre
 PERSONNAGE$
 	asc	'^'00
-PE$1	asc	'YURK LE DRAGON'00	;  54  0
-PE$2	asc	'MINIU LA SORCIERE'00	;   3  4 = clé en rubis, 3 = harpe
-PE$3	asc	'YOP LE DEMON'00	;  56  0
-PE$4	asc	'DRIFUS LE SAGE'00	;  29  0
-PE$5	asc	'BELLUS LA DEESSE'00	;  99 21 = oeil de verre, 22 = bague
-PE$6	asc	'BILLY LE GUIDE'00	; 100  0
-PE$7	asc	'SATAN'00		;  65  0, 13 = épée
-PE$8	asc	'LE GARDIEN'00		;  19  0
-PE$9	asc	'L'27'ARAIGNEE GEANTE'00	; 106  0
+PE$1	asc	'Yurk le Dragon'00	;  54  0
+PE$2	asc	'Miniu la Sorci'8f're'00	;   3  4 = clé en rubis, 3 = harpe
+PE$3	asc	'Yop le D'8e'mon'00	;  56  0
+PE$4	asc	'Drifus le Sage'00	;  29  0
+PE$5	asc	'Bellus la D'8e'esse'00	;  99 21 = oeil de verre, 22 = bague
+PE$6	asc	'Billy le Guide'00	; 100  0
+PE$7	asc	'Satan'00		;  65  0, 13 = épée
+PE$8	asc	'Le Gardien'00		;  19  0
+PE$9	asc	'L'27'Araign'8e'e G'8e'ante'00	; 106  0
 
 *
 * Les adjectifs

@@ -549,7 +549,7 @@
  4640         POP  DE
  4650         CP   0		; retour ˆ 0 ?
  4660         JP   Z,PACAPI	; oui, on n'a pas compris
- 4670         LD   C,A		; en A, l'index
+ 4670         LD   C,A		; en C/A, l'index
  4680         LD   A,B		; en B, le type (1..6)
  4690         INC  (IY+4)	; on a trouve qqch
  4700         CP   6		; est-ce un article ?
@@ -589,14 +589,14 @@
  5040         JR   DCRFIN	; boucle
  5050 DCRIP7: CP   3		; un COD ?
  5060         JR   NZ,DCRIP8	; non, saute
- 5070         LD   A,(IY+1)	; a-t-on un attribut ?
+ 5070         LD   A,(IY+1)	; a-t-on un article ?
  5080         CP   1
  5090         JR   NZ,DCRCOD	; non, continue
- 5100 DCRCA:  LD   A,(IY+7)	; a-t-on un attribut ?
+ 5100 DCRCA:  LD   A,(IY+7)	; a-t-on un article ?
  5110         CP   0
  5120         JR   NZ,SYNERR	; oui, erreur
- 5130         LD   (IY+7),C	; sauve l'attribut
- 5140         LD   (IY+1),0	; reset flag attribut
+ 5130         LD   (IY+7),C	; sauve l'article
+ 5140         LD   (IY+1),0	; reset flag article
  5150         JR   DCRFIN	; boucle
  5160 DCRCOD: LD   A,(IY+8)	; a-t-on un COD ?
  5170         CP   0

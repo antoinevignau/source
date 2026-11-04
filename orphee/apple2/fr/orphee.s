@@ -227,11 +227,6 @@ PLAY	@MODE	#1
 REPLAY	jsr	PRESENT
 	jsr	INIT_ALL
 
-	lda	#GRAPHE
-	stal	$310
-	lda	#^GRAPHE
-	stal	$312
-
 *-----------------------------------
 * MAIN LOOP
 *-----------------------------------
@@ -1051,7 +1046,9 @@ PACAPI	@PRINT	#wMESSAGE;#strPBCOMPRENDRE
 * PRESENT
 *-----------------------------------
 
-PRESENT	ldal	HORIZCNT	; affiche image 119 ou 120
+PRESENT	@CLS	#0
+
+	ldal	HORIZCNT	; affiche image 119 ou 120
 	and	#%00000001
  	clc
 	adc	#picVOYAGE
@@ -1118,7 +1115,6 @@ GRAPHEOK	ldal	$e19e00	; beurk
 	ldx	picINDEX
 	lda	picBORDER,x
 	and	#$ff
-	stal	$302
 	jsr	BORDER
 	clc
 	rts
@@ -1135,8 +1131,6 @@ picBORDER	hex	0F06151A0D061A140D14071514140F14
 	hex	14070F1414090C1A1919141918190910
 	hex	10101414141414141418181410141414
 	hex	150B0F0F00051A020F
-
-
 
 ************************************************
 * The following code runs fine
@@ -2423,16 +2417,66 @@ ACTIONV_1	rep	#$30
 	rts
 
 *---------- w 77 - JOUE DE LA SYNTHESE SONORE
+* 1 : message
+* 2 : victoire
+* 3 : Žtranger
 
 ACTIONW	jsr	getCONDITION
-	clc
+	cmp	#0
+	beq	ACTIONW_1
+	cmp	#3+1
+	bcc	ACTIONW_2
+ACTIONW_1	clc
+	rts
+
+ACTIONW_2	dec
+	asl
+	tax
+	lda	tblFILEW,x
+
+*--- Action commune
+
+ACTIONWX	jsr	loadBIGFILE
+	bcs	ACTIONWX_1
+
+	sty	waveSTART
+	stx	waveSTART+2
+	sta	waveSIZE
+	ldy	#428	; 380
+	jsr	SOUND
+ACTIONWX_1	clc
 	rts
 
 *---------- x 78 - JOUE DES BRUITS
 
 ACTIONX	jsr	getCONDITION
-	clc
+	cmp	#0
+	beq	ACTIONX_1
+	cmp	#4+1
+	bcc	ACTIONX_2
+ACTIONX_1	clc
 	rts
+
+ACTIONX_2	dec
+	asl
+	tax
+	lda	tblFILEX,x
+	bra	ACTIONWX
+
+*--- Data
+
+*--- Fichiers audio
+
+tblFILEW	da	pDIGIT1,pDIGIT2,pDIGIT3
+tblFILEX	da	pSNDFX1,pSNDFX2,pSNDFX3,pSNDFX4
+
+pDIGIT1	strl	'8/data/sons/message.snd'
+pDIGIT2	strl	'8/data/sons/victoire.snd'
+pDIGIT3	strl	'8/data/sons/etranger.snd'
+pSNDFX1	strl	'8/data/sons/explosion.snd'
+pSNDFX2	strl	'8/data/sons/teleport.snd'
+pSNDFX3	strl	'8/data/sons/ascenseur.snd'
+pSNDFX4	strl	'8/data/sons/ecrasement.snd'
 
 *---------- y 79 - INVERSE LES POINTEURS DES DEUX IMAGES
 
@@ -2536,7 +2580,7 @@ RIRE	lda	#pRIRE
 RIRE_1	sty	waveSTART
 	stx	waveSTART+2
 	sta	waveSIZE
-	ldy	#380
+	ldy	#428	; 380
 	jmp	SOUND
 
 *---
@@ -2756,10 +2800,9 @@ noCHAR3	rep	#$30
 	ldx	ptrUNPACK+2
 	ldy	ptrUNPACK
 	jsr	loadFILE
-	bcc	loadPIC99
-	rts
+	bcs	loadPIC99
 	
-loadPIC99	lda	proEOF
+	lda	proEOF
 	jsr	unpackLZ4
 
 *	PushLong	ptrIMAGE
@@ -2778,7 +2821,7 @@ loadPIC99	lda	proEOF
 	pha
 	PushLong	#32768-11040
 	_BlockMove
-	rts
+loadPIC99	rts
 
 *---
 

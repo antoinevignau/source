@@ -664,7 +664,7 @@ loadFILE_KO	lda	proEOF
 *----------------------------------- Open
 
 loadGAME	sep	#$20
-	sta	pGAME+10
+	sta	pGAME+15
 	rep	#$20
 
 	jsl	GSOS
@@ -689,7 +689,7 @@ loadKO99	rts
 *----------------------------------- Save
 
 saveGAME	sep	#$20
-	sta	pGAME+10
+	sta	pGAME+15
 	rep	#$20
 
 	jsl	GSOS
@@ -756,7 +756,7 @@ proWRITEGAME
 	ds	4	; C - transfer_count
 	dw	1	; cache_priority
 
-pGAME	strl	'8/Partie0'
+pGAME	strl	'8/data/Partie0'
 
 *-----------------------------------
 * DES DONNES 16-BITS

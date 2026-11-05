@@ -1,7 +1,7 @@
 *
 * Midi routines
 *
-* (c) 2020, Brutal Deluxe Software
+* (c) 2020-2026, Brutal Deluxe Software
 * Antoine Vignau & Olivier Zardini
 *
 
@@ -12,9 +12,93 @@ seqTEMPO	=	$18A
 seqTPB	=	$190
 
 *--------------------------------------
+* LOAD & PLAY
+*--------------------------------------
 
-	mx	%00
+*--------------------------------------
+* INTRO MUSIC
+*--------------------------------------
+
+loadINTRO	lda	RND
+	beq	loadINTRO_ALT
 	
+	lda	#pWAV_ENTRY	; organ
+	jsr	loadWAV
+	bcc	loadINTRO2
+	rts
+loadINTRO2	lda	#pBNK_ENTRY
+	jsr	loadBNK
+	bcc	loadINTRO3
+	rts
+loadINTRO3	lda	#pSEQ_ENTRY
+	jsr	loadSEQUENCE
+	bcc	loadINTRO4
+	rts
+loadINTRO4	jmp	doSOUNDON
+
+loadINTRO_ALT	lda	#pWAV_ENTRY_ALT	; tubular
+	jsr	loadWAV
+	bcc	loadINTRO2_ALT
+	rts
+loadINTRO2_ALT	lda	#pBNK_ENTRY_ALT
+	jsr	loadBNK
+	bcc	loadINTRO3
+	rts
+
+*--------------------------------------
+* DEATH MUSIC
+*--------------------------------------
+
+loadMORT	lda	fgMIDI
+	beq	loadMORT1
+	rts
+
+loadMORT1	lda	#pWAV_MORT
+	jsr	loadWAV
+	bcc	loadMORT2
+	rts
+
+loadMORT2	lda	#pBNK_MORT
+	jsr	loadBNK
+	bcc	loadMORT3
+	rts
+
+loadMORT3	lda	#pSEQ_MORT
+	jsr	loadSEQUENCE
+	bcc	loadMORT4
+	rts
+
+loadMORT4	jmp	doSOUNDON
+
+*--------------------------------------
+* VICTORY MUSIC
+*--------------------------------------
+
+loadVICTORY	lda	fgMIDI
+	beq	loadWON1
+	rts
+
+loadWON1	lda	#pWAV_EXIT
+	jsr	loadWAV
+	bcc	loadWON2
+	rts
+
+loadWON2	lda	#pBNK_EXIT
+	jsr	loadBNK
+	bcc	loadWON3
+	rts
+
+loadWON3	lda	#pSEQ_EXIT
+	jsr	loadSEQUENCE
+	bcc	loadWON4
+	rts
+
+loadWON4	jmp	doSOUNDON
+
+*--------------------------------------
+* MIDI ROUTINES
+*--------------------------------------
+
 stopMIDI	lda	fgMIDI
 	bne	stopMIDI99
 
@@ -33,28 +117,35 @@ initMIDI	pha		; Check for AppleTalk
 	pla
 	and	#$20
 	beq	initMIDI1
-
+	brk	$bd
 	inc	fgMIDI
+	sec
 	rts
 
 initMIDI1	PushWord	#35	; Load MidiSynth
 	PushWord	#0
 	_LoadOneTool
 	bcc	initMIDI2
-	
+
 	inc	fgMIDI
+	sec
 	rts
 	
 initMIDI2	_MSStartUp	; Start MidiSynth
 	bcc	musicMEMORY
+	cmp	#$2301	; already started?
+	beq	initMIDI3
 
 	inc	fgMIDI
+	sec
+	rts
+initMIDI3	clc
 	rts
 
 *-------------------------------------- Now, get RAM
 
-musicMEMORY
-	PushLong	#0
+musicMEMORY	pha
+	pha
 	PushLong	#$10000
 	PushWord	myID
 	PushWord	#%11000000_00011100
@@ -74,10 +165,11 @@ musicMEMORY
 	bcc	musicMEMORY1
 
 	inc	fgMIDI	; cannot assign memory for MIDI sequences
+	sec
 	rts
 	
-musicMEMORY1
-	PushLong	#0
+musicMEMORY1	pha
+	pha
 	PushLong	#$10000
 	PushWord	myID
 	PushWord	#%11000000_00011100
@@ -97,10 +189,11 @@ musicMEMORY1
 	bcc	musicMEMORY2
 
 	inc	fgMIDI	; cannot assign memory for MIDI sequences
+	sec
 	rts
 
-musicMEMORY2
-	PushLong	#0
+musicMEMORY2	pha
+	pha
 	PushLong	#$10000
 	PushWord	myID
 	PushWord	#%11000000_00011100
@@ -120,13 +213,15 @@ musicMEMORY2
 	bcc	loadWAV
 
 	inc	fgMIDI	; cannot assign memory for MIDI sequences
+	sec
 	rts
 
+musicMEMORY3	clc
+	rts
+	
 *-------------------------------------- Load WAV
 
-loadWAV
-	lda	#pWAV
-	sta	midiOPEN+4
+loadWAV	sta	midiOPEN+4
 
 	jsl	GSOS
 	dw	$2010
@@ -161,16 +256,17 @@ loadWAV
 	adrl	midiCLOSE
 
 	lda	midiERR	; check err
-	beq	loadBNK
+	beq	loadWAV1
 
 	inc	fgMIDI	; exit
+	sec
+	rts
+loadWAV1	clc
 	rts
 
 *-------------------------------------- Load BNK
 
-loadBNK
-	lda	#pBNK	; load the MIDI bank
-	ldx	ptrBNK+2
+loadBNK	ldx	ptrBNK+2
 	ldy	ptrBNK
 	jsr	loadGSOS
 
@@ -178,54 +274,38 @@ loadBNK
 	beq	loadSEQUENCE
 
 	inc	fgMIDI
+	sec
 	rts
-	
+loadBNK1	clc
+	rts
+
 *-------------------------------------- Load Sequence
 
-loadSEQUENCE
-	lda	#pSEQ
-	ldx	ptrSEQ+2
+loadSEQUENCE	ldx	ptrSEQ+2
 	ldy	ptrSEQ
 	jsr	loadGSOS
 
 	lda	midiERR	; check err
 	beq	initMUSIC
-	
 	inc	fgMIDI
+	sec
 	rts
-
+	
 *-------------------------------------- Play sequence
 
-initMUSIC
-	lda	ptrSEQ
+initMUSIC	lda	ptrSEQ
 	sta	dpSEQ
 	lda	ptrSEQ+2
 	sta	dpSEQ+2
 	
-*	sta	playMUSIC5+1	; save pointers
-*	sta	playMUSIC55+1
-*	lda	ptrSEQ+2
-*	sta	playMUSIC6+1
-*	sta	playMUSIC66+1
-	
 	_KillAllNotes
-
-*	lda	myDP
-*	tcd
-
-*playMUSIC5	lda	#$bdbd	; patched
-*	sta	dpSEQ
-*playMUSIC6	lda	#$bdbd	; patched
-*	sta	dpSEQ+2
 
 	ldy	#seqOFFSET
 	lda	[dpSEQ],y
 	clc
-*playMUSIC55	adc	#$bdbd	; patched
 	adc	dpSEQ
 	sta	seqPlayRec
 	lda	#0
-*playMUSIC66	adc	#$bdbd	; patched
 	adc	dpSEQ+2
 	sta	seqPlayRec+2
 
@@ -285,6 +365,7 @@ initMUSIC
 
 *---
 
+	php
 	sei
 
 	PushLong	ptrWAV
@@ -303,7 +384,8 @@ initMUSIC
 	PullLong	seqPlayRec
 
 	stz	fgMIDI	; we are good!!!
-	cli		; end of the long init!
+	plp		; end of the long init!
+	clc
 	rts
 	
 *--------------------------------------
@@ -327,6 +409,8 @@ doSOUNDON	lda	fgMIDI		; can we play?
 	bne	playMUSIC99
 
 	jsr	initMUSIC
+
+doSOUNDON_ALT	stz	fgMIDIPLAY
 	
 	lda	#$0100		; no, let's start playing!
 	sta	seqPlay
@@ -334,13 +418,15 @@ doSOUNDON	lda	fgMIDI		; can we play?
 	_SeqPlayer
 	stz	fgLOOP
 	
-playMUSIC99
-	rts
+playMUSIC99	rts
 
 *--------------------------------------
 
 doSOUNDOFF	lda	fgMIDI
 	bne	stopMUSIC99
+
+	lda	#1
+	sta	fgMIDIPLAY
 
 	stz	seqPlay
 	PushLong	#seqPlayRec
@@ -351,27 +437,23 @@ stopMUSIC99	rts
 
 *-------------------------------------- Suspend music
 
-suspendMUSIC
-	lda	fgMIDI
+suspendMUSIC	lda	fgMIDI
 	ora	fgMIDIPLAY
 	bne	suspendMUSIC9
 	
 	_MSSuspend
 	
-suspendMUSIC9
-	rts
+suspendMUSIC9	rts
 	
 *-------------------------------------- Resume music
 
-resumeMUSIC
-	lda	fgMIDI
+resumeMUSIC	lda	fgMIDI
 	ora	fgMIDIPLAY
 	bne	resumeMUSIC9
 	
 	_MSResume
 	
-resumeMUSIC9
-	rts
+resumeMUSIC9	rts
 	
 *--------------------------------------
 
@@ -381,15 +463,13 @@ checkREPLAY	rep	#$30
 	
 	lda	fgLOOP
 	beq	checkREPLAY99
-	jsr	doSOUNDON
+	jsr	doSOUNDON_ALT
 
-checkREPLAY99
-	rts
+checkREPLAY99	rts
 
 *--------------------------------------
 
-replayMUSIC
-	lda	#-1
+replayMUSIC	lda	#-1
 	stal	fgLOOP
 	rtl
 
@@ -440,7 +520,7 @@ midiERR	ds	2
 
 midiOPEN	dw	12
 	ds	2
-	adrl	pSEQ
+	adrl	pSEQ_ENTRY
 	ds	2
 	ds	2
 	ds	2
@@ -468,9 +548,19 @@ midiSETMARK	dw	3
 
 *--- GS/OS Strings
 
-pSEQ	strl	'1/Data/Sequence'
-pWAV	strl	'1/Data/Piano.Wav'
-pBNK	strl	'1/Data/Piano.Bnk'
+pSEQ_ENTRY	strl	'8/data/musiques/bach.seq'
+pBNK_ENTRY	strl	'8/data/musiques/organ.bnk'
+pWAV_ENTRY	strl	'8/data/musiques/organ.wav'
+pBNK_ENTRY_ALT	strl	'8/data/musiques/tubular.bnk'
+pWAV_ENTRY_ALT	strl	'8/data/musiques/tubular.wav'
+
+pSEQ_MORT	strl	'8/data/musiques/mozart.seq'
+pBNK_MORT	strl	'8/data/musiques/mozart.bnk'
+pWAV_MORT	strl	'8/data/musiques/mozart.wav'
+
+pSEQ_EXIT	strl	'8/data/musiques/fugue32.seq'
+pBNK_EXIT	strl	'8/data/musiques/piano.bnk'
+pWAV_EXIT	strl	'8/data/musiques/piano.wav'
 
 *--- Memory
 

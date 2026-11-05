@@ -1,8 +1,8 @@
 *
-* Orphee
+* Orphée
 *
 * (c) 1985, Laurent Benes & Loriciels
-* (c) 2024, Brutal Deluxe Software (Apple II)
+* (c) 2024-2026, Brutal Deluxe Software (Apple II)
 *
 
 *-----------------------------------
@@ -928,5 +928,5 @@ DEMO$	asc	'^'00
 	asc	'SALLES NON ECLAIREES,'0d
 	asc	'ET POUR NE PAS FINIR COMME CELA:'00
 
-	asc	00
+	asc	00	; le zero pour l'image de la mort
 	dfb	chrEOT

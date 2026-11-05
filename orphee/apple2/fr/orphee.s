@@ -1,8 +1,8 @@
 *
-* Orphee
+* Orphée
 *
 * (c) 1985, Laurent Benes & Loriciels
-* (c) 2024, Brutal Deluxe Software (Apple II)
+* (c) 2024-2026, Brutal Deluxe Software (Apple II)
 *
 
 	mx	%00
@@ -229,7 +229,7 @@ PLAY	@MODE	#1
 	
 REPLAY	jsr	PRESENT
 	jsr	INIT_ALL
-
+	
 *-----------------------------------
 * MAIN LOOP
 *-----------------------------------
@@ -403,7 +403,7 @@ RETURN	rts		; ne fait rien
 *-----------------------------------
 
 REJOU	@PRINT	#wMESSAGE;#strREJOUER
-	
+
 *-----------------------------------
 * ATTEN
 *-----------------------------------
@@ -414,7 +414,8 @@ ATTEN	@INKEY
 	cmp	#chrNO
 	bne	ATTEN
 	jmp	QUIT
-ATTEN_1	jmp	REPLAY	; return to the IIgs
+ATTEN_1	jsr	doSOUNDOFF	; stop MIDI music if any
+	jmp	REPLAY	; return to the IIgs
 
 *-----------------------------------
 * MORT
@@ -1008,22 +1009,18 @@ PACAPI	@PRINT	#wMESSAGE;#strPBCOMPRENDRE
 * PRESENT
 *-----------------------------------
 
-TEMPS_ATTENTE	=	10
+TEMPS_ATTENTE	=	60	; secondes
 
 PRESENT	@CLS	#0
 
-	ldal	HORIZCNT	; affiche image 119 ou 120
-	and	#%00000001
+	lda	RND	; from MIDI stuff
  	clc
 	adc	#picVOYAGE
 	jsr	GRAPHE
-
 	jsr	FENETR
 
-*	@CLS	#wMESSAGE
 	@LOCATE	#wMESSAGE;#1;#5
 	@PRINT	#wMESSAGE;#phrase01
-*	@CLS	#wINVENTAIRE
 	@LOCATE	#wINVENTAIRE;#1;#11
 	@PRINT	#wINVENTAIRE;#phrase05
 
@@ -1045,7 +1042,8 @@ PRESENT	@CLS	#0
 
 *---
 
-PRESENT_1	jsr	RIRE
+PRESENT_1	jsr	doSOUNDOFF
+	jsr	RIRE
 PRESENT_2	@CLS	#wMESSAGE
 	@CLS	#wINVENTAIRE
 	rts
@@ -1088,6 +1086,7 @@ DEMO	@CLS	#wINVENTAIRE
 
 *--- La fin de la démo
 
+	jsr	doSOUNDOFF
 	jsr	RIRE
 
 	lda	#FALSE	; end of patch
@@ -1135,13 +1134,18 @@ GRAPHE	and	#$ff
 	bcc	GRAPHEOK
 	rts
 
-GRAPHEOK	ldal	$e19e00	; beurk
-	stal	$e19e1e	
-
-	ldx	picINDEX
+GRAPHEOK	ldx	picINDEX
 	lda	picBORDER,x
 	and	#$ff
 	jsr	BORDER
+	
+	lda	theBORDER
+	asl
+	tax
+	lda	paletteBORDER,x
+	stal	$e19e00	; beurk
+	stal	$e19e1e
+
 	clc
 	rts
 
@@ -2427,7 +2431,7 @@ slotGAME	@INKEY
 	bcc	slotGAME_ERR
 	cmp	#'9'+1
 	bcs	slotGAME_ERR
-	sta	pGAME+10
+	sta	pGAME+15
 	clc
 	rts
 slotGAME_ERR	sec
@@ -2453,7 +2457,7 @@ ACTIONV_1	rep	#$30
 * 3 : étranger
 
 ACTIONW	jsr	getCONDITION
-	cmp	#0
+ACTIONW_ALT	cmp	#0
 	beq	ACTIONW_1
 	cmp	#3+1
 	bcc	ACTIONW_2
@@ -2481,7 +2485,7 @@ ACTIONWX_1	clc
 *---------- x 78 - JOUE DES BRUITS
 
 ACTIONX	jsr	getCONDITION
-	cmp	#0
+ACTIONX_ALT	cmp	#0
 	beq	ACTIONX_1
 	cmp	#4+1
 	bcc	ACTIONX_2
@@ -2582,22 +2586,21 @@ getCONDITION	lda	(dpCONDITIONS)
 * MUSIQUE DE MORT
 *-----------------------------------
 
-MUSMORT
+MUSMORT	jsr	loadMORT	; Marche funèbre de Mozart
 	rts
 
 *-----------------------------------
 * MUSIQUE DE LA VICTOIRE
 *-----------------------------------
 
-MUSVIC
+MUSVIC	jsr	loadVICTORY	; A Fugue from Bach
 	rts
 
 *-----------------------------------
 * MUSIQUE DE PRESENTATION
 *-----------------------------------
 
-MUSPRE
-	rts
+MUSPRE	rts	; started in iigs.s
 
 *-----------------------------------
 * RIRE
@@ -2611,7 +2614,7 @@ RIRE	lda	#pRIRE
 RIRE_1	sty	waveSTART
 	stx	waveSTART+2
 	sta	waveSIZE
-	ldy	#428	; 380
+	ldy	#428	; frequency is in file auxtype
 	jmp	SOUND
 
 *---
@@ -2755,28 +2758,6 @@ INIT_ALL	sep	#$30
 	rts
 
 *-----------------------------------
-* 20000 - PERDU
-*-----------------------------------
-
-:perdu	@PRINT	#wMESSAGE;#strREJOUER
-:perdu_bis	
-
-:20050	@INKEY
-	cmp	#chrNO
-	beq	:20001
-	cmp	#chrYES
-	bne	:20050
-	jmp	PLAY
-
-:20001	jmp	QUIT	; return to the IIgs
-
-*-----------------------------------
-* 32000 - GAGNE
-*-----------------------------------
-
-:gagne	jmp	:perdu_bis
-
-*-----------------------------------
 * CODE SPECIFIQUE
 *-----------------------------------
 
@@ -2881,6 +2862,7 @@ IZ	ds	2
 N	ds	2
 NL	ds	2
 NN	ds	2
+RND	ds	2
 SLOT$	ds	2	; slot de load/save + trailing 00
 
 MOT

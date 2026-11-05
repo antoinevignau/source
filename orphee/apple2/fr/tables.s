@@ -1,8 +1,8 @@
 *
-* Orphee
+* Orphée
 *
 * (c) 1985, Laurent Benes & Loriciels
-* (c) 2024, Brutal Deluxe Software (Apple II)
+* (c) 2024-2026, Brutal Deluxe Software (Apple II)
 *
 
 *-----------------------------------

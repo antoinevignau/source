@@ -1,8 +1,8 @@
 *
-* Orphee
+* Orphée
 *
 * (c) 1985, Laurent Benes & Loriciels
-* (c) 2024, Brutal Deluxe Software (Apple II)
+* (c) 2024-2026, Brutal Deluxe Software (Apple II)
 *
 
 * Les accents (encore et toujours)
@@ -283,15 +283,33 @@ okTOOL	_HideMenuBar
 	sta	srcLocInfoPtr+4
 	sta	ptrSCREEN+2
 	
-okSHADOW
+okSHADOW	
 
 *-----------------------------------
 * IL FAUT JOUER MAINTENANT
 *-----------------------------------
 
+	lda	#ONE
+	sta	RND
+	
+	pha	; get day of the week
+	pha
+	pha	; Saturday means Tubular
+	pha	; others mean Organ
+	_ReadTimeHex
+	pla
+	pla
+	pla
+	pla
+	cmp	#$0700
+	bne	notSATURDAY
+	stz	RND
+notSATURDAY
+
 	jsr	initMIDI
-	jsr	doSOUNDON
-	jmp	PLAY
+	bcc	noZIK
+	jsr	loadINTRO
+noZIK	jmp	PLAY
 
 *-----------------------------------
 * AU REVOIR LE IIGS
@@ -663,11 +681,7 @@ loadFILE_KO	lda	proEOF
 
 *----------------------------------- Open
 
-loadGAME	sep	#$20
-	sta	pGAME+15
-	rep	#$20
-
-	jsl	GSOS
+loadGAME	jsl	GSOS
 	dw	$2010
 	adrl	proOPENGAME
 	bcs	loadKO99
@@ -688,11 +702,7 @@ loadKO99	rts
 
 *----------------------------------- Save
 
-saveGAME	sep	#$20
-	sta	pGAME+15
-	rep	#$20
-
-	jsl	GSOS
+saveGAME	jsl	GSOS
 	dw	$2002
 	adrl	proDESTROYGAME
 	

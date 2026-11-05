@@ -1,8 +1,8 @@
 *
-* Le cimetière des ocelots
+* Locomotive Engine
 *
-* (c) 2026, Turk182
-* (c) 2026, Brutal Deluxe Software
+* (c) 2024-2026, Brutal Deluxe Software
+* Antoine Vignau & Olivier Zardini
 *
 
 	mx	%00
@@ -309,7 +309,7 @@ SOUND9	rts
 waveSTART	ds	4	; waveStart
 waveSIZE	dw	9	; waveSize in pages
 waveFREQ	dw	107	; freqOffset
-	dw	$0000	; docBuffer
+wavePAGE	ds	2	; docBuffer
 	dw	$0000	; bufferSize
 	ds	4	; nextWavePtr
 waveVOLUME	dw	255	; volSetting
@@ -554,7 +554,6 @@ BORDER	asl
 	lda	tblBORDER,x
 	and	#$ff
                 sta             theBORDER
-	stal	$300
 	pha
 	PushWord	#$1c
 	_WriteBParam
@@ -1746,6 +1745,23 @@ palette320	dw	$0000	;  0 black
 	dw	$0DAF	; 12 lilac
 	dw	$078F	; 13 periwinkle blue
 	dw	$0CCC	; 14 light gray
+	dw	$0FFF	; 15 white
+
+paletteBORDER	dw	$0000	;  0 black
+	dw	$0D03	;  1 deep red
+	dw	$0009	;  2 dark blue
+	dw	$0D2D	;  3 purple
+	dw	$0072	;  4 dark green
+	dw	$0555	;  5 dark gray
+	dw	$022F	;  6 medium blue
+	dw	$06AF	;  7 light blue
+	dw	$0850	;  8 brown
+	dw	$0F60	;  9 orange
+	dw	$0AAA	; 10 light gray
+	dw	$0F98	; 11 pink
+	dw	$01D0	; 12 light green
+	dw	$0FF0	; 13 yellow
+	dw	$04F9	; 14 aquamarine
 	dw	$0FFF	; 15 white
 
 *--- Pattern

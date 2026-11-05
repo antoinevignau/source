@@ -1,0 +1,186 @@
+; EQU:
+; Data addresses used by the opcodes that point to uninitialized memory areas.
+SUB2:        equ  A230h	; 41520. Subroutine. Called by: SUB1[A1A4h].	=> FILL
+SUB3:        equ  BBDEh	; 48094. Subroutine. Called by: SUB1[A10Eh].	=> PEN
+SUB4:        equ  BBEAh	; 48106. Subroutine. Called by: SUB1[A17Dh].	=> PLOT
+SUB5:        equ  BBF6h	; 48118. Subroutine. Called by: SUB1[A15Ah].	=> DRAW
+
+
+             org A100h; A100h
+
+* 45 00 (69) pour EXIT sinon DRAW TO
+* 70 00 (112) pour PLOT X1,Y1 suivi de DRAW TO
+* 66 00 (102) pour FILL X1,Y1 suivi de DRAW TO
+* si 45/70/66 sans 00 alors c'est DRAW TO
+
+; Subroutine: Size=190, CC=8.
+; Called by: -
+; Calls: SUB2, SUB3, SUB4, SUB5.
+A100 SUB1:
+A100              cp   01h    	; 1
+A102              ret  nz     
+A103              ld   l,(ix+0) 
+A106              ld   h,(ix+1) 
+A109              push hl     
+A10A              pop  ix     
+A10C              ld   a,01h  	; 1
+A10E              call SUB3   	; BBDEh	; PEN = 1 on exit
+A111 .sub1_loop:
+A111              ld   a,(ix+0) 
+A114              cp   45h    	; 69, 'E'	; EXIT
+A116              jp   nz,.sub1_l1 	; A124h
+A119              ld   a,(ix+1) 
+A11C              cp   00h    	; 0
+A11E              jp   z,.sub1_l6 	; A1BDh
+A121              jp   .sub1_l3 	; A141h
+A124 .sub1_l1:
+A124              cp   70h    	; 112, 'p'	; PLOT
+A126              jp   nz,.sub1_l2 	; A134h
+A129              ld   a,(ix+1) 
+A12C              cp   00h    	; 0
+A12E              jp   z,.sub1_l4 	; A164h
+A131              jp   .sub1_l3 	; A141h
+A134 .sub1_l2:
+A134              cp   66h    	; 102, 'f'	; FILL
+A136              jp   nz,.sub1_l3 	; A141h
+A139              ld   a,(ix+1) 
+A13C              cp   00h    	; 0
+A13E              jp   z,.sub1_l5 	; A18Bh
+
+* DRAW TO X2,Y2
+
+A141 .sub1_l3:			; DRAW
+A141              ld   de,0050h 	; 80
+A144              ld   h,00h  	; 0
+A146              ld   l,(ix+0) 
+A149              add  hl,hl  
+A14A              add  hl,de  
+A14B              push hl     
+A14C              ld   h,00h  	; 0
+A14E              ld   l,(ix+1) 
+A151              add  hl,hl  
+A152              ex   de,hl  
+A153              ld   hl,018Fh 	; 399
+A156              and  a      
+A157              sbc  hl,de  
+A159              pop  de     
+A15A              call SUB5   	; BBF6h
+A15D              inc  ix     
+A15F              inc  ix     
+A161              jp   .sub1_loop 	; A111h
+
+* PLOT 00,X1,Y1
+
+A164 .sub1_l4:
+A164              ld   de,0050h 	; 80
+A167              ld   h,00h  	; 0
+A169              ld   l,(ix+2) 
+A16C              add  hl,hl  
+A16D              add  hl,de  
+A16E              push hl	; abscisse = 80 + X1
+A16F              ld   h,00h  	; 0
+A171              ld   l,(ix+3) 
+A174              add  hl,hl  
+A175              ex   de,hl  
+A176              ld   hl,018Fh 	; 399
+A179              and  a      
+A17A              sbc  hl,de  	; ordonnée (400 - Y1)
+A17C              pop  de     	; abscisse
+A17D              call SUB4   	; BBEAh
+A180              inc  ix     
+A182              inc  ix     
+A184              inc  ix     
+A186              inc  ix     
+A188              jp   .sub1_loop 	; A111h
+
+* FILL 00,X1,Y1
+
+A18B .sub1_l5:
+A18B              ld   de,0050h 	; 80
+A18E              ld   h,00h  	; 0
+A190              ld   l,(ix+2) 
+A193              add  hl,hl  
+A194              add  hl,de  
+A195              push hl     
+A196              ld   h,00h  	; 0
+A198              ld   l,(ix+3) 
+A19B              add  hl,hl  
+A19C              ex   de,hl  
+A19D              ld   hl,018Fh 	; 399
+A1A0              and  a      
+A1A1              sbc  hl,de  
+A1A3              pop  de     
+A1A4              call SUB2   	; A230h
+A1A7              nop         
+A1A8              nop         
+A1A9              nop         
+A1AA              nop         
+A1AB              nop         
+A1AC              nop         
+A1AD              nop         
+A1AE              nop         
+A1AF              nop         
+A1B0              nop         
+A1B1              nop         
+A1B2              inc  ix     
+A1B4              inc  ix     
+A1B6              inc  ix     
+A1B8              inc  ix     
+A1BA              jp   .sub1_loop 	; A111h
+A1BD .sub1_l6:
+A1BD              ret         
+
+* TEXT
+
+; Subroutine: Size=106, CC=9.
+; Called by: -
+; Calls: -
+A1BE SUB1:
+A1BE              cp   02h    	; 2
+A1C0              ret  nz     
+A1C1              ld   l,(ix+0) 
+A1C4              ld   h,(ix+1) 
+A1C7              inc  hl     
+A1C8              push hl     
+A1C9              ld   l,(ix+2) 
+A1CC              ld   h,(ix+3) 
+A1CF              push hl     
+A1D0              pop  ix     
+A1D2              pop  iy     
+A1D4              ld   l,(iy+0) 
+A1D7              ld   h,(iy+1) 
+A1DA              push hl     
+A1DB              pop  iy     
+A1DD              ld   l,(ix+0) 
+A1E0              ld   h,(ix+1) 
+A1E3              ld   bc,1F40h 	; 8000
+A1E6 .sub1_loop:
+A1E6              ld   a,23h  	; 35, '#'
+A1E8              cpi         
+A1EA              jp   po,.sub1_l 	; A21Fh
+A1ED              jp   nz,.sub1_loop 	; A1E6h
+A1F0              ld   a,(iy+0) 
+A1F3              cpi         
+A1F5              jp   nz,.sub1_loop 	; A1E6h
+A1F8              ld   a,(iy+1) 
+A1FB              cpi         
+A1FD              jp   nz,.sub1_loop 	; A1E6h
+A200              ld   a,(iy+2) 
+A203              cpi         
+A205              jp   nz,.sub1_loop 	; A1E6h
+A208              ld   a,(iy+3) 
+A20B              cpi         
+A20D              jp   nz,.sub1_loop 	; A1E6h
+A210              ld   a,(iy+4) 
+A213              cpi         
+A215              jp   nz,.sub1_loop 	; A1E6h
+A218              ld   (ix+0),l 
+A21B              ld   (ix+1),h 
+A21E              ret         
+A21F .sub1_l:
+A21F              ld   (ix+0),FFh 	; 255,   -1
+A223              ld   (ix+1),FFh 	; 255,   -1
+A227              ret         
+; ...
+; ...
+; ...

@@ -1262,6 +1262,13 @@ COUT	and             #$ff
 	pha		; draw the character
                 jsr             GOTOXY
 	_DrawChar
+
+* Shall we wait?
+
+COUT_WAIT	lda	#0	; shall we wait?
+	beq	COUT0
+	
+	@WAIT	#2	; 2 frames
 	
 *----------- next X position
 

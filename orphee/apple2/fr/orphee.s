@@ -27,6 +27,9 @@ NB_CAR	=	16	; max size of a word
 LEN_WORD	=	5	; but limit to 4
 
 FIRST_INDEX	=	0	; first index in tables
+FIRST_Y	=	3	; 1ère ligne pour les inventaires
+MAX_Y_P	=	3+FIRST_Y	; dernière ligne
+MAX_Y_O	=	8+FIRST_Y	; dernière ligne
 
 NBCOMPTEURS	=	27	; b/c index is 0
 NBPOINTEURS	=	68	; b/c index is 0
@@ -262,21 +265,21 @@ DESSIN	ldx	SALLE	; parce qu'on peut inverser
 
 *-----------------------------------
 
-SOMBR	ldx	#6
-	lda	SALSOMB,x
+SOMBR	ldx	#6	; torche
+	lda	OBJSAL,x
 	and	#$ff
 	cmp	SALLE
-	beq	CALCUL
+	beq	CALCUL	; ...dans la salle
 	cmp	#TRUE
-	beq	CALCUL
+	beq	CALCUL	; ...ou portée ?
 	
-	ldx	#14
-	lda	SALSOMB,x
+	ldx	#14	; torche
+	lda	OBJSAL,x
 	and	#$ff
-	cmp	SALLE
+	cmp	SALLE	; ...dans la salle
 	beq	CALCUL
 	cmp	#TRUE
-	beq	CALCUL
+	beq	CALCUL	; ...ou portée
 	
 	ldx	#1
 	lda	PERSSAL,x
@@ -329,6 +332,9 @@ DEPA2_1	@CLS	#wINVENTAIRE
 	@CLS	#wPERSONNAGE
 	@PRINT	#wPERSONNAGE;#strPERSONNAGES
 
+	lda	#FIRST_Y
+	sta	IY
+
 	lda	#FALSE
 	sta	DRAP
 	ldx	#NBPERSONNAGE-1	; FIRST_INDEX
@@ -343,29 +349,33 @@ DEPA2_2	dex
 	cmp	#TRUE
 	beq	DEPA3
 	
-NESSUN	@PRINT	#wPERSONNAGE;#strAUCUN
+NESSUN	@LOCATE	#wPERSONNAGE;#1;IY
+	@PRINT	#wPERSONNAGE;#strAUCUN
 	brl	DEPA3
 
 IMPRIM	stx	IX
-	txa
+
+	@LOCATE	#wPERSONNAGE;#1;IY
+
+	lda	IX
 	ldy	#PERSONNAGE$
 	jsr	CHERC
 	jsr	AFFIC2
 
-	@PRINT	#wPERSONNAGE;#strRETURN
+	inc	IY	; don't print more than 3 persos
+	lda	IY
+	cmp	#MAX_Y_P
+	bcs	DEPA3
 
 	lda	#TRUE
 	sta	DRAP
 	ldx	IX
 	bra	DEPA2_2
 
-	mx	%00
-
 *-----------------------------------8
 
 DEPA3	jsr	GETCOM	; saisie des caracteres
 	jsr	DCRIPT	; déchiffre la chaîne saisie
-*	jsr	showSALLE
 
 	lda	SUJET
 	cmp	#FALSE
@@ -384,7 +394,7 @@ DEPA32	lda	COD	; = MOT$+3
 DEPA31	jsr	ANALYS
 	brl	DEPA2
 
-*--- DEBUG
+*--- A simple...
 
 RETURN	rts		; ne fait rien
 
@@ -699,54 +709,6 @@ windowPERSONNAGE
 	dw	149,206
 	dw	200,320
 
-*-------------------------------
-* DEBUG
-*-------------------------------
-
-showSALLE	lda	SUJET
-	jsr	getDEBUG
-	sta	strCOMMANDE+0
-	lda	VERBE
-	jsr	getDEBUG
-	sta	strCOMMANDE+2
-	lda	ARTICLE
-	jsr	getDEBUG
-	sta	strCOMMANDE+4
-	lda	COD
-	jsr	getDEBUG
-	sta	strCOMMANDE+6
-	lda	ADJECTIF
-	jsr	getDEBUG
-	sta	strCOMMANDE+8
-	lda	ATTRIBUT
-	jsr	getDEBUG
-	sta	strCOMMANDE+10
-	rts
-	
-getDEBUG	pha
-	PushLong	#strDEBUG
-	PushWord	#2
-	PushWord	#FALSE
-	_Int2Dec
-
-	lda	strDEBUG
-	ora	#'00'
-	sta	strDEBUG
-	rts
-
-*--- Data
-
-strDEBUG	ds	3	; trailing \0
-
-*---------------
-
-showBORDER	sep	#$30
-	ldal	$c034
-	inc
-	stal	$c034
-	rep	#$30
-	rts
-
 *-----------------------------------
 * VERIFI
 *-----------------------------------
@@ -1046,6 +1008,8 @@ PACAPI	@PRINT	#wMESSAGE;#strPBCOMPRENDRE
 * PRESENT
 *-----------------------------------
 
+TEMPS_ATTENTE	=	10
+
 PRESENT	@CLS	#0
 
 	ldal	HORIZCNT	; affiche image 119 ou 120
@@ -1063,10 +1027,72 @@ PRESENT	@CLS	#0
 	@LOCATE	#wINVENTAIRE;#1;#11
 	@PRINT	#wINVENTAIRE;#phrase05
 
-	@INKEY
-	jsr	RIRE
-	@CLS	#wMESSAGE
+*--- Attente pour la démo ou pas...
+
+	lda	#TEMPS_ATTENTE	; 10 secondes
+	sta	IX
+	
+]lp	@WAIT	#60	; attend 1 seconde
+	@INKEY_TRUE		; si on appuie, on joue
+	cmp	#TRUE
+	beq	PRESENT_1
+
+	dec	IX	; compteur--
+	bne	]lp
+
+	jsr	DEMO	; la démo, SVP
+	bra	PRESENT_2	; on a déjà joué le rire
+
+*---
+
+PRESENT_1	jsr	RIRE
+PRESENT_2	@CLS	#wMESSAGE
 	@CLS	#wINVENTAIRE
+	rts
+
+*-----------------------------------
+* DEMO
+*-----------------------------------
+
+DEMO_FIRST	=	1
+DEMO_LAST	=	12	; 12 textes
+
+DEMO	@CLS	#wINVENTAIRE
+	@CLS	#wMESSAGE
+	@LOCATE	#wMESSAGE;#1;#4
+	
+	lda	#DEMO_FIRST	; premier texte
+	sta	IW
+
+	lda	#TRUE	; patch print
+	sta	COUT_WAIT+1	; to wait
+	
+]lp	ldx	IW	; affiche l'image
+	lda	SALDEMO,x
+	jsr	GRAPHE
+	jsr	FENETR
+
+	@PRINT	#wMESSAGE;#strRETURN
+
+	lda	IW	; et le texte
+	ldy	#DEMO$
+	jsr	CHERC
+	jsr	PRINT_ALT
+	
+	@WAIT	#120
+
+	inc	IW	; next entry
+	lda	IW
+	cmp	#DEMO_LAST+1
+	bcc	]lp
+
+*--- La fin de la démo
+
+	jsr	RIRE
+
+	lda	#FALSE	; end of patch
+	sta	COUT_WAIT+1
+	@CLS	#0
 	rts
 
 *-----------------------------------
@@ -1909,11 +1935,6 @@ AFFIC2	sta	N
 
 AFFIC3	sta	N
 	@CLS	#wSALLE
-*	lda	SALLE
-*	and	#$ff
-*	jsr	getDEBUG
-*	@PRINT	#wSALLE;#strDEBUG
-*	@PRINT	#wSALLE;#strSPACE
 	@PRINT	#wSALLE;N
 	rts
 
@@ -2069,21 +2090,30 @@ LISTE	ldx	#FIRST_INDEX+1	; les inits
 	lda	#FALSE	; aucun objet trouvé
 	sta	DRAP
 
+	lda	#FIRST_Y
+	sta	IY
+
 	ldx	IX
 ]lp	lda	OBJSAL,x	; prend l'objet X
 	and	#$ff	; the costly missing AND
 	cmp	NN	; dans la salle ou porté (CARRIED)
 	bne	LISTE_1	; non
+	stx	IX
 
-	txa		; oui, affiche le
+	@LOCATE	#wINVENTAIRE;#1;IY
+
+	lda	IX	; oui, affiche le
 	ldy	#OBJET$
 	jsr	CHERC
 	jsr	AFFIC1
 
-	@PRINT	#wINVENTAIRE;#strRETURN
-
 	lda	#TRUE
 	sta	DRAP
+
+	inc	IY
+	lda	IY
+	cmp	#MAX_Y_O
+	bcs	AUCUN_1
 
 LISTE_1	inc	IX	; prochain objet
 	ldx	IX
@@ -2094,6 +2124,7 @@ LISTE_1	inc	IX	; prochain objet
 	cmp	#FALSE	; trouvé un objet ?
 	bne	AUCUN_1	; oui
 
+	@LOCATE	#wINVENTAIRE;#1;IY
 	@PRINT	#wINVENTAIRE;#strAUCUN
 
 AUCUN_1	lda	NN
@@ -2715,7 +2746,7 @@ INIT_ALL	sep	#$30
 	cpx	#NBSALLE
 	bcc	]lp
 	beq	]lp
-	
+
 	rep	#$30
 
 	lda	#FIRST_ROOM
@@ -2843,6 +2874,7 @@ WORDBUFFER	ds	MAX_LEN+1
 *--- Données diverses
 
 DRAP	ds	2
+IW	ds	2
 IX	ds	2
 IY	ds	2
 IZ	ds	2

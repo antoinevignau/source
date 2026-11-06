@@ -305,7 +305,6 @@ okSHADOW
 	bne	notSATURDAY
 	stz	RND
 notSATURDAY
-
 	jsr	initMIDI
 	bcc	noZIK
 	jsr	loadINTRO

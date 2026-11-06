@@ -117,7 +117,6 @@ initMIDI	pha		; Check for AppleTalk
 	pla
 	and	#$20
 	beq	initMIDI1
-	brk	$bd
 	inc	fgMIDI
 	sec
 	rts

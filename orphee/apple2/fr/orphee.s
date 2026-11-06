@@ -1023,6 +1023,8 @@ PRESENT	@CLS	#0
 	@PRINT	#wMESSAGE;#phrase01
 	@LOCATE	#wINVENTAIRE;#1;#11
 	@PRINT	#wINVENTAIRE;#phrase05
+	@LOCATE	#wPERSONNAGE;#1;#1
+	@PRINT	#wPERSONNAGE;#phrase10
 
 *--- Attente pour la dŽmo ou pas...
 
@@ -1110,7 +1112,8 @@ VICTOI	@draw	#picVICTOIRE
 * GETCOM
 *-----------------------------------
 
-GETCOM	@PRINT	#wMESSAGE;#strRETURN
+GETCOM
+*	@PRINT	#wMESSAGE;#strRETURN
 	@PRINT	#wMESSAGE;#strCOMMANDE
 	@INPUT	#TEXTBUFFER;#MAX_LEN
 	stx	lenSTRING
@@ -2259,7 +2262,8 @@ ACTIONI	jsr	getCONDITION
 *---------- j 6A - AFFICHE D'ACCORD
 
 ACTIONJ	@PRINT	#wMESSAGE;#strDACCORD	; jmp below...
-	
+	@PRINT	#wMESSAGE;#strRETURN
+
 *---------- k 6B - RETOURNE A DEPA2
 
 ACTIONK	lda	#DEPA2
@@ -2625,9 +2629,7 @@ pRIRE	strl	'8/data/sons/rire.snd'
 * GESTION DES ISSUES
 *-----------------------------------
 	
-ISSUE	@PRINT	#wMESSAGE;#strISSUES
-
-	lda	SALLE	; >0
+ISSUE	lda	SALLE	; >0
 	bne	ISSUE_1
 	rts
 ISSUE_1	cmp	#NBISSUE	; <= nb salle
@@ -2635,12 +2637,15 @@ ISSUE_1	cmp	#NBISSUE	; <= nb salle
 	beq	ISSUE_2
 	rts
 
-ISSUE_2	tax		; get the data
+ISSUE_2	@PRINT	#wMESSAGE;#strISSUES
+
+	ldx	SALLE	; get the data
 	lda	TBLISSUE,x
 	and	#$ff
 	bne	ISSUE_3
 
 	@PRINT	#wMESSAGE;#strAUCUNE
+	@PRINT	#wMESSAGE;#strRETURN
 	rts
 
 ISSUE_3	xba
@@ -2701,7 +2706,8 @@ IS_SORTIE	asl
 	jsr	VIRG
 	@PRINT	#wMESSAGE;#strSORTIE
 
-IS_FIN	rts
+IS_FIN	@PRINT	#wMESSAGE;#strRETURN
+	rts
 
 *---------- Affiche une virgule de sŽparation
 
@@ -2721,10 +2727,10 @@ VIR	lda	#TRUE
 
 INIT_ALL	sep	#$30
 
-*	ldx	#FIN_DATA-DEBUT_DATA
-*]lp	stz	SALLE,x
-*	dex
-*	bpl	]lp
+	ldx	#FIN_DATA-DEBUT_DATA
+]lp	stz	SALLE,x
+	dex
+	bpl	]lp
 
 	ldx	#0	; reset OBJET table
 ]lp	lda	refOBJSAL,x
@@ -2817,7 +2823,7 @@ noCHAR3	rep	#$30
 	lda	proEOF
 	jsr	unpackLZ4
 
-*	PushLong	ptrIMAGE
+*	PushLong	ptrIMAGE	; image data
 	lda	ptrIMAGE+2
 	pha
 	lda	ptrIMAGE
@@ -2831,7 +2837,22 @@ noCHAR3	rep	#$30
 	clc
 	adc	#69*160
 	pha
-	PushLong	#32768-11040
+	PushLong	#32000-11040
+	_BlockMove
+	
+	lda	ptrIMAGE+2	; palettes
+	pha
+	lda	ptrIMAGE
+	clc
+	adc	#$7e00
+	pha
+	lda	ptrSCREEN+2
+	pha
+	lda	ptrSCREEN
+	clc
+	adc	#$7e00
+	pha
+	PushLong	#512
 	_BlockMove
 loadPIC99	rts
 

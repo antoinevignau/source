@@ -484,14 +484,37 @@ phrase01	asc	'        Copyright LORICIELS ... ao'9e't 1985'0d0d
 *		'12345678901234567'
 *		'-----------------'
 phrase05	asc	'    Programme'0d
-phrase06	asc	'    con'8d'u par'0d0d
-phrase07	asc	'  LAURENT BENES'0d0d
-phrase08	asc	'   Assist'8e' de:'0d
-phrase09	asc	'DIDIER BERCHIATTI'
-phrase10	asc	'  Graphisme de:'0d
-phrase11	asc	'  Roger NICOLLE'0d
-phrase12	asc	' Remerciements '880d
-phrase13	asc	'PATRICE GUERLAIS'00
+	asc	'    con'8d'u par'0d0d
+	dfb	eINK,2
+	asc	'  LAURENT BENES'0d0d
+	dfb	eINK,1
+	asc	'   Assist'8e' de:'0d
+	dfb	eINK,2
+	asc	'DIDIER BERCHIATTI'
+	dfb	eINK,1
+	asc	'  Graphisme de:'0d
+	dfb	eINK,2
+	asc	'  ROGER NICOLLE'0d
+	dfb	eINK,1
+	asc	' Remerciements '880d
+	dfb	eINK,2
+	asc	'PATRICE GUERLAIS'
+	dfb	eINK,1
+	dfb	00
+
+*		'         1
+*		'12345678901234567'
+*		'-----------------'
+phrase10	asc	'  BRUTAL DELUXE  '
+	asc	0d
+	dfb	eINK,2
+	asc	' Antoine  Vignau '
+	dfb	eINK,1
+	asc	'        &        ' 
+	dfb	eINK,2
+	asc	' Olivier Zardini'
+	dfb	eINK,1
+	dfb	00
 
 *
 * Les descriptions
@@ -862,71 +885,80 @@ RE$229	asc	'VOTRE GOURDE VOUS ECHAPPE, ELLE TOMBE AU FOND     DU PUITS.'00
 SALDEMO	dfb	0,2,28,63,36,114,109,106,83,84,29,54,117
 
 DEMO$	asc	'^'00
-	asc	'   IL FAISAIT CHAUD CE JOUR LA. VOUS, AU VOLANT DE'
-	asc	'VOTRE HABITUEL BOLIDE, VOUS PERFORIEZ L'27'AIR LOURD.'
-	asc	'   RENTRANT DE VOTRE DERNIER  VOYAGE  D'27'AFFAIRE  A'
-	asc	'LONDRES, VOUS N'27'ADMETTIEZ PAS LE REFUS DE CES MAU-'
-	asc	'DITS ANGLAIS. AH CE CONTRAT! VOUS L'27'ESPERIEZ TANT.'00
 
-	asc	'ET PUIS MERDE! TOUT FOUTU PAR TERRE A CAUSE DE CES'
-	asc	'BUVEURS DE THE!  C'27'ETAIT TROP!  VOUS  DEVIEZ  VOUS'
-	asc	'DEFOULER, ET UN ACCELERATEUR, CA SERT A CA,  SINON'
-	asc	'POURQUOI AURIEZ VOUS ACHETE CE  BOLIDE  AU  MOTEUR'
-	asc	'TURBOCOMPRESSE!  ALORS VOUS  ENFONCIEZ  LA  PEDALE'
-	asc	'ET LE MOTEUR RUGISSAIT.  IL HURLAIT  ENCORE  QUAND'
-	asc	'VOTRE VOITURE S'27'ECRASA CONTRE CE CAMION!'00
+	asc	'  '0D
+	asc	'   Il faisait chaud ce jour l'88'. Vous, au volant de'
+	asc	'votre habituel bolide, vous perforiez l'27'air lourd.'
+	asc	'   Rentrant de votre dernier  voyage  d'27'affaire  '88
+	asc	'Londres, vous n'27'admettiez pas le refus de ces mau-'
+	asc	'dits anglais. Ah ce contrat! Vous l'27'esp'8e'riez tant.'00
 
-	asc	'   ET DEPUIS, PEU D'27'ESPOIR. LE DOCTEUR  PRETENDAIT'
-	asc	'QU'27'IL ARRIVE PARFOIS QUE L'27'ON RESSORTE DU COMA  AU'
-	asc	'BOUT DE TROIS ANS! MAIS SAVAIT-IL QUE DEPUIS  TOUT'
-	asc	'CE TEMPS VOTRE AME ERRAIT EN ENFER A LA  RECHERCHE'
-	asc	'D'27'UN CADEAU POUR SATAN!'00
+	asc	'  '0D
+	asc	'Et puis merde! Tout foutu par terre '88' cause de ces'
+	asc	'buveurs de th'8e'!  C'278e'tait trop!  vous  deviez  vous'
+	asc	'd'8e'fouler, et un acc'8e'l'8e'rateur, '8d'a sert '88' ca,  sinon'
+	asc	'pourquoi auriez-vous achet'8e' ce  bolide  au  moteur'
+	asc	'turbocompress'8e'!  Alors vous  enfonciez  la  p'8e'dale'
+	asc	'et le moteur rugissait.  Il hurlait  encore  quand'
+	asc	'votre voiture s'278e'crasa contre ce camion!'00
 
-	asc	'   VOUS VENEZ D'27'ACQUERIR L'27'UN DES  MEILLEURS  JEUX'
-	asc	'D'27'AVENTURE DU MOMENT, PLUS DE 200 K  DE  PROGRAMME'
-	asc	'POUR VOTRE PLUS GRAND PLAISIR. GRACE A CE LOGICIEL'
-	asc	'VOUS ALLER PENETRER  EN  PLEIN  COEUR  D'27'UN  ENFER'
-	asc	'DELIRANT. ENTIEREMENT EN LANGAGE MACHINE,  CE  JEU'
-	asc	'VOUS PROPOSE PLUS  D'27'UNE CENTAINE  DE  GRASPHISMES'
-	asc	'D'27'UNE GRANDE QUALITE, ET TOUS DIFFERENTS!'00
+	asc	'  '0D
+	asc	'   Et depuis, peu d'27'espoir. Le m'8e'decin  pr'8e'tendait'
+	asc	'qu'27'il arrive parfois que l'27'on ressorte du coma  au'
+	asc	'bout de trois ans! Mais savait-il que depuis  tout'
+	asc	'ce temps votre '89'me errait en enfer '88' la  recherche'
+	asc	'd'27'un cadeau pour satan!'00
 
-	asc	'SYNTHESE VOCALE SUR TOUT AMSTRAD, SANS  EXTENSIONS'
-	asc	'SUPPLEMENTAIRES, NOMBREUSES MUSIQUES, TOUT  A  ETE'
-	asc	'FAIT POUR QUE VOUS TIRIEZ DE CE JEU LE MAXIMUM  DE'
-	asc	'PLAISIR ET D'27'AMUSEMENT.'0d
-	asc	'                           BONNE CHANCE.'00
+	asc	'  '0D
+	asc	'   Vous venez d'27'acqu'8e'rir l'27'un des  meilleurs  jeux'
+	asc	'd'27'aventure du moment, plus de 200 k  de  programme'
+	asc	'pour votre plus grand plaisir. Gr'89'ce '88' ce logiciel'
+	asc	'vous aller p'8e'n'8e'trer  en  plein  coeur  d'27'un  enfer'
+	asc	'd'8e'lirant. enti'8f'rement en langage machine,  ce  jeu'
+	asc	'vous propose plus  d'27'une centaine  de  grasphismes'
+	asc	'd'27'une grande qualit'8e', et tous diff'8e'rents!'00
 
-	asc	'  '0d
-	asc	'POUR CONVERSER AVEC L'27'ORDINATEUR, VOUS  UTILISEREZ'
-	asc	'LE VOCABULAIRE COURANT. CE JEU  COMPREND  PLUS  DE'
-	asc	'250 MOTS ET PERMET  UNE  ANALYSE  ASSEZ  COMPLEXE.'
-	asc	'AINSI LES ORDRES QUE VOUS DONNEREZ POURRONS AVOIR:'
-	asc	'SUJET, VERBE, NOM, ADJECTIF ET COMPLEMENT'00
+	asc	'  '0D
+	asc	'Synth'8f'se vocale sur tout amstrad, sans  extensions'
+	asc	'suppl'8e'mentaires, nombreuses musiques, tout  a  '8e't'8e
+	asc	'fait pour que vous tiriez de ce jeu le maximum  de'
+	asc	'plaisir et d'27'amusement.'0D
+	asc	'                           Bonne chance.'00
 
-	asc	'TOUT CELA SIMULTANEMENT.'0d
-	asc	'AINSI, POUR PRENDRE UNE CLE IL SUFFIRA DE TAPER:'0d
+	asc	'  '0D
+	asc	'Pour converser avec l'27'ordinateur, vous  utiliserez'
+	asc	'le vocabulaire courant. Ce jeu  comprend  plus  de'
+	asc	'250 mots et permet  une  analyse  assez  complexe.'
+	asc	'Ainsi les ordres que vous donnerez pourront avoir:'
+	asc	'sujet, verbe, nom, adjectif et compl'8e'ment'0D
+	asc	'tout cela simultan'8e'ment.'00
+	
+	asc	'  '0D
+	asc	'Ainsi, pour prendre une cl'8e' il suffira de taper:'0D
 	asc	'>JE PRENDS LA CLE'00
 
-	asc	'MAIS POUR FACILITER LA SAISIE,  L'27'USAGE DU JE POUR'
-	asc	'LE SUJET, ET DE TOUS LES ARTICLES  EST  FACULTATIF'0d
-	asc	'AINSI, VOUS POUVEZ TAPER:'0d
+	asc	'  '0D
+	asc	'Mais pour faciliter la saisie,  l'27'usage du JE pour'
+	asc	'le sujet, et de tous les articles  est  facultatif'0D
+	asc	'Ainsi, vous pouvez taper:'0D
 	asc	'>PRENDS CLE'00
 
-	asc	'D'27'AUTRE PART, SI VOUS DESIREZ FAIRE FAIRE  QUELQUE'
-	asc	'CHOSE A L'27'UN DES PERSONNAGES QUE VOUS RENCONTREZ, '
-	asc	'IL VOUS SUFFIRA D'27'UTILISER L'27'IMPERATIF:'00
+	asc	'  '0D
+	asc	'D'27'autre part, si vous d'8e'sirez faire faire  quelque'
+	asc	'chose '88' l'27'un des personnages que vous rencontrez, '
+	asc	'il vous suffira d'27'utiliser l'27'imp'8e'ratif:'00
 
-	asc	'AINSI, SI VOUS DESIREZ QUE LE  DRAGON  ATTAQUE  LA'
-	asc	'SORCIERE MINIU, IL SUFFIT D'27'ENTRER L'27'ORDRE:'0d
+	asc	'  '0D
+	asc	'Ainsi, si vous d'8e'sirez que le  dragon  attaque  la'
+	asc	'sorci'8f're miniu, il suffit d'27'entrer l'27'ordre:'0D
 	asc	'>DRAGON ATTAQUE LA SORCIERE'00
 
-	asc	'  '0d
-	asc	'  '0d
-	asc	'VOILA, JE PENSE QUE VOUS SAVEZ LE  PLUS  IMPORTANT'
-	asc	'IL NE ME RESTE PLUS QU'27'A VOUS DIRE DE  FAIRE  TRES'
-	asc	'ATTENTION POUR NE PAS VOUS PERDRE DANS  L'27'UNE  DES'
-	asc	'SALLES NON ECLAIREES,'0d
-	asc	'ET POUR NE PAS FINIR COMME CELA:'00
+	asc	'  '0D
+	asc	'Voila, je pense que vous savez le  plus  important'
+	asc	'Il ne me reste plus qu'2788' vous dire de  faire  tr'8f's'
+	asc	'attention pour ne pas vous perdre dans  l'27'une  des'
+	asc	'salles non '8e'clair'8e'es,'0D
+	asc	'et pour ne pas finir comme cela:'00
 
 	asc	00	; le zero pour l'image de la mort
 	dfb	chrEOT

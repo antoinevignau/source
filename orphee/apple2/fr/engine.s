@@ -973,6 +973,18 @@ setSTREAMPEN	lda	theSTREAM
 	_SetForeColor
 	rts
 
+newSTREAMPEN	lda	theSTREAM
+	asl	; x: forecolor index
+	asl
+	asl
+	asl
+	tay
+	txa
+	sta	tblWINDOW+14,y
+	pha
+	_SetForeColor
+	rts
+
 * window x1,y1 + locate x1,y1 -> textX, textY
 
 setSTREAMXY	lda	theSTREAM
@@ -1236,8 +1248,15 @@ PRINT_INNER	jsr	setSTREAMPAPER	; set the background color
 
 PRINT_LOOP	jsr	GET_CHAR	; get a character
 	cmp	#eEOD
-	bne	PRINT1	; end of string
+	bne	PRINT_FN	; end of string
 PRINT_EXIT	rts
+
+PRINT_FN	cmp	#eINK	; handle INK change
+	bne	PRINT1
+	jsr	GET_CHAR
+	tax
+	jsr	newSTREAMPEN
+	bra	PRINT_LOOP
 
 PRINT1	jsr	COUT	; print character
 	bcs	PRINT_EXIT	; if flagX or flagY is met
@@ -1347,6 +1366,7 @@ scrollWINDOW	lda	theSTREAM	; set rectangle size
 	lda	tblX,x
 	clc
 	adc	charWIDTH
+	inc
 	sta	scrollRECT+6
 
 	lda	tblWINDOW+4,y	; Y1
@@ -1361,6 +1381,7 @@ scrollWINDOW	lda	theSTREAM	; set rectangle size
 	lda	tblY,x
 	clc
 	adc	charHEIGHT
+	inc
 	sta	scrollRECT+4
 
 *--- and scroll the window

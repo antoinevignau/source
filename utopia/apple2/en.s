@@ -655,6 +655,7 @@ tblMESSAGES	asc	'\I Can'27't See Anything. It'27's Too DARK!'	; 1
 	asc	'\'0d'Game loaded successfully.'0d	; 50
 	asc	'\'0d'Game saved successfully.'0d	; 51
 	asc	'\'0d'Operation cancelled.'0d	; 52
+	asc	'\'
 	dfb	chrNULL
 
 * Rewrite of message 6
@@ -713,4 +714,5 @@ tblDESCRIPTIONS
 	asc	'\I'27'm Floating in a River'	; 2B
 	asc	'\I'27'm by a Small Opening in a Mountain'	; 2C
 	asc	'\I am in a Musty Old Cave. I Feel Very Nervous in Here.'	; 2D = 45
+	asc	'\'
 	dfb	chrNULL

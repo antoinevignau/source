@@ -810,6 +810,7 @@ loadIMAGE	lda	#TRUE
 
 loadIMAGE_1	lda	IMAGE
 	and	#$ff
+	beq	loadPIC99
 	pha
 	PushLong	#strIMAGE
 	PushWord	#2
@@ -2017,25 +2018,28 @@ printWHAT_OK2	lda	dpFROM
 
 initALL	sep	#$20
 	ldx	#0	; clear all
-	txa
-]lp	sta	SALLE,x
+]lp	stz	SALLE,x
 	inx
 	cpx	#FIN_DATA-DEBUT_DATA
 	bcc	]lp
 
 *---
 
-	ldx	#MAX_ROOM-1	; reset room table
-]lp	lda	refR,x
-	sta	tblR,x
-	dex
-	bpl	]lp
+	ldx	#1	; reset room table
+]lp	lda	refR-1,x
+	sta	tblR-1,x
+	inx
+	cpx	#MAX_ROOM
+	bcc	]lp
+	beq	]lp
 
-	ldx	#MAX_OBJ-1	; reset object table
-]lp	lda	refO,x
-	sta	tblO,x
-	dex
-	bpl	]lp
+	ldx	#1	; reset object table
+]lp	lda	refO-1,x
+	sta	tblO-1,x
+	inx
+	cpx	#MAX_OBJ
+	bcc	]lp
+	beq	]lp
 	rep	#$20
 	rts
 

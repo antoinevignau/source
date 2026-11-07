@@ -434,6 +434,7 @@ tblTEXTS	asc	'\WELCOME to '22'FUTURIA'220d	; 1
 	asc	'\That'27's Me!'	; 9B
 	asc	'\There is No Score in FUTURIA.'0d'Your Mission: Escape (ALIVE!)'0d0d	; 9C
 	asc	'\There is No Magic in FUTURIA.'0d0d	; 9D
+	asc	'\'
 	dfb	chrNULL
 
 * OBJECTS
@@ -629,6 +630,7 @@ tblMESSAGES	asc	'\I Can'27't See Anything. It'27's Too DARK!'	; 1
 	asc	'\'0d'Game loaded successfully.'0d	; 50
 	asc	'\'0d'Game saved successfully.'0d	; 51
 	asc	'\'0d'Operation cancelled.'0d	; 52
+	asc	'\'
 	dfb	chrNULL
 
 * Rewrite of message 6
@@ -707,4 +709,5 @@ tblDESCRIPTIONS	asc	'\I'27'm in an Ultramodern City'	; 1
 	asc	'\I'27'm in a Narrow Vent'	; 64
 	asc	'\I'27'm in a Narrow Vent'	; 65
 	asc	'\I'27'm at the Outskirts of a City'	; 66
+	asc	'\'
 	dfb	chrNULL

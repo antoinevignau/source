@@ -2854,7 +2854,7 @@
  3290 |  2 futuria.s   1620 | Code        | 00 |         |    2 | 00/10C0 : D0 0B       |                       bne       printISSUES_3        
  3291 |  2 futuria.s   1621 | Empty       | 00 |         |    0 | 00/10C2               |                                                      
  3292 |  2 futuria.s   1622 | Code        | 00 |         |    3 | 00/10C2 : A9 03 00    | printISSUES_21        lda       #{3}                 ; I See No Obvious Exits
- 3293 |  2 futuria.s   1623 | Code        | 00 |  2      |    3 | 00/10C5 : A2 A7 59    |                       ldx       #tblMESSAGES         
+ 3293 |  2 futuria.s   1623 | Code        | 00 |  2      |    3 | 00/10C5 : A2 A8 59    |                       ldx       #tblMESSAGES         
  3294 |  2 futuria.s   1624 | Code        | 00 |  2      |    3 | 00/10C8 : 20 2A 12    |                       jsr       getWHATEVER          
  3295 |  2 futuria.s   1625 | Code        | 00 |         |    2 | 00/10CB : 80 05       |                       bra       printISSUES_4        
  3296 |  2 futuria.s   1626 | Empty       | 00 |         |    0 | 00/10CD               |                                                      
@@ -2971,7 +2971,7 @@
  3402 |  2 futuria.s   1730 | Comment     | 00 |         |    0 | 00/1187               | * PRINT OBJECT
  3403 |  2 futuria.s   1731 | Comment     | 00 |         |    0 | 00/1187               | *-----------------------------------
  3404 |  2 futuria.s   1732 | Empty       | 00 |         |    0 | 00/1187               |                                                      
- 3405 |  2 futuria.s   1733 | Code        | 00 |  2      |    3 | 00/1187 : A2 A0 54    | printOBJECT           ldx       #tblOBJECTS          
+ 3405 |  2 futuria.s   1733 | Code        | 00 |  2      |    3 | 00/1187 : A2 A1 54    | printOBJECT           ldx       #tblOBJECTS          
  3406 |  2 futuria.s   1734 | Code        | 00 |  2      |    3 | 00/118A : 4C 61 12    |                       jmp       printWHATEVER        
  3407 |  2 futuria.s   1735 | Empty       | 00 |         |    0 | 00/118D               |                                                      
  3408 |  2 futuria.s   1736 | Comment     | 00 |         |    0 | 00/118D               | *-----------------------------------
@@ -2998,7 +2998,7 @@
  3429 |  2 futuria.s   1753 | Comment     | 00 |         |    0 | 00/11A1               | * PRINT MESSAGES
  3430 |  2 futuria.s   1754 | Comment     | 00 |         |    0 | 00/11A1               | *-----------------------------------
  3431 |  2 futuria.s   1755 | Empty       | 00 |         |    0 | 00/11A1               |                                                      
- 3432 |  2 futuria.s   1756 | Code        | 00 |  2      |    3 | 00/11A1 : A2 A7 59    | printMESSAGE          ldx       #tblMESSAGES         ; points to texts array
+ 3432 |  2 futuria.s   1756 | Code        | 00 |  2      |    3 | 00/11A1 : A2 A8 59    | printMESSAGE          ldx       #tblMESSAGES         ; points to texts array
  3433 |  2 futuria.s   1757 | Code        | 00 |  2      |    3 | 00/11A4 : 4C 61 12    |                       jmp       printWHATEVER        
  3434 |  2 futuria.s   1758 | Empty       | 00 |         |    0 | 00/11A7               |                                                      
  3435 |  2 futuria.s   1759 | Comment     | 00 |         |    0 | 00/11A7               | *-----------------------------------
@@ -3057,12 +3057,12 @@
  3488 |  2 futuria.s   1810 | Empty       | 00 |         |    0 | 00/11F8               |                                                      
  3489 |  2 futuria.s   1811 | Code        | 00 |         |    1 | 00/11F8 : 68          |                       pla                            
  3490 |  2 futuria.s   1812 | Code        | 00 |         |    3 | 00/11F9 : A9 01 00    |                       lda       #{1}                 
- 3491 |  2 futuria.s   1813 | Code        | 00 |  2      |    3 | 00/11FC : A2 A7 59    |                       ldx       #tblMESSAGES         
+ 3491 |  2 futuria.s   1813 | Code        | 00 |  2      |    3 | 00/11FC : A2 A8 59    |                       ldx       #tblMESSAGES         
  3492 |  2 futuria.s   1814 | Code        | 00 |         |    2 | 00/11FF : 80 07       |                       bra       printDE_91           
  3493 |  2 futuria.s   1815 | Empty       | 00 |         |    0 | 00/1201               |                                                      
  3494 |  2 futuria.s   1816 | Code        | 00 |  2      |    3 | 00/1201 : 8D E9 13    | printDE_9             sta       DARK_2               ; set to FALSE
  3495 |  2 futuria.s   1817 | Code        | 00 |         |    1 | 00/1204 : 68          |                       pla                            ; restore message index
- 3496 |  2 futuria.s   1818 | Code        | 00 |  2      |    3 | 00/1205 : A2 D9 5D    |                       ldx       #tblDESCRIPTIONS     ; points to texts array
+ 3496 |  2 futuria.s   1818 | Code        | 00 |  2      |    3 | 00/1205 : A2 DB 5D    |                       ldx       #tblDESCRIPTIONS     ; points to texts array
  3497 |  2 futuria.s   1819 | Empty       | 00 |         |    0 | 00/1208               |                                                      
  3498 |  2 futuria.s   1820 | Code        | 00 |  2      |    3 | 00/1208 : 20 2A 12    | printDE_91            jsr       getWHATEVER          ; get an address or null if not found
  3499 |  2 futuria.s   1821 | Code        | 00 |         |    2 | 00/120B : D0 01       |                       bne       printDE_10           
@@ -9781,183 +9781,184 @@
       |                     |             |    |         |      |           6E 20 46 55 |
       |                     |             |    |         |      |           54 55 52 49 |
       |                     |             |    |         |      |           41 2E 0D 0D |
- 8111 |  6      en.s    437 | Data        | 00 |         |    1 | 00/549F : 00          |                       dfb       {$00}                
- 8112 |  6      en.s    438 | Empty       | 00 |         |    0 | 00/54A0               |                                                      
- 8113 |  6      en.s    439 | Comment     | 00 |         |    0 | 00/54A0               | * OBJECTS
- 8114 |  6      en.s    440 | Empty       | 00 |         |    0 | 00/54A0               |                                                      
- 8115 |  6      en.s    441 | Data        | 00 |         |   13 | 00/54A0 : 5C 53 74 72 | tblOBJECTS            asc       '\Strange Lake'      ; 1
+ 8111 |  6      en.s    437 | Data        | 00 |         |    1 | 00/549F : 5C          |                       asc       '\'                  
+ 8112 |  6      en.s    438 | Data        | 00 |         |    1 | 00/54A0 : 00          |                       dfb       {$00}                
+ 8113 |  6      en.s    439 | Empty       | 00 |         |    0 | 00/54A1               |                                                      
+ 8114 |  6      en.s    440 | Comment     | 00 |         |    0 | 00/54A1               | * OBJECTS
+ 8115 |  6      en.s    441 | Empty       | 00 |         |    0 | 00/54A1               |                                                      
+ 8116 |  6      en.s    442 | Data        | 00 |         |   13 | 00/54A1 : 5C 53 74 72 | tblOBJECTS            asc       '\Strange Lake'      ; 1
       |                     |             |    |         |      |           61 6E 67 65 |
       |                     |             |    |         |      |           20 4C 61 6B |
       |                     |             |    |         |      |           65          |
- 8116 |  6      en.s    442 | Data        | 00 |         |    5 | 00/54AD : 5C 53 69 67 |                       asc       '\Sign'              ; 2
+ 8117 |  6      en.s    443 | Data        | 00 |         |    5 | 00/54AE : 5C 53 69 67 |                       asc       '\Sign'              ; 2
       |                     |             |    |         |      |           6E          |
- 8117 |  6      en.s    443 | Data        | 00 |         |   14 | 00/54B2 : 5C 53 6D 61 |                       asc       '\Small Speaker'     ; 3
+ 8118 |  6      en.s    444 | Data        | 00 |         |   14 | 00/54B3 : 5C 53 6D 61 |                       asc       '\Small Speaker'     ; 3
       |                     |             |    |         |      |           6C 6C 20 53 |
       |                     |             |    |         |      |           70 65 61 6B |
       |                     |             |    |         |      |           65 72       |
- 8118 |  6      en.s    444 | Data        | 00 |         |   10 | 00/54C0 : 5C 48 75 67 |                       asc       '\Huge Door'         ; 4
+ 8119 |  6      en.s    445 | Data        | 00 |         |   10 | 00/54C1 : 5C 48 75 67 |                       asc       '\Huge Door'         ; 4
       |                     |             |    |         |      |           65 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8119 |  6      en.s    445 | Data        | 00 |         |    8 | 00/54CA : 5C 4F 70 65 |                       asc       '\Opening'           ; 5
+ 8120 |  6      en.s    446 | Data        | 00 |         |    8 | 00/54CB : 5C 4F 70 65 |                       asc       '\Opening'           ; 5
       |                     |             |    |         |      |           6E 69 6E 67 |
- 8120 |  6      en.s    446 | Data        | 00 |         |   21 | 00/54D2 : 5C 43 79 6C |                       asc       '\Cylindrical Building'; 6
+ 8121 |  6      en.s    447 | Data        | 00 |         |   21 | 00/54D3 : 5C 43 79 6C |                       asc       '\Cylindrical Building'; 6
       |                     |             |    |         |      |           69 6E 64 72 |
       |                     |             |    |         |      |           69 63 61 6C |
       |                     |             |    |         |      |           20 42 75 69 |
       |                     |             |    |         |      |           6C 64 69 6E |
       |                     |             |    |         |      |           67          |
- 8121 |  6      en.s    447 | Data        | 00 |         |   19 | 00/54E7 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 7
+ 8122 |  6      en.s    448 | Data        | 00 |         |   19 | 00/54E8 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 7
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8122 |  6      en.s    448 | Data        | 00 |         |   11 | 00/54FA : 5C 53 74 65 |                       asc       '\Steel Door'        ; 8
+ 8123 |  6      en.s    449 | Data        | 00 |         |   11 | 00/54FB : 5C 53 74 65 |                       asc       '\Steel Door'        ; 8
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8123 |  6      en.s    449 | Data        | 00 |         |   15 | 00/5505 : 5C 53 74 72 |                       asc       '\Strange Device'    ; 9
+ 8124 |  6      en.s    450 | Data        | 00 |         |   15 | 00/5506 : 5C 53 74 72 |                       asc       '\Strange Device'    ; 9
       |                     |             |    |         |      |           61 6E 67 65 |
       |                     |             |    |         |      |           20 44 65 76 |
       |                     |             |    |         |      |           69 63 65    |
- 8124 |  6      en.s    450 | Data        | 00 |         |   10 | 00/5514 : 5C 43 68 65 |                       asc       '\Chemicals'         ; A
+ 8125 |  6      en.s    451 | Data        | 00 |         |   10 | 00/5515 : 5C 43 68 65 |                       asc       '\Chemicals'         ; A
       |                     |             |    |         |      |           6D 69 63 61 |
       |                     |             |    |         |      |           6C 73       |
- 8125 |  6      en.s    451 | Data        | 00 |         |   17 | 00/551E : 5C 43 72 79 |                       asc       '\Crystalline Cube'  ; B
+ 8126 |  6      en.s    452 | Data        | 00 |         |   17 | 00/551F : 5C 43 72 79 |                       asc       '\Crystalline Cube'  ; B
       |                     |             |    |         |      |           73 74 61 6C |
       |                     |             |    |         |      |           6C 69 6E 65 |
       |                     |             |    |         |      |           20 43 75 62 |
       |                     |             |    |         |      |           65          |
- 8126 |  6      en.s    452 | Data        | 00 |         |   11 | 00/552F : 5C 52 65 70 |                       asc       '\Repository'        ; C
+ 8127 |  6      en.s    453 | Data        | 00 |         |   11 | 00/5530 : 5C 52 65 70 |                       asc       '\Repository'        ; C
       |                     |             |    |         |      |           6F 73 69 74 |
       |                     |             |    |         |      |           6F 72 79    |
- 8127 |  6      en.s    453 | Data        | 00 |         |   12 | 00/553A : 5C 53 6D 61 |                       asc       '\Small Token'       ; D
+ 8128 |  6      en.s    454 | Data        | 00 |         |   12 | 00/553B : 5C 53 6D 61 |                       asc       '\Small Token'       ; D
       |                     |             |    |         |      |           6C 6C 20 54 |
       |                     |             |    |         |      |           6F 6B 65 6E |
- 8128 |  6      en.s    454 | Data        | 00 |         |   12 | 00/5546 : 5C 50 6C 61 |                       asc       '\Plastic Rod'       ; E
+ 8129 |  6      en.s    455 | Data        | 00 |         |   12 | 00/5547 : 5C 50 6C 61 |                       asc       '\Plastic Rod'       ; E
       |                     |             |    |         |      |           73 74 69 63 |
       |                     |             |    |         |      |           20 52 6F 64 |
- 8129 |  6      en.s    455 | Data        | 00 |         |    7 | 00/5552 : 5C 42 65 61 |                       asc       '\Beaker'            ; F
+ 8130 |  6      en.s    456 | Data        | 00 |         |    7 | 00/5553 : 5C 42 65 61 |                       asc       '\Beaker'            ; F
       |                     |             |    |         |      |           6B 65 72    |
- 8130 |  6      en.s    456 | Data        | 00 |         |   19 | 00/5559 : 5C 28 49 74 |                       asc       '\(It'27's Full of Oil)'; 10
+ 8131 |  6      en.s    457 | Data        | 00 |         |   19 | 00/555A : 5C 28 49 74 |                       asc       '\(It'27's Full of Oil)'; 10
       |                     |             |    |         |      |           27 73 20 46 |
       |                     |             |    |         |      |           75 6C 6C 20 |
       |                     |             |    |         |      |           6F 66 20 4F |
       |                     |             |    |         |      |           69 6C 29    |
- 8131 |  6      en.s    457 | Data        | 00 |         |    9 | 00/556C : 5C 4D 6F 6E |                       asc       '\Monorail'          ; 11
+ 8132 |  6      en.s    458 | Data        | 00 |         |    9 | 00/556D : 5C 4D 6F 6E |                       asc       '\Monorail'          ; 11
       |                     |             |    |         |      |           6F 72 61 69 |
       |                     |             |    |         |      |           6C          |
- 8132 |  6      en.s    458 | Data        | 00 |         |   12 | 00/5575 : 5C 47 6C 6F |                       asc       '\Glowing Rod'       ; 12
+ 8133 |  6      en.s    459 | Data        | 00 |         |   12 | 00/5576 : 5C 47 6C 6F |                       asc       '\Glowing Rod'       ; 12
       |                     |             |    |         |      |           77 69 6E 67 |
       |                     |             |    |         |      |           20 52 6F 64 |
- 8133 |  6      en.s    459 | Data        | 00 |         |   12 | 00/5581 : 5C 43 6F 6D |                       asc       '\Compartment'       ; 13
+ 8134 |  6      en.s    460 | Data        | 00 |         |   12 | 00/5582 : 5C 43 6F 6D |                       asc       '\Compartment'       ; 13
       |                     |             |    |         |      |           70 61 72 74 |
       |                     |             |    |         |      |           6D 65 6E 74 |
- 8134 |  6      en.s    460 | Data        | 00 |         |    6 | 00/558D : 5C 4C 65 76 |                       asc       '\Lever'             ; 14
+ 8135 |  6      en.s    461 | Data        | 00 |         |    6 | 00/558E : 5C 4C 65 76 |                       asc       '\Lever'             ; 14
       |                     |             |    |         |      |           65 72       |
- 8135 |  6      en.s    461 | Data        | 00 |         |    5 | 00/5593 : 5C 44 6F 6F |                       asc       '\Door'              ; 15
+ 8136 |  6      en.s    462 | Data        | 00 |         |    5 | 00/5594 : 5C 44 6F 6F |                       asc       '\Door'              ; 15
       |                     |             |    |         |      |           72          |
- 8136 |  6      en.s    462 | Data        | 00 |         |   10 | 00/5598 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 16
+ 8137 |  6      en.s    463 | Data        | 00 |         |   10 | 00/5599 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 16
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8137 |  6      en.s    463 | Data        | 00 |         |   13 | 00/55A2 : 5C 50 6C 61 |                       asc       '\Plastic Card'      ; 17
+ 8138 |  6      en.s    464 | Data        | 00 |         |   13 | 00/55A3 : 5C 50 6C 61 |                       asc       '\Plastic Card'      ; 17
       |                     |             |    |         |      |           73 74 69 63 |
       |                     |             |    |         |      |           20 43 61 72 |
       |                     |             |    |         |      |           64          |
- 8138 |  6      en.s    464 | Data        | 00 |         |    9 | 00/55AF : 5C 43 61 6E |                       asc       '\Canister'          ; 18
+ 8139 |  6      en.s    465 | Data        | 00 |         |    9 | 00/55B0 : 5C 43 61 6E |                       asc       '\Canister'          ; 18
       |                     |             |    |         |      |           69 73 74 65 |
       |                     |             |    |         |      |           72          |
- 8139 |  6      en.s    465 | Data        | 00 |         |   18 | 00/55B8 : 5C 53 74 72 |                       asc       '\Strange Structure' ; 19
+ 8140 |  6      en.s    466 | Data        | 00 |         |   18 | 00/55B9 : 5C 53 74 72 |                       asc       '\Strange Structure' ; 19
       |                     |             |    |         |      |           61 6E 67 65 |
       |                     |             |    |         |      |           20 53 74 72 |
       |                     |             |    |         |      |           75 63 74 75 |
       |                     |             |    |         |      |           72 65       |
- 8140 |  6      en.s    466 | Data        | 00 |         |   16 | 00/55CA : 5C 4E 75 6D |                       asc       '\Numerous Robots'   ; 1A
+ 8141 |  6      en.s    467 | Data        | 00 |         |   16 | 00/55CB : 5C 4E 75 6D |                       asc       '\Numerous Robots'   ; 1A
       |                     |             |    |         |      |           65 72 6F 75 |
       |                     |             |    |         |      |           73 20 52 6F |
       |                     |             |    |         |      |           62 6F 74 73 |
- 8141 |  6      en.s    467 | Data        | 00 |         |   15 | 00/55DA : 5C 53 6D 61 |                       asc       '\Small Building'    ; 1B
+ 8142 |  6      en.s    468 | Data        | 00 |         |   15 | 00/55DB : 5C 53 6D 61 |                       asc       '\Small Building'    ; 1B
       |                     |             |    |         |      |           6C 6C 20 42 |
       |                     |             |    |         |      |           75 69 6C 64 |
       |                     |             |    |         |      |           69 6E 67    |
- 8142 |  6      en.s    468 | Data        | 00 |         |   10 | 00/55E9 : 5C 47 72 65 |                       asc       '\Green Key'         ; 1C
+ 8143 |  6      en.s    469 | Data        | 00 |         |   10 | 00/55EA : 5C 47 72 65 |                       asc       '\Green Key'         ; 1C
       |                     |             |    |         |      |           65 6E 20 4B |
       |                     |             |    |         |      |           65 79       |
- 8143 |  6      en.s    469 | Data        | 00 |         |   13 | 00/55F3 : 5C 4C 61 73 |                       asc       '\Laser Pistol'      ; 1D
+ 8144 |  6      en.s    470 | Data        | 00 |         |   13 | 00/55F4 : 5C 4C 61 73 |                       asc       '\Laser Pistol'      ; 1D
       |                     |             |    |         |      |           65 72 20 50 |
       |                     |             |    |         |      |           69 73 74 6F |
       |                     |             |    |         |      |           6C          |
- 8144 |  6      en.s    470 | Data        | 00 |         |   10 | 00/5600 : 5C 53 6D 61 |                       asc       '\Small Box'         ; 1E
+ 8145 |  6      en.s    471 | Data        | 00 |         |   10 | 00/5601 : 5C 53 6D 61 |                       asc       '\Small Box'         ; 1E
       |                     |             |    |         |      |           6C 6C 20 42 |
       |                     |             |    |         |      |           6F 78       |
- 8145 |  6      en.s    471 | Data        | 00 |         |   11 | 00/560A : 5C 52 65 64 |                       asc       '\Red Button'        ; 1F
+ 8146 |  6      en.s    472 | Data        | 00 |         |   11 | 00/560B : 5C 52 65 64 |                       asc       '\Red Button'        ; 1F
       |                     |             |    |         |      |           20 42 75 74 |
       |                     |             |    |         |      |           74 6F 6E    |
- 8146 |  6      en.s    472 | Data        | 00 |         |    8 | 00/5615 : 5C 52 65 61 |                       asc       '\Reactor'           ; 20
+ 8147 |  6      en.s    473 | Data        | 00 |         |    8 | 00/5616 : 5C 52 65 61 |                       asc       '\Reactor'           ; 20
       |                     |             |    |         |      |           63 74 6F 72 |
- 8147 |  6      en.s    473 | Data        | 00 |         |   18 | 00/561D : 5C 54 72 61 |                       asc       '\Transuranic Waste' ; 21
+ 8148 |  6      en.s    474 | Data        | 00 |         |   18 | 00/561E : 5C 54 72 61 |                       asc       '\Transuranic Waste' ; 21
       |                     |             |    |         |      |           6E 73 75 72 |
       |                     |             |    |         |      |           61 6E 69 63 |
       |                     |             |    |         |      |           20 57 61 73 |
       |                     |             |    |         |      |           74 65       |
- 8148 |  6      en.s    474 | Data        | 00 |         |    8 | 00/562F : 5C 52 65 64 |                       asc       '\Red Key'           ; 22
+ 8149 |  6      en.s    475 | Data        | 00 |         |    8 | 00/5630 : 5C 52 65 64 |                       asc       '\Red Key'           ; 22
       |                     |             |    |         |      |           20 4B 65 79 |
- 8149 |  6      en.s    475 | Data        | 00 |         |    6 | 00/5637 : 5C 52 6F 62 |                       asc       '\Robot'             ; 23
+ 8150 |  6      en.s    476 | Data        | 00 |         |    6 | 00/5638 : 5C 52 6F 62 |                       asc       '\Robot'             ; 23
       |                     |             |    |         |      |           6F 74       |
- 8150 |  6      en.s    476 | Data        | 00 |         |   14 | 00/563D : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 24
+ 8151 |  6      en.s    477 | Data        | 00 |         |   14 | 00/563E : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 24
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8151 |  6      en.s    477 | Data        | 00 |         |   14 | 00/564B : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 25
+ 8152 |  6      en.s    478 | Data        | 00 |         |   14 | 00/564C : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 25
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8152 |  6      en.s    478 | Data        | 00 |         |   13 | 00/5659 : 5C 53 6D 61 |                       asc       '\Small Tokens'      ; 26
+ 8153 |  6      en.s    479 | Data        | 00 |         |   13 | 00/565A : 5C 53 6D 61 |                       asc       '\Small Tokens'      ; 26
       |                     |             |    |         |      |           6C 6C 20 54 |
       |                     |             |    |         |      |           6F 6B 65 6E |
       |                     |             |    |         |      |           73          |
- 8153 |  6      en.s    479 | Data        | 00 |         |   10 | 00/5666 : 5C 4C 65 61 |                       asc       '\Lead Room'         ; 27
+ 8154 |  6      en.s    480 | Data        | 00 |         |   10 | 00/5667 : 5C 4C 65 61 |                       asc       '\Lead Room'         ; 27
       |                     |             |    |         |      |           64 20 52 6F |
       |                     |             |    |         |      |           6F 6D       |
- 8154 |  6      en.s    480 | Data        | 00 |         |   15 | 00/5670 : 5C 4D 65 74 |                       asc       '\Metal Platform'    ; 28
+ 8155 |  6      en.s    481 | Data        | 00 |         |   15 | 00/5671 : 5C 4D 65 74 |                       asc       '\Metal Platform'    ; 28
       |                     |             |    |         |      |           61 6C 20 50 |
       |                     |             |    |         |      |           6C 61 74 66 |
       |                     |             |    |         |      |           6F 72 6D    |
- 8155 |  6      en.s    481 | Data        | 00 |         |   12 | 00/567F : 5C 53 63 72 |                       asc       '\Screwdriver'       ; 29
+ 8156 |  6      en.s    482 | Data        | 00 |         |   12 | 00/5680 : 5C 53 63 72 |                       asc       '\Screwdriver'       ; 29
       |                     |             |    |         |      |           65 77 64 72 |
       |                     |             |    |         |      |           69 76 65 72 |
- 8156 |  6      en.s    482 | Data        | 00 |         |   14 | 00/568B : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 2A
+ 8157 |  6      en.s    483 | Data        | 00 |         |   14 | 00/568C : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 2A
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8157 |  6      en.s    483 | Data        | 00 |         |   12 | 00/5699 : 5C 52 6F 62 |                       asc       '\Robot Parts'       ; 2B
+ 8158 |  6      en.s    484 | Data        | 00 |         |   12 | 00/569A : 5C 52 6F 62 |                       asc       '\Robot Parts'       ; 2B
       |                     |             |    |         |      |           6F 74 20 50 |
       |                     |             |    |         |      |           61 72 74 73 |
- 8158 |  6      en.s    484 | Data        | 00 |         |   16 | 00/56A5 : 5C 53 6D 61 |                       asc       '\Small Cartridge'   ; 2C
+ 8159 |  6      en.s    485 | Data        | 00 |         |   16 | 00/56A6 : 5C 53 6D 61 |                       asc       '\Small Cartridge'   ; 2C
       |                     |             |    |         |      |           6C 6C 20 43 |
       |                     |             |    |         |      |           61 72 74 72 |
       |                     |             |    |         |      |           69 64 67 65 |
- 8159 |  6      en.s    485 | Data        | 00 |         |    8 | 00/56B5 : 5C 4B 65 79 |                       asc       '\Keyhole'           ; 2D
+ 8160 |  6      en.s    486 | Data        | 00 |         |    8 | 00/56B6 : 5C 4B 65 79 |                       asc       '\Keyhole'           ; 2D
       |                     |             |    |         |      |           68 6F 6C 65 |
- 8160 |  6      en.s    486 | Data        | 00 |         |   14 | 00/56BD : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 2E
+ 8161 |  6      en.s    487 | Data        | 00 |         |   14 | 00/56BE : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 2E
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8161 |  6      en.s    487 | Data        | 00 |         |    5 | 00/56CB : 5C 56 65 6E |                       asc       '\Vent'              ; 2F
+ 8162 |  6      en.s    488 | Data        | 00 |         |    5 | 00/56CC : 5C 56 65 6E |                       asc       '\Vent'              ; 2F
       |                     |             |    |         |      |           74          |
- 8162 |  6      en.s    488 | Data        | 00 |         |   10 | 00/56D0 : 5C 4F 70 65 |                       asc       '\Open Vent'         ; 30
+ 8163 |  6      en.s    489 | Data        | 00 |         |   10 | 00/56D1 : 5C 4F 70 65 |                       asc       '\Open Vent'         ; 30
       |                     |             |    |         |      |           6E 20 56 65 |
       |                     |             |    |         |      |           6E 74       |
- 8163 |  6      en.s    489 | Data        | 00 |         |   15 | 00/56DA : 5C 4B 65 79 |                       asc       '\Key in Keyhole'    ; 31
+ 8164 |  6      en.s    490 | Data        | 00 |         |   15 | 00/56DB : 5C 4B 65 79 |                       asc       '\Key in Keyhole'    ; 31
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           4B 65 79 68 |
       |                     |             |    |         |      |           6F 6C 65    |
- 8164 |  6      en.s    490 | Data        | 00 |         |   14 | 00/56E9 : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 32
+ 8165 |  6      en.s    491 | Data        | 00 |         |   14 | 00/56EA : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 32
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8165 |  6      en.s    491 | Data        | 00 |         |   11 | 00/56F7 : 5C 59 65 6C |                       asc       '\Yellow Key'        ; 33
+ 8166 |  6      en.s    492 | Data        | 00 |         |   11 | 00/56F8 : 5C 59 65 6C |                       asc       '\Yellow Key'        ; 33
       |                     |             |    |         |      |           6C 6F 77 20 |
       |                     |             |    |         |      |           4B 65 79    |
- 8166 |  6      en.s    492 | Data        | 00 |         |   30 | 00/5702 : 5C 4D 61 6E |                       asc       '\Many Colored Bottons & Levers'; 34
+ 8167 |  6      en.s    493 | Data        | 00 |         |   30 | 00/5703 : 5C 4D 61 6E |                       asc       '\Many Colored Bottons & Levers'; 34
       |                     |             |    |         |      |           79 20 43 6F |
       |                     |             |    |         |      |           6C 6F 72 65 |
       |                     |             |    |         |      |           64 20 42 6F |
@@ -9965,222 +9966,222 @@
       |                     |             |    |         |      |           73 20 26 20 |
       |                     |             |    |         |      |           4C 65 76 65 |
       |                     |             |    |         |      |           72 73       |
- 8167 |  6      en.s    493 | Data        | 00 |         |   10 | 00/5720 : 5C 4C 65 61 |                       asc       '\Lead Room'         ; 35
+ 8168 |  6      en.s    494 | Data        | 00 |         |   10 | 00/5721 : 5C 4C 65 61 |                       asc       '\Lead Room'         ; 35
       |                     |             |    |         |      |           64 20 52 6F |
       |                     |             |    |         |      |           6F 6D       |
- 8168 |  6      en.s    494 | Data        | 00 |         |   12 | 00/572A : 5C 46 6F 72 |                       asc       '\Force Field'       ; 36
+ 8169 |  6      en.s    495 | Data        | 00 |         |   12 | 00/572B : 5C 46 6F 72 |                       asc       '\Force Field'       ; 36
       |                     |             |    |         |      |           63 65 20 46 |
       |                     |             |    |         |      |           69 65 6C 64 |
- 8169 |  6      en.s    495 | Data        | 00 |         |   11 | 00/5736 : 5C 53 70 61 |                       asc       '\Space Ship'        ; 37
+ 8170 |  6      en.s    496 | Data        | 00 |         |   11 | 00/5737 : 5C 53 70 61 |                       asc       '\Space Ship'        ; 37
       |                     |             |    |         |      |           63 65 20 53 |
       |                     |             |    |         |      |           68 69 70    |
- 8170 |  6      en.s    496 | Data        | 00 |         |   14 | 00/5741 : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 38
+ 8171 |  6      en.s    497 | Data        | 00 |         |   14 | 00/5742 : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 38
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8171 |  6      en.s    497 | Data        | 00 |         |   13 | 00/574F : 5C 48 61 6E |                       asc       '\Hangar Doors'      ; 39
+ 8172 |  6      en.s    498 | Data        | 00 |         |   13 | 00/5750 : 5C 48 61 6E |                       asc       '\Hangar Doors'      ; 39
       |                     |             |    |         |      |           67 61 72 20 |
       |                     |             |    |         |      |           44 6F 6F 72 |
       |                     |             |    |         |      |           73          |
- 8172 |  6      en.s    498 | Data        | 00 |         |   10 | 00/575C : 5C 45 73 63 |                       asc       '\Escalator'         ; 3A
+ 8173 |  6      en.s    499 | Data        | 00 |         |   10 | 00/575D : 5C 45 73 63 |                       asc       '\Escalator'         ; 3A
       |                     |             |    |         |      |           61 6C 61 74 |
       |                     |             |    |         |      |           6F 72       |
- 8173 |  6      en.s    499 | Data        | 00 |         |   20 | 00/5766 : 5C 52 65 6D |                       asc       '\Remote Control Unit'; 3B
+ 8174 |  6      en.s    500 | Data        | 00 |         |   20 | 00/5767 : 5C 52 65 6D |                       asc       '\Remote Control Unit'; 3B
       |                     |             |    |         |      |           6F 74 65 20 |
       |                     |             |    |         |      |           43 6F 6E 74 |
       |                     |             |    |         |      |           72 6F 6C 20 |
       |                     |             |    |         |      |           55 6E 69 74 |
- 8174 |  6      en.s    500 | Data        | 00 |         |    7 | 00/577A : 5C 57 69 6E |                       asc       '\Window'            ; 3C
+ 8175 |  6      en.s    501 | Data        | 00 |         |    7 | 00/577B : 5C 57 69 6E |                       asc       '\Window'            ; 3C
       |                     |             |    |         |      |           64 6F 77    |
- 8175 |  6      en.s    501 | Data        | 00 |         |   13 | 00/5781 : 5C 47 6C 61 |                       asc       '\Glass Window'      ; 3D
+ 8176 |  6      en.s    502 | Data        | 00 |         |   13 | 00/5782 : 5C 47 6C 61 |                       asc       '\Glass Window'      ; 3D
       |                     |             |    |         |      |           73 73 20 57 |
       |                     |             |    |         |      |           69 6E 64 6F |
       |                     |             |    |         |      |           77          |
- 8176 |  6      en.s    502 | Data        | 00 |         |   14 | 00/578E : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 3E
+ 8177 |  6      en.s    503 | Data        | 00 |         |   14 | 00/578F : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 3E
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8177 |  6      en.s    503 | Data        | 00 |         |   13 | 00/579C : 5C 41 74 6F |                       asc       '\Atomic Waste'      ; 3F
+ 8178 |  6      en.s    504 | Data        | 00 |         |   13 | 00/579D : 5C 41 74 6F |                       asc       '\Atomic Waste'      ; 3F
       |                     |             |    |         |      |           6D 69 63 20 |
       |                     |             |    |         |      |           57 61 73 74 |
       |                     |             |    |         |      |           65          |
- 8178 |  6      en.s    504 | Data        | 00 |         |   14 | 00/57A9 : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 40
+ 8179 |  6      en.s    505 | Data        | 00 |         |   14 | 00/57AA : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 40
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8179 |  6      en.s    505 | Data        | 00 |         |   11 | 00/57B7 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 41
+ 8180 |  6      en.s    506 | Data        | 00 |         |   11 | 00/57B8 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 41
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8180 |  6      en.s    506 | Data        | 00 |         |   14 | 00/57C2 : 5C 4F 70 65 |                       asc       '\Open Canister'     ; 42
+ 8181 |  6      en.s    507 | Data        | 00 |         |   14 | 00/57C3 : 5C 4F 70 65 |                       asc       '\Open Canister'     ; 42
       |                     |             |    |         |      |           6E 20 43 61 |
       |                     |             |    |         |      |           6E 69 73 74 |
       |                     |             |    |         |      |           65 72       |
- 8181 |  6      en.s    507 | Data        | 00 |         |   14 | 00/57D0 : 5C 47 6C 6F |                       asc       '\Glowing Stone'     ; 43
+ 8182 |  6      en.s    508 | Data        | 00 |         |   14 | 00/57D1 : 5C 47 6C 6F |                       asc       '\Glowing Stone'     ; 43
       |                     |             |    |         |      |           77 69 6E 67 |
       |                     |             |    |         |      |           20 53 74 6F |
       |                     |             |    |         |      |           6E 65       |
- 8182 |  6      en.s    508 | Data        | 00 |         |   15 | 00/57DE : 5C 53 6D 61 |                       asc       '\Small Building'    ; 44
+ 8183 |  6      en.s    509 | Data        | 00 |         |   15 | 00/57DF : 5C 53 6D 61 |                       asc       '\Small Building'    ; 44
       |                     |             |    |         |      |           6C 6C 20 42 |
       |                     |             |    |         |      |           75 69 6C 64 |
       |                     |             |    |         |      |           69 6E 67    |
- 8183 |  6      en.s    509 | Data        | 00 |         |    6 | 00/57ED : 5C 4C 65 76 |                       asc       '\Lever'             ; 45
+ 8184 |  6      en.s    510 | Data        | 00 |         |    6 | 00/57EE : 5C 4C 65 76 |                       asc       '\Lever'             ; 45
       |                     |             |    |         |      |           65 72       |
- 8184 |  6      en.s    510 | Data        | 00 |         |   13 | 00/57F3 : 5C 47 72 65 |                       asc       '\Green Button'      ; 46
+ 8185 |  6      en.s    511 | Data        | 00 |         |   13 | 00/57F4 : 5C 47 72 65 |                       asc       '\Green Button'      ; 46
       |                     |             |    |         |      |           65 6E 20 42 |
       |                     |             |    |         |      |           75 74 74 6F |
       |                     |             |    |         |      |           6E          |
- 8185 |  6      en.s    511 | Data        | 00 |         |   19 | 00/5800 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 47
+ 8186 |  6      en.s    512 | Data        | 00 |         |   19 | 00/5801 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 47
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8186 |  6      en.s    512 | Data        | 00 |         |   11 | 00/5813 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 48
+ 8187 |  6      en.s    513 | Data        | 00 |         |   11 | 00/5814 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 48
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8187 |  6      en.s    513 | Data        | 00 |         |   10 | 00/581E : 5C 4F 70 65 |                       asc       '\Open Door'         ; 49
+ 8188 |  6      en.s    514 | Data        | 00 |         |   10 | 00/581F : 5C 4F 70 65 |                       asc       '\Open Door'         ; 49
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8188 |  6      en.s    514 | Data        | 00 |         |   19 | 00/5828 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 4A
+ 8189 |  6      en.s    515 | Data        | 00 |         |   19 | 00/5829 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 4A
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8189 |  6      en.s    515 | Data        | 00 |         |   11 | 00/583B : 5C 53 74 65 |                       asc       '\Steel Door'        ; 4B
+ 8190 |  6      en.s    516 | Data        | 00 |         |   11 | 00/583C : 5C 53 74 65 |                       asc       '\Steel Door'        ; 4B
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8190 |  6      en.s    516 | Data        | 00 |         |   10 | 00/5846 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 4C
+ 8191 |  6      en.s    517 | Data        | 00 |         |   10 | 00/5847 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 4C
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8191 |  6      en.s    517 | Data        | 00 |         |   19 | 00/5850 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 4D
+ 8192 |  6      en.s    518 | Data        | 00 |         |   19 | 00/5851 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 4D
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8192 |  6      en.s    518 | Data        | 00 |         |   11 | 00/5863 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 4E
+ 8193 |  6      en.s    519 | Data        | 00 |         |   11 | 00/5864 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 4E
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8193 |  6      en.s    519 | Data        | 00 |         |   10 | 00/586E : 5C 4F 70 65 |                       asc       '\Open Door'         ; 50
+ 8194 |  6      en.s    520 | Data        | 00 |         |   10 | 00/586F : 5C 4F 70 65 |                       asc       '\Open Door'         ; 50
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8194 |  6      en.s    520 | Data        | 00 |         |   19 | 00/5878 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 51
+ 8195 |  6      en.s    521 | Data        | 00 |         |   19 | 00/5879 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 51
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8195 |  6      en.s    521 | Data        | 00 |         |   11 | 00/588B : 5C 53 74 65 |                       asc       '\Steel Door'        ; 52
+ 8196 |  6      en.s    522 | Data        | 00 |         |   11 | 00/588C : 5C 53 74 65 |                       asc       '\Steel Door'        ; 52
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8196 |  6      en.s    522 | Data        | 00 |         |   10 | 00/5896 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 53
+ 8197 |  6      en.s    523 | Data        | 00 |         |   10 | 00/5897 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 53
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8197 |  6      en.s    523 | Data        | 00 |         |   19 | 00/58A0 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 54
+ 8198 |  6      en.s    524 | Data        | 00 |         |   19 | 00/58A1 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 54
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8198 |  6      en.s    524 | Data        | 00 |         |   11 | 00/58B3 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 55
+ 8199 |  6      en.s    525 | Data        | 00 |         |   11 | 00/58B4 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 55
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8199 |  6      en.s    525 | Data        | 00 |         |   10 | 00/58BE : 5C 4F 70 65 |                       asc       '\Open Door'         ; 56
+ 8200 |  6      en.s    526 | Data        | 00 |         |   10 | 00/58BF : 5C 4F 70 65 |                       asc       '\Open Door'         ; 56
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8200 |  6      en.s    526 | Data        | 00 |         |   19 | 00/58C8 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 57
+ 8201 |  6      en.s    527 | Data        | 00 |         |   19 | 00/58C9 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 57
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8201 |  6      en.s    527 | Data        | 00 |         |   11 | 00/58DB : 5C 53 74 65 |                       asc       '\Steel Door'        ; 58
+ 8202 |  6      en.s    528 | Data        | 00 |         |   11 | 00/58DC : 5C 53 74 65 |                       asc       '\Steel Door'        ; 58
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8202 |  6      en.s    528 | Data        | 00 |         |   19 | 00/58E6 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 59
+ 8203 |  6      en.s    529 | Data        | 00 |         |   19 | 00/58E7 : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 59
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8203 |  6      en.s    529 | Data        | 00 |         |   11 | 00/58F9 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 5A
+ 8204 |  6      en.s    530 | Data        | 00 |         |   11 | 00/58FA : 5C 53 74 65 |                       asc       '\Steel Door'        ; 5A
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8204 |  6      en.s    530 | Data        | 00 |         |   10 | 00/5904 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 5B
+ 8205 |  6      en.s    531 | Data        | 00 |         |   10 | 00/5905 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 5B
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8205 |  6      en.s    531 | Data        | 00 |         |   19 | 00/590E : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 5C
+ 8206 |  6      en.s    532 | Data        | 00 |         |   19 | 00/590F : 5C 54 68 69 |                       asc       '\Thin Beam of Light'; 5C
       |                     |             |    |         |      |           6E 20 42 65 |
       |                     |             |    |         |      |           61 6D 20 6F |
       |                     |             |    |         |      |           66 20 4C 69 |
       |                     |             |    |         |      |           67 68 74    |
- 8206 |  6      en.s    532 | Data        | 00 |         |   11 | 00/5921 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 5D
+ 8207 |  6      en.s    533 | Data        | 00 |         |   11 | 00/5922 : 5C 53 74 65 |                       asc       '\Steel Door'        ; 5D
       |                     |             |    |         |      |           65 6C 20 44 |
       |                     |             |    |         |      |           6F 6F 72    |
- 8207 |  6      en.s    533 | Data        | 00 |         |   10 | 00/592C : 5C 4F 70 65 |                       asc       '\Open Door'         ; 5E
+ 8208 |  6      en.s    534 | Data        | 00 |         |   10 | 00/592D : 5C 4F 70 65 |                       asc       '\Open Door'         ; 5E
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8208 |  6      en.s    534 | Data        | 00 |         |   12 | 00/5936 : 5C 50 6C 61 |                       asc       '\Plastic Rod'       ; 5F
+ 8209 |  6      en.s    535 | Data        | 00 |         |   12 | 00/5937 : 5C 50 6C 61 |                       asc       '\Plastic Rod'       ; 5F
       |                     |             |    |         |      |           73 74 69 63 |
       |                     |             |    |         |      |           20 52 6F 64 |
- 8209 |  6      en.s    535 | Data        | 00 |         |   10 | 00/5942 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 60
+ 8210 |  6      en.s    536 | Data        | 00 |         |   10 | 00/5943 : 5C 4F 70 65 |                       asc       '\Open Door'         ; 60
       |                     |             |    |         |      |           6E 20 44 6F |
       |                     |             |    |         |      |           6F 72       |
- 8210 |  6      en.s    536 | Data        | 00 |         |    6 | 00/594C : 5C 52 6F 62 |                       asc       '\Robot'             ; 61
+ 8211 |  6      en.s    537 | Data        | 00 |         |    6 | 00/594D : 5C 52 6F 62 |                       asc       '\Robot'             ; 61
       |                     |             |    |         |      |           6F 74       |
- 8211 |  6      en.s    537 | Data        | 00 |         |   14 | 00/5952 : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 62
+ 8212 |  6      en.s    538 | Data        | 00 |         |   14 | 00/5953 : 5C 43 6F 6E |                       asc       '\Control Panel'     ; 62
       |                     |             |    |         |      |           74 72 6F 6C |
       |                     |             |    |         |      |           20 50 61 6E |
       |                     |             |    |         |      |           65 6C       |
- 8212 |  6      en.s    538 | Data        | 00 |         |    8 | 00/5960 : 5C 4F 70 65 |                       asc       '\Opening'           ; 63
+ 8213 |  6      en.s    539 | Data        | 00 |         |    8 | 00/5961 : 5C 4F 70 65 |                       asc       '\Opening'           ; 63
       |                     |             |    |         |      |           6E 69 6E 67 |
- 8213 |  6      en.s    539 | Data        | 00 |         |    6 | 00/5968 : 5C 52 6F 62 |                       asc       '\Robot'             ; 64
+ 8214 |  6      en.s    540 | Data        | 00 |         |    6 | 00/5969 : 5C 52 6F 62 |                       asc       '\Robot'             ; 64
       |                     |             |    |         |      |           6F 74       |
- 8214 |  6      en.s    540 | Data        | 00 |         |   15 | 00/596E : 5C 4D 65 74 |                       asc       '\Metal Platform'    ; 65
+ 8215 |  6      en.s    541 | Data        | 00 |         |   15 | 00/596F : 5C 4D 65 74 |                       asc       '\Metal Platform'    ; 65
       |                     |             |    |         |      |           61 6C 20 50 |
       |                     |             |    |         |      |           6C 61 74 66 |
       |                     |             |    |         |      |           6F 72 6D    |
- 8215 |  6      en.s    541 | Data        | 00 |         |   15 | 00/597D : 5C 4D 65 74 |                       asc       '\Metal Platform'    ; 66
+ 8216 |  6      en.s    542 | Data        | 00 |         |   15 | 00/597E : 5C 4D 65 74 |                       asc       '\Metal Platform'    ; 66
       |                     |             |    |         |      |           61 6C 20 50 |
       |                     |             |    |         |      |           6C 61 74 66 |
       |                     |             |    |         |      |           6F 72 6D    |
- 8216 |  6      en.s    542 | Data        | 00 |         |   13 | 00/598C : 5C 53 74 72 |                       asc       '\Strange Lake'      ; 67
+ 8217 |  6      en.s    543 | Data        | 00 |         |   13 | 00/598D : 5C 53 74 72 |                       asc       '\Strange Lake'      ; 67
       |                     |             |    |         |      |           61 6E 67 65 |
       |                     |             |    |         |      |           20 4C 61 6B |
       |                     |             |    |         |      |           65          |
- 8217 |  6      en.s    543 | Data        | 00 |         |   12 | 00/5999 : 5C 4C 6F 6E |                       asc       '\Long Bridge'       ; 68
+ 8218 |  6      en.s    544 | Data        | 00 |         |   12 | 00/599A : 5C 4C 6F 6E |                       asc       '\Long Bridge'       ; 68
       |                     |             |    |         |      |           67 20 42 72 |
       |                     |             |    |         |      |           69 64 67 65 |
- 8218 |  6      en.s    544 | Data        | 00 |         |    1 | 00/59A5 : 5C          |                       asc       '\'                  ; 69
- 8219 |  6      en.s    545 | Data        | 00 |         |    1 | 00/59A6 : 00          |                       dfb       {$00}                
- 8220 |  6      en.s    546 | Empty       | 00 |         |    0 | 00/59A7               |                                                      
- 8221 |  6      en.s    547 | Comment     | 00 |         |    0 | 00/59A7               | * MESSAGES
- 8222 |  6      en.s    548 | Empty       | 00 |         |    0 | 00/59A7               |                                                      
- 8223 |  6      en.s    549 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_TOODARK      =         1                    ; I can't see anything. It's too dark
- 8224 |  6      en.s    550 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_EXIT         =         2                    ; Exits
- 8225 |  6      en.s    551 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_NOEXIT       =         3                    ; I see no obvious exits
- 8226 |  6      en.s    552 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_NOSEE        =         4                    ; I don't see anything
- 8227 |  6      en.s    553 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_ISEE         =         5                    ; Things that I see
- 8228 |  6      en.s    554 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_CARRY        =         7                    ; I'm carrying
- 8229 |  6      en.s    555 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_IBEG         =         9                    ; I beg your pardon
- 8230 |  6      en.s    556 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_10           =         10                   ; I don't see it here
- 8231 |  6      en.s    557 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_11           =         11                   ; I already have it
- 8232 |  6      en.s    558 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_12           =         12                   ; I'm carrying too much
- 8233 |  6      en.s    559 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_NOTYET       =         13                   ; I can't do that yet
- 8234 |  6      en.s    560 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_14           =         14                   ; I need a direction too
- 8235 |  6      en.s    561 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_15           =         15                   ; I can't go that way
- 8236 |  6      en.s    562 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_DARK         =         16                   ; Moving in the dark is dangerous
- 8237 |  6      en.s    563 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_17           =         17                   ; SPLAT! I fell flat on my face
- 8238 |  6      en.s    564 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_NOUNDER      =         19                   ; I don't understand
- 8239 |  6      en.s    565 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_EMPTY        =         20                   ; I'm emptyhanded
- 8240 |  6      en.s    566 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_NOCAR        =         21                   ; I'm not carrying
- 8241 |  6      en.s    567 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_HOW          =         22                   ; How can I drop something...
- 8242 |  6      en.s    568 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_OK           =         23                   ; OK
- 8243 |  6      en.s    569 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_NOTCAP       =         24                   ; I'm not capable of...
- 8244 |  6      en.s    570 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_CHEATON      =         45                   ; Cheat mode on
- 8245 |  6      en.s    571 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_CHEATOFF     =         46                   ; Cheat mode off
- 8246 |  6      en.s    572 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_LOAD         =         47                   ; Load which slot (1-9)? '00
- 8247 |  6      en.s    573 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_SAVE         =         48                   ; Save to which slot (1-9)? '00
- 8248 |  6      en.s    574 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_IOERR        =         49                   ; Action cancelled.
- 8249 |  6      en.s    575 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_LOADOK       =         50                   ; Game loaded successfully.
- 8250 |  6      en.s    576 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_SAVEOK       =         51                   ; Game saved successfully.
- 8251 |  6      en.s    577 | Equivalence | 00 |         |    0 | 00/59A7               | iMESSAGE_CANCEL       =         52                   ; Operation cancelled.
- 8252 |  6      en.s    578 | Empty       | 00 |         |    0 | 00/59A7               |                                                      
- 8253 |  6      en.s    579 | Data        | 00 |         |   37 | 00/59A7 : 5C 49 20 43 | tblMESSAGES           asc       '\I Can'27't See Anything. It'27's Too DARK!'; 1
+ 8219 |  6      en.s    545 | Data        | 00 |         |    1 | 00/59A6 : 5C          |                       asc       '\'                  ; 69
+ 8220 |  6      en.s    546 | Data        | 00 |         |    1 | 00/59A7 : 00          |                       dfb       {$00}                
+ 8221 |  6      en.s    547 | Empty       | 00 |         |    0 | 00/59A8               |                                                      
+ 8222 |  6      en.s    548 | Comment     | 00 |         |    0 | 00/59A8               | * MESSAGES
+ 8223 |  6      en.s    549 | Empty       | 00 |         |    0 | 00/59A8               |                                                      
+ 8224 |  6      en.s    550 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_TOODARK      =         1                    ; I can't see anything. It's too dark
+ 8225 |  6      en.s    551 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_EXIT         =         2                    ; Exits
+ 8226 |  6      en.s    552 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_NOEXIT       =         3                    ; I see no obvious exits
+ 8227 |  6      en.s    553 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_NOSEE        =         4                    ; I don't see anything
+ 8228 |  6      en.s    554 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_ISEE         =         5                    ; Things that I see
+ 8229 |  6      en.s    555 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_CARRY        =         7                    ; I'm carrying
+ 8230 |  6      en.s    556 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_IBEG         =         9                    ; I beg your pardon
+ 8231 |  6      en.s    557 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_10           =         10                   ; I don't see it here
+ 8232 |  6      en.s    558 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_11           =         11                   ; I already have it
+ 8233 |  6      en.s    559 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_12           =         12                   ; I'm carrying too much
+ 8234 |  6      en.s    560 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_NOTYET       =         13                   ; I can't do that yet
+ 8235 |  6      en.s    561 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_14           =         14                   ; I need a direction too
+ 8236 |  6      en.s    562 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_15           =         15                   ; I can't go that way
+ 8237 |  6      en.s    563 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_DARK         =         16                   ; Moving in the dark is dangerous
+ 8238 |  6      en.s    564 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_17           =         17                   ; SPLAT! I fell flat on my face
+ 8239 |  6      en.s    565 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_NOUNDER      =         19                   ; I don't understand
+ 8240 |  6      en.s    566 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_EMPTY        =         20                   ; I'm emptyhanded
+ 8241 |  6      en.s    567 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_NOCAR        =         21                   ; I'm not carrying
+ 8242 |  6      en.s    568 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_HOW          =         22                   ; How can I drop something...
+ 8243 |  6      en.s    569 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_OK           =         23                   ; OK
+ 8244 |  6      en.s    570 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_NOTCAP       =         24                   ; I'm not capable of...
+ 8245 |  6      en.s    571 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_CHEATON      =         45                   ; Cheat mode on
+ 8246 |  6      en.s    572 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_CHEATOFF     =         46                   ; Cheat mode off
+ 8247 |  6      en.s    573 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_LOAD         =         47                   ; Load which slot (1-9)? '00
+ 8248 |  6      en.s    574 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_SAVE         =         48                   ; Save to which slot (1-9)? '00
+ 8249 |  6      en.s    575 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_IOERR        =         49                   ; Action cancelled.
+ 8250 |  6      en.s    576 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_LOADOK       =         50                   ; Game loaded successfully.
+ 8251 |  6      en.s    577 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_SAVEOK       =         51                   ; Game saved successfully.
+ 8252 |  6      en.s    578 | Equivalence | 00 |         |    0 | 00/59A8               | iMESSAGE_CANCEL       =         52                   ; Operation cancelled.
+ 8253 |  6      en.s    579 | Empty       | 00 |         |    0 | 00/59A8               |                                                      
+ 8254 |  6      en.s    580 | Data        | 00 |         |   37 | 00/59A8 : 5C 49 20 43 | tblMESSAGES           asc       '\I Can'27't See Anything. It'27's Too DARK!'; 1
       |                     |             |    |         |      |           61 6E 27 74 |
       |                     |             |    |         |      |           20 53 65 65 |
       |                     |             |    |         |      |           20 41 6E 79 |
@@ -10190,53 +10191,53 @@
       |                     |             |    |         |      |           54 6F 6F 20 |
       |                     |             |    |         |      |           44 41 52 4B |
       |                     |             |    |         |      |           21          |
- 8254 |  6      en.s    580 | Data        | 00 |         |    8 | 00/59CC : 5C 45 78 69 |                       asc       '\Exits: '           ; 2
+ 8255 |  6      en.s    581 | Data        | 00 |         |    8 | 00/59CD : 5C 45 78 69 |                       asc       '\Exits: '           ; 2
       |                     |             |    |         |      |           74 73 3A 20 |
- 8255 |  6      en.s    581 | Data        | 00 |         |   24 | 00/59D4 : 5C 49 20 53 |                       asc       '\I See No Obvious Exits.'; 3
+ 8256 |  6      en.s    582 | Data        | 00 |         |   24 | 00/59D5 : 5C 49 20 53 |                       asc       '\I See No Obvious Exits.'; 3
       |                     |             |    |         |      |           65 65 20 4E |
       |                     |             |    |         |      |           6F 20 4F 62 |
       |                     |             |    |         |      |           76 69 6F 75 |
       |                     |             |    |         |      |           73 20 45 78 |
       |                     |             |    |         |      |           69 74 73 2E |
- 8256 |  6      en.s    582 | Data        | 00 |         |   24 | 00/59EC : 5C 20 28 49 |                       asc       '\ (I Don'27't See Anything)'; 4
+ 8257 |  6      en.s    583 | Data        | 00 |         |   24 | 00/59ED : 5C 20 28 49 |                       asc       '\ (I Don'27't See Anything)'; 4
       |                     |             |    |         |      |           20 44 6F 6E |
       |                     |             |    |         |      |           27 74 20 53 |
       |                     |             |    |         |      |           65 65 20 41 |
       |                     |             |    |         |      |           6E 79 74 68 |
       |                     |             |    |         |      |           69 6E 67 29 |
- 8257 |  6      en.s    583 | Data        | 00 |         |   21 | 00/5A04 : 5C 54 68 69 |                       asc       '\Things That I See:'0d' '; 5
+ 8258 |  6      en.s    584 | Data        | 00 |         |   21 | 00/5A05 : 5C 54 68 69 |                       asc       '\Things That I See:'0d' '; 5
       |                     |             |    |         |      |           6E 67 73 20 |
       |                     |             |    |         |      |           54 68 61 74 |
       |                     |             |    |         |      |           20 49 20 53 |
       |                     |             |    |         |      |           65 65 3A 0D |
       |                     |             |    |         |      |           20          |
- 8258 |  6      en.s    584 | Data        | 00 |         |   19 | 00/5A19 : 5C 0D 49 20 |                       asc       '\'0d'I Don'27't Know the '; 6
+ 8259 |  6      en.s    585 | Data        | 00 |         |   19 | 00/5A1A : 5C 0D 49 20 |                       asc       '\'0d'I Don'27't Know the '; 6
       |                     |             |    |         |      |           44 6F 6E 27 |
       |                     |             |    |         |      |           74 20 4B 6E |
       |                     |             |    |         |      |           6F 77 20 74 |
       |                     |             |    |         |      |           68 65 20    |
- 8259 |  6      en.s    585 | Comment     | 00 |         |    0 | 00/5A2C               | * was end of 6: '(Huh?)'0d'Noun'0d'Verb'0d'	; 6
- 8260 |  6      en.s    586 | Data        | 00 |         |   15 | 00/5A2C : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Carrying:'; 7
+ 8260 |  6      en.s    586 | Comment     | 00 |         |    0 | 00/5A2D               | * was end of 6: '(Huh?)'0d'Noun'0d'Verb'0d'	; 6
+ 8261 |  6      en.s    587 | Data        | 00 |         |   15 | 00/5A2D : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Carrying:'; 7
       |                     |             |    |         |      |           6D 20 43 61 |
       |                     |             |    |         |      |           72 72 79 69 |
       |                     |             |    |         |      |           6E 67 3A    |
- 8261 |  6      en.s    587 | Data        | 00 |         |   13 | 00/5A3B : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Dead!'0d0d; 8
+ 8262 |  6      en.s    588 | Data        | 00 |         |   13 | 00/5A3C : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Dead!'0d0d; 8
       |                     |             |    |         |      |           6D 20 44 65 |
       |                     |             |    |         |      |           61 64 21 0D |
       |                     |             |    |         |      |           0D          |
- 8262 |  6      en.s    588 | Data        | 00 |         |   21 | 00/5A48 : 5C 0D 49 20 |                       asc       '\'0d'I Beg Your Pardon ?'; 9
+ 8263 |  6      en.s    589 | Data        | 00 |         |   21 | 00/5A49 : 5C 0D 49 20 |                       asc       '\'0d'I Beg Your Pardon ?'; 9
       |                     |             |    |         |      |           42 65 67 20 |
       |                     |             |    |         |      |           59 6F 75 72 |
       |                     |             |    |         |      |           20 50 61 72 |
       |                     |             |    |         |      |           64 6F 6E 20 |
       |                     |             |    |         |      |           3F          |
- 8263 |  6      en.s    589 | Data        | 00 |         |   24 | 00/5A5D : 5C 0D 49 20 |                       asc       '\'0d'I Don'27't See it Here...'; 10
+ 8264 |  6      en.s    590 | Data        | 00 |         |   24 | 00/5A5E : 5C 0D 49 20 |                       asc       '\'0d'I Don'27't See it Here...'; 10
       |                     |             |    |         |      |           44 6F 6E 27 |
       |                     |             |    |         |      |           74 20 53 65 |
       |                     |             |    |         |      |           65 20 69 74 |
       |                     |             |    |         |      |           20 48 65 72 |
       |                     |             |    |         |      |           65 2E 2E 2E |
- 8264 |  6      en.s    590 | Data        | 00 |         |   37 | 00/5A75 : 5C 0D 49 20 |                       asc       '\'0d'I Already Have it!'0d22'TAKE INVENTORY'22; 11
+ 8265 |  6      en.s    591 | Data        | 00 |         |   37 | 00/5A76 : 5C 0D 49 20 |                       asc       '\'0d'I Already Have it!'0d22'TAKE INVENTORY'22; 11
       |                     |             |    |         |      |           41 6C 72 65 |
       |                     |             |    |         |      |           61 64 79 20 |
       |                     |             |    |         |      |           48 61 76 65 |
@@ -10246,7 +10247,7 @@
       |                     |             |    |         |      |           4E 56 45 4E |
       |                     |             |    |         |      |           54 4F 52 59 |
       |                     |             |    |         |      |           22          |
- 8265 |  6      en.s    591 | Data        | 00 |         |   48 | 00/5A9A : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Carrying Too Much!'0d'Drop Something First!!!'; 12
+ 8266 |  6      en.s    592 | Data        | 00 |         |   48 | 00/5A9B : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Carrying Too Much!'0d'Drop Something First!!!'; 12
       |                     |             |    |         |      |           6D 20 43 61 |
       |                     |             |    |         |      |           72 72 79 69 |
       |                     |             |    |         |      |           6E 67 20 54 |
@@ -10258,26 +10259,26 @@
       |                     |             |    |         |      |           69 6E 67 20 |
       |                     |             |    |         |      |           46 69 72 73 |
       |                     |             |    |         |      |           74 21 21 21 |
- 8266 |  6      en.s    592 | Data        | 00 |         |   22 | 00/5ACA : 5C 0D 49 20 |                       asc       '\'0d'I Can'27't Do That Yet!'; 13
+ 8267 |  6      en.s    593 | Data        | 00 |         |   22 | 00/5ACB : 5C 0D 49 20 |                       asc       '\'0d'I Can'27't Do That Yet!'; 13
       |                     |             |    |         |      |           43 61 6E 27 |
       |                     |             |    |         |      |           74 20 44 6F |
       |                     |             |    |         |      |           20 54 68 61 |
       |                     |             |    |         |      |           74 20 59 65 |
       |                     |             |    |         |      |           74 21       |
- 8267 |  6      en.s    593 | Data        | 00 |         |   25 | 00/5AE0 : 5C 0D 49 20 |                       asc       '\'0d'I Need a Direction Too!'; 14
+ 8268 |  6      en.s    594 | Data        | 00 |         |   25 | 00/5AE1 : 5C 0D 49 20 |                       asc       '\'0d'I Need a Direction Too!'; 14
       |                     |             |    |         |      |           4E 65 65 64 |
       |                     |             |    |         |      |           20 61 20 44 |
       |                     |             |    |         |      |           69 72 65 63 |
       |                     |             |    |         |      |           74 69 6F 6E |
       |                     |             |    |         |      |           20 54 6F 6F |
       |                     |             |    |         |      |           21          |
- 8268 |  6      en.s    594 | Data        | 00 |         |   22 | 00/5AF9 : 5C 0D 49 20 |                       asc       '\'0d'I Can'27't Go That Way!'; 15
+ 8269 |  6      en.s    595 | Data        | 00 |         |   22 | 00/5AFA : 5C 0D 49 20 |                       asc       '\'0d'I Can'27't Go That Way!'; 15
       |                     |             |    |         |      |           43 61 6E 27 |
       |                     |             |    |         |      |           74 20 47 6F |
       |                     |             |    |         |      |           20 54 68 61 |
       |                     |             |    |         |      |           74 20 57 61 |
       |                     |             |    |         |      |           79 21       |
- 8269 |  6      en.s    595 | Data        | 00 |         |   34 | 00/5B0F : 5C 0D 4D 6F |                       asc       '\'0d'Moving in the Dark is DANGEROUS!'; 16
+ 8270 |  6      en.s    596 | Data        | 00 |         |   34 | 00/5B10 : 5C 0D 4D 6F |                       asc       '\'0d'Moving in the Dark is DANGEROUS!'; 16
       |                     |             |    |         |      |           76 69 6E 67 |
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           74 68 65 20 |
@@ -10286,7 +10287,7 @@
       |                     |             |    |         |      |           44 41 4E 47 |
       |                     |             |    |         |      |           45 52 4F 55 |
       |                     |             |    |         |      |           53 21       |
- 8270 |  6      en.s    596 | Data        | 00 |         |   34 | 00/5B31 : 5C 0D 53 50 |                       asc       '\'0d'SPLAT!  I Fell Flat On My Face!!'; 17
+ 8271 |  6      en.s    597 | Data        | 00 |         |   34 | 00/5B32 : 5C 0D 53 50 |                       asc       '\'0d'SPLAT!  I Fell Flat On My Face!!'; 17
       |                     |             |    |         |      |           4C 41 54 21 |
       |                     |             |    |         |      |           20 20 49 20 |
       |                     |             |    |         |      |           46 65 6C 6C |
@@ -10295,7 +10296,7 @@
       |                     |             |    |         |      |           20 4D 79 20 |
       |                     |             |    |         |      |           46 61 63 65 |
       |                     |             |    |         |      |           21 21       |
- 8271 |  6      en.s    597 | Data        | 00 |         |   52 | 00/5B53 : 5C 0D 53 74 |                       asc       '\'0d'Stumbling Around in the Dark is'0d'Pointless. I Quit.'; 18
+ 8272 |  6      en.s    598 | Data        | 00 |         |   52 | 00/5B54 : 5C 0D 53 74 |                       asc       '\'0d'Stumbling Around in the Dark is'0d'Pointless. I Quit.'; 18
       |                     |             |    |         |      |           75 6D 62 6C |
       |                     |             |    |         |      |           69 6E 67 20 |
       |                     |             |    |         |      |           41 72 6F 75 |
@@ -10308,19 +10309,19 @@
       |                     |             |    |         |      |           65 73 73 2E |
       |                     |             |    |         |      |           20 49 20 51 |
       |                     |             |    |         |      |           75 69 74 2E |
- 8272 |  6      en.s    598 | Data        | 00 |         |   26 | 00/5B87 : 5C 0D 49 20 |                       asc       '\'0d'I Don'27't Understand That!'; 19
+ 8273 |  6      en.s    599 | Data        | 00 |         |   26 | 00/5B88 : 5C 0D 49 20 |                       asc       '\'0d'I Don'27't Understand That!'; 19
       |                     |             |    |         |      |           44 6F 6E 27 |
       |                     |             |    |         |      |           74 20 55 6E |
       |                     |             |    |         |      |           64 65 72 73 |
       |                     |             |    |         |      |           74 61 6E 64 |
       |                     |             |    |         |      |           20 54 68 61 |
       |                     |             |    |         |      |           74 21       |
- 8273 |  6      en.s    599 | Data        | 00 |         |   18 | 00/5BA1 : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Emptyhanded.'; 20
+ 8274 |  6      en.s    600 | Data        | 00 |         |   18 | 00/5BA2 : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Emptyhanded.'; 20
       |                     |             |    |         |      |           6D 20 45 6D |
       |                     |             |    |         |      |           70 74 79 68 |
       |                     |             |    |         |      |           61 6E 64 65 |
       |                     |             |    |         |      |           64 2E       |
- 8274 |  6      en.s    600 | Data        | 00 |         |   39 | 00/5BB3 : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Not Carrying it!'0d22'TAKE INVENTORY'22; 21
+ 8275 |  6      en.s    601 | Data        | 00 |         |   39 | 00/5BB4 : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Not Carrying it!'0d22'TAKE INVENTORY'22; 21
       |                     |             |    |         |      |           6D 20 4E 6F |
       |                     |             |    |         |      |           74 20 43 61 |
       |                     |             |    |         |      |           72 72 79 69 |
@@ -10330,7 +10331,7 @@
       |                     |             |    |         |      |           20 49 4E 56 |
       |                     |             |    |         |      |           45 4E 54 4F |
       |                     |             |    |         |      |           52 59 22    |
- 8275 |  6      en.s    601 | Data        | 00 |         |   55 | 00/5BDA : 5C 0D 48 6F |                       asc       '\'0d'How Can I Drop Something'0d'That'27's Right in Front of Me?'; 22
+ 8276 |  6      en.s    602 | Data        | 00 |         |   55 | 00/5BDB : 5C 0D 48 6F |                       asc       '\'0d'How Can I Drop Something'0d'That'27's Right in Front of Me?'; 22
       |                     |             |    |         |      |           77 20 43 61 |
       |                     |             |    |         |      |           6E 20 49 20 |
       |                     |             |    |         |      |           44 72 6F 70 |
@@ -10344,8 +10345,8 @@
       |                     |             |    |         |      |           72 6F 6E 74 |
       |                     |             |    |         |      |           20 6F 66 20 |
       |                     |             |    |         |      |           4D 65 3F    |
- 8276 |  6      en.s    602 | Data        | 00 |         |    4 | 00/5C11 : 5C 0D 4F 4B |                       asc       '\'0d'OK'            ; 23
- 8277 |  6      en.s    603 | Data        | 00 |         |   32 | 00/5C15 : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Not Capable of Doing That.'; 24
+ 8277 |  6      en.s    603 | Data        | 00 |         |    4 | 00/5C12 : 5C 0D 4F 4B |                       asc       '\'0d'OK'            ; 23
+ 8278 |  6      en.s    604 | Data        | 00 |         |   32 | 00/5C16 : 5C 0D 49 27 |                       asc       '\'0d'I'27'm Not Capable of Doing That.'; 24
       |                     |             |    |         |      |           6D 20 4E 6F |
       |                     |             |    |         |      |           74 20 43 61 |
       |                     |             |    |         |      |           70 61 62 6C |
@@ -10353,48 +10354,48 @@
       |                     |             |    |         |      |           20 44 6F 69 |
       |                     |             |    |         |      |           6E 67 20 54 |
       |                     |             |    |         |      |           68 61 74 2E |
- 8278 |  6      en.s    604 | Data        | 00 |         |   12 | 00/5C35 : 5C 3E 20 4C |                       asc       '\> LOAD GAME'       ; 25
+ 8279 |  6      en.s    605 | Data        | 00 |         |   12 | 00/5C36 : 5C 3E 20 4C |                       asc       '\> LOAD GAME'       ; 25
       |                     |             |    |         |      |           4F 41 44 20 |
       |                     |             |    |         |      |           47 41 4D 45 |
- 8279 |  6      en.s    605 | Data        | 00 |         |   12 | 00/5C41 : 5C 3E 20 53 |                       asc       '\> SAVE GAME'       ; 26
+ 8280 |  6      en.s    606 | Data        | 00 |         |   12 | 00/5C42 : 5C 3E 20 53 |                       asc       '\> SAVE GAME'       ; 26
       |                     |             |    |         |      |           41 56 45 20 |
       |                     |             |    |         |      |           47 41 4D 45 |
- 8280 |  6      en.s    606 | Data        | 00 |         |    7 | 00/5C4D : 5C 3E 20 51 |                       asc       '\> QUIT'            ; 27
+ 8281 |  6      en.s    607 | Data        | 00 |         |    7 | 00/5C4E : 5C 3E 20 51 |                       asc       '\> QUIT'            ; 27
       |                     |             |    |         |      |           55 49 54    |
- 8281 |  6      en.s    607 | Data        | 00 |         |   11 | 00/5C54 : 5C 3E 20 47 |                       asc       '\> GO NORTH'        ; 28
+ 8282 |  6      en.s    608 | Data        | 00 |         |   11 | 00/5C55 : 5C 3E 20 47 |                       asc       '\> GO NORTH'        ; 28
       |                     |             |    |         |      |           4F 20 4E 4F |
       |                     |             |    |         |      |           52 54 48    |
- 8282 |  6      en.s    608 | Data        | 00 |         |   11 | 00/5C5F : 5C 3E 20 47 |                       asc       '\> GO SOUTH'        ; 29
+ 8283 |  6      en.s    609 | Data        | 00 |         |   11 | 00/5C60 : 5C 3E 20 47 |                       asc       '\> GO SOUTH'        ; 29
       |                     |             |    |         |      |           4F 20 53 4F |
       |                     |             |    |         |      |           55 54 48    |
- 8283 |  6      en.s    609 | Data        | 00 |         |   10 | 00/5C6A : 5C 3E 20 47 |                       asc       '\> GO EAST'         ; 30
+ 8284 |  6      en.s    610 | Data        | 00 |         |   10 | 00/5C6B : 5C 3E 20 47 |                       asc       '\> GO EAST'         ; 30
       |                     |             |    |         |      |           4F 20 45 41 |
       |                     |             |    |         |      |           53 54       |
- 8284 |  6      en.s    610 | Data        | 00 |         |   10 | 00/5C74 : 5C 3E 20 47 |                       asc       '\> GO WEST'         ; 31
+ 8285 |  6      en.s    611 | Data        | 00 |         |   10 | 00/5C75 : 5C 3E 20 47 |                       asc       '\> GO WEST'         ; 31
       |                     |             |    |         |      |           4F 20 57 45 |
       |                     |             |    |         |      |           53 54       |
- 8285 |  6      en.s    611 | Data        | 00 |         |    8 | 00/5C7E : 5C 3E 20 47 |                       asc       '\> GO UP'           ; 32
+ 8286 |  6      en.s    612 | Data        | 00 |         |    8 | 00/5C7F : 5C 3E 20 47 |                       asc       '\> GO UP'           ; 32
       |                     |             |    |         |      |           4F 20 55 50 |
- 8286 |  6      en.s    612 | Data        | 00 |         |   10 | 00/5C86 : 5C 3E 20 47 |                       asc       '\> GO DOWN'         ; 33
+ 8287 |  6      en.s    613 | Data        | 00 |         |   10 | 00/5C87 : 5C 3E 20 47 |                       asc       '\> GO DOWN'         ; 33
       |                     |             |    |         |      |           4F 20 44 4F |
       |                     |             |    |         |      |           57 4E       |
- 8287 |  6      en.s    613 | Data        | 00 |         |    7 | 00/5C90 : 5C 3E 20 48 |                       asc       '\> HINT'            ; 34
+ 8288 |  6      en.s    614 | Data        | 00 |         |    7 | 00/5C91 : 5C 3E 20 48 |                       asc       '\> HINT'            ; 34
       |                     |             |    |         |      |           49 4E 54    |
- 8288 |  6      en.s    614 | Data        | 00 |         |   17 | 00/5C97 : 5C 3E 20 54 |                       asc       '\> TAKE INVENTORY'  ; 35
+ 8289 |  6      en.s    615 | Data        | 00 |         |   17 | 00/5C98 : 5C 3E 20 54 |                       asc       '\> TAKE INVENTORY'  ; 35
       |                     |             |    |         |      |           41 4B 45 20 |
       |                     |             |    |         |      |           49 4E 56 45 |
       |                     |             |    |         |      |           4E 54 4F 52 |
       |                     |             |    |         |      |           59          |
- 8289 |  6      en.s    615 | Data        | 00 |         |   12 | 00/5CA8 : 5C 47 61 6D |                       asc       '\Game Saved.'       ; 36
+ 8290 |  6      en.s    616 | Data        | 00 |         |   12 | 00/5CA9 : 5C 47 61 6D |                       asc       '\Game Saved.'       ; 36
       |                     |             |    |         |      |           65 20 53 61 |
       |                     |             |    |         |      |           76 65 64 2E |
- 8290 |  6      en.s    616 | Data        | 00 |         |   24 | 00/5CB4 : 5C 44 69 73 |                       asc       '\Disk Full!'0d'Save Failed.'; 37
+ 8291 |  6      en.s    617 | Data        | 00 |         |   24 | 00/5CB5 : 5C 44 69 73 |                       asc       '\Disk Full!'0d'Save Failed.'; 37
       |                     |             |    |         |      |           6B 20 46 75 |
       |                     |             |    |         |      |           6C 6C 21 0D |
       |                     |             |    |         |      |           53 61 76 65 |
       |                     |             |    |         |      |           20 46 61 69 |
       |                     |             |    |         |      |           6C 65 64 2E |
- 8291 |  6      en.s    617 | Data        | 00 |         |   29 | 00/5CCC : 5C 44 69 72 |                       asc       '\Directory Full!'0d'Save Failed.'; 38
+ 8292 |  6      en.s    618 | Data        | 00 |         |   29 | 00/5CCD : 5C 44 69 72 |                       asc       '\Directory Full!'0d'Save Failed.'; 38
       |                     |             |    |         |      |           65 63 74 6F |
       |                     |             |    |         |      |           72 79 20 46 |
       |                     |             |    |         |      |           75 6C 6C 21 |
@@ -10402,154 +10403,155 @@
       |                     |             |    |         |      |           65 20 46 61 |
       |                     |             |    |         |      |           69 6C 65 64 |
       |                     |             |    |         |      |           2E          |
- 8292 |  6      en.s    618 | Data        | 00 |         |    8 | 00/5CE9 : 5C 41 62 6F |                       asc       '\Aborted'           ; 39
+ 8293 |  6      en.s    619 | Data        | 00 |         |    8 | 00/5CEA : 5C 41 62 6F |                       asc       '\Aborted'           ; 39
       |                     |             |    |         |      |           72 74 65 64 |
- 8293 |  6      en.s    619 | Data        | 00 |         |   28 | 00/5CF1 : 5C 46 55 54 |                       asc       '\FUTURIA Save Game Filename:'; 40
+ 8294 |  6      en.s    620 | Data        | 00 |         |   28 | 00/5CF2 : 5C 46 55 54 |                       asc       '\FUTURIA Save Game Filename:'; 40
       |                     |             |    |         |      |           55 52 49 41 |
       |                     |             |    |         |      |           20 53 61 76 |
       |                     |             |    |         |      |           65 20 47 61 |
       |                     |             |    |         |      |           6D 65 20 46 |
       |                     |             |    |         |      |           69 6C 65 6E |
       |                     |             |    |         |      |           61 6D 65 3A |
- 8294 |  6      en.s    620 | Data        | 00 |         |   11 | 00/5D0D : 5C 53 61 76 |                       asc       '\Saved Game'        ; 41
+ 8295 |  6      en.s    621 | Data        | 00 |         |   11 | 00/5D0E : 5C 53 61 76 |                       asc       '\Saved Game'        ; 41
       |                     |             |    |         |      |           65 64 20 47 |
       |                     |             |    |         |      |           61 6D 65    |
- 8295 |  6      en.s    621 | Data        | 00 |         |    7 | 00/5D18 : 5C 56 65 72 |                       asc       '\Verb '22           ; 42
+ 8296 |  6      en.s    622 | Data        | 00 |         |    7 | 00/5D19 : 5C 56 65 72 |                       asc       '\Verb '22           ; 42
       |                     |             |    |         |      |           62 20 22    |
- 8296 |  6      en.s    622 | Data        | 00 |         |    7 | 00/5D1F : 5C 4E 6F 75 |                       asc       '\Noun '22           ; 43
+ 8297 |  6      en.s    623 | Data        | 00 |         |    7 | 00/5D20 : 5C 4E 6F 75 |                       asc       '\Noun '22           ; 43
       |                     |             |    |         |      |           6E 20 22    |
- 8297 |  6      en.s    623 | Data        | 00 |         |    3 | 00/5D26 : 5C 22 2E    |                       asc       '\'22'.'             ; 44
- 8298 |  6      en.s    624 | Data        | 00 |         |   15 | 00/5D29 : 5C 0D 43 68 |                       asc       '\'0d'Cheat mode on' ; 45
+ 8298 |  6      en.s    624 | Data        | 00 |         |    3 | 00/5D27 : 5C 22 2E    |                       asc       '\'22'.'             ; 44
+ 8299 |  6      en.s    625 | Data        | 00 |         |   15 | 00/5D2A : 5C 0D 43 68 |                       asc       '\'0d'Cheat mode on' ; 45
       |                     |             |    |         |      |           65 61 74 20 |
       |                     |             |    |         |      |           6D 6F 64 65 |
       |                     |             |    |         |      |           20 6F 6E    |
- 8299 |  6      en.s    625 | Data        | 00 |         |   16 | 00/5D38 : 5C 0D 43 68 |                       asc       '\'0d'Cheat mode off'; 46
+ 8300 |  6      en.s    626 | Data        | 00 |         |   16 | 00/5D39 : 5C 0D 43 68 |                       asc       '\'0d'Cheat mode off'; 46
       |                     |             |    |         |      |           65 61 74 20 |
       |                     |             |    |         |      |           6D 6F 64 65 |
       |                     |             |    |         |      |           20 6F 66 66 |
- 8300 |  6      en.s    626 | Data        | 00 |         |   25 | 00/5D48 : 5C 0D 4C 6F |                       asc       '\'0d'Load which slot (1-9)? '; 47
+ 8301 |  6      en.s    627 | Data        | 00 |         |   25 | 00/5D49 : 5C 0D 4C 6F |                       asc       '\'0d'Load which slot (1-9)? '; 47
       |                     |             |    |         |      |           61 64 20 77 |
       |                     |             |    |         |      |           68 69 63 68 |
       |                     |             |    |         |      |           20 73 6C 6F |
       |                     |             |    |         |      |           74 20 28 31 |
       |                     |             |    |         |      |           2D 39 29 3F |
       |                     |             |    |         |      |           20          |
- 8301 |  6      en.s    627 | Data        | 00 |         |   28 | 00/5D61 : 5C 0D 53 61 |                       asc       '\'0d'Save to which slot (1-9)? '; 48
+ 8302 |  6      en.s    628 | Data        | 00 |         |   28 | 00/5D62 : 5C 0D 53 61 |                       asc       '\'0d'Save to which slot (1-9)? '; 48
       |                     |             |    |         |      |           76 65 20 74 |
       |                     |             |    |         |      |           6F 20 77 68 |
       |                     |             |    |         |      |           69 63 68 20 |
       |                     |             |    |         |      |           73 6C 6F 74 |
       |                     |             |    |         |      |           20 28 31 2D |
       |                     |             |    |         |      |           39 29 3F 20 |
- 8302 |  6      en.s    628 | Data        | 00 |         |   13 | 00/5D7D : 5C 0D 49 2F |                       asc       '\'0d'I/O Error.'0d  ; 49
+ 8303 |  6      en.s    629 | Data        | 00 |         |   13 | 00/5D7E : 5C 0D 49 2F |                       asc       '\'0d'I/O Error.'0d  ; 49
       |                     |             |    |         |      |           4F 20 45 72 |
       |                     |             |    |         |      |           72 6F 72 2E |
       |                     |             |    |         |      |           0D          |
- 8303 |  6      en.s    629 | Data        | 00 |         |   28 | 00/5D8A : 5C 0D 47 61 |                       asc       '\'0d'Game loaded successfully.'0d; 50
+ 8304 |  6      en.s    630 | Data        | 00 |         |   28 | 00/5D8B : 5C 0D 47 61 |                       asc       '\'0d'Game loaded successfully.'0d; 50
       |                     |             |    |         |      |           6D 65 20 6C |
       |                     |             |    |         |      |           6F 61 64 65 |
       |                     |             |    |         |      |           64 20 73 75 |
       |                     |             |    |         |      |           63 63 65 73 |
       |                     |             |    |         |      |           73 66 75 6C |
       |                     |             |    |         |      |           6C 79 2E 0D |
- 8304 |  6      en.s    630 | Data        | 00 |         |   27 | 00/5DA6 : 5C 0D 47 61 |                       asc       '\'0d'Game saved successfully.'0d; 51
+ 8305 |  6      en.s    631 | Data        | 00 |         |   27 | 00/5DA7 : 5C 0D 47 61 |                       asc       '\'0d'Game saved successfully.'0d; 51
       |                     |             |    |         |      |           6D 65 20 73 |
       |                     |             |    |         |      |           61 76 65 64 |
       |                     |             |    |         |      |           20 73 75 63 |
       |                     |             |    |         |      |           63 65 73 73 |
       |                     |             |    |         |      |           66 75 6C 6C |
       |                     |             |    |         |      |           79 2E 0D    |
- 8305 |  6      en.s    631 | Data        | 00 |         |   23 | 00/5DC1 : 5C 0D 4F 70 |                       asc       '\'0d'Operation cancelled.'0d; 52
+ 8306 |  6      en.s    632 | Data        | 00 |         |   23 | 00/5DC2 : 5C 0D 4F 70 |                       asc       '\'0d'Operation cancelled.'0d; 52
       |                     |             |    |         |      |           65 72 61 74 |
       |                     |             |    |         |      |           69 6F 6E 20 |
       |                     |             |    |         |      |           63 61 6E 63 |
       |                     |             |    |         |      |           65 6C 6C 65 |
       |                     |             |    |         |      |           64 2E 0D    |
- 8306 |  6      en.s    632 | Data        | 00 |         |    1 | 00/5DD8 : 00          |                       dfb       {$00}                
- 8307 |  6      en.s    633 | Empty       | 00 |         |    0 | 00/5DD9               |                                                      
- 8308 |  6      en.s    634 | Comment     | 00 |         |    0 | 00/5DD9               | * Rewrite of message 6
- 8309 |  6      en.s    635 | Comment     | 00 |         |    0 | 00/5DD9               | * I Don't Know the Verb + CR 'Prendre'.
- 8310 |  6      en.s    636 | Comment     | 00 |         |    0 | 00/5DD9               | * I Don't Know the Noun + CR 'Bouteille'.
- 8311 |  6      en.s    637 | Comment     | 00 |         |    0 | 00/5DD9               | * -> 6 + 42 + verb + 44
- 8312 |  6      en.s    638 | Comment     | 00 |         |    0 | 00/5DD9               | * -> 6 + 43 + noun + 44
- 8313 |  6      en.s    639 | Empty       | 00 |         |    0 | 00/5DD9               |                                                      
- 8314 |  6      en.s    640 | Comment     | 00 |         |    0 | 00/5DD9               | * DESCRIPTIONS
- 8315 |  6      en.s    641 | Empty       | 00 |         |    0 | 00/5DD9               |                                                      
- 8316 |  6      en.s    642 | Comment     | 00 |         |    0 | 00/5DD9               | * First words must be 'I'm '
- 8317 |  6      en.s    643 | Empty       | 00 |         |    0 | 00/5DD9               |                                                      
- 8318 |  6      en.s    644 | Data        | 00 |         |   27 | 00/5DD9 : 5C 49 27 6D | tblDESCRIPTIONS       asc       '\I'27'm in an Ultramodern City'; 1
+ 8307 |  6      en.s    633 | Data        | 00 |         |    1 | 00/5DD9 : 5C          |                       asc       '\'                  
+ 8308 |  6      en.s    634 | Data        | 00 |         |    1 | 00/5DDA : 00          |                       dfb       {$00}                
+ 8309 |  6      en.s    635 | Empty       | 00 |         |    0 | 00/5DDB               |                                                      
+ 8310 |  6      en.s    636 | Comment     | 00 |         |    0 | 00/5DDB               | * Rewrite of message 6
+ 8311 |  6      en.s    637 | Comment     | 00 |         |    0 | 00/5DDB               | * I Don't Know the Verb + CR 'Prendre'.
+ 8312 |  6      en.s    638 | Comment     | 00 |         |    0 | 00/5DDB               | * I Don't Know the Noun + CR 'Bouteille'.
+ 8313 |  6      en.s    639 | Comment     | 00 |         |    0 | 00/5DDB               | * -> 6 + 42 + verb + 44
+ 8314 |  6      en.s    640 | Comment     | 00 |         |    0 | 00/5DDB               | * -> 6 + 43 + noun + 44
+ 8315 |  6      en.s    641 | Empty       | 00 |         |    0 | 00/5DDB               |                                                      
+ 8316 |  6      en.s    642 | Comment     | 00 |         |    0 | 00/5DDB               | * DESCRIPTIONS
+ 8317 |  6      en.s    643 | Empty       | 00 |         |    0 | 00/5DDB               |                                                      
+ 8318 |  6      en.s    644 | Comment     | 00 |         |    0 | 00/5DDB               | * First words must be 'I'm '
+ 8319 |  6      en.s    645 | Empty       | 00 |         |    0 | 00/5DDB               |                                                      
+ 8320 |  6      en.s    646 | Data        | 00 |         |   27 | 00/5DDB : 5C 49 27 6D | tblDESCRIPTIONS       asc       '\I'27'm in an Ultramodern City'; 1
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 6E 20 55 |
       |                     |             |    |         |      |           6C 74 72 61 |
       |                     |             |    |         |      |           6D 6F 64 65 |
       |                     |             |    |         |      |           72 6E 20 43 |
       |                     |             |    |         |      |           69 74 79    |
- 8319 |  6      en.s    645 | Data        | 00 |         |   27 | 00/5DF4 : 5C 49 27 6D |                       asc       '\I'27'm in a Long Metal Tunnel'; 2
+ 8321 |  6      en.s    647 | Data        | 00 |         |   27 | 00/5DF6 : 5C 49 27 6D |                       asc       '\I'27'm in a Long Metal Tunnel'; 2
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 6F |
       |                     |             |    |         |      |           6E 67 20 4D |
       |                     |             |    |         |      |           65 74 61 6C |
       |                     |             |    |         |      |           20 54 75 6E |
       |                     |             |    |         |      |           6E 65 6C    |
- 8320 |  6      en.s    646 | Data        | 00 |         |   27 | 00/5E0F : 5C 49 27 6D |                       asc       '\I'27'm in a Long Metal Tunnel'; 3
+ 8322 |  6      en.s    648 | Data        | 00 |         |   27 | 00/5E11 : 5C 49 27 6D |                       asc       '\I'27'm in a Long Metal Tunnel'; 3
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 6F |
       |                     |             |    |         |      |           6E 67 20 4D |
       |                     |             |    |         |      |           65 74 61 6C |
       |                     |             |    |         |      |           20 54 75 6E |
       |                     |             |    |         |      |           6E 65 6C    |
- 8321 |  6      en.s    647 | Data        | 00 |         |   27 | 00/5E2A : 5C 49 27 6D |                       asc       '\I'27'm in a Long Metal Tunnel'; 4
+ 8323 |  6      en.s    649 | Data        | 00 |         |   27 | 00/5E2C : 5C 49 27 6D |                       asc       '\I'27'm in a Long Metal Tunnel'; 4
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 6F |
       |                     |             |    |         |      |           6E 67 20 4D |
       |                     |             |    |         |      |           65 74 61 6C |
       |                     |             |    |         |      |           20 54 75 6E |
       |                     |             |    |         |      |           6E 65 6C    |
- 8322 |  6      en.s    648 | Data        | 00 |         |   28 | 00/5E45 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Paved Street'; 5
+ 8324 |  6      en.s    650 | Data        | 00 |         |   28 | 00/5E47 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Paved Street'; 5
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           50 61 76 65 |
       |                     |             |    |         |      |           64 20 53 74 |
       |                     |             |    |         |      |           72 65 65 74 |
- 8323 |  6      en.s    649 | Data        | 00 |         |   28 | 00/5E61 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Paved Street'; 6
+ 8325 |  6      en.s    651 | Data        | 00 |         |   28 | 00/5E63 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Paved Street'; 6
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           50 61 76 65 |
       |                     |             |    |         |      |           64 20 53 74 |
       |                     |             |    |         |      |           72 65 65 74 |
- 8324 |  6      en.s    650 | Data        | 00 |         |   20 | 00/5E7D : 5C 49 27 6D |                       asc       '\I'27'm in a Laboratory'; 7
+ 8326 |  6      en.s    652 | Data        | 00 |         |   20 | 00/5E7F : 5C 49 27 6D |                       asc       '\I'27'm in a Laboratory'; 7
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 61 |
       |                     |             |    |         |      |           62 6F 72 61 |
       |                     |             |    |         |      |           74 6F 72 79 |
- 8325 |  6      en.s    651 | Data        | 00 |         |   20 | 00/5E91 : 5C 49 27 6D |                       asc       '\I'27'm in a Laboratory'; 8
+ 8327 |  6      en.s    653 | Data        | 00 |         |   20 | 00/5E93 : 5C 49 27 6D |                       asc       '\I'27'm in a Laboratory'; 8
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 61 |
       |                     |             |    |         |      |           62 6F 72 61 |
       |                     |             |    |         |      |           74 6F 72 79 |
- 8326 |  6      en.s    652 | Data        | 00 |         |   20 | 00/5EA5 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Road'; 9
+ 8328 |  6      en.s    654 | Data        | 00 |         |   20 | 00/5EA7 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Road'; 9
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           52 6F 61 64 |
- 8327 |  6      en.s    653 | Data        | 00 |         |   20 | 00/5EB9 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Road'; 10
+ 8329 |  6      en.s    655 | Data        | 00 |         |   20 | 00/5EBB : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Road'; 10
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           52 6F 61 64 |
- 8328 |  6      en.s    654 | Data        | 00 |         |   20 | 00/5ECD : 5C 49 27 6D |                       asc       '\I'27'm in a Repository'; 11
+ 8330 |  6      en.s    656 | Data        | 00 |         |   20 | 00/5ECF : 5C 49 27 6D |                       asc       '\I'27'm in a Repository'; 11
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 52 65 |
       |                     |             |    |         |      |           70 6F 73 69 |
       |                     |             |    |         |      |           74 6F 72 79 |
- 8329 |  6      en.s    655 | Data        | 00 |         |   20 | 00/5EE1 : 5C 49 27 6D |                       asc       '\I'27'm on an Escalator'; 12
+ 8331 |  6      en.s    657 | Data        | 00 |         |   20 | 00/5EE3 : 5C 49 27 6D |                       asc       '\I'27'm on an Escalator'; 12
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 6E 20 45 |
       |                     |             |    |         |      |           73 63 61 6C |
       |                     |             |    |         |      |           61 74 6F 72 |
- 8330 |  6      en.s    656 | Data        | 00 |         |   33 | 00/5EF5 : 5C 49 27 6D |                       asc       '\I'27'm at the Transportation Center'; 13
+ 8332 |  6      en.s    658 | Data        | 00 |         |   33 | 00/5EF7 : 5C 49 27 6D |                       asc       '\I'27'm at the Transportation Center'; 13
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           74 68 65 20 |
       |                     |             |    |         |      |           54 72 61 6E |
@@ -10558,43 +10560,43 @@
       |                     |             |    |         |      |           6F 6E 20 43 |
       |                     |             |    |         |      |           65 6E 74 65 |
       |                     |             |    |         |      |           72          |
- 8331 |  6      en.s    657 | Data        | 00 |         |   18 | 00/5F16 : 5C 49 27 6D |                       asc       '\I'27'm on a Monorail'; 14
+ 8333 |  6      en.s    659 | Data        | 00 |         |   18 | 00/5F18 : 5C 49 27 6D |                       asc       '\I'27'm on a Monorail'; 14
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 6F |
       |                     |             |    |         |      |           6E 6F 72 61 |
       |                     |             |    |         |      |           69 6C       |
- 8332 |  6      en.s    658 | Data        | 00 |         |   28 | 00/5F28 : 5C 49 27 6D |                       asc       '\I'27'm in a Subterranean Shaft'; 15
+ 8334 |  6      en.s    660 | Data        | 00 |         |   28 | 00/5F2A : 5C 49 27 6D |                       asc       '\I'27'm in a Subterranean Shaft'; 15
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 75 |
       |                     |             |    |         |      |           62 74 65 72 |
       |                     |             |    |         |      |           72 61 6E 65 |
       |                     |             |    |         |      |           61 6E 20 53 |
       |                     |             |    |         |      |           68 61 66 74 |
- 8333 |  6      en.s    659 | Data        | 00 |         |   22 | 00/5F44 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Grotto'; 16
+ 8335 |  6      en.s    661 | Data        | 00 |         |   22 | 00/5F46 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Grotto'; 16
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           47 72 6F 74 |
       |                     |             |    |         |      |           74 6F       |
- 8334 |  6      en.s    660 | Data        | 00 |         |   18 | 00/5F5A : 5C 49 27 6D |                       asc       '\I'27'm at a Dead End'; 17
+ 8336 |  6      en.s    662 | Data        | 00 |         |   18 | 00/5F5C : 5C 49 27 6D |                       asc       '\I'27'm at a Dead End'; 17
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           61 20 44 65 |
       |                     |             |    |         |      |           61 64 20 45 |
       |                     |             |    |         |      |           6E 64       |
- 8335 |  6      en.s    661 | Data        | 00 |         |   28 | 00/5F6C : 5C 49 27 6D |                       asc       '\I'27'm in a Subterranean Shaft'; 18
+ 8337 |  6      en.s    663 | Data        | 00 |         |   28 | 00/5F6E : 5C 49 27 6D |                       asc       '\I'27'm in a Subterranean Shaft'; 18
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 75 |
       |                     |             |    |         |      |           62 74 65 72 |
       |                     |             |    |         |      |           72 61 6E 65 |
       |                     |             |    |         |      |           61 6E 20 53 |
       |                     |             |    |         |      |           68 61 66 74 |
- 8336 |  6      en.s    662 | Data        | 00 |         |   24 | 00/5F88 : 5C 49 27 6D |                       asc       '\I'27'm in a Control Center'; 19
+ 8338 |  6      en.s    664 | Data        | 00 |         |   24 | 00/5F8A : 5C 49 27 6D |                       asc       '\I'27'm in a Control Center'; 19
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 43 6F |
       |                     |             |    |         |      |           6E 74 72 6F |
       |                     |             |    |         |      |           6C 20 43 65 |
       |                     |             |    |         |      |           6E 74 65 72 |
- 8337 |  6      en.s    663 | Data        | 00 |         |   31 | 00/5FA0 : 5C 49 27 6D |                       asc       '\I'27'm in an Underground Building'; 20
+ 8339 |  6      en.s    665 | Data        | 00 |         |   31 | 00/5FA2 : 5C 49 27 6D |                       asc       '\I'27'm in an Underground Building'; 20
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 6E 20 55 |
       |                     |             |    |         |      |           6E 64 65 72 |
@@ -10602,60 +10604,60 @@
       |                     |             |    |         |      |           6E 64 20 42 |
       |                     |             |    |         |      |           75 69 6C 64 |
       |                     |             |    |         |      |           69 6E 67    |
- 8338 |  6      en.s    664 | Data        | 00 |         |   25 | 00/5FBF : 5C 49 27 6D |                       asc       '\I'27'm in a Small Lead Room'; 21
+ 8340 |  6      en.s    666 | Data        | 00 |         |   25 | 00/5FC1 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Lead Room'; 21
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           4C 65 61 64 |
       |                     |             |    |         |      |           20 52 6F 6F |
       |                     |             |    |         |      |           6D          |
- 8339 |  6      en.s    665 | Data        | 00 |         |   24 | 00/5FD8 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Platform'; 22
+ 8341 |  6      en.s    667 | Data        | 00 |         |   24 | 00/5FDA : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Platform'; 22
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           50 6C 61 74 |
       |                     |             |    |         |      |           66 6F 72 6D |
- 8340 |  6      en.s    666 | Data        | 00 |         |   26 | 00/5FF0 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Metal Room'; 23
+ 8342 |  6      en.s    668 | Data        | 00 |         |   26 | 00/5FF2 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Metal Room'; 23
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           4D 65 74 61 |
       |                     |             |    |         |      |           6C 20 52 6F |
       |                     |             |    |         |      |           6F 6D       |
- 8341 |  6      en.s    667 | Data        | 00 |         |   17 | 00/600A : 5C 49 27 6D |                       asc       '\I'27'm in a Hallway'; 24
+ 8343 |  6      en.s    669 | Data        | 00 |         |   17 | 00/600C : 5C 49 27 6D |                       asc       '\I'27'm in a Hallway'; 24
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 48 61 |
       |                     |             |    |         |      |           6C 6C 77 61 |
       |                     |             |    |         |      |           79          |
- 8342 |  6      en.s    668 | Data        | 00 |         |   19 | 00/601B : 5C 49 27 6D |                       asc       '\I'27'm in a Storeroom'; 25
+ 8344 |  6      en.s    670 | Data        | 00 |         |   19 | 00/601D : 5C 49 27 6D |                       asc       '\I'27'm in a Storeroom'; 25
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 74 |
       |                     |             |    |         |      |           6F 72 65 72 |
       |                     |             |    |         |      |           6F 6F 6D    |
- 8343 |  6      en.s    669 | Data        | 00 |         |   23 | 00/602E : 5C 49 27 6D |                       asc       '\I'27'm in a Steel Chamber'; 26
+ 8345 |  6      en.s    671 | Data        | 00 |         |   23 | 00/6030 : 5C 49 27 6D |                       asc       '\I'27'm in a Steel Chamber'; 26
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 74 |
       |                     |             |    |         |      |           65 65 6C 20 |
       |                     |             |    |         |      |           43 68 61 6D |
       |                     |             |    |         |      |           62 65 72    |
- 8344 |  6      en.s    670 | Data        | 00 |         |   24 | 00/6045 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Platform'; 27
+ 8346 |  6      en.s    672 | Data        | 00 |         |   24 | 00/6047 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Platform'; 27
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           50 6C 61 74 |
       |                     |             |    |         |      |           66 6F 72 6D |
- 8345 |  6      en.s    671 | Data        | 00 |         |   23 | 00/605D : 5C 49 27 6D |                       asc       '\I'27'm in a Long Corridor'; 28
+ 8347 |  6      en.s    673 | Data        | 00 |         |   23 | 00/605F : 5C 49 27 6D |                       asc       '\I'27'm in a Long Corridor'; 28
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 6F |
       |                     |             |    |         |      |           6E 67 20 43 |
       |                     |             |    |         |      |           6F 72 72 69 |
       |                     |             |    |         |      |           64 6F 72    |
- 8346 |  6      en.s    672 | Data        | 00 |         |   20 | 00/6074 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Room'; 29
+ 8348 |  6      en.s    674 | Data        | 00 |         |   20 | 00/6076 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Room'; 29
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           52 6F 6F 6D |
- 8347 |  6      en.s    673 | Data        | 00 |         |   29 | 00/6088 : 5C 49 27 6D |                       asc       '\I'27'm in a Robot Assembly Room'; 30
+ 8349 |  6      en.s    675 | Data        | 00 |         |   29 | 00/608A : 5C 49 27 6D |                       asc       '\I'27'm in a Robot Assembly Room'; 30
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 52 6F |
       |                     |             |    |         |      |           62 6F 74 20 |
@@ -10663,40 +10665,40 @@
       |                     |             |    |         |      |           6D 62 6C 79 |
       |                     |             |    |         |      |           20 52 6F 6F |
       |                     |             |    |         |      |           6D          |
- 8348 |  6      en.s    674 | Data        | 00 |         |   23 | 00/60A5 : 5C 49 27 6D |                       asc       '\I'27'm in a Long Corridor'; 31
+ 8350 |  6      en.s    676 | Data        | 00 |         |   23 | 00/60A7 : 5C 49 27 6D |                       asc       '\I'27'm in a Long Corridor'; 31
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 6F |
       |                     |             |    |         |      |           6E 67 20 43 |
       |                     |             |    |         |      |           6F 72 72 69 |
       |                     |             |    |         |      |           64 6F 72    |
- 8349 |  6      en.s    675 | Data        | 00 |         |   26 | 00/60BC : 5C 49 27 6D |                       asc       '\I'27'm in a Deserted Reactor'; 32
+ 8351 |  6      en.s    677 | Data        | 00 |         |   26 | 00/60BE : 5C 49 27 6D |                       asc       '\I'27'm in a Deserted Reactor'; 32
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 44 65 |
       |                     |             |    |         |      |           73 65 72 74 |
       |                     |             |    |         |      |           65 64 20 52 |
       |                     |             |    |         |      |           65 61 63 74 |
       |                     |             |    |         |      |           6F 72       |
- 8350 |  6      en.s    676 | Data        | 00 |         |   24 | 00/60D6 : 5C 49 27 6D |                       asc       '\I'27'm in a Decaying Field'; 33
+ 8352 |  6      en.s    678 | Data        | 00 |         |   24 | 00/60D8 : 5C 49 27 6D |                       asc       '\I'27'm in a Decaying Field'; 33
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 44 65 |
       |                     |             |    |         |      |           63 61 79 69 |
       |                     |             |    |         |      |           6E 67 20 46 |
       |                     |             |    |         |      |           69 65 6C 64 |
- 8351 |  6      en.s    677 | Data        | 00 |         |    1 | 00/60EE : 5C          |                       asc       '\'                  ; 34
- 8352 |  6      en.s    678 | Data        | 00 |         |   26 | 00/60EF : 5C 49 27 6D |                       asc       '\I'27'm in a Small White Room'; 35
+ 8353 |  6      en.s    679 | Data        | 00 |         |    1 | 00/60F0 : 5C          |                       asc       '\'                  ; 34
+ 8354 |  6      en.s    680 | Data        | 00 |         |   26 | 00/60F1 : 5C 49 27 6D |                       asc       '\I'27'm in a Small White Room'; 35
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           57 68 69 74 |
       |                     |             |    |         |      |           65 20 52 6F |
       |                     |             |    |         |      |           6F 6D       |
- 8353 |  6      en.s    679 | Data        | 00 |         |   23 | 00/6109 : 5C 49 27 6D |                       asc       '\I'27'm in a Long Corridor'; 36
+ 8355 |  6      en.s    681 | Data        | 00 |         |   23 | 00/610B : 5C 49 27 6D |                       asc       '\I'27'm in a Long Corridor'; 36
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4C 6F |
       |                     |             |    |         |      |           6E 67 20 43 |
       |                     |             |    |         |      |           6F 72 72 69 |
       |                     |             |    |         |      |           64 6F 72    |
- 8354 |  6      en.s    680 | Data        | 00 |         |   34 | 00/6120 : 5C 49 27 6D |                       asc       '\I'27'm at a Security Control Station'; 37
+ 8356 |  6      en.s    682 | Data        | 00 |         |   34 | 00/6122 : 5C 49 27 6D |                       asc       '\I'27'm at a Security Control Station'; 37
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           61 20 53 65 |
       |                     |             |    |         |      |           63 75 72 69 |
@@ -10705,19 +10707,19 @@
       |                     |             |    |         |      |           6F 6C 20 53 |
       |                     |             |    |         |      |           74 61 74 69 |
       |                     |             |    |         |      |           6F 6E       |
- 8355 |  6      en.s    681 | Data        | 00 |         |   22 | 00/6142 : 5C 49 27 6D |                       asc       '\I'27'm on a Forlorn Road'; 38
+ 8357 |  6      en.s    683 | Data        | 00 |         |   22 | 00/6144 : 5C 49 27 6D |                       asc       '\I'27'm on a Forlorn Road'; 38
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 46 6F |
       |                     |             |    |         |      |           72 6C 6F 72 |
       |                     |             |    |         |      |           6E 20 52 6F |
       |                     |             |    |         |      |           61 64       |
- 8356 |  6      en.s    682 | Data        | 00 |         |   22 | 00/6158 : 5C 49 27 6D |                       asc       '\I'27'm on a Forlorn Road'; 39
+ 8358 |  6      en.s    684 | Data        | 00 |         |   22 | 00/615A : 5C 49 27 6D |                       asc       '\I'27'm on a Forlorn Road'; 39
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 46 6F |
       |                     |             |    |         |      |           72 6C 6F 72 |
       |                     |             |    |         |      |           6E 20 52 6F |
       |                     |             |    |         |      |           61 64       |
- 8357 |  6      en.s    683 | Data        | 00 |         |   34 | 00/616E : 5C 49 27 6D |                       asc       '\I'27'm at a Security Control Station'; 40
+ 8359 |  6      en.s    685 | Data        | 00 |         |   34 | 00/6170 : 5C 49 27 6D |                       asc       '\I'27'm at a Security Control Station'; 40
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           61 20 53 65 |
       |                     |             |    |         |      |           63 75 72 69 |
@@ -10726,14 +10728,14 @@
       |                     |             |    |         |      |           6F 6C 20 53 |
       |                     |             |    |         |      |           74 61 74 69 |
       |                     |             |    |         |      |           6F 6E       |
- 8358 |  6      en.s    684 | Data        | 00 |         |   26 | 00/6190 : 5C 49 27 6D |                       asc       '\I'27'm at a Security Outpost'; 41
+ 8360 |  6      en.s    686 | Data        | 00 |         |   26 | 00/6192 : 5C 49 27 6D |                       asc       '\I'27'm at a Security Outpost'; 41
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           61 20 53 65 |
       |                     |             |    |         |      |           63 75 72 69 |
       |                     |             |    |         |      |           74 79 20 4F |
       |                     |             |    |         |      |           75 74 70 6F |
       |                     |             |    |         |      |           73 74       |
- 8359 |  6      en.s    685 | Data        | 00 |         |   33 | 00/61AA : 5C 49 27 6D |                       asc       '\I'27'm at the Outskirts of the City'; 42
+ 8361 |  6      en.s    687 | Data        | 00 |         |   33 | 00/61AC : 5C 49 27 6D |                       asc       '\I'27'm at the Outskirts of the City'; 42
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           74 68 65 20 |
       |                     |             |    |         |      |           4F 75 74 73 |
@@ -10742,105 +10744,105 @@
       |                     |             |    |         |      |           20 74 68 65 |
       |                     |             |    |         |      |           20 43 69 74 |
       |                     |             |    |         |      |           79          |
- 8360 |  6      en.s    686 | Data        | 00 |         |   19 | 00/61CB : 5C 49 27 6D |                       asc       '\I'27'm in a Storeroom'; 43
+ 8362 |  6      en.s    688 | Data        | 00 |         |   19 | 00/61CD : 5C 49 27 6D |                       asc       '\I'27'm in a Storeroom'; 43
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 74 |
       |                     |             |    |         |      |           6F 72 65 72 |
       |                     |             |    |         |      |           6F 6F 6D    |
- 8361 |  6      en.s    687 | Data        | 00 |         |   19 | 00/61DE : 5C 49 27 6D |                       asc       '\I'27'm on a Dirt Path'; 44
+ 8363 |  6      en.s    689 | Data        | 00 |         |   19 | 00/61E0 : 5C 49 27 6D |                       asc       '\I'27'm on a Dirt Path'; 44
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 44 69 |
       |                     |             |    |         |      |           72 74 20 50 |
       |                     |             |    |         |      |           61 74 68    |
- 8362 |  6      en.s    688 | Data        | 00 |         |   27 | 00/61F1 : 5C 49 27 6D |                       asc       '\I'27'm at a Construction Site'; 45
+ 8364 |  6      en.s    690 | Data        | 00 |         |   27 | 00/61F3 : 5C 49 27 6D |                       asc       '\I'27'm at a Construction Site'; 45
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           61 20 43 6F |
       |                     |             |    |         |      |           6E 73 74 72 |
       |                     |             |    |         |      |           75 63 74 69 |
       |                     |             |    |         |      |           6F 6E 20 53 |
       |                     |             |    |         |      |           69 74 65    |
- 8363 |  6      en.s    689 | Data        | 00 |         |   27 | 00/620C : 5C 49 27 6D |                       asc       '\I'27'm at a Construction Site'; 46
+ 8365 |  6      en.s    691 | Data        | 00 |         |   27 | 00/620E : 5C 49 27 6D |                       asc       '\I'27'm at a Construction Site'; 46
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           61 20 43 6F |
       |                     |             |    |         |      |           6E 73 74 72 |
       |                     |             |    |         |      |           75 63 74 69 |
       |                     |             |    |         |      |           6F 6E 20 53 |
       |                     |             |    |         |      |           69 74 65    |
- 8364 |  6      en.s    690 | Data        | 00 |         |   19 | 00/6227 : 5C 49 27 6D |                       asc       '\I'27'm on a Dirt Path'; 47
+ 8366 |  6      en.s    692 | Data        | 00 |         |   19 | 00/6229 : 5C 49 27 6D |                       asc       '\I'27'm on a Dirt Path'; 47
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 44 69 |
       |                     |             |    |         |      |           72 74 20 50 |
       |                     |             |    |         |      |           61 74 68    |
- 8365 |  6      en.s    691 | Data        | 00 |         |   20 | 00/623A : 5C 49 27 6D |                       asc       '\I'27'm in a Small Room'; 48
+ 8367 |  6      en.s    693 | Data        | 00 |         |   20 | 00/623C : 5C 49 27 6D |                       asc       '\I'27'm in a Small Room'; 48
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           52 6F 6F 6D |
- 8366 |  6      en.s    692 | Data        | 00 |         |   24 | 00/624E : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Platform'; 49
+ 8368 |  6      en.s    694 | Data        | 00 |         |   24 | 00/6250 : 5C 49 27 6D |                       asc       '\I'27'm on a Metal Platform'; 49
       |                     |             |    |         |      |           20 6F 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           50 6C 61 74 |
       |                     |             |    |         |      |           66 6F 72 6D |
- 8367 |  6      en.s    693 | Data        | 00 |         |   20 | 00/6266 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Room'; 50
+ 8369 |  6      en.s    695 | Data        | 00 |         |   20 | 00/6268 : 5C 49 27 6D |                       asc       '\I'27'm in a Small Room'; 50
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           52 6F 6F 6D |
- 8368 |  6      en.s    694 | Data        | 00 |         |   24 | 00/627A : 5C 49 27 6D |                       asc       '\I'27'm in a Metal Corridor'; 51
+ 8370 |  6      en.s    696 | Data        | 00 |         |   24 | 00/627C : 5C 49 27 6D |                       asc       '\I'27'm in a Metal Corridor'; 51
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           43 6F 72 72 |
       |                     |             |    |         |      |           69 64 6F 72 |
- 8369 |  6      en.s    695 | Data        | 00 |         |   24 | 00/6292 : 5C 49 27 6D |                       asc       '\I'27'm in a Metal Corridor'; 52
+ 8371 |  6      en.s    697 | Data        | 00 |         |   24 | 00/6294 : 5C 49 27 6D |                       asc       '\I'27'm in a Metal Corridor'; 52
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           43 6F 72 72 |
       |                     |             |    |         |      |           69 64 6F 72 |
- 8370 |  6      en.s    696 | Data        | 00 |         |   24 | 00/62AA : 5C 49 27 6D |                       asc       '\I'27'm in a Control Center'; 53
+ 8372 |  6      en.s    698 | Data        | 00 |         |   24 | 00/62AC : 5C 49 27 6D |                       asc       '\I'27'm in a Control Center'; 53
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 43 6F |
       |                     |             |    |         |      |           6E 74 72 6F |
       |                     |             |    |         |      |           6C 20 43 65 |
       |                     |             |    |         |      |           6E 74 65 72 |
- 8371 |  6      en.s    697 | Data        | 00 |         |   24 | 00/62C2 : 5C 49 27 6D |                       asc       '\I'27'm in a Metal Corridor'; 54
+ 8373 |  6      en.s    699 | Data        | 00 |         |   24 | 00/62C4 : 5C 49 27 6D |                       asc       '\I'27'm in a Metal Corridor'; 54
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4D 65 |
       |                     |             |    |         |      |           74 61 6C 20 |
       |                     |             |    |         |      |           43 6F 72 72 |
       |                     |             |    |         |      |           69 64 6F 72 |
- 8372 |  6      en.s    698 | Data        | 00 |         |   25 | 00/62DA : 5C 49 27 6D |                       asc       '\I'27'm in a Small Lead Room'; 55
+ 8374 |  6      en.s    700 | Data        | 00 |         |   25 | 00/62DC : 5C 49 27 6D |                       asc       '\I'27'm in a Small Lead Room'; 55
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 6D |
       |                     |             |    |         |      |           61 6C 6C 20 |
       |                     |             |    |         |      |           4C 65 61 64 |
       |                     |             |    |         |      |           20 52 6F 6F |
       |                     |             |    |         |      |           6D          |
- 8373 |  6      en.s    699 | Data        | 00 |         |   21 | 00/62F3 : 5C 49 27 6D |                       asc       '\I'27'm in a Force Field'; 56
+ 8375 |  6      en.s    701 | Data        | 00 |         |   21 | 00/62F5 : 5C 49 27 6D |                       asc       '\I'27'm in a Force Field'; 56
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 46 6F |
       |                     |             |    |         |      |           72 63 65 20 |
       |                     |             |    |         |      |           46 69 65 6C |
       |                     |             |    |         |      |           64          |
- 8374 |  6      en.s    700 | Data        | 00 |         |   16 | 00/6308 : 5C 49 27 6D |                       asc       '\I'27'm in a Hangar'; 57
+ 8376 |  6      en.s    702 | Data        | 00 |         |   16 | 00/630A : 5C 49 27 6D |                       asc       '\I'27'm in a Hangar'; 57
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 48 61 |
       |                     |             |    |         |      |           6E 67 61 72 |
- 8375 |  6      en.s    701 | Data        | 00 |         |   23 | 00/6318 : 5C 49 27 6D |                       asc       '\I'27'm in a Steel Chamber'; 58
+ 8377 |  6      en.s    703 | Data        | 00 |         |   23 | 00/631A : 5C 49 27 6D |                       asc       '\I'27'm in a Steel Chamber'; 58
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 74 |
       |                     |             |    |         |      |           65 65 6C 20 |
       |                     |             |    |         |      |           43 68 61 6D |
       |                     |             |    |         |      |           62 65 72    |
- 8376 |  6      en.s    702 | Data        | 00 |         |   24 | 00/632F : 5C 49 27 6D |                       asc       '\I'27'm in a Narrow Passage'; 59
+ 8378 |  6      en.s    704 | Data        | 00 |         |   24 | 00/6331 : 5C 49 27 6D |                       asc       '\I'27'm in a Narrow Passage'; 59
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4E 61 |
       |                     |             |    |         |      |           72 72 6F 77 |
       |                     |             |    |         |      |           20 50 61 73 |
       |                     |             |    |         |      |           73 61 67 65 |
- 8377 |  6      en.s    703 | Data        | 00 |         |   34 | 00/6347 : 5C 49 27 6D |                       asc       '\I'27'm at the Launch Control Station'; 60
+ 8379 |  6      en.s    705 | Data        | 00 |         |   34 | 00/6349 : 5C 49 27 6D |                       asc       '\I'27'm at the Launch Control Station'; 60
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           74 68 65 20 |
       |                     |             |    |         |      |           4C 61 75 6E |
@@ -10849,34 +10851,34 @@
       |                     |             |    |         |      |           6F 6C 20 53 |
       |                     |             |    |         |      |           74 61 74 69 |
       |                     |             |    |         |      |           6F 6E       |
- 8378 |  6      en.s    704 | Data        | 00 |         |   20 | 00/6369 : 5C 49 27 6D |                       asc       '\I'27'm in a Space Ship'; 61
+ 8380 |  6      en.s    706 | Data        | 00 |         |   20 | 00/636B : 5C 49 27 6D |                       asc       '\I'27'm in a Space Ship'; 61
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 70 |
       |                     |             |    |         |      |           61 63 65 20 |
       |                     |             |    |         |      |           53 68 69 70 |
- 8379 |  6      en.s    705 | Data        | 00 |         |   20 | 00/637D : 5C 49 27 6D |                       asc       '\I'27'm in a Space Ship'; 62
+ 8381 |  6      en.s    707 | Data        | 00 |         |   20 | 00/637F : 5C 49 27 6D |                       asc       '\I'27'm in a Space Ship'; 62
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 70 |
       |                     |             |    |         |      |           61 63 65 20 |
       |                     |             |    |         |      |           53 68 69 70 |
- 8380 |  6      en.s    706 | Data        | 00 |         |   20 | 00/6391 : 5C 49 27 6D |                       asc       '\I'27'm in a Space Ship'; 63
+ 8382 |  6      en.s    708 | Data        | 00 |         |   20 | 00/6393 : 5C 49 27 6D |                       asc       '\I'27'm in a Space Ship'; 63
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 53 70 |
       |                     |             |    |         |      |           61 63 65 20 |
       |                     |             |    |         |      |           53 68 69 70 |
- 8381 |  6      en.s    707 | Data        | 00 |         |   21 | 00/63A5 : 5C 49 27 6D |                       asc       '\I'27'm in a Narrow Vent'; 64
+ 8383 |  6      en.s    709 | Data        | 00 |         |   21 | 00/63A7 : 5C 49 27 6D |                       asc       '\I'27'm in a Narrow Vent'; 64
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4E 61 |
       |                     |             |    |         |      |           72 72 6F 77 |
       |                     |             |    |         |      |           20 56 65 6E |
       |                     |             |    |         |      |           74          |
- 8382 |  6      en.s    708 | Data        | 00 |         |   21 | 00/63BA : 5C 49 27 6D |                       asc       '\I'27'm in a Narrow Vent'; 65
+ 8384 |  6      en.s    710 | Data        | 00 |         |   21 | 00/63BC : 5C 49 27 6D |                       asc       '\I'27'm in a Narrow Vent'; 65
       |                     |             |    |         |      |           20 69 6E 20 |
       |                     |             |    |         |      |           61 20 4E 61 |
       |                     |             |    |         |      |           72 72 6F 77 |
       |                     |             |    |         |      |           20 56 65 6E |
       |                     |             |    |         |      |           74          |
- 8383 |  6      en.s    709 | Data        | 00 |         |   31 | 00/63CF : 5C 49 27 6D |                       asc       '\I'27'm at the Outskirts of a City'; 66
+ 8385 |  6      en.s    711 | Data        | 00 |         |   31 | 00/63D1 : 5C 49 27 6D |                       asc       '\I'27'm at the Outskirts of a City'; 66
       |                     |             |    |         |      |           20 61 74 20 |
       |                     |             |    |         |      |           74 68 65 20 |
       |                     |             |    |         |      |           4F 75 74 73 |
@@ -10884,9 +10886,10 @@
       |                     |             |    |         |      |           73 20 6F 66 |
       |                     |             |    |         |      |           20 61 20 43 |
       |                     |             |    |         |      |           69 74 79    |
- 8384 |  6      en.s    710 | Data        | 00 |         |    1 | 00/63EE : 00          |                       dfb       {$00}                
- 8385 |  6      en.s    711 | Empty       | 00 |         |    0 | 00/63EF               |                                                      
- 8386 |  1    iigs.s    961 | Empty       | 00 |         |    0 | 00/63EF               |                                                      
- 8387 |  1    iigs.s    962 | Comment     | 00 |         |    0 | 00/63EF               | *--- It's the end
- 8388 |  1    iigs.s    963 | Empty       | 00 |         |    0 | 00/63EF               |                                                      
+ 8386 |  6      en.s    712 | Data        | 00 |         |    1 | 00/63F0 : 5C          |                       asc       '\'                  
+ 8387 |  6      en.s    713 | Data        | 00 |         |    1 | 00/63F1 : 00          |                       dfb       {$00}                
+ 8388 |  6      en.s    714 | Empty       | 00 |         |    0 | 00/63F2               |                                                      
+ 8389 |  1    iigs.s    961 | Empty       | 00 |         |    0 | 00/63F2               |                                                      
+ 8390 |  1    iigs.s    962 | Comment     | 00 |         |    0 | 00/63F2               | *--- It's the end
+ 8391 |  1    iigs.s    963 | Empty       | 00 |         |    0 | 00/63F2               |                                                      
 ------+---------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

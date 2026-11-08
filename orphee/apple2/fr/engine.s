@@ -1718,33 +1718,33 @@ char9F	hex	00099000
 
 *--- Amstrad palette
 
-amsPAL320	dw	$0000	;  0 black
-	dw	$0008	;  1 blue
-	dw	$000F	;  2 bright blue
-	dw	$0800	;  3 red
-	dw	$0808	;  4 magenta
-	dw	$080F	;  5 mauve
-	dw	$0F00	;  6 bright red
-	dw	$0F08	;  7 purple
-	dw	$0F0F	;  8 bright magenta
-	dw	$0080	;  9 green
-	dw	$0088	; 10 cyan
-	dw	$008F	; 11 sky blue
-	dw	$0880	; 12 yellow
-	dw	$0888	; 13 white
-	dw	$088F	; 14 pastel blue
-	dw	$0F80	; 15 orange
-	dw	$0F88	; 16 pink
-	dw	$0F8F	; 17 pastel magenta
-	dw	$00F0	; 18 bright green
-	dw	$00F8	; 19 sea green
-	dw	$00FF	; 20 bright cyan
-	dw	$08F0	; 21 lime
-	dw	$08F8	; 22 pastel green
-	dw	$08FF	; 23 pastel cyan
-	dw	$0FF0	; 24 bright yellow
-	dw	$0FF8	; 25 pastel yellow
-	dw	$0FFF	; 26 bright white
+amsPAL320	dw	$0000	;  0 00+ 00+ black
+	dw	$0008	;  1 04- 02+ blue
+	dw	$000F	;  2 04+ 06+ bright blue
+	dw	$0800	;  3 07- 01- red
+	dw	$0808	;  4 03+ 03- magenta
+	dw	$080F	;  5  mauve
+	dw	$0F00	;  6  bright red
+	dw	$0F08	;  7  purple
+	dw	$0F0F	;  8  bright magenta
+	dw	$0080	;  9  green
+	dw	$0088	; 10  cyan
+	dw	$008F	; 11  sky blue
+	dw	$0880	; 12  yellow
+	dw	$0888	; 13  white
+	dw	$088F	; 14  pastel blue
+	dw	$0F80	; 15  orange
+	dw	$0F88	; 16  pink
+	dw	$0F8F	; 17  pastel magenta
+	dw	$00F0	; 18  bright green
+	dw	$00F8	; 19  sea green
+	dw	$00FF	; 20  bright cyan
+	dw	$08F0	; 21  lime
+	dw	$08F8	; 22  pastel green
+	dw	$08FF	; 23  pastel cyan
+	dw	$0FF0	; 24  bright yellow
+	dw	$0FF8	; 25  pastel yellow
+	dw	$0FFF	; 26 15 15 bright white
 
 *--- 320 Palette
 
@@ -1808,22 +1808,22 @@ whitePATTERN	ds	32,$ff
 
 *--- Border table
 
-tblBORDER	dw	0	;  0= 'Black' color message number
-	dw	2	;  1= 'Deep Red' color message number
-	dw	6	;  2= 'Dark Blue' color message number
-	dw	1	;  3= 'Purple' color message number
-	dw	3	;  4= 'Dark Green' color message number
-	dw	3	;  5= 'Dark Gray' color message number
-	dw	1	;  6= 'Medium Blue' color message number
-	dw	3	;  7= 'Light Blue' color message number
-	dw	8	;  8= 'Brown' color message number
-	dw	4	;  9= 'Orange' color message number
-	dw	8	;  A= 'Light Gray' color message number
-	dw	6	;  B= 'Pink' color message number
-	dw	1	;  C= 'Light Green' color message number3
-	dw	5	;  D= 'Yellow' color message number
-	dw	6	;  E= 'Aquamarine' color message number
-	dw	9	;  F= 'White' color message number
+tblBORDER	dw	0	;  0 'Black' color message number
+	dw	2	;  1 'Deep Red' color message number
+	dw	6	;  2 'Dark Blue' color message number
+	dw	1	;  3 'Purple' color message number
+	dw	3	;  4 'Dark Green' color message number
+	dw	3	;  5 'Dark Gray' color message number
+	dw	1	;  6 'Medium Blue' color message number
+	dw	3	;  7 'Light Blue' color message number
+	dw	8	;  8 'Brown' color message number
+	dw	4	;  9 'Orange' color message number
+	dw	8	;  A 'Light Gray' color message number
+	dw	6	;  B 'Pink' color message number
+	dw	1	;  C 'Light Green' color message number3
+	dw	5	;  D 'Yellow' color message number
+	dw	6	;  E 'Aquamarine' color message number
+	dw	9	;  F 'White' color message number
 	dw	11	; 10
 	dw	11	; 11
 	dw	12	; 12

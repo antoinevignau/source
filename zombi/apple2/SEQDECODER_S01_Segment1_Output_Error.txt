@@ -1,0 +1,220 @@
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File            Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 seqdecoder.s      1 | Comment     | 11 |         |   -1 | 00/FFFF               | *
+    2 |  1 seqdecoder.s      2 | Comment     | 11 |         |   -1 | 00/FFFF               | * SEQ DECODER
+    3 |  1 seqdecoder.s      3 | Comment     | 11 |         |   -1 | 00/FFFF               | *
+    4 |  1 seqdecoder.s      4 | Comment     | 11 |         |   -1 | 00/FFFF               | * (c) 2026, Brutal Deluxe Software
+    5 |  1 seqdecoder.s      5 | Comment     | 11 |         |   -1 | 00/FFFF               | * Antoine Vignau & Olivier Zardini
+    6 |  1 seqdecoder.s      6 | Comment     | 11 |         |   -1 | 00/FFFF               | *
+    7 |  1 seqdecoder.s      7 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+    8 |  1 seqdecoder.s      8 | Directive   | 11 |         |   -1 | 00/FFFF               |                org   $1000            
+    9 |  1 seqdecoder.s      9 | Directive   | 11 |         |   -1 | 00/FFFF               |                lst   off              
+   10 |  1 seqdecoder.s     10 | Directive   | 11 |         |   -1 | 00/FFFF               |                typ   BIN              
+   11 |  1 seqdecoder.s     11 | Directive   | 11 |         |   -1 | 00/FFFF               |                dsk   SEQDECODER       
+   12 |  1 seqdecoder.s     12 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   13 |  1 seqdecoder.s     13 | Comment     | 11 |         |   -1 | 00/FFFF               | *-------------------------------
+   14 |  1 seqdecoder.s     14 | Comment     | 11 |         |   -1 | 00/FFFF               | * DIRECT PAGE
+   15 |  1 seqdecoder.s     15 | Comment     | 11 |         |   -1 | 00/FFFF               | *-------------------------------
+   16 |  1 seqdecoder.s     16 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   17 |  1 seqdecoder.s     17 | Equivalence | 11 |         |   -1 | 00/FFFF               | dpFROM         =     $00              ; start of .SEQ
+   18 |  1 seqdecoder.s     18 | Equivalence | 11 |         |   -1 | 00/FFFF               | dpTO           =     {$00}+4          ; SHR screen
+   19 |  1 seqdecoder.s     19 | Equivalence | 11 |         |   -1 | 00/FFFF               | dpHEADER       =     {{$00}+4}+4      ; points to SEQ header
+   20 |  1 seqdecoder.s     20 | Equivalence | 11 |         |   -1 | 00/FFFF               | dpFLICKER      =     {{{$00}+4}+4}+4  ; points to a FLICKER entry
+   21 |  1 seqdecoder.s     21 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   22 |  1 seqdecoder.s     22 | Comment     | 11 |         |   -1 | 00/FFFF               | *-------------------------------
+   23 |  1 seqdecoder.s     23 | Comment     | 11 |         |   -1 | 00/FFFF               | * EQUATES
+   24 |  1 seqdecoder.s     24 | Comment     | 11 |         |   -1 | 00/FFFF               | *-------------------------------
+   25 |  1 seqdecoder.s     25 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   26 |  1 seqdecoder.s     26 | Equivalence | 11 |         |   -1 | 00/FFFF               | ptrSEQ         =     $020000          
+   27 |  1 seqdecoder.s     27 | Equivalence | 11 |         |   -1 | 00/FFFF               | ptrSCREEN      =     $e12000          
+   28 |  1 seqdecoder.s     28 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   29 |  1 seqdecoder.s     29 | Equivalence | 11 |         |   -1 | 00/FFFF               | header_size    =     $80              
+   30 |  1 seqdecoder.s     30 | Equivalence | 11 |         |   -1 | 00/FFFF               | end_of_data    =     $ffff            
+   31 |  1 seqdecoder.s     31 | Equivalence | 11 |         |   -1 | 00/FFFF               | shr_width      =     160              
+   32 |  1 seqdecoder.s     32 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   33 |  1 seqdecoder.s     33 | Equivalence | 11 |         |   -1 | 00/FFFF               | fHEADER        =     $0000            
+   34 |  1 seqdecoder.s     34 | Equivalence | 11 |         |   -1 | 00/FFFF               | fPALETTE       =     {$0000}+2        
+   35 |  1 seqdecoder.s     35 | Equivalence | 11 |         |   -1 | 00/FFFF               | fWIDTH         =     {$0000}+58       
+   36 |  1 seqdecoder.s     36 | Equivalence | 11 |         |   -1 | 00/FFFF               | fHEIGHT        =     {$0000}+60       
+   37 |  1 seqdecoder.s     37 | Equivalence | 11 |         |   -1 | 00/FFFF               | fBYTES         =     {$0000}+66       ; if word, +64 if long
+   38 |  1 seqdecoder.s     38 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   39 |  1 seqdecoder.s     39 | Equivalence | 11 |         |   -1 | 00/FFFF               | KBD            =     $C000            
+   40 |  1 seqdecoder.s     40 | Equivalence | 11 |         |   -1 | 00/FFFF               | KBDSTROBE      =     $C010            
+   41 |  1 seqdecoder.s     41 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   42 |  1 seqdecoder.s     42 | Comment     | 11 |         |   -1 | 00/FFFF               | *-------------------------------
+   43 |  1 seqdecoder.s     43 | Comment     | 11 |         |   -1 | 00/FFFF               | * CODE
+   44 |  1 seqdecoder.s     44 | Comment     | 11 |         |   -1 | 00/FFFF               | *-------------------------------
+   45 |  1 seqdecoder.s     45 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+   46 |  1 seqdecoder.s     46 | Code        | 11 |         |   -1 | 00/FFFF : 00          |                clc                    
+   47 |  1 seqdecoder.s     47 | Code        | 11 |         |   -1 | 00/FFFF : 00          |                xce                    
+   48 |  1 seqdecoder.s     48 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                rep   #$30             
+   49 |  1 seqdecoder.s     49 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   50 |  1 seqdecoder.s     50 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   #{$020000}       
+   51 |  1 seqdecoder.s     51 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {$00}            
+   52 |  1 seqdecoder.s     52 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   #^{$020000}      
+   53 |  1 seqdecoder.s     53 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {$00}+2          
+   54 |  1 seqdecoder.s     54 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   55 |  1 seqdecoder.s     55 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   #{$e12000}       
+   56 |  1 seqdecoder.s     56 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{$00}+4}        
+   57 |  1 seqdecoder.s     57 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   #^{$e12000}      
+   58 |  1 seqdecoder.s     58 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{$00}+4}+2      
+   59 |  1 seqdecoder.s     59 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   60 |  1 seqdecoder.s     60 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   {$00}            ; points to the header
+   61 |  1 seqdecoder.s     61 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                clc                    ; list of FLICKER pointers
+   62 |  1 seqdecoder.s     62 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   #{$80}           
+   63 |  1 seqdecoder.s     63 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{$00}+4}+4}    
+   64 |  1 seqdecoder.s     64 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   {$00}+2          
+   65 |  1 seqdecoder.s     65 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   #0               
+   66 |  1 seqdecoder.s     66 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{$00}+4}+4}+2  
+   67 |  1 seqdecoder.s     67 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   68 |  1 seqdecoder.s     68 | Comment     | 00 |         |   -1 | 00/FFFF               | *---------------
+   69 |  1 seqdecoder.s     69 | Comment     | 00 |         |   -1 | 00/FFFF               | * Inits
+   70 |  1 seqdecoder.s     70 | Comment     | 00 |         |   -1 | 00/FFFF               | *---------------
+   71 |  1 seqdecoder.s     71 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   72 |  1 seqdecoder.s     72 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                stz   nbENTRIES        ; start with first FLICKER
+   73 |  1 seqdecoder.s     73 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   74 |  1 seqdecoder.s     74 | Code        | 00 |         |   -1 | 00/FFFF : 00          | ozunid_1       lda   nbENTRIES        ; get entry pointer
+   75 |  1 seqdecoder.s     75 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                asl                    
+   76 |  1 seqdecoder.s     76 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                asl                    
+   77 |  1 seqdecoder.s     77 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                tay                    
+   78 |  1 seqdecoder.s     78 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   [{{{$00}+4}+4}],y; from 68000 to 65816
+   79 |  1 seqdecoder.s     79 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                xba                    
+   80 |  1 seqdecoder.s     80 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                tax                    
+   81 |  1 seqdecoder.s     81 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                iny                    
+   82 |  1 seqdecoder.s     82 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                iny                    
+   83 |  1 seqdecoder.s     83 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   [{{{$00}+4}+4}],y
+   84 |  1 seqdecoder.s     84 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                xba                    
+   85 |  1 seqdecoder.s     85 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   86 |  1 seqdecoder.s     86 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                cpx   #{$ffff}         ; exit if $FFFF0000
+   87 |  1 seqdecoder.s     87 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                bne   seqHANDLE        
+   88 |  1 seqdecoder.s     88 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                cmp   #0               
+   89 |  1 seqdecoder.s     89 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                beq   seqEND           
+   90 |  1 seqdecoder.s     90 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   91 |  1 seqdecoder.s     91 | Code        | 00 |         |   -1 | 00/FFFF : 00          | seqHANDLE      clc                    
+   92 |  1 seqdecoder.s     92 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   {$00}            
+   93 |  1 seqdecoder.s     93 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{{$00}+4}+4}+4}
+   94 |  1 seqdecoder.s     94 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                txa                    
+   95 |  1 seqdecoder.s     95 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   {$00}+2          
+   96 |  1 seqdecoder.s     96 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{{$00}+4}+4}+4}+2
+   97 |  1 seqdecoder.s     97 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+   98 |  1 seqdecoder.s     98 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                jsr   handleFLICKER    
+   99 |  1 seqdecoder.s     99 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  100 |  1 seqdecoder.s    100 | Code        | 00 |         |   -1 | 00/FFFF : 00          | ozunid_2       lda   {$C000}-1        
+  101 |  1 seqdecoder.s    101 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                bpl   ozunid_2         
+  102 |  1 seqdecoder.s    102 | Code        | 10 |         |   -1 | 00/FFFF : 00          |                sep   #$20             
+  103 |  1 seqdecoder.s    103 | Code        | 10 |         |   -1 | 00/FFFF : 00          |                sta   {$C010}          
+  104 |  1 seqdecoder.s    104 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                rep   #$20             
+  105 |  1 seqdecoder.s    105 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  106 |  1 seqdecoder.s    106 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                inc   nbENTRIES        
+  107 |  1 seqdecoder.s    107 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                bra   ozunid_2         
+  108 |  1 seqdecoder.s    108 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  109 |  1 seqdecoder.s    109 | Code        | 00 |         |   -1 | 00/FFFF : 00          | seqEND         sec                    
+  110 |  1 seqdecoder.s    110 | Code        | 11 |         |   -1 | 00/FFFF : 00          |                xce                    
+  111 |  1 seqdecoder.s    111 | Code        | 11 |         |   -1 | 00/FFFF : 00          |                sep   #$30             
+  112 |  1 seqdecoder.s    112 | Code        | 11 |         |   -1 | 00/FFFF : 00          |                rts                    
+  113 |  1 seqdecoder.s    113 | Empty       | 11 |         |   -1 | 00/FFFF               |                                       
+  114 |  1 seqdecoder.s    114 | Directive   | 00 |         |   -1 | 00/FFFF               |                mx    %00              
+  115 |  1 seqdecoder.s    115 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  116 |  1 seqdecoder.s    116 | Comment     | 00 |         |   -1 | 00/FFFF               | *-------------------------------
+  117 |  1 seqdecoder.s    117 | Comment     | 00 |         |   -1 | 00/FFFF               | * HANDLE FLICKER
+  118 |  1 seqdecoder.s    118 | Comment     | 00 |         |   -1 | 00/FFFF               | *-------------------------------
+  119 |  1 seqdecoder.s    119 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  120 |  1 seqdecoder.s    120 | Equivalence | 00 |         |   -1 | 00/FFFF               | fHEADER        =     $0000            
+  121 |  1 seqdecoder.s    121 | Equivalence | 00 |         |   -1 | 00/FFFF               | fPALETTE       =     {$0000}+2        
+  122 |  1 seqdecoder.s    122 | Equivalence | 00 |         |   -1 | 00/FFFF               | fWIDTH         =     {$0000}+58       
+  123 |  1 seqdecoder.s    123 | Equivalence | 00 |         |   -1 | 00/FFFF               | fHEIGHT        =     {$0000}+60       
+  124 |  1 seqdecoder.s    124 | Equivalence | 00 |         |   -1 | 00/FFFF               | fBYTES         =     {$0000}+66       ; if word, +64 if long
+  125 |  1 seqdecoder.s    125 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  126 |  1 seqdecoder.s    126 | Code        | 00 |         |   -1 | 00/FFFF : 00          | handleFLICKER  ldy   #{$0000}         ; does flicker start with $FFFF
+  127 |  1 seqdecoder.s    127 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   [{{{{$00}+4}+4}+4}],y
+  128 |  1 seqdecoder.s    128 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                cmp   #{$ffff}         
+  129 |  1 seqdecoder.s    129 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                beq   hf_1             ; yes, handle it
+  130 |  1 seqdecoder.s    130 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                rts                    ; no, exit
+  131 |  1 seqdecoder.s    131 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  132 |  1 seqdecoder.s    132 | Code        | 00 |         |   -1 | 00/FFFF : 00          | hf_1           ldy   #{{$0000}+2}     ; recopy palette
+  133 |  1 seqdecoder.s    133 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                ldx   #0               
+  134 |  1 seqdecoder.s    134 | Code        | 00 |         |   -1 | 00/FFFF : 00          | ozunid_3       lda   [{{{{$00}+4}+4}+4}],y
+  135 |  1 seqdecoder.s    135 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                xba                    
+  136 |  1 seqdecoder.s    136 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                stal  $e19e00,x        
+  137 |  1 seqdecoder.s    137 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                iny                    
+  138 |  1 seqdecoder.s    138 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                iny                    
+  139 |  1 seqdecoder.s    139 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                inx                    
+  140 |  1 seqdecoder.s    140 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                inx                    
+  141 |  1 seqdecoder.s    141 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                cpx   #32              
+  142 |  1 seqdecoder.s    142 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                bcc   ozunid_3         
+  143 |  1 seqdecoder.s    143 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  144 |  1 seqdecoder.s    144 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                ldy   #{{$0000}+58}    ; the width...
+  145 |  1 seqdecoder.s    145 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   [{{{{$00}+4}+4}+4}],y
+  146 |  1 seqdecoder.s    146 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                xba                    
+  147 |  1 seqdecoder.s    147 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   pxWIDTH          ; in pixels
+  148 |  1 seqdecoder.s    148 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lsr                    
+  149 |  1 seqdecoder.s    149 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   fliWIDTH         ; in bytes
+  150 |  1 seqdecoder.s    150 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  151 |  1 seqdecoder.s    151 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                ldy   #{{$0000}+60}    ; the height...
+  152 |  1 seqdecoder.s    152 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   [{{{{$00}+4}+4}+4}],y
+  153 |  1 seqdecoder.s    153 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                xba                    
+  154 |  1 seqdecoder.s    154 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   pxHEIGHT         ; in pixels
+  155 |  1 seqdecoder.s    155 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   fliHEIGHT        ; in bytes
+  156 |  1 seqdecoder.s    156 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  157 |  1 seqdecoder.s    157 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                ldy   #{{$0000}+66}    ; the size...
+  158 |  1 seqdecoder.s    158 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   [{{{{$00}+4}+4}+4}],y
+  159 |  1 seqdecoder.s    159 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                xba                    
+  160 |  1 seqdecoder.s    160 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   fliSIZE          ; in bytes
+  161 |  1 seqdecoder.s    161 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  162 |  1 seqdecoder.s    162 | Comment     | 00 |         |   -1 | 00/FFFF               | *-------------------------------
+  163 |  1 seqdecoder.s    163 | Comment     | 00 |         |   -1 | 00/FFFF               | * UNPACK FLICKER DATA
+  164 |  1 seqdecoder.s    164 | Comment     | 00 |         |   -1 | 00/FFFF               | *-------------------------------
+  165 |  1 seqdecoder.s    165 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  166 |  1 seqdecoder.s    166 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   {{{{$00}+4}+4}+4}; points to data
+  167 |  1 seqdecoder.s    167 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                clc                    
+  168 |  1 seqdecoder.s    168 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   #{$80}           
+  169 |  1 seqdecoder.s    169 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{{$00}+4}+4}+4}
+  170 |  1 seqdecoder.s    170 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   {{{{$00}+4}+4}+4}+2
+  171 |  1 seqdecoder.s    171 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   #0               
+  172 |  1 seqdecoder.s    172 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{{$00}+4}+4}+4}+2
+  173 |  1 seqdecoder.s    173 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  174 |  1 seqdecoder.s    174 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                ldx   #0               ; start at line 0
+  175 |  1 seqdecoder.s    175 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  176 |  1 seqdecoder.s    176 | Code        | 00 |         |   -1 | 00/FFFF : 00          | loopOUTER      ldy   #0               ; copy a line (in 16-bit mode)
+  177 |  1 seqdecoder.s    177 | Code        | 00 |         |   -1 | 00/FFFF : 00          | ozunid_4       lda   [{{{{$00}+4}+4}+4}],y
+  178 |  1 seqdecoder.s    178 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   [dpSCREEN],y     
+  179 |  1 seqdecoder.s    179 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                iny                    
+  180 |  1 seqdecoder.s    180 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                cpy   fliWIDTH         
+  181 |  1 seqdecoder.s    181 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                bcc   ozunid_4         
+  182 |  1 seqdecoder.s    182 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  183 |  1 seqdecoder.s    183 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   {{{{$00}+4}+4}+4}; next flicker line
+  184 |  1 seqdecoder.s    184 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                clc                    
+  185 |  1 seqdecoder.s    185 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   fliWIDTH         
+  186 |  1 seqdecoder.s    186 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{{$00}+4}+4}+4}
+  187 |  1 seqdecoder.s    187 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   {{{{$00}+4}+4}+4}+2
+  188 |  1 seqdecoder.s    188 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   #0               
+  189 |  1 seqdecoder.s    189 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   {{{{$00}+4}+4}+4}+2
+  190 |  1 seqdecoder.s    190 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  191 |  1 seqdecoder.s    191 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   #{160}           ; next SHR line
+  192 |  1 seqdecoder.s    192 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sec                    
+  193 |  1 seqdecoder.s    193 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sbc   fliWIDTH         
+  194 |  1 seqdecoder.s    194 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   dpSCREEN         
+  195 |  1 seqdecoder.s    195 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   dpSCREEN         
+  196 |  1 seqdecoder.s    196 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                lda   dpSCREEN+2       
+  197 |  1 seqdecoder.s    197 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                adc   #0               
+  198 |  1 seqdecoder.s    198 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                sta   dpSCREEN+2       
+  199 |  1 seqdecoder.s    199 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  200 |  1 seqdecoder.s    200 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                inx                    ; next line
+  201 |  1 seqdecoder.s    201 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                cpx   fliHEIGHT        
+  202 |  1 seqdecoder.s    202 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                bcc   loopOUTER        
+  203 |  1 seqdecoder.s    203 | Code        | 00 |         |   -1 | 00/FFFF : 00          |                rts                    
+  204 |  1 seqdecoder.s    204 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  205 |  1 seqdecoder.s    205 | Comment     | 00 |         |   -1 | 00/FFFF               | *-------------------------------
+  206 |  1 seqdecoder.s    206 | Comment     | 00 |         |   -1 | 00/FFFF               | * DATA
+  207 |  1 seqdecoder.s    207 | Comment     | 00 |         |   -1 | 00/FFFF               | *-------------------------------
+  208 |  1 seqdecoder.s    208 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  209 |  1 seqdecoder.s    209 | Data        | 00 |         |   -1 | 00/FFFF :             | nbENTRIES      ds    2                
+  210 |  1 seqdecoder.s    210 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  211 |  1 seqdecoder.s    211 | Data        | 00 |         |   -1 | 00/FFFF :             | pxWIDTH        ds    2                
+  212 |  1 seqdecoder.s    212 | Data        | 00 |         |   -1 | 00/FFFF :             | pxHEIGHT       ds    2                
+  213 |  1 seqdecoder.s    213 | Empty       | 00 |         |   -1 | 00/FFFF               |                                       
+  214 |  1 seqdecoder.s    214 | Data        | 00 |         |   -1 | 00/FFFF :             | fliWIDTH       ds    2                
+  215 |  1 seqdecoder.s    215 | Data        | 00 |         |   -1 | 00/FFFF :             | fliHEIGHT      ds    2                
+  216 |  1 seqdecoder.s    216 | Data        | 00 |         |   -1 | 00/FFFF :             | fliSIZE        ds    2                
+------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

@@ -41,7 +41,7 @@ fPALETTE	=	fHEADER+4
 fWIDTH	=	fHEADER+58
 fHEIGHT	=	fHEADER+60
 fCOMPRESS	=	fHEADER+62	; 1 if compressed
-fBYTES	=	fHEADER+66	; if word, +64 if long
+fBYTES	=	fHEADER+66	; if word, +64 if long (it is a long)
 
 KBD	=	$C000
 KBDSTROBE	=	$C010
@@ -261,8 +261,9 @@ noGREY
 	adc	#0
 	sta	dpFLICKER+2
 
-	jsr	doUNCOMPRESS
-
+	jsr	doUNPACK
+	rts
+	
 *--- Right part
 
 	ldy	#0
@@ -287,13 +288,13 @@ noGREY
 	adc	#^ptrSCREEN
 	sta	dpPIC+2
 	
-	jsr	doUNCOMPRESS
+	jsr	doUNPACK
 
 	rts
 
 *---
 
-	lda	fliCOMPRESS	; how to unpack now?
+doUNPACK	lda	fliCOMPRESS	; how to unpack now?
 	bne	doCOMPRESS
 
 *- Image non compressee ILBM
@@ -304,55 +305,28 @@ doUNCOMPRESS
 	bcs	]lp
 	rts
 
-doCOMPRESS
-*	jmp	unpIFF60
-
-*- Image compressee PBM (1-8 plans)
-
-unpIFF80	jsr	unpIFF90
-	cmp	#$81
-	bcc	unpIFF85
-
-	eor	#$ff
-	inc	
-	sta	IFFcnt
-	jsr	unpIFF90
-]lp	lda	IFFb
-	jsr	unpIFFy20
-	bcc	unpIFF81
-	dec	IFFcnt
-	bpl	]lp
-	bra	unpIFF80
-unpIFF81	rts
-
-unpIFF85	sta	IFFcnt
-]lp	jsr	unpIFF90
-	jsr	unpIFFy20
-	bcc	unpIFF86
-	dec	IFFcnt
-	bpl	]lp
-	bra	unpIFF80
-unpIFF86	rts
-
 *- Image compressee ILBM (1-8 plans)
 
+doCOMPRESS
+
 unpIFF60	jsr	unpIFF90
-	cmp	#$81
+	cmp	#$80
 	bcc	unpIFF70
 
-	eor	#$ff
-	inc
-	sta	IFFcnt
 	jsr	unpIFF90
+	and	#$ff
+	sta	IFFcnt
+	jsr	unpIFF90W
 ]lp	lda	IFFb
-	jsr	unpIFFy
+	jsr	unpIFFyW
 	bcc	unpIFF61
 	dec	IFFcnt
 	bpl	]lp
 	bra	unpIFF60
 unpIFF61	rts
 
-unpIFF70	sta	IFFcnt
+unpIFF70	jsr	unpIFF90
+	sta	IFFcnt
 ]lp	jsr	unpIFF90
 	jsr	unpIFFy
 	bcc	unpIFF71
@@ -362,6 +336,14 @@ unpIFF70	sta	IFFcnt
 unpIFF71	rts
 
 *---
+
+unpIFFyW	sta	tempTABLE,y
+	iny
+	iny
+	cpy	fliWIDTH
+	bcs	unpIFFy1
+	sec
+	rts
 
 unpIFFy	sta	tempTABLE,y
 	iny
@@ -468,7 +450,7 @@ unpIFFy13	ldx	#0
 	cpx	picWIDTH
 	bcc	]lp
 
-	rep	#$20
+unpIFFyNEXT	rep	#$20
 	inc	numLIGNE
 	lda	numLIGNE
 	cmp	picHEIGHT
@@ -502,6 +484,19 @@ unpIFF90	lda	[dpFLICKER]
 	bne	unpIFF91
 	inc	dpFLICKER+2
 unpIFF91	rts
+
+*--- Lecture d'un word
+
+unpIFF90W	lda	[dpFLICKER]
+	xba
+	sta	IFFb
+	inc	dpFLICKER
+	bne	unpIFF91W
+	inc	dpFLICKER+2
+unpIFF91W	inc	dpFLICKER
+	bne	unpIFF92W
+	inc	dpFLICKER+2
+unpIFF92W	rts
 
 *--- Data
 

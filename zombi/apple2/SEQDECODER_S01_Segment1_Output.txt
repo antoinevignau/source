@@ -80,19 +80,19 @@
    77 |  1 seqdecoder.s     77 | Comment     | 00 |         |    0 | 00/1026               | * Inits
    78 |  1 seqdecoder.s     78 | Comment     | 00 |         |    0 | 00/1026               | *---------------
    79 |  1 seqdecoder.s     79 | Empty       | 00 |         |    0 | 00/1026               |                                            
-   80 |  1 seqdecoder.s     80 | Code        | 00 |         |    3 | 00/1026 : 9C 1E 13    |                 stz   nbENTRIES            ; start with first FLICKER
+   80 |  1 seqdecoder.s     80 | Code        | 00 |         |    3 | 00/1026 : 9C 0E 13    |                 stz   nbENTRIES            ; start with first FLICKER
    81 |  1 seqdecoder.s     81 | Empty       | 00 |         |    0 | 00/1029               |                                            
    82 |  1 seqdecoder.s     82 | Code        | 00 |         |    3 | 00/1029 : A9 04 00    |                 lda   #{4}                 
-   83 |  1 seqdecoder.s     83 | Code        | 00 |         |    3 | 00/102C : 8D 24 13    |                 sta   picPLANES            
+   83 |  1 seqdecoder.s     83 | Code        | 00 |         |    3 | 00/102C : 8D 14 13    |                 sta   picPLANES            
    84 |  1 seqdecoder.s     84 | Empty       | 00 |         |    0 | 00/102F               |                                            
    85 |  1 seqdecoder.s     85 | Code        | 00 |         |    3 | 00/102F : A9 80 00    |                 lda   #{128}               
-   86 |  1 seqdecoder.s     86 | Code        | 00 |         |    3 | 00/1032 : 8D 2E 13    |                 sta   fliHEADER_SIZE       
+   86 |  1 seqdecoder.s     86 | Code        | 00 |         |    3 | 00/1032 : 8D 1E 13    |                 sta   fliHEADER_SIZE       
    87 |  1 seqdecoder.s     87 | Empty       | 00 |         |    0 | 00/1035               |                                            
    88 |  1 seqdecoder.s     88 | Comment     | 00 |         |    0 | 00/1035               | *---------------
    89 |  1 seqdecoder.s     89 | Comment     | 00 |         |    0 | 00/1035               | * Boucle
    90 |  1 seqdecoder.s     90 | Comment     | 00 |         |    0 | 00/1035               | *---------------
    91 |  1 seqdecoder.s     91 | Empty       | 00 |         |    0 | 00/1035               |                                            
-   92 |  1 seqdecoder.s     92 | Code        | 00 |         |    3 | 00/1035 : AD 1E 13    | seqLOOP         lda   nbENTRIES            ; get entry pointer
+   92 |  1 seqdecoder.s     92 | Code        | 00 |         |    3 | 00/1035 : AD 0E 13    | seqLOOP         lda   nbENTRIES            ; get entry pointer
    93 |  1 seqdecoder.s     93 | Code        | 00 |         |    1 | 00/1038 : 0A          |                 asl                        
    94 |  1 seqdecoder.s     94 | Code        | 00 |         |    1 | 00/1039 : 0A          |                 asl                        
    95 |  1 seqdecoder.s     95 | Code        | 00 |         |    1 | 00/103A : A8          |                 tay                        
@@ -126,7 +126,7 @@
   123 |  1 seqdecoder.s    123 | Code        | 00 |         |    3 | 00/1067 : C9 01 00    |                 cmp   #1                   
   124 |  1 seqdecoder.s    124 | Code        | 00 |         |    2 | 00/106A : F0 C9       |                 beq   seqLOOP              
   125 |  1 seqdecoder.s    125 | Empty       | 00 |         |    0 | 00/106C               |                                            
-  126 |  1 seqdecoder.s    126 | Code        | 00 |         |    3 | 00/106C : EE 1E 13    |                 inc   nbENTRIES            
+  126 |  1 seqdecoder.s    126 | Code        | 00 |         |    3 | 00/106C : EE 0E 13    |                 inc   nbENTRIES            
   127 |  1 seqdecoder.s    127 | Code        | 00 |         |    2 | 00/106F : 80 C4       |                 bra   seqLOOP              
   128 |  1 seqdecoder.s    128 | Empty       | 00 |         |    0 | 00/1071               |                                            
   129 |  1 seqdecoder.s    129 | Code        | 00 |         |    1 | 00/1071 : 38          | seqEND          sec                        
@@ -157,13 +157,13 @@
   154 |  1 seqdecoder.s    154 | Code        | 10 |         |    2 | 00/1093 : F0 09       |                 beq   hk_O                 
   155 |  1 seqdecoder.s    155 | Code        | 10 |         |    2 | 00/1095 : C9 D0       |                 cmp   #"P"                 
   156 |  1 seqdecoder.s    156 | Code        | 10 |         |    2 | 00/1097 : D0 1E       |                 bne   hk_NEXT              
-  157 |  1 seqdecoder.s    157 | Code        | 10 |         |    3 | 00/1099 : EE 2E 13    | hk_P            inc   fliHEADER_SIZE       
+  157 |  1 seqdecoder.s    157 | Code        | 10 |         |    3 | 00/1099 : EE 1E 13    | hk_P            inc   fliHEADER_SIZE       
   158 |  1 seqdecoder.s    158 | Code        | 10 |         |    2 | 00/109C : 80 0D       |                 bra   hk_LOOP              
-  159 |  1 seqdecoder.s    159 | Code        | 10 |         |    3 | 00/109E : CE 2E 13    | hk_O            dec   fliHEADER_SIZE       
+  159 |  1 seqdecoder.s    159 | Code        | 10 |         |    3 | 00/109E : CE 1E 13    | hk_O            dec   fliHEADER_SIZE       
   160 |  1 seqdecoder.s    160 | Code        | 10 |         |    2 | 00/10A1 : 80 08       |                 bra   hk_LOOP              
-  161 |  1 seqdecoder.s    161 | Code        | 10 |         |    3 | 00/10A3 : CE 24 13    | hk_A            dec   picPLANES            
+  161 |  1 seqdecoder.s    161 | Code        | 10 |         |    3 | 00/10A3 : CE 14 13    | hk_A            dec   picPLANES            
   162 |  1 seqdecoder.s    162 | Code        | 10 |         |    2 | 00/10A6 : 80 03       |                 bra   hk_LOOP              
-  163 |  1 seqdecoder.s    163 | Code        | 10 |         |    3 | 00/10A8 : EE 24 13    | hk_Z            inc   picPLANES            
+  163 |  1 seqdecoder.s    163 | Code        | 10 |         |    3 | 00/10A8 : EE 14 13    | hk_Z            inc   picPLANES            
   164 |  1 seqdecoder.s    164 | Empty       | 10 |         |    0 | 00/10AB               |                                            
   165 |  1 seqdecoder.s    165 | Code        | 00 |         |    2 | 00/10AB : C2 20       | hk_LOOP         rep   #$20                 
   166 |  1 seqdecoder.s    166 | Code        | 00 |         |    3 | 00/10AD : A9 01 00    |                 lda   #1                   
@@ -215,24 +215,24 @@
   212 |  1 seqdecoder.s    212 | Code        | 00 |         |    3 | 00/10F5 : A0 3A 00    |                 ldy   #{{$0000}+58}        ; the width...
   213 |  1 seqdecoder.s    213 | Code        | 00 |         |    2 | 00/10F8 : B7 0C       |                 lda   [{{{{$00}+4}+4}+4}],y
   214 |  1 seqdecoder.s    214 | Code        | 00 |         |    1 | 00/10FA : EB          |                 xba                        
-  215 |  1 seqdecoder.s    215 | Code        | 00 |         |    3 | 00/10FB : 8D 20 13    |                 sta   picWIDTH             ; in pixels
+  215 |  1 seqdecoder.s    215 | Code        | 00 |         |    3 | 00/10FB : 8D 10 13    |                 sta   picWIDTH             ; in pixels
   216 |  1 seqdecoder.s    216 | Code        | 00 |         |    1 | 00/10FE : 4A          |                 lsr                        
-  217 |  1 seqdecoder.s    217 | Code        | 00 |         |    3 | 00/10FF : 8D 28 13    |                 sta   fliWIDTH             ; in bytes
+  217 |  1 seqdecoder.s    217 | Code        | 00 |         |    3 | 00/10FF : 8D 18 13    |                 sta   fliWIDTH             ; in bytes
   218 |  1 seqdecoder.s    218 | Empty       | 00 |         |    0 | 00/1102               |                                            
   219 |  1 seqdecoder.s    219 | Code        | 00 |         |    3 | 00/1102 : A0 3C 00    |                 ldy   #{{$0000}+60}        ; the height...
   220 |  1 seqdecoder.s    220 | Code        | 00 |         |    2 | 00/1105 : B7 0C       |                 lda   [{{{{$00}+4}+4}+4}],y
   221 |  1 seqdecoder.s    221 | Code        | 00 |         |    1 | 00/1107 : EB          |                 xba                        
-  222 |  1 seqdecoder.s    222 | Code        | 00 |         |    3 | 00/1108 : 8D 22 13    |                 sta   picHEIGHT            ; in pixels
+  222 |  1 seqdecoder.s    222 | Code        | 00 |         |    3 | 00/1108 : 8D 12 13    |                 sta   picHEIGHT            ; in pixels
   223 |  1 seqdecoder.s    223 | Empty       | 00 |         |    0 | 00/110B               |                                            
   224 |  1 seqdecoder.s    224 | Code        | 00 |         |    3 | 00/110B : A0 3E 00    |                 ldy   #{{$0000}+62}        ; the compression method...
   225 |  1 seqdecoder.s    225 | Code        | 00 |         |    2 | 00/110E : B7 0C       |                 lda   [{{{{$00}+4}+4}+4}],y
   226 |  1 seqdecoder.s    226 | Code        | 00 |         |    1 | 00/1110 : EB          |                 xba                        
-  227 |  1 seqdecoder.s    227 | Code        | 00 |         |    3 | 00/1111 : 8D 2A 13    |                 sta   fliCOMPRESS          
+  227 |  1 seqdecoder.s    227 | Code        | 00 |         |    3 | 00/1111 : 8D 1A 13    |                 sta   fliCOMPRESS          
   228 |  1 seqdecoder.s    228 | Empty       | 00 |         |    0 | 00/1114               |                                            
   229 |  1 seqdecoder.s    229 | Code        | 00 |         |    3 | 00/1114 : A0 42 00    |                 ldy   #{{$0000}+66}        ; the size...
   230 |  1 seqdecoder.s    230 | Code        | 00 |         |    2 | 00/1117 : B7 0C       |                 lda   [{{{{$00}+4}+4}+4}],y
   231 |  1 seqdecoder.s    231 | Code        | 00 |         |    1 | 00/1119 : EB          |                 xba                        
-  232 |  1 seqdecoder.s    232 | Code        | 00 |         |    3 | 00/111A : 8D 2C 13    |                 sta   fliSIZE              ; in bytes
+  232 |  1 seqdecoder.s    232 | Code        | 00 |         |    3 | 00/111A : 8D 1C 13    |                 sta   fliSIZE              ; in bytes
   233 |  1 seqdecoder.s    233 | Empty       | 00 |         |    0 | 00/111D               |                                            
   234 |  1 seqdecoder.s    234 | Comment     | 00 |         |    0 | 00/111D               | *-------------------------------
   235 |  1 seqdecoder.s    235 | Comment     | 00 |         |    0 | 00/111D               | * UNPACK FLICKER DATA
@@ -254,282 +254,277 @@
   251 |  1 seqdecoder.s    251 | Comment     | 00 |         |    0 | 00/1134               | *--- Left part
   252 |  1 seqdecoder.s    252 | Empty       | 00 |         |    0 | 00/1134               |                                            
   253 |  1 seqdecoder.s    253 | Code        | 00 |         |    3 | 00/1134 : A0 00 00    |                 ldy   #0                   
-  254 |  1 seqdecoder.s    254 | Code        | 00 |         |    3 | 00/1137 : 9C 26 13    |                 stz   numLIGNE             ; start line 0
+  254 |  1 seqdecoder.s    254 | Code        | 00 |         |    3 | 00/1137 : 9C 16 13    |                 stz   numLIGNE             ; start line 0
   255 |  1 seqdecoder.s    255 | Empty       | 00 |         |    0 | 00/113A               |                                            
   256 |  1 seqdecoder.s    256 | Code        | 00 |         |    2 | 00/113A : A5 0C       |                 lda   {{{{$00}+4}+4}+4}    ; points to data
   257 |  1 seqdecoder.s    257 | Code        | 00 |         |    1 | 00/113C : 18          |                 clc                        
-  258 |  1 seqdecoder.s    258 | Code        | 00 |         |    3 | 00/113D : 6D 2E 13    |                 adc   fliHEADER_SIZE       
+  258 |  1 seqdecoder.s    258 | Code        | 00 |         |    3 | 00/113D : 6D 1E 13    |                 adc   fliHEADER_SIZE       
   259 |  1 seqdecoder.s    259 | Code        | 00 |         |    2 | 00/1140 : 85 0C       |                 sta   {{{{$00}+4}+4}+4}    
   260 |  1 seqdecoder.s    260 | Code        | 00 |         |    2 | 00/1142 : A5 0E       |                 lda   {{{{$00}+4}+4}+4}+2  
   261 |  1 seqdecoder.s    261 | Code        | 00 |         |    3 | 00/1144 : 69 00 00    |                 adc   #0                   
   262 |  1 seqdecoder.s    262 | Code        | 00 |         |    2 | 00/1147 : 85 0E       |                 sta   {{{{$00}+4}+4}+4}+2  
   263 |  1 seqdecoder.s    263 | Empty       | 00 |         |    0 | 00/1149               |                                            
-  264 |  1 seqdecoder.s    264 | Code        | 00 |         |    3 | 00/1149 : 20 80 11    |                 jsr   doUNCOMPRESS         
-  265 |  1 seqdecoder.s    265 | Empty       | 00 |         |    0 | 00/114C               |                                            
-  266 |  1 seqdecoder.s    266 | Comment     | 00 |         |    0 | 00/114C               | *--- Right part
-  267 |  1 seqdecoder.s    267 | Empty       | 00 |         |    0 | 00/114C               |                                            
-  268 |  1 seqdecoder.s    268 | Code        | 00 |         |    3 | 00/114C : A0 00 00    |                 ldy   #0                   
-  269 |  1 seqdecoder.s    269 | Code        | 00 |         |    3 | 00/114F : 9C 26 13    |                 stz   numLIGNE             ; start line 0
-  270 |  1 seqdecoder.s    270 | Empty       | 00 |         |    0 | 00/1152               |                                            
-  271 |  1 seqdecoder.s    271 | Code        | 00 |         |    3 | 00/1152 : AD 28 13    |                 lda   fliWIDTH             
-  272 |  1 seqdecoder.s    272 | Code        | 00 |         |    1 | 00/1155 : 4A          |                 lsr                        
-  273 |  1 seqdecoder.s    273 | Code        | 00 |         |    1 | 00/1156 : 18          |                 clc                        
-  274 |  1 seqdecoder.s    274 | Code        | 00 |         |    2 | 00/1157 : 65 10       |                 adc   {{{{{$00}+4}+4}+4}+4}; points to data
-  275 |  1 seqdecoder.s    275 | Code        | 00 |         |    3 | 00/1159 : 6D 2E 13    |                 adc   fliHEADER_SIZE       
-  276 |  1 seqdecoder.s    276 | Code        | 00 |         |    2 | 00/115C : 85 0C       |                 sta   {{{{$00}+4}+4}+4}    
-  277 |  1 seqdecoder.s    277 | Code        | 00 |         |    2 | 00/115E : A5 12       |                 lda   {{{{{$00}+4}+4}+4}+4}+2
-  278 |  1 seqdecoder.s    278 | Code        | 00 |         |    3 | 00/1160 : 69 00 00    |                 adc   #0                   
-  279 |  1 seqdecoder.s    279 | Code        | 00 |         |    2 | 00/1163 : 85 0E       |                 sta   {{{{$00}+4}+4}+4}+2  
-  280 |  1 seqdecoder.s    280 | Empty       | 00 |         |    0 | 00/1165               |                                            
-  281 |  1 seqdecoder.s    281 | Code        | 00 |         |    3 | 00/1165 : AD 28 13    |                 lda   fliWIDTH             
-  282 |  1 seqdecoder.s    282 | Code        | 00 |         |    1 | 00/1168 : 4A          |                 lsr                        
-  283 |  1 seqdecoder.s    283 | Code        | 00 |         |    1 | 00/1169 : 18          |                 clc                        
-  284 |  1 seqdecoder.s    284 | Code        | 00 |         |    3 | 00/116A : 69 00 20    |                 adc   #{$e12000}           
-  285 |  1 seqdecoder.s    285 | Code        | 00 |         |    2 | 00/116D : 85 04       |                 sta   {{$00}+4}            
-  286 |  1 seqdecoder.s    286 | Code        | 00 |         |    3 | 00/116F : A9 00 00    |                 lda   #0                   
-  287 |  1 seqdecoder.s    287 | Code        | 00 |         |    3 | 00/1172 : 69 E1 00    |                 adc   #^{$e12000}          
-  288 |  1 seqdecoder.s    288 | Code        | 00 |         |    2 | 00/1175 : 85 06       |                 sta   {{$00}+4}+2          
-  289 |  1 seqdecoder.s    289 | Empty       | 00 |         |    0 | 00/1177               |                                            
-  290 |  1 seqdecoder.s    290 | Code        | 00 |         |    3 | 00/1177 : 20 80 11    |                 jsr   doUNCOMPRESS         
-  291 |  1 seqdecoder.s    291 | Empty       | 00 |         |    0 | 00/117A               |                                            
-  292 |  1 seqdecoder.s    292 | Code        | 00 |         |    1 | 00/117A : 60          |                 rts                        
-  293 |  1 seqdecoder.s    293 | Empty       | 00 |         |    0 | 00/117B               |                                            
-  294 |  1 seqdecoder.s    294 | Comment     | 00 |         |    0 | 00/117B               | *---
-  295 |  1 seqdecoder.s    295 | Empty       | 00 |         |    0 | 00/117B               |                                            
-  296 |  1 seqdecoder.s    296 | Code        | 00 |         |    3 | 00/117B : AD 2A 13    |                 lda   fliCOMPRESS          ; how to unpack now?
-  297 |  1 seqdecoder.s    297 | Code        | 00 |         |    2 | 00/117E : D0 09       |                 bne   doCOMPRESS           
-  298 |  1 seqdecoder.s    298 | Empty       | 00 |         |    0 | 00/1180               |                                            
-  299 |  1 seqdecoder.s    299 | Comment     | 00 |         |    0 | 00/1180               | *- Image non compressee ILBM
-  300 |  1 seqdecoder.s    300 | Empty       | 00 |         |    0 | 00/1180               |                                            
-  301 |  1 seqdecoder.s    301 | Empty       | 00 |         |    0 | 00/1180               | doUNCOMPRESS                               
-  302 |  1 seqdecoder.s    302 | Code        | 00 |         |    3 | 00/1180 : 20 07 13    | ozunid_5        jsr   unpIFF90             ; Hi, Convert 32OO!
-  303 |  1 seqdecoder.s    303 | Code        | 00 |         |    3 | 00/1183 : 20 F3 11    |                 jsr   unpIFFy              
-  304 |  1 seqdecoder.s    304 | Code        | 00 |         |    2 | 00/1186 : B0 F8       |                 bcs   ozunid_5             
-  305 |  1 seqdecoder.s    305 | Code        | 00 |         |    1 | 00/1188 : 60          |                 rts                        
-  306 |  1 seqdecoder.s    306 | Empty       | 00 |         |    0 | 00/1189               |                                            
-  307 |  1 seqdecoder.s    307 | Empty       | 00 |         |    0 | 00/1189               | doCOMPRESS                                 
-  308 |  1 seqdecoder.s    308 | Comment     | 00 |         |    0 | 00/1189               | *	jmp	unpIFF60
-  309 |  1 seqdecoder.s    309 | Empty       | 00 |         |    0 | 00/1189               |                                            
-  310 |  1 seqdecoder.s    310 | Comment     | 00 |         |    0 | 00/1189               | *- Image compressee PBM (1-8 plans)
-  311 |  1 seqdecoder.s    311 | Empty       | 00 |         |    0 | 00/1189               |                                            
-  312 |  1 seqdecoder.s    312 | Code        | 00 |         |    3 | 00/1189 : 20 07 13    | unpIFF80        jsr   unpIFF90             
-  313 |  1 seqdecoder.s    313 | Code        | 00 |         |    3 | 00/118C : C9 81 00    |                 cmp   #$81                 
-  314 |  1 seqdecoder.s    314 | Code        | 00 |         |    2 | 00/118F : 90 1A       |                 bcc   unpIFF85             
-  315 |  1 seqdecoder.s    315 | Empty       | 00 |         |    0 | 00/1191               |                                            
-  316 |  1 seqdecoder.s    316 | Code        | 00 |         |    3 | 00/1191 : 49 FF 00    |                 eor   #$ff                 
-  317 |  1 seqdecoder.s    317 | Code        | 00 |         |    1 | 00/1194 : 1A          |                 inc                        
-  318 |  1 seqdecoder.s    318 | Code        | 00 |         |    3 | 00/1195 : 8D 18 13    |                 sta   IFFcnt               
-  319 |  1 seqdecoder.s    319 | Code        | 00 |         |    3 | 00/1198 : 20 07 13    |                 jsr   unpIFF90             
-  320 |  1 seqdecoder.s    320 | Code        | 00 |         |    3 | 00/119B : AD 16 13    | ozunid_6        lda   IFFb                 
-  321 |  1 seqdecoder.s    321 | Code        | 00 |         |    3 | 00/119E : 20 FC 12    |                 jsr   unpIFFy20            
-  322 |  1 seqdecoder.s    322 | Code        | 00 |         |    2 | 00/11A1 : 90 07       |                 bcc   unpIFF81             
-  323 |  1 seqdecoder.s    323 | Code        | 00 |         |    3 | 00/11A3 : CE 18 13    |                 dec   IFFcnt               
-  324 |  1 seqdecoder.s    324 | Code        | 00 |         |    2 | 00/11A6 : 10 F3       |                 bpl   ozunid_6             
-  325 |  1 seqdecoder.s    325 | Code        | 00 |         |    2 | 00/11A8 : 80 DF       |                 bra   unpIFF80             
-  326 |  1 seqdecoder.s    326 | Code        | 00 |         |    1 | 00/11AA : 60          | unpIFF81        rts                        
-  327 |  1 seqdecoder.s    327 | Empty       | 00 |         |    0 | 00/11AB               |                                            
-  328 |  1 seqdecoder.s    328 | Code        | 00 |         |    3 | 00/11AB : 8D 18 13    | unpIFF85        sta   IFFcnt               
-  329 |  1 seqdecoder.s    329 | Code        | 00 |         |    3 | 00/11AE : 20 07 13    | ozunid_7        jsr   unpIFF90             
-  330 |  1 seqdecoder.s    330 | Code        | 00 |         |    3 | 00/11B1 : 20 FC 12    |                 jsr   unpIFFy20            
-  331 |  1 seqdecoder.s    331 | Code        | 00 |         |    2 | 00/11B4 : 90 07       |                 bcc   unpIFF86             
-  332 |  1 seqdecoder.s    332 | Code        | 00 |         |    3 | 00/11B6 : CE 18 13    |                 dec   IFFcnt               
-  333 |  1 seqdecoder.s    333 | Code        | 00 |         |    2 | 00/11B9 : 10 F3       |                 bpl   ozunid_7             
-  334 |  1 seqdecoder.s    334 | Code        | 00 |         |    2 | 00/11BB : 80 CC       |                 bra   unpIFF80             
-  335 |  1 seqdecoder.s    335 | Code        | 00 |         |    1 | 00/11BD : 60          | unpIFF86        rts                        
-  336 |  1 seqdecoder.s    336 | Empty       | 00 |         |    0 | 00/11BE               |                                            
-  337 |  1 seqdecoder.s    337 | Comment     | 00 |         |    0 | 00/11BE               | *- Image compressee ILBM (1-8 plans)
-  338 |  1 seqdecoder.s    338 | Empty       | 00 |         |    0 | 00/11BE               |                                            
-  339 |  1 seqdecoder.s    339 | Code        | 00 |         |    3 | 00/11BE : 20 07 13    | unpIFF60        jsr   unpIFF90             
-  340 |  1 seqdecoder.s    340 | Code        | 00 |         |    3 | 00/11C1 : C9 81 00    |                 cmp   #$81                 
-  341 |  1 seqdecoder.s    341 | Code        | 00 |         |    2 | 00/11C4 : 90 1A       |                 bcc   unpIFF70             
-  342 |  1 seqdecoder.s    342 | Empty       | 00 |         |    0 | 00/11C6               |                                            
-  343 |  1 seqdecoder.s    343 | Code        | 00 |         |    3 | 00/11C6 : 49 FF 00    |                 eor   #$ff                 
-  344 |  1 seqdecoder.s    344 | Code        | 00 |         |    1 | 00/11C9 : 1A          |                 inc                        
-  345 |  1 seqdecoder.s    345 | Code        | 00 |         |    3 | 00/11CA : 8D 18 13    |                 sta   IFFcnt               
-  346 |  1 seqdecoder.s    346 | Code        | 00 |         |    3 | 00/11CD : 20 07 13    |                 jsr   unpIFF90             
-  347 |  1 seqdecoder.s    347 | Code        | 00 |         |    3 | 00/11D0 : AD 16 13    | ozunid_8        lda   IFFb                 
-  348 |  1 seqdecoder.s    348 | Code        | 00 |         |    3 | 00/11D3 : 20 F3 11    |                 jsr   unpIFFy              
-  349 |  1 seqdecoder.s    349 | Code        | 00 |         |    2 | 00/11D6 : 90 07       |                 bcc   unpIFF61             
-  350 |  1 seqdecoder.s    350 | Code        | 00 |         |    3 | 00/11D8 : CE 18 13    |                 dec   IFFcnt               
-  351 |  1 seqdecoder.s    351 | Code        | 00 |         |    2 | 00/11DB : 10 F3       |                 bpl   ozunid_8             
-  352 |  1 seqdecoder.s    352 | Code        | 00 |         |    2 | 00/11DD : 80 DF       |                 bra   unpIFF60             
-  353 |  1 seqdecoder.s    353 | Code        | 00 |         |    1 | 00/11DF : 60          | unpIFF61        rts                        
-  354 |  1 seqdecoder.s    354 | Empty       | 00 |         |    0 | 00/11E0               |                                            
-  355 |  1 seqdecoder.s    355 | Code        | 00 |         |    3 | 00/11E0 : 8D 18 13    | unpIFF70        sta   IFFcnt               
-  356 |  1 seqdecoder.s    356 | Code        | 00 |         |    3 | 00/11E3 : 20 07 13    | ozunid_9        jsr   unpIFF90             
-  357 |  1 seqdecoder.s    357 | Code        | 00 |         |    3 | 00/11E6 : 20 F3 11    |                 jsr   unpIFFy              
-  358 |  1 seqdecoder.s    358 | Code        | 00 |         |    2 | 00/11E9 : 90 07       |                 bcc   unpIFF71             
-  359 |  1 seqdecoder.s    359 | Code        | 00 |         |    3 | 00/11EB : CE 18 13    |                 dec   IFFcnt               
-  360 |  1 seqdecoder.s    360 | Code        | 00 |         |    2 | 00/11EE : 10 F3       |                 bpl   ozunid_9             
-  361 |  1 seqdecoder.s    361 | Code        | 00 |         |    2 | 00/11F0 : 80 CC       |                 bra   unpIFF60             
-  362 |  1 seqdecoder.s    362 | Code        | 00 |         |    1 | 00/11F2 : 60          | unpIFF71        rts                        
-  363 |  1 seqdecoder.s    363 | Empty       | 00 |         |    0 | 00/11F3               |                                            
-  364 |  1 seqdecoder.s    364 | Comment     | 00 |         |    0 | 00/11F3               | *---
-  365 |  1 seqdecoder.s    365 | Empty       | 00 |         |    0 | 00/11F3               |                                            
-  366 |  1 seqdecoder.s    366 | Code        | 00 |         |    3 | 00/11F3 : 99 30 13    | unpIFFy         sta   tempTABLE,y          
-  367 |  1 seqdecoder.s    367 | Code        | 00 |         |    1 | 00/11F6 : C8          |                 iny                        
-  368 |  1 seqdecoder.s    368 | Code        | 00 |         |    3 | 00/11F7 : CC 28 13    |                 cpy   fliWIDTH             
-  369 |  1 seqdecoder.s    369 | Code        | 00 |         |    2 | 00/11FA : B0 02       |                 bcs   unpIFFy1             
-  370 |  1 seqdecoder.s    370 | Code        | 00 |         |    1 | 00/11FC : 38          |                 sec                        
-  371 |  1 seqdecoder.s    371 | Code        | 00 |         |    1 | 00/11FD : 60          |                 rts                        
-  372 |  1 seqdecoder.s    372 | Code        | 10 |         |    2 | 00/11FE : E2 20       | unpIFFy1        sep   #$20                 
-  373 |  1 seqdecoder.s    373 | Empty       | 10 |         |    0 | 00/1200               |                                            
-  374 |  1 seqdecoder.s    374 | Code        | 10 |         |    3 | 00/1200 : A2 00 00    |                 ldx   #0                   ; clear la ligne de destination
-  375 |  1 seqdecoder.s    375 | Code        | 10 |         |    3 | 00/1203 : 9E 30 15    | ozunid_10       stz   tempLIGNE,x          
-  376 |  1 seqdecoder.s    376 | Code        | 10 |         |    1 | 00/1206 : E8          |                 inx                        
-  377 |  1 seqdecoder.s    377 | Code        | 10 |         |    3 | 00/1207 : E0 00 04    |                 cpx   #1024                
-  378 |  1 seqdecoder.s    378 | Code        | 10 |         |    2 | 00/120A : 90 F7       |                 bcc   ozunid_10            
-  379 |  1 seqdecoder.s    379 | Empty       | 10 |         |    0 | 00/120C               |                                            
-  380 |  1 seqdecoder.s    380 | Code        | 10 |         |    2 | 00/120C : A9 01       |                 lda   #%0000_0001          ; on remet les variables
-  381 |  1 seqdecoder.s    381 | Code        | 10 |         |    3 | 00/120E : 8D 1A 13    |                 sta   IFFpmask             
-  382 |  1 seqdecoder.s    382 | Code        | 10 |         |    3 | 00/1211 : 9C 1C 13    |                 stz   IFFplanes            
-  383 |  1 seqdecoder.s    383 | Empty       | 10 |         |    0 | 00/1214               |                                            
-  384 |  1 seqdecoder.s    384 | Code        | 10 |         |    3 | 00/1214 : A2 00 00    |                 ldx   #0                   
-  385 |  1 seqdecoder.s    385 | Code        | 10 |         |    3 | 00/1217 : A0 00 00    | unpIFFy2        ldy   #0                   
-  386 |  1 seqdecoder.s    386 | Code        | 10 |         |    3 | 00/121A : BD 30 13    | unpIFFy3        lda   tempTABLE,x          
-  387 |  1 seqdecoder.s    387 | Code        | 10 |         |    2 | 00/121D : 29 80       |                 and   #%1000_0000          
-  388 |  1 seqdecoder.s    388 | Code        | 10 |         |    2 | 00/121F : F0 09       |                 beq   unpIFFy4             
-  389 |  1 seqdecoder.s    389 | Code        | 10 |         |    3 | 00/1221 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  390 |  1 seqdecoder.s    390 | Code        | 10 |         |    3 | 00/1224 : 0D 1A 13    |                 ora   IFFpmask             
-  391 |  1 seqdecoder.s    391 | Code        | 10 |         |    3 | 00/1227 : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  392 |  1 seqdecoder.s    392 | Code        | 10 |         |    1 | 00/122A : C8          | unpIFFy4        iny                        
-  393 |  1 seqdecoder.s    393 | Code        | 10 |         |    3 | 00/122B : BD 30 13    |                 lda   tempTABLE,x          
-  394 |  1 seqdecoder.s    394 | Code        | 10 |         |    2 | 00/122E : 29 40       |                 and   #%0100_0000          
-  395 |  1 seqdecoder.s    395 | Code        | 10 |         |    2 | 00/1230 : F0 09       |                 beq   unpIFFy5             
-  396 |  1 seqdecoder.s    396 | Code        | 10 |         |    3 | 00/1232 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  397 |  1 seqdecoder.s    397 | Code        | 10 |         |    3 | 00/1235 : 0D 1A 13    |                 ora   IFFpmask             
-  398 |  1 seqdecoder.s    398 | Code        | 10 |         |    3 | 00/1238 : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  399 |  1 seqdecoder.s    399 | Code        | 10 |         |    1 | 00/123B : C8          | unpIFFy5        iny                        
-  400 |  1 seqdecoder.s    400 | Code        | 10 |         |    3 | 00/123C : BD 30 13    |                 lda   tempTABLE,x          
-  401 |  1 seqdecoder.s    401 | Code        | 10 |         |    2 | 00/123F : 29 20       |                 and   #%0010_0000          
-  402 |  1 seqdecoder.s    402 | Code        | 10 |         |    2 | 00/1241 : F0 09       |                 beq   unpIFFy6             
-  403 |  1 seqdecoder.s    403 | Code        | 10 |         |    3 | 00/1243 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  404 |  1 seqdecoder.s    404 | Code        | 10 |         |    3 | 00/1246 : 0D 1A 13    |                 ora   IFFpmask             
-  405 |  1 seqdecoder.s    405 | Code        | 10 |         |    3 | 00/1249 : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  406 |  1 seqdecoder.s    406 | Code        | 10 |         |    1 | 00/124C : C8          | unpIFFy6        iny                        
-  407 |  1 seqdecoder.s    407 | Code        | 10 |         |    3 | 00/124D : BD 30 13    |                 lda   tempTABLE,x          
-  408 |  1 seqdecoder.s    408 | Code        | 10 |         |    2 | 00/1250 : 29 10       |                 and   #%0001_0000          
-  409 |  1 seqdecoder.s    409 | Code        | 10 |         |    2 | 00/1252 : F0 09       |                 beq   unpIFFy7             
-  410 |  1 seqdecoder.s    410 | Code        | 10 |         |    3 | 00/1254 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  411 |  1 seqdecoder.s    411 | Code        | 10 |         |    3 | 00/1257 : 0D 1A 13    |                 ora   IFFpmask             
-  412 |  1 seqdecoder.s    412 | Code        | 10 |         |    3 | 00/125A : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  413 |  1 seqdecoder.s    413 | Code        | 10 |         |    1 | 00/125D : C8          | unpIFFy7        iny                        
-  414 |  1 seqdecoder.s    414 | Code        | 10 |         |    3 | 00/125E : BD 30 13    |                 lda   tempTABLE,x          
-  415 |  1 seqdecoder.s    415 | Code        | 10 |         |    2 | 00/1261 : 29 08       |                 and   #%0000_1000          
-  416 |  1 seqdecoder.s    416 | Code        | 10 |         |    2 | 00/1263 : F0 09       |                 beq   unpIFFy8             
-  417 |  1 seqdecoder.s    417 | Code        | 10 |         |    3 | 00/1265 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  418 |  1 seqdecoder.s    418 | Code        | 10 |         |    3 | 00/1268 : 0D 1A 13    |                 ora   IFFpmask             
-  419 |  1 seqdecoder.s    419 | Code        | 10 |         |    3 | 00/126B : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  420 |  1 seqdecoder.s    420 | Code        | 10 |         |    1 | 00/126E : C8          | unpIFFy8        iny                        
-  421 |  1 seqdecoder.s    421 | Code        | 10 |         |    3 | 00/126F : BD 30 13    |                 lda   tempTABLE,x          
-  422 |  1 seqdecoder.s    422 | Code        | 10 |         |    2 | 00/1272 : 29 04       |                 and   #%0000_0100          
-  423 |  1 seqdecoder.s    423 | Code        | 10 |         |    2 | 00/1274 : F0 09       |                 beq   unpIFFy9             
-  424 |  1 seqdecoder.s    424 | Code        | 10 |         |    3 | 00/1276 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  425 |  1 seqdecoder.s    425 | Code        | 10 |         |    3 | 00/1279 : 0D 1A 13    |                 ora   IFFpmask             
-  426 |  1 seqdecoder.s    426 | Code        | 10 |         |    3 | 00/127C : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  427 |  1 seqdecoder.s    427 | Code        | 10 |         |    1 | 00/127F : C8          | unpIFFy9        iny                        
-  428 |  1 seqdecoder.s    428 | Code        | 10 |         |    3 | 00/1280 : BD 30 13    |                 lda   tempTABLE,x          
-  429 |  1 seqdecoder.s    429 | Code        | 10 |         |    2 | 00/1283 : 29 02       |                 and   #%0000_0010          
-  430 |  1 seqdecoder.s    430 | Code        | 10 |         |    2 | 00/1285 : F0 09       |                 beq   unpIFFy10            
-  431 |  1 seqdecoder.s    431 | Code        | 10 |         |    3 | 00/1287 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  432 |  1 seqdecoder.s    432 | Code        | 10 |         |    3 | 00/128A : 0D 1A 13    |                 ora   IFFpmask             
-  433 |  1 seqdecoder.s    433 | Code        | 10 |         |    3 | 00/128D : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  434 |  1 seqdecoder.s    434 | Code        | 10 |         |    1 | 00/1290 : C8          | unpIFFy10       iny                        
-  435 |  1 seqdecoder.s    435 | Code        | 10 |         |    3 | 00/1291 : BD 30 13    |                 lda   tempTABLE,x          
-  436 |  1 seqdecoder.s    436 | Code        | 10 |         |    2 | 00/1294 : 29 01       |                 and   #%0000_0001          
-  437 |  1 seqdecoder.s    437 | Code        | 10 |         |    2 | 00/1296 : F0 09       |                 beq   unpIFFy11            
-  438 |  1 seqdecoder.s    438 | Code        | 10 |         |    3 | 00/1298 : B9 30 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
-  439 |  1 seqdecoder.s    439 | Code        | 10 |         |    3 | 00/129B : 0D 1A 13    |                 ora   IFFpmask             
-  440 |  1 seqdecoder.s    440 | Code        | 10 |         |    3 | 00/129E : 99 30 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
-  441 |  1 seqdecoder.s    441 | Code        | 10 |         |    1 | 00/12A1 : C8          | unpIFFy11       iny                        
-  442 |  1 seqdecoder.s    442 | Code        | 10 |         |    1 | 00/12A2 : E8          |                 inx                        
-  443 |  1 seqdecoder.s    443 | Code        | 10 |         |    3 | 00/12A3 : EC 20 13    |                 cpx   picWIDTH             
-  444 |  1 seqdecoder.s    444 | Code        | 10 |         |    2 | 00/12A6 : B0 19       |                 bcs   unpIFFy13            
-  445 |  1 seqdecoder.s    445 | Code        | 10 |         |    3 | 00/12A8 : CC 28 13    |                 cpy   fliWIDTH             
-  446 |  1 seqdecoder.s    446 | Code        | 10 |         |    2 | 00/12AB : B0 03       |                 bcs   unpIFFy12            
-  447 |  1 seqdecoder.s    447 | Code        | 10 |         |    3 | 00/12AD : 82 6A FF    |                 brl   unpIFFy3             
-  448 |  1 seqdecoder.s    448 | Empty       | 10 |         |    0 | 00/12B0               |                                            
-  449 |  1 seqdecoder.s    449 | Code        | 10 |         |    3 | 00/12B0 : 0E 1A 13    | unpIFFy12       asl   IFFpmask             
-  450 |  1 seqdecoder.s    450 | Code        | 10 |         |    3 | 00/12B3 : EE 1C 13    |                 inc   IFFplanes            
-  451 |  1 seqdecoder.s    451 | Code        | 10 |         |    3 | 00/12B6 : AD 1C 13    |                 lda   IFFplanes            
-  452 |  1 seqdecoder.s    452 | Code        | 10 |         |    3 | 00/12B9 : CD 24 13    |                 cmp   picPLANES            
-  453 |  1 seqdecoder.s    453 | Code        | 10 |         |    2 | 00/12BC : F0 03       |                 beq   unpIFFy13            
-  454 |  1 seqdecoder.s    454 | Code        | 10 |         |    3 | 00/12BE : 82 56 FF    |                 brl   unpIFFy2             
-  455 |  1 seqdecoder.s    455 | Empty       | 10 |         |    0 | 00/12C1               |                                            
-  456 |  1 seqdecoder.s    456 | Code        | 10 |         |    3 | 00/12C1 : A2 00 00    | unpIFFy13       ldx   #0                   
-  457 |  1 seqdecoder.s    457 | Code        | 10 |         |    1 | 00/12C4 : 9B          |                 txy                        
-  458 |  1 seqdecoder.s    458 | Code        | 10 |         |    3 | 00/12C5 : BD 30 15    | ozunid_11       lda   tempLIGNE,x          
-  459 |  1 seqdecoder.s    459 | Code        | 10 |         |    1 | 00/12C8 : 0A          |                 asl                        
-  460 |  1 seqdecoder.s    460 | Code        | 10 |         |    1 | 00/12C9 : 0A          |                 asl                        
-  461 |  1 seqdecoder.s    461 | Code        | 10 |         |    1 | 00/12CA : 0A          |                 asl                        
-  462 |  1 seqdecoder.s    462 | Code        | 10 |         |    1 | 00/12CB : 0A          |                 asl                        
-  463 |  1 seqdecoder.s    463 | Code        | 10 |         |    3 | 00/12CC : 1D 31 15    |                 ora   tempLIGNE+1,x        
-  464 |  1 seqdecoder.s    464 | Code        | 10 |         |    2 | 00/12CF : 97 04       |                 sta   [{{$00}+4}],y        
-  465 |  1 seqdecoder.s    465 | Code        | 10 |         |    1 | 00/12D1 : C8          |                 iny                        
-  466 |  1 seqdecoder.s    466 | Code        | 10 |         |    1 | 00/12D2 : E8          |                 inx                        
-  467 |  1 seqdecoder.s    467 | Code        | 10 |         |    1 | 00/12D3 : E8          |                 inx                        
-  468 |  1 seqdecoder.s    468 | Code        | 10 |         |    3 | 00/12D4 : EC 20 13    |                 cpx   picWIDTH             
-  469 |  1 seqdecoder.s    469 | Code        | 10 |         |    2 | 00/12D7 : 90 EC       |                 bcc   ozunid_11            
-  470 |  1 seqdecoder.s    470 | Empty       | 10 |         |    0 | 00/12D9               |                                            
-  471 |  1 seqdecoder.s    471 | Code        | 00 |         |    2 | 00/12D9 : C2 20       |                 rep   #$20                 
-  472 |  1 seqdecoder.s    472 | Code        | 00 |         |    3 | 00/12DB : EE 26 13    |                 inc   numLIGNE             
-  473 |  1 seqdecoder.s    473 | Code        | 00 |         |    3 | 00/12DE : AD 26 13    |                 lda   numLIGNE             
-  474 |  1 seqdecoder.s    474 | Code        | 00 |         |    3 | 00/12E1 : CD 22 13    |                 cmp   picHEIGHT            
-  475 |  1 seqdecoder.s    475 | Code        | 00 |         |    2 | 00/12E4 : B0 14       |                 bcs   unpIFFy14            
-  476 |  1 seqdecoder.s    476 | Code        | 00 |         |    2 | 00/12E6 : A5 04       |                 lda   {{$00}+4}            
-  477 |  1 seqdecoder.s    477 | Code        | 00 |         |    1 | 00/12E8 : 18          |                 clc                        
-  478 |  1 seqdecoder.s    478 | Code        | 00 |         |    3 | 00/12E9 : 69 A0 00    |                 adc   #{160}               
-  479 |  1 seqdecoder.s    479 | Code        | 00 |         |    2 | 00/12EC : 85 04       |                 sta   {{$00}+4}            
-  480 |  1 seqdecoder.s    480 | Code        | 00 |         |    2 | 00/12EE : A5 06       |                 lda   {{$00}+4}+2          
-  481 |  1 seqdecoder.s    481 | Code        | 00 |         |    3 | 00/12F0 : 69 00 00    |                 adc   #0                   
-  482 |  1 seqdecoder.s    482 | Code        | 00 |         |    2 | 00/12F3 : 85 06       |                 sta   {{$00}+4}+2          
-  483 |  1 seqdecoder.s    483 | Code        | 00 |         |    3 | 00/12F5 : A0 00 00    |                 ldy   #0                   
-  484 |  1 seqdecoder.s    484 | Code        | 00 |         |    1 | 00/12F8 : 38          |                 sec                        
-  485 |  1 seqdecoder.s    485 | Code        | 00 |         |    1 | 00/12F9 : 60          |                 rts                        
-  486 |  1 seqdecoder.s    486 | Code        | 00 |         |    1 | 00/12FA : 18          | unpIFFy14       clc                        
-  487 |  1 seqdecoder.s    487 | Code        | 00 |         |    1 | 00/12FB : 60          |                 rts                        
-  488 |  1 seqdecoder.s    488 | Empty       | 00 |         |    0 | 00/12FC               |                                            
-  489 |  1 seqdecoder.s    489 | Code        | 00 |         |    3 | 00/12FC : 99 30 15    | unpIFFy20       sta   tempLIGNE,y          
-  490 |  1 seqdecoder.s    490 | Code        | 00 |         |    1 | 00/12FF : C8          |                 iny                        
-  491 |  1 seqdecoder.s    491 | Code        | 00 |         |    3 | 00/1300 : CC 20 13    |                 cpy   picWIDTH             
-  492 |  1 seqdecoder.s    492 | Code        | 00 |         |    2 | 00/1303 : B0 BC       |                 bcs   unpIFFy13            
-  493 |  1 seqdecoder.s    493 | Code        | 00 |         |    1 | 00/1305 : 38          |                 sec                        
-  494 |  1 seqdecoder.s    494 | Code        | 00 |         |    1 | 00/1306 : 60          |                 rts                        
-  495 |  1 seqdecoder.s    495 | Empty       | 00 |         |    0 | 00/1307               |                                            
-  496 |  1 seqdecoder.s    496 | Comment     | 00 |         |    0 | 00/1307               | *--- Lecture d'un octet
-  497 |  1 seqdecoder.s    497 | Empty       | 00 |         |    0 | 00/1307               |                                            
-  498 |  1 seqdecoder.s    498 | Code        | 00 |         |    2 | 00/1307 : A7 0C       | unpIFF90        lda   [{{{{$00}+4}+4}+4}]  
-  499 |  1 seqdecoder.s    499 | Code        | 00 |         |    3 | 00/1309 : 29 FF 00    |                 and   #$ff                 
-  500 |  1 seqdecoder.s    500 | Code        | 00 |         |    3 | 00/130C : 8D 16 13    |                 sta   IFFb                 
-  501 |  1 seqdecoder.s    501 | Code        | 00 |         |    2 | 00/130F : E6 0C       |                 inc   {{{{$00}+4}+4}+4}    
-  502 |  1 seqdecoder.s    502 | Code        | 00 |         |    2 | 00/1311 : D0 02       |                 bne   unpIFF91             
-  503 |  1 seqdecoder.s    503 | Code        | 00 |         |    2 | 00/1313 : E6 0E       |                 inc   {{{{$00}+4}+4}+4}+2  
-  504 |  1 seqdecoder.s    504 | Code        | 00 |         |    1 | 00/1315 : 60          | unpIFF91        rts                        
-  505 |  1 seqdecoder.s    505 | Empty       | 00 |         |    0 | 00/1316               |                                            
-  506 |  1 seqdecoder.s    506 | Comment     | 00 |         |    0 | 00/1316               | *--- Data
-  507 |  1 seqdecoder.s    507 | Empty       | 00 |         |    0 | 00/1316               |                                            
-  508 |  1 seqdecoder.s    508 | Data        | 00 |         |    2 | 00/1316 : 00 00       | IFFb            ds    2                    
-  509 |  1 seqdecoder.s    509 | Data        | 00 |         |    2 | 00/1318 : 00 00       | IFFcnt          ds    2                    
-  510 |  1 seqdecoder.s    510 | Data        | 00 |         |    2 | 00/131A : 00 00       | IFFpmask        ds    2                    
-  511 |  1 seqdecoder.s    511 | Data        | 00 |         |    2 | 00/131C : 00 00       | IFFplanes       ds    2                    
-  512 |  1 seqdecoder.s    512 | Empty       | 00 |         |    0 | 00/131E               |                                            
-  513 |  1 seqdecoder.s    513 | Comment     | 00 |         |    0 | 00/131E               | *-------------------------------
-  514 |  1 seqdecoder.s    514 | Comment     | 00 |         |    0 | 00/131E               | * DATA
-  515 |  1 seqdecoder.s    515 | Comment     | 00 |         |    0 | 00/131E               | *-------------------------------
-  516 |  1 seqdecoder.s    516 | Empty       | 00 |         |    0 | 00/131E               |                                            
-  517 |  1 seqdecoder.s    517 | Data        | 00 |         |    2 | 00/131E : 00 00       | nbENTRIES       ds    2                    
-  518 |  1 seqdecoder.s    518 | Empty       | 00 |         |    0 | 00/1320               |                                            
-  519 |  1 seqdecoder.s    519 | Data        | 00 |         |    2 | 00/1320 : 00 00       | picWIDTH        ds    2                    
-  520 |  1 seqdecoder.s    520 | Data        | 00 |         |    2 | 00/1322 : 00 00       | picHEIGHT       ds    2                    
-  521 |  1 seqdecoder.s    521 | Data        | 00 |         |    2 | 00/1324 : 00 00       | picPLANES       ds    2                    
-  522 |  1 seqdecoder.s    522 | Data        | 00 |         |    2 | 00/1326 : 00 00       | numLIGNE        ds    2                    
-  523 |  1 seqdecoder.s    523 | Empty       | 00 |         |    0 | 00/1328               |                                            
-  524 |  1 seqdecoder.s    524 | Data        | 00 |         |    2 | 00/1328 : 00 00       | fliWIDTH        ds    2                    
-  525 |  1 seqdecoder.s    525 | Data        | 00 |         |    2 | 00/132A : 00 00       | fliCOMPRESS     ds    2                    
-  526 |  1 seqdecoder.s    526 | Data        | 00 |         |    2 | 00/132C : 00 00       | fliSIZE         ds    2                    
-  527 |  1 seqdecoder.s    527 | Data        | 00 |         |    2 | 00/132E : 00 00       | fliHEADER_SIZE  ds    2                    
-  528 |  1 seqdecoder.s    528 | Empty       | 00 |         |    0 | 00/1330               |                                            
-  529 |  1 seqdecoder.s    529 | Data        | 00 |         |  512 | 00/1330 : 00 00 00 00 | tempTABLE       ds    512                  
+  264 |  1 seqdecoder.s    264 | Code        | 00 |         |    3 | 00/1149 : 20 7C 11    |                 jsr   doUNPACK             
+  265 |  1 seqdecoder.s    265 | Code        | 00 |         |    1 | 00/114C : 60          |                 rts                        
+  266 |  1 seqdecoder.s    266 | Empty       | 00 |         |    0 | 00/114D               |                                            
+  267 |  1 seqdecoder.s    267 | Comment     | 00 |         |    0 | 00/114D               | *--- Right part
+  268 |  1 seqdecoder.s    268 | Empty       | 00 |         |    0 | 00/114D               |                                            
+  269 |  1 seqdecoder.s    269 | Code        | 00 |         |    3 | 00/114D : A0 00 00    |                 ldy   #0                   
+  270 |  1 seqdecoder.s    270 | Code        | 00 |         |    3 | 00/1150 : 9C 16 13    |                 stz   numLIGNE             ; start line 0
+  271 |  1 seqdecoder.s    271 | Empty       | 00 |         |    0 | 00/1153               |                                            
+  272 |  1 seqdecoder.s    272 | Code        | 00 |         |    3 | 00/1153 : AD 18 13    |                 lda   fliWIDTH             
+  273 |  1 seqdecoder.s    273 | Code        | 00 |         |    1 | 00/1156 : 4A          |                 lsr                        
+  274 |  1 seqdecoder.s    274 | Code        | 00 |         |    1 | 00/1157 : 18          |                 clc                        
+  275 |  1 seqdecoder.s    275 | Code        | 00 |         |    2 | 00/1158 : 65 10       |                 adc   {{{{{$00}+4}+4}+4}+4}; points to data
+  276 |  1 seqdecoder.s    276 | Code        | 00 |         |    3 | 00/115A : 6D 1E 13    |                 adc   fliHEADER_SIZE       
+  277 |  1 seqdecoder.s    277 | Code        | 00 |         |    2 | 00/115D : 85 0C       |                 sta   {{{{$00}+4}+4}+4}    
+  278 |  1 seqdecoder.s    278 | Code        | 00 |         |    2 | 00/115F : A5 12       |                 lda   {{{{{$00}+4}+4}+4}+4}+2
+  279 |  1 seqdecoder.s    279 | Code        | 00 |         |    3 | 00/1161 : 69 00 00    |                 adc   #0                   
+  280 |  1 seqdecoder.s    280 | Code        | 00 |         |    2 | 00/1164 : 85 0E       |                 sta   {{{{$00}+4}+4}+4}+2  
+  281 |  1 seqdecoder.s    281 | Empty       | 00 |         |    0 | 00/1166               |                                            
+  282 |  1 seqdecoder.s    282 | Code        | 00 |         |    3 | 00/1166 : AD 18 13    |                 lda   fliWIDTH             
+  283 |  1 seqdecoder.s    283 | Code        | 00 |         |    1 | 00/1169 : 4A          |                 lsr                        
+  284 |  1 seqdecoder.s    284 | Code        | 00 |         |    1 | 00/116A : 18          |                 clc                        
+  285 |  1 seqdecoder.s    285 | Code        | 00 |         |    3 | 00/116B : 69 00 20    |                 adc   #{$e12000}           
+  286 |  1 seqdecoder.s    286 | Code        | 00 |         |    2 | 00/116E : 85 04       |                 sta   {{$00}+4}            
+  287 |  1 seqdecoder.s    287 | Code        | 00 |         |    3 | 00/1170 : A9 00 00    |                 lda   #0                   
+  288 |  1 seqdecoder.s    288 | Code        | 00 |         |    3 | 00/1173 : 69 E1 00    |                 adc   #^{$e12000}          
+  289 |  1 seqdecoder.s    289 | Code        | 00 |         |    2 | 00/1176 : 85 06       |                 sta   {{$00}+4}+2          
+  290 |  1 seqdecoder.s    290 | Empty       | 00 |         |    0 | 00/1178               |                                            
+  291 |  1 seqdecoder.s    291 | Code        | 00 |         |    3 | 00/1178 : 20 7C 11    |                 jsr   doUNPACK             
+  292 |  1 seqdecoder.s    292 | Empty       | 00 |         |    0 | 00/117B               |                                            
+  293 |  1 seqdecoder.s    293 | Code        | 00 |         |    1 | 00/117B : 60          |                 rts                        
+  294 |  1 seqdecoder.s    294 | Empty       | 00 |         |    0 | 00/117C               |                                            
+  295 |  1 seqdecoder.s    295 | Comment     | 00 |         |    0 | 00/117C               | *---
+  296 |  1 seqdecoder.s    296 | Empty       | 00 |         |    0 | 00/117C               |                                            
+  297 |  1 seqdecoder.s    297 | Code        | 00 |         |    3 | 00/117C : AD 1A 13    | doUNPACK        lda   fliCOMPRESS          ; how to unpack now?
+  298 |  1 seqdecoder.s    298 | Code        | 00 |         |    2 | 00/117F : D0 09       |                 bne   doCOMPRESS           
+  299 |  1 seqdecoder.s    299 | Empty       | 00 |         |    0 | 00/1181               |                                            
+  300 |  1 seqdecoder.s    300 | Comment     | 00 |         |    0 | 00/1181               | *- Image non compressee ILBM
+  301 |  1 seqdecoder.s    301 | Empty       | 00 |         |    0 | 00/1181               |                                            
+  302 |  1 seqdecoder.s    302 | Empty       | 00 |         |    0 | 00/1181               | doUNCOMPRESS                               
+  303 |  1 seqdecoder.s    303 | Code        | 00 |         |    3 | 00/1181 : 20 E4 12    | ozunid_5        jsr   unpIFF90             ; Hi, Convert 32OO!
+  304 |  1 seqdecoder.s    304 | Code        | 00 |         |    3 | 00/1184 : 20 D0 11    |                 jsr   unpIFFy              
+  305 |  1 seqdecoder.s    305 | Code        | 00 |         |    2 | 00/1187 : B0 F8       |                 bcs   ozunid_5             
+  306 |  1 seqdecoder.s    306 | Code        | 00 |         |    1 | 00/1189 : 60          |                 rts                        
+  307 |  1 seqdecoder.s    307 | Empty       | 00 |         |    0 | 00/118A               |                                            
+  308 |  1 seqdecoder.s    308 | Comment     | 00 |         |    0 | 00/118A               | *- Image compressee ILBM (1-8 plans)
+  309 |  1 seqdecoder.s    309 | Empty       | 00 |         |    0 | 00/118A               |                                            
+  310 |  1 seqdecoder.s    310 | Empty       | 00 |         |    0 | 00/118A               | doCOMPRESS                                 
+  311 |  1 seqdecoder.s    311 | Empty       | 00 |         |    0 | 00/118A               |                                            
+  312 |  1 seqdecoder.s    312 | Code        | 00 |         |    3 | 00/118A : 20 E4 12    | unpIFF60        jsr   unpIFF90             
+  313 |  1 seqdecoder.s    313 | Code        | 00 |         |    3 | 00/118D : C9 80 00    |                 cmp   #$80                 
+  314 |  1 seqdecoder.s    314 | Code        | 00 |         |    2 | 00/1190 : 90 1C       |                 bcc   unpIFF70             
+  315 |  1 seqdecoder.s    315 | Empty       | 00 |         |    0 | 00/1192               |                                            
+  316 |  1 seqdecoder.s    316 | Code        | 00 |         |    3 | 00/1192 : 20 E4 12    |                 jsr   unpIFF90             
+  317 |  1 seqdecoder.s    317 | Code        | 00 |         |    3 | 00/1195 : 29 FF 00    |                 and   #$ff                 
+  318 |  1 seqdecoder.s    318 | Code        | 00 |         |    3 | 00/1198 : 8D 08 13    |                 sta   IFFcnt               
+  319 |  1 seqdecoder.s    319 | Code        | 00 |         |    3 | 00/119B : 20 F3 12    |                 jsr   unpIFF90W            
+  320 |  1 seqdecoder.s    320 | Code        | 00 |         |    3 | 00/119E : AD 06 13    | ozunid_6        lda   IFFb                 
+  321 |  1 seqdecoder.s    321 | Code        | 00 |         |    3 | 00/11A1 : 20 C4 11    |                 jsr   unpIFFyW             
+  322 |  1 seqdecoder.s    322 | Code        | 00 |         |    2 | 00/11A4 : 90 07       |                 bcc   unpIFF61             
+  323 |  1 seqdecoder.s    323 | Code        | 00 |         |    3 | 00/11A6 : CE 08 13    |                 dec   IFFcnt               
+  324 |  1 seqdecoder.s    324 | Code        | 00 |         |    2 | 00/11A9 : 10 F3       |                 bpl   ozunid_6             
+  325 |  1 seqdecoder.s    325 | Code        | 00 |         |    2 | 00/11AB : 80 DD       |                 bra   unpIFF60             
+  326 |  1 seqdecoder.s    326 | Code        | 00 |         |    1 | 00/11AD : 60          | unpIFF61        rts                        
+  327 |  1 seqdecoder.s    327 | Empty       | 00 |         |    0 | 00/11AE               |                                            
+  328 |  1 seqdecoder.s    328 | Code        | 00 |         |    3 | 00/11AE : 20 E4 12    | unpIFF70        jsr   unpIFF90             
+  329 |  1 seqdecoder.s    329 | Code        | 00 |         |    3 | 00/11B1 : 8D 08 13    |                 sta   IFFcnt               
+  330 |  1 seqdecoder.s    330 | Code        | 00 |         |    3 | 00/11B4 : 20 E4 12    | ozunid_7        jsr   unpIFF90             
+  331 |  1 seqdecoder.s    331 | Code        | 00 |         |    3 | 00/11B7 : 20 D0 11    |                 jsr   unpIFFy              
+  332 |  1 seqdecoder.s    332 | Code        | 00 |         |    2 | 00/11BA : 90 07       |                 bcc   unpIFF71             
+  333 |  1 seqdecoder.s    333 | Code        | 00 |         |    3 | 00/11BC : CE 08 13    |                 dec   IFFcnt               
+  334 |  1 seqdecoder.s    334 | Code        | 00 |         |    2 | 00/11BF : 10 F3       |                 bpl   ozunid_7             
+  335 |  1 seqdecoder.s    335 | Code        | 00 |         |    2 | 00/11C1 : 80 C7       |                 bra   unpIFF60             
+  336 |  1 seqdecoder.s    336 | Code        | 00 |         |    1 | 00/11C3 : 60          | unpIFF71        rts                        
+  337 |  1 seqdecoder.s    337 | Empty       | 00 |         |    0 | 00/11C4               |                                            
+  338 |  1 seqdecoder.s    338 | Comment     | 00 |         |    0 | 00/11C4               | *---
+  339 |  1 seqdecoder.s    339 | Empty       | 00 |         |    0 | 00/11C4               |                                            
+  340 |  1 seqdecoder.s    340 | Code        | 00 |         |    3 | 00/11C4 : 99 20 13    | unpIFFyW        sta   tempTABLE,y          
+  341 |  1 seqdecoder.s    341 | Code        | 00 |         |    1 | 00/11C7 : C8          |                 iny                        
+  342 |  1 seqdecoder.s    342 | Code        | 00 |         |    1 | 00/11C8 : C8          |                 iny                        
+  343 |  1 seqdecoder.s    343 | Code        | 00 |         |    3 | 00/11C9 : CC 18 13    |                 cpy   fliWIDTH             
+  344 |  1 seqdecoder.s    344 | Code        | 00 |         |    2 | 00/11CC : B0 0D       |                 bcs   unpIFFy1             
+  345 |  1 seqdecoder.s    345 | Code        | 00 |         |    1 | 00/11CE : 38          |                 sec                        
+  346 |  1 seqdecoder.s    346 | Code        | 00 |         |    1 | 00/11CF : 60          |                 rts                        
+  347 |  1 seqdecoder.s    347 | Empty       | 00 |         |    0 | 00/11D0               |                                            
+  348 |  1 seqdecoder.s    348 | Code        | 00 |         |    3 | 00/11D0 : 99 20 13    | unpIFFy         sta   tempTABLE,y          
+  349 |  1 seqdecoder.s    349 | Code        | 00 |         |    1 | 00/11D3 : C8          |                 iny                        
+  350 |  1 seqdecoder.s    350 | Code        | 00 |         |    3 | 00/11D4 : CC 18 13    |                 cpy   fliWIDTH             
+  351 |  1 seqdecoder.s    351 | Code        | 00 |         |    2 | 00/11D7 : B0 02       |                 bcs   unpIFFy1             
+  352 |  1 seqdecoder.s    352 | Code        | 00 |         |    1 | 00/11D9 : 38          |                 sec                        
+  353 |  1 seqdecoder.s    353 | Code        | 00 |         |    1 | 00/11DA : 60          |                 rts                        
+  354 |  1 seqdecoder.s    354 | Code        | 10 |         |    2 | 00/11DB : E2 20       | unpIFFy1        sep   #$20                 
+  355 |  1 seqdecoder.s    355 | Empty       | 10 |         |    0 | 00/11DD               |                                            
+  356 |  1 seqdecoder.s    356 | Code        | 10 |         |    3 | 00/11DD : A2 00 00    |                 ldx   #0                   ; clear la ligne de destination
+  357 |  1 seqdecoder.s    357 | Code        | 10 |         |    3 | 00/11E0 : 9E 20 15    | ozunid_8        stz   tempLIGNE,x          
+  358 |  1 seqdecoder.s    358 | Code        | 10 |         |    1 | 00/11E3 : E8          |                 inx                        
+  359 |  1 seqdecoder.s    359 | Code        | 10 |         |    3 | 00/11E4 : E0 00 04    |                 cpx   #1024                
+  360 |  1 seqdecoder.s    360 | Code        | 10 |         |    2 | 00/11E7 : 90 F7       |                 bcc   ozunid_8             
+  361 |  1 seqdecoder.s    361 | Empty       | 10 |         |    0 | 00/11E9               |                                            
+  362 |  1 seqdecoder.s    362 | Code        | 10 |         |    2 | 00/11E9 : A9 01       |                 lda   #%0000_0001          ; on remet les variables
+  363 |  1 seqdecoder.s    363 | Code        | 10 |         |    3 | 00/11EB : 8D 0A 13    |                 sta   IFFpmask             
+  364 |  1 seqdecoder.s    364 | Code        | 10 |         |    3 | 00/11EE : 9C 0C 13    |                 stz   IFFplanes            
+  365 |  1 seqdecoder.s    365 | Empty       | 10 |         |    0 | 00/11F1               |                                            
+  366 |  1 seqdecoder.s    366 | Code        | 10 |         |    3 | 00/11F1 : A2 00 00    |                 ldx   #0                   
+  367 |  1 seqdecoder.s    367 | Code        | 10 |         |    3 | 00/11F4 : A0 00 00    | unpIFFy2        ldy   #0                   
+  368 |  1 seqdecoder.s    368 | Code        | 10 |         |    3 | 00/11F7 : BD 20 13    | unpIFFy3        lda   tempTABLE,x          
+  369 |  1 seqdecoder.s    369 | Code        | 10 |         |    2 | 00/11FA : 29 80       |                 and   #%1000_0000          
+  370 |  1 seqdecoder.s    370 | Code        | 10 |         |    2 | 00/11FC : F0 09       |                 beq   unpIFFy4             
+  371 |  1 seqdecoder.s    371 | Code        | 10 |         |    3 | 00/11FE : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  372 |  1 seqdecoder.s    372 | Code        | 10 |         |    3 | 00/1201 : 0D 0A 13    |                 ora   IFFpmask             
+  373 |  1 seqdecoder.s    373 | Code        | 10 |         |    3 | 00/1204 : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  374 |  1 seqdecoder.s    374 | Code        | 10 |         |    1 | 00/1207 : C8          | unpIFFy4        iny                        
+  375 |  1 seqdecoder.s    375 | Code        | 10 |         |    3 | 00/1208 : BD 20 13    |                 lda   tempTABLE,x          
+  376 |  1 seqdecoder.s    376 | Code        | 10 |         |    2 | 00/120B : 29 40       |                 and   #%0100_0000          
+  377 |  1 seqdecoder.s    377 | Code        | 10 |         |    2 | 00/120D : F0 09       |                 beq   unpIFFy5             
+  378 |  1 seqdecoder.s    378 | Code        | 10 |         |    3 | 00/120F : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  379 |  1 seqdecoder.s    379 | Code        | 10 |         |    3 | 00/1212 : 0D 0A 13    |                 ora   IFFpmask             
+  380 |  1 seqdecoder.s    380 | Code        | 10 |         |    3 | 00/1215 : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  381 |  1 seqdecoder.s    381 | Code        | 10 |         |    1 | 00/1218 : C8          | unpIFFy5        iny                        
+  382 |  1 seqdecoder.s    382 | Code        | 10 |         |    3 | 00/1219 : BD 20 13    |                 lda   tempTABLE,x          
+  383 |  1 seqdecoder.s    383 | Code        | 10 |         |    2 | 00/121C : 29 20       |                 and   #%0010_0000          
+  384 |  1 seqdecoder.s    384 | Code        | 10 |         |    2 | 00/121E : F0 09       |                 beq   unpIFFy6             
+  385 |  1 seqdecoder.s    385 | Code        | 10 |         |    3 | 00/1220 : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  386 |  1 seqdecoder.s    386 | Code        | 10 |         |    3 | 00/1223 : 0D 0A 13    |                 ora   IFFpmask             
+  387 |  1 seqdecoder.s    387 | Code        | 10 |         |    3 | 00/1226 : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  388 |  1 seqdecoder.s    388 | Code        | 10 |         |    1 | 00/1229 : C8          | unpIFFy6        iny                        
+  389 |  1 seqdecoder.s    389 | Code        | 10 |         |    3 | 00/122A : BD 20 13    |                 lda   tempTABLE,x          
+  390 |  1 seqdecoder.s    390 | Code        | 10 |         |    2 | 00/122D : 29 10       |                 and   #%0001_0000          
+  391 |  1 seqdecoder.s    391 | Code        | 10 |         |    2 | 00/122F : F0 09       |                 beq   unpIFFy7             
+  392 |  1 seqdecoder.s    392 | Code        | 10 |         |    3 | 00/1231 : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  393 |  1 seqdecoder.s    393 | Code        | 10 |         |    3 | 00/1234 : 0D 0A 13    |                 ora   IFFpmask             
+  394 |  1 seqdecoder.s    394 | Code        | 10 |         |    3 | 00/1237 : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  395 |  1 seqdecoder.s    395 | Code        | 10 |         |    1 | 00/123A : C8          | unpIFFy7        iny                        
+  396 |  1 seqdecoder.s    396 | Code        | 10 |         |    3 | 00/123B : BD 20 13    |                 lda   tempTABLE,x          
+  397 |  1 seqdecoder.s    397 | Code        | 10 |         |    2 | 00/123E : 29 08       |                 and   #%0000_1000          
+  398 |  1 seqdecoder.s    398 | Code        | 10 |         |    2 | 00/1240 : F0 09       |                 beq   unpIFFy8             
+  399 |  1 seqdecoder.s    399 | Code        | 10 |         |    3 | 00/1242 : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  400 |  1 seqdecoder.s    400 | Code        | 10 |         |    3 | 00/1245 : 0D 0A 13    |                 ora   IFFpmask             
+  401 |  1 seqdecoder.s    401 | Code        | 10 |         |    3 | 00/1248 : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  402 |  1 seqdecoder.s    402 | Code        | 10 |         |    1 | 00/124B : C8          | unpIFFy8        iny                        
+  403 |  1 seqdecoder.s    403 | Code        | 10 |         |    3 | 00/124C : BD 20 13    |                 lda   tempTABLE,x          
+  404 |  1 seqdecoder.s    404 | Code        | 10 |         |    2 | 00/124F : 29 04       |                 and   #%0000_0100          
+  405 |  1 seqdecoder.s    405 | Code        | 10 |         |    2 | 00/1251 : F0 09       |                 beq   unpIFFy9             
+  406 |  1 seqdecoder.s    406 | Code        | 10 |         |    3 | 00/1253 : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  407 |  1 seqdecoder.s    407 | Code        | 10 |         |    3 | 00/1256 : 0D 0A 13    |                 ora   IFFpmask             
+  408 |  1 seqdecoder.s    408 | Code        | 10 |         |    3 | 00/1259 : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  409 |  1 seqdecoder.s    409 | Code        | 10 |         |    1 | 00/125C : C8          | unpIFFy9        iny                        
+  410 |  1 seqdecoder.s    410 | Code        | 10 |         |    3 | 00/125D : BD 20 13    |                 lda   tempTABLE,x          
+  411 |  1 seqdecoder.s    411 | Code        | 10 |         |    2 | 00/1260 : 29 02       |                 and   #%0000_0010          
+  412 |  1 seqdecoder.s    412 | Code        | 10 |         |    2 | 00/1262 : F0 09       |                 beq   unpIFFy10            
+  413 |  1 seqdecoder.s    413 | Code        | 10 |         |    3 | 00/1264 : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  414 |  1 seqdecoder.s    414 | Code        | 10 |         |    3 | 00/1267 : 0D 0A 13    |                 ora   IFFpmask             
+  415 |  1 seqdecoder.s    415 | Code        | 10 |         |    3 | 00/126A : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  416 |  1 seqdecoder.s    416 | Code        | 10 |         |    1 | 00/126D : C8          | unpIFFy10       iny                        
+  417 |  1 seqdecoder.s    417 | Code        | 10 |         |    3 | 00/126E : BD 20 13    |                 lda   tempTABLE,x          
+  418 |  1 seqdecoder.s    418 | Code        | 10 |         |    2 | 00/1271 : 29 01       |                 and   #%0000_0001          
+  419 |  1 seqdecoder.s    419 | Code        | 10 |         |    2 | 00/1273 : F0 09       |                 beq   unpIFFy11            
+  420 |  1 seqdecoder.s    420 | Code        | 10 |         |    3 | 00/1275 : B9 20 15    |                 lda   tempLIGNE,y          ; [dpPIC],y
+  421 |  1 seqdecoder.s    421 | Code        | 10 |         |    3 | 00/1278 : 0D 0A 13    |                 ora   IFFpmask             
+  422 |  1 seqdecoder.s    422 | Code        | 10 |         |    3 | 00/127B : 99 20 15    |                 sta   tempLIGNE,y          ; [dpPIC],y
+  423 |  1 seqdecoder.s    423 | Code        | 10 |         |    1 | 00/127E : C8          | unpIFFy11       iny                        
+  424 |  1 seqdecoder.s    424 | Code        | 10 |         |    1 | 00/127F : E8          |                 inx                        
+  425 |  1 seqdecoder.s    425 | Code        | 10 |         |    3 | 00/1280 : EC 10 13    |                 cpx   picWIDTH             
+  426 |  1 seqdecoder.s    426 | Code        | 10 |         |    2 | 00/1283 : B0 19       |                 bcs   unpIFFy13            
+  427 |  1 seqdecoder.s    427 | Code        | 10 |         |    3 | 00/1285 : CC 18 13    |                 cpy   fliWIDTH             
+  428 |  1 seqdecoder.s    428 | Code        | 10 |         |    2 | 00/1288 : B0 03       |                 bcs   unpIFFy12            
+  429 |  1 seqdecoder.s    429 | Code        | 10 |         |    3 | 00/128A : 82 6A FF    |                 brl   unpIFFy3             
+  430 |  1 seqdecoder.s    430 | Empty       | 10 |         |    0 | 00/128D               |                                            
+  431 |  1 seqdecoder.s    431 | Code        | 10 |         |    3 | 00/128D : 0E 0A 13    | unpIFFy12       asl   IFFpmask             
+  432 |  1 seqdecoder.s    432 | Code        | 10 |         |    3 | 00/1290 : EE 0C 13    |                 inc   IFFplanes            
+  433 |  1 seqdecoder.s    433 | Code        | 10 |         |    3 | 00/1293 : AD 0C 13    |                 lda   IFFplanes            
+  434 |  1 seqdecoder.s    434 | Code        | 10 |         |    3 | 00/1296 : CD 14 13    |                 cmp   picPLANES            
+  435 |  1 seqdecoder.s    435 | Code        | 10 |         |    2 | 00/1299 : F0 03       |                 beq   unpIFFy13            
+  436 |  1 seqdecoder.s    436 | Code        | 10 |         |    3 | 00/129B : 82 56 FF    |                 brl   unpIFFy2             
+  437 |  1 seqdecoder.s    437 | Empty       | 10 |         |    0 | 00/129E               |                                            
+  438 |  1 seqdecoder.s    438 | Code        | 10 |         |    3 | 00/129E : A2 00 00    | unpIFFy13       ldx   #0                   
+  439 |  1 seqdecoder.s    439 | Code        | 10 |         |    1 | 00/12A1 : 9B          |                 txy                        
+  440 |  1 seqdecoder.s    440 | Code        | 10 |         |    3 | 00/12A2 : BD 20 15    | ozunid_9        lda   tempLIGNE,x          
+  441 |  1 seqdecoder.s    441 | Code        | 10 |         |    1 | 00/12A5 : 0A          |                 asl                        
+  442 |  1 seqdecoder.s    442 | Code        | 10 |         |    1 | 00/12A6 : 0A          |                 asl                        
+  443 |  1 seqdecoder.s    443 | Code        | 10 |         |    1 | 00/12A7 : 0A          |                 asl                        
+  444 |  1 seqdecoder.s    444 | Code        | 10 |         |    1 | 00/12A8 : 0A          |                 asl                        
+  445 |  1 seqdecoder.s    445 | Code        | 10 |         |    3 | 00/12A9 : 1D 21 15    |                 ora   tempLIGNE+1,x        
+  446 |  1 seqdecoder.s    446 | Code        | 10 |         |    2 | 00/12AC : 97 04       |                 sta   [{{$00}+4}],y        
+  447 |  1 seqdecoder.s    447 | Code        | 10 |         |    1 | 00/12AE : C8          |                 iny                        
+  448 |  1 seqdecoder.s    448 | Code        | 10 |         |    1 | 00/12AF : E8          |                 inx                        
+  449 |  1 seqdecoder.s    449 | Code        | 10 |         |    1 | 00/12B0 : E8          |                 inx                        
+  450 |  1 seqdecoder.s    450 | Code        | 10 |         |    3 | 00/12B1 : EC 10 13    |                 cpx   picWIDTH             
+  451 |  1 seqdecoder.s    451 | Code        | 10 |         |    2 | 00/12B4 : 90 EC       |                 bcc   ozunid_9             
+  452 |  1 seqdecoder.s    452 | Empty       | 10 |         |    0 | 00/12B6               |                                            
+  453 |  1 seqdecoder.s    453 | Code        | 00 |         |    2 | 00/12B6 : C2 20       | unpIFFyNEXT     rep   #$20                 
+  454 |  1 seqdecoder.s    454 | Code        | 00 |         |    3 | 00/12B8 : EE 16 13    |                 inc   numLIGNE             
+  455 |  1 seqdecoder.s    455 | Code        | 00 |         |    3 | 00/12BB : AD 16 13    |                 lda   numLIGNE             
+  456 |  1 seqdecoder.s    456 | Code        | 00 |         |    3 | 00/12BE : CD 12 13    |                 cmp   picHEIGHT            
+  457 |  1 seqdecoder.s    457 | Code        | 00 |         |    2 | 00/12C1 : B0 14       |                 bcs   unpIFFy14            
+  458 |  1 seqdecoder.s    458 | Code        | 00 |         |    2 | 00/12C3 : A5 04       |                 lda   {{$00}+4}            
+  459 |  1 seqdecoder.s    459 | Code        | 00 |         |    1 | 00/12C5 : 18          |                 clc                        
+  460 |  1 seqdecoder.s    460 | Code        | 00 |         |    3 | 00/12C6 : 69 A0 00    |                 adc   #{160}               
+  461 |  1 seqdecoder.s    461 | Code        | 00 |         |    2 | 00/12C9 : 85 04       |                 sta   {{$00}+4}            
+  462 |  1 seqdecoder.s    462 | Code        | 00 |         |    2 | 00/12CB : A5 06       |                 lda   {{$00}+4}+2          
+  463 |  1 seqdecoder.s    463 | Code        | 00 |         |    3 | 00/12CD : 69 00 00    |                 adc   #0                   
+  464 |  1 seqdecoder.s    464 | Code        | 00 |         |    2 | 00/12D0 : 85 06       |                 sta   {{$00}+4}+2          
+  465 |  1 seqdecoder.s    465 | Code        | 00 |         |    3 | 00/12D2 : A0 00 00    |                 ldy   #0                   
+  466 |  1 seqdecoder.s    466 | Code        | 00 |         |    1 | 00/12D5 : 38          |                 sec                        
+  467 |  1 seqdecoder.s    467 | Code        | 00 |         |    1 | 00/12D6 : 60          |                 rts                        
+  468 |  1 seqdecoder.s    468 | Code        | 00 |         |    1 | 00/12D7 : 18          | unpIFFy14       clc                        
+  469 |  1 seqdecoder.s    469 | Code        | 00 |         |    1 | 00/12D8 : 60          |                 rts                        
+  470 |  1 seqdecoder.s    470 | Empty       | 00 |         |    0 | 00/12D9               |                                            
+  471 |  1 seqdecoder.s    471 | Code        | 00 |         |    3 | 00/12D9 : 99 20 15    | unpIFFy20       sta   tempLIGNE,y          
+  472 |  1 seqdecoder.s    472 | Code        | 00 |         |    1 | 00/12DC : C8          |                 iny                        
+  473 |  1 seqdecoder.s    473 | Code        | 00 |         |    3 | 00/12DD : CC 10 13    |                 cpy   picWIDTH             
+  474 |  1 seqdecoder.s    474 | Code        | 00 |         |    2 | 00/12E0 : B0 BC       |                 bcs   unpIFFy13            
+  475 |  1 seqdecoder.s    475 | Code        | 00 |         |    1 | 00/12E2 : 38          |                 sec                        
+  476 |  1 seqdecoder.s    476 | Code        | 00 |         |    1 | 00/12E3 : 60          |                 rts                        
+  477 |  1 seqdecoder.s    477 | Empty       | 00 |         |    0 | 00/12E4               |                                            
+  478 |  1 seqdecoder.s    478 | Comment     | 00 |         |    0 | 00/12E4               | *--- Lecture d'un octet
+  479 |  1 seqdecoder.s    479 | Empty       | 00 |         |    0 | 00/12E4               |                                            
+  480 |  1 seqdecoder.s    480 | Code        | 00 |         |    2 | 00/12E4 : A7 0C       | unpIFF90        lda   [{{{{$00}+4}+4}+4}]  
+  481 |  1 seqdecoder.s    481 | Code        | 00 |         |    3 | 00/12E6 : 29 FF 00    |                 and   #$ff                 
+  482 |  1 seqdecoder.s    482 | Code        | 00 |         |    3 | 00/12E9 : 8D 06 13    |                 sta   IFFb                 
+  483 |  1 seqdecoder.s    483 | Code        | 00 |         |    2 | 00/12EC : E6 0C       |                 inc   {{{{$00}+4}+4}+4}    
+  484 |  1 seqdecoder.s    484 | Code        | 00 |         |    2 | 00/12EE : D0 02       |                 bne   unpIFF91             
+  485 |  1 seqdecoder.s    485 | Code        | 00 |         |    2 | 00/12F0 : E6 0E       |                 inc   {{{{$00}+4}+4}+4}+2  
+  486 |  1 seqdecoder.s    486 | Code        | 00 |         |    1 | 00/12F2 : 60          | unpIFF91        rts                        
+  487 |  1 seqdecoder.s    487 | Empty       | 00 |         |    0 | 00/12F3               |                                            
+  488 |  1 seqdecoder.s    488 | Comment     | 00 |         |    0 | 00/12F3               | *--- Lecture d'un word
+  489 |  1 seqdecoder.s    489 | Empty       | 00 |         |    0 | 00/12F3               |                                            
+  490 |  1 seqdecoder.s    490 | Code        | 00 |         |    2 | 00/12F3 : A7 0C       | unpIFF90W       lda   [{{{{$00}+4}+4}+4}]  
+  491 |  1 seqdecoder.s    491 | Code        | 00 |         |    1 | 00/12F5 : EB          |                 xba                        
+  492 |  1 seqdecoder.s    492 | Code        | 00 |         |    3 | 00/12F6 : 8D 06 13    |                 sta   IFFb                 
+  493 |  1 seqdecoder.s    493 | Code        | 00 |         |    2 | 00/12F9 : E6 0C       |                 inc   {{{{$00}+4}+4}+4}    
+  494 |  1 seqdecoder.s    494 | Code        | 00 |         |    2 | 00/12FB : D0 02       |                 bne   unpIFF91W            
+  495 |  1 seqdecoder.s    495 | Code        | 00 |         |    2 | 00/12FD : E6 0E       |                 inc   {{{{$00}+4}+4}+4}+2  
+  496 |  1 seqdecoder.s    496 | Code        | 00 |         |    2 | 00/12FF : E6 0C       | unpIFF91W       inc   {{{{$00}+4}+4}+4}    
+  497 |  1 seqdecoder.s    497 | Code        | 00 |         |    2 | 00/1301 : D0 02       |                 bne   unpIFF92W            
+  498 |  1 seqdecoder.s    498 | Code        | 00 |         |    2 | 00/1303 : E6 0E       |                 inc   {{{{$00}+4}+4}+4}+2  
+  499 |  1 seqdecoder.s    499 | Code        | 00 |         |    1 | 00/1305 : 60          | unpIFF92W       rts                        
+  500 |  1 seqdecoder.s    500 | Empty       | 00 |         |    0 | 00/1306               |                                            
+  501 |  1 seqdecoder.s    501 | Comment     | 00 |         |    0 | 00/1306               | *--- Data
+  502 |  1 seqdecoder.s    502 | Empty       | 00 |         |    0 | 00/1306               |                                            
+  503 |  1 seqdecoder.s    503 | Data        | 00 |         |    2 | 00/1306 : 00 00       | IFFb            ds    2                    
+  504 |  1 seqdecoder.s    504 | Data        | 00 |         |    2 | 00/1308 : 00 00       | IFFcnt          ds    2                    
+  505 |  1 seqdecoder.s    505 | Data        | 00 |         |    2 | 00/130A : 00 00       | IFFpmask        ds    2                    
+  506 |  1 seqdecoder.s    506 | Data        | 00 |         |    2 | 00/130C : 00 00       | IFFplanes       ds    2                    
+  507 |  1 seqdecoder.s    507 | Empty       | 00 |         |    0 | 00/130E               |                                            
+  508 |  1 seqdecoder.s    508 | Comment     | 00 |         |    0 | 00/130E               | *-------------------------------
+  509 |  1 seqdecoder.s    509 | Comment     | 00 |         |    0 | 00/130E               | * DATA
+  510 |  1 seqdecoder.s    510 | Comment     | 00 |         |    0 | 00/130E               | *-------------------------------
+  511 |  1 seqdecoder.s    511 | Empty       | 00 |         |    0 | 00/130E               |                                            
+  512 |  1 seqdecoder.s    512 | Data        | 00 |         |    2 | 00/130E : 00 00       | nbENTRIES       ds    2                    
+  513 |  1 seqdecoder.s    513 | Empty       | 00 |         |    0 | 00/1310               |                                            
+  514 |  1 seqdecoder.s    514 | Data        | 00 |         |    2 | 00/1310 : 00 00       | picWIDTH        ds    2                    
+  515 |  1 seqdecoder.s    515 | Data        | 00 |         |    2 | 00/1312 : 00 00       | picHEIGHT       ds    2                    
+  516 |  1 seqdecoder.s    516 | Data        | 00 |         |    2 | 00/1314 : 00 00       | picPLANES       ds    2                    
+  517 |  1 seqdecoder.s    517 | Data        | 00 |         |    2 | 00/1316 : 00 00       | numLIGNE        ds    2                    
+  518 |  1 seqdecoder.s    518 | Empty       | 00 |         |    0 | 00/1318               |                                            
+  519 |  1 seqdecoder.s    519 | Data        | 00 |         |    2 | 00/1318 : 00 00       | fliWIDTH        ds    2                    
+  520 |  1 seqdecoder.s    520 | Data        | 00 |         |    2 | 00/131A : 00 00       | fliCOMPRESS     ds    2                    
+  521 |  1 seqdecoder.s    521 | Data        | 00 |         |    2 | 00/131C : 00 00       | fliSIZE         ds    2                    
+  522 |  1 seqdecoder.s    522 | Data        | 00 |         |    2 | 00/131E : 00 00       | fliHEADER_SIZE  ds    2                    
+  523 |  1 seqdecoder.s    523 | Empty       | 00 |         |    0 | 00/1320               |                                            
+  524 |  1 seqdecoder.s    524 | Data        | 00 |         |  512 | 00/1320 : 00 00 00 00 | tempTABLE       ds    512                  
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
@@ -657,7 +652,7 @@
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
-  530 |  1 seqdecoder.s    530 | Data        | 00 |         | 1024 | 00/1530 : 00 00 00 00 | tempLIGNE       ds    1024                 
+  525 |  1 seqdecoder.s    525 | Data        | 00 |         | 1024 | 00/1520 : 00 00 00 00 | tempLIGNE       ds    1024                 
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
@@ -913,6 +908,6 @@
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
       |                        |             |    |         |      |           00 00 00 00 |
-  531 |  1 seqdecoder.s    531 | Empty       | 00 |         |    0 | 00/1930               |                                            
-  532 |  1 seqdecoder.s    532 | Empty       | 00 |         |    0 | 00/1930               |                                            
+  526 |  1 seqdecoder.s    526 | Empty       | 00 |         |    0 | 00/1920               |                                            
+  527 |  1 seqdecoder.s    527 | Empty       | 00 |         |    0 | 00/1920               |                                            
 ------+------------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------

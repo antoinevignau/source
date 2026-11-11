@@ -83,6 +83,8 @@ refIsResource	=	$2
 
 chrNULL	=	$00
 chrLA	=	$08
+chrDA	=	$0a
+chrUA	=	$0b
 chrRETURN	=	$0d
 chrRA	=	$15
 chrESCAPE	=	$1b
@@ -96,8 +98,8 @@ chrEOL	=	$ff
 chrYES	=	'O'	; FR
 chrNO	=	'N'
 
-FALSE	=	0
-TRUE	=	255
+FALSE	=	$0000
+TRUE	=	$ffff
 
 *----------------------- Color index
 
@@ -298,6 +300,12 @@ okSHADOW
 * IL FAUT JOUER MAINTENANT
 *-----------------------------------
 
+	php
+	sei
+	PushLong	#intTIME
+	_SetHeartBeat
+	plp
+
 	jsr	initMIDI
 	jsr	PRESENTATION
 	jmp	PLAY
@@ -306,9 +314,14 @@ okSHADOW
 * AU REVOIR LE IIGS
 *-----------------------------------
 
-QUIT	rep	#$30
-	jsr	stopMIDI
+QUIT	jsr	stopMIDI
 
+	php
+	sei
+	PushLong	#intTIME
+	_DelHeartBeat
+	plp
+	
 meQUIT	PushWord	#refIsHandle
 	PushLong	ssREC
 	_ShutDownTools
@@ -344,6 +357,51 @@ meQUIT1	PushWord myID
 *-----------------------------------
 * UNE BELLE BIBLIOTHEQUE
 *-----------------------------------
+
+*-----------------------------------
+* ROUTINE TEMPS (MERCI THE TINIES)
+*-----------------------------------
+
+	mx	%11
+	
+intTIME	ds	4
+	dw	300	; 5 secondes
+	dw	$a55a
+
+	rep	#$30
+	
+	lda	#FREQUENCE_TEMPS
+	stal	intTIME+4
+
+	ldal	MINUTE	; +1 minute
+	inc
+	stal	MINUTE
+	cmp	#60
+	bcc	intTIME_OK
+	lda	#0	; +1 heure
+	stal	MINUTE
+	ldal	HEURE
+	inc
+	stal	HEURE
+	cmp	#24
+	bcc	intTIME_OK
+	lda	#0	; +1 jour
+	stal	HEURE
+	ldal	JOUR
+	inc
+	stal	JOUR
+
+intTIME_OK	sep	#$30
+	clc
+	rtl
+
+*--- Data
+
+JOUR	dw	JOUR_DEBUT
+HEURE	dw	HEURE_DEBUT
+MINUTE	dw	MINUTE_DEBUT
+
+	mx	%00
 
 *------------------------------
 * UNPACK LZ4 FILE
@@ -915,8 +973,25 @@ ptrMASK	adrl	$00008000	; 32k
 
 *----------------------------------- Quickdraw II
 
+thePATTERN	ds	32
+
 blackPATTERN	ds	32,$00
+	ds	32,$11
+	ds	32,$22
+	ds	32,$33
+	ds	32,$44
+	ds	32,$55
+	ds	32,$66
+	ds	32,$77
+	ds	32,$88
+	ds	32,$99
+	ds	32,$aa
+patternBBBB	ds	32,$bb
+patternCCCC	ds	32,$cc
+	ds	32,$dd
+	ds	32,$ee
 whitePATTERN	ds	32,$ff
+
 
 *----------------------------------- Error messages
 

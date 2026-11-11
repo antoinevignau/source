@@ -17,6 +17,11 @@
 * Les skin-heads cherchent la nourriture
 * Les morts-vivants cherchent de la chair humaine
 
+* Le temps : 
+*  Le temps démarre à 11h15
+*  Une minute de jeu pour 5 secondes réelles
+*  La nuit est de 22h à 6h 
+
 *-------------------------------
 * COORDONNEES ECRAN
 *-------------------------------
@@ -32,9 +37,11 @@
 *  Nom : affichage 234,4
 *    1 : 228,20,259,51
 *    2 : 276,20,307,51
-*    F : 232,64,311,70 - Force
-*    H : 232,80,311,86 - Habileté
-*    S : 232,96,311,102 - Santé
+*    F : 232,64,311,70 - Force (80)
+*    H : 232,80,311,86 - Habileté (80)
+*    S : 232,96,311,102 - Santé (80)
+*        couleur de fond : index 11
+*          couleur rouge : index 12
 
 * Lieu
 *   Ecran : 8,48,167,127
@@ -55,12 +62,32 @@
 
 * Logo UBI Soft : 260,170,318,193
 
-*-------------------------------
-* Enchaînement des écrans
-*-------------------------------
-*
-* 62 -- E --> 61 -- B --> 60
-* 3E -- E --> 3D -- B --> 3C
+*------------------------------
+* LES RECTANGLES DES PERSONNAGES
+*------------------------------
+
+tblPERSO_X1	dw	12,52,92,132,180,228,276
+tblPERSO_X2	dw	43,83,123,161,211,259,307
+tblPERSO_Y1	dw	4,4,4,4,4,20,20
+tblPERSO_Y2	dw	35,35,35,35,35,51,51
+
+rectPERSO	dw	0,0,0,0
+
+*------------------------------
+* LES RECTANGLES DU PERSONNAGE
+*------------------------------
+
+rectDEBUT	=	232	; début + valeur (F/H/S)
+rectFIN	=	311	; détermine la fin
+
+rectFORCE_R	dw	64,232,71,311	; d'abord l'actif
+rectFORCE_F	dw	64,232,71,312	; puis l'inactif
+
+rectHABILETE_R	dw	80,232,87,311
+rectHABILETE_F	dw	80,232,87,312
+
+rectSANTE_R	dw	96,232,103,311
+rectSANTE_F	dw	96,232,103,312
 
 *-------------------------------
 * PLAN
@@ -73,6 +100,21 @@
 *              si 0, monter de +56
 *  Recule = +8 sur la colonne suivante
 *              si 0, descendre de -56
+
+xPLAN_MIN	=	1
+xPLAN_MAX	=	8
+yPLAN_MIN	=	1
+yPLAN_MAX	=	7
+
+PLAN_DEBUT	=	0
+PLAN_TAILLE	=	8*7
+PLAN_FIN	=	6*PLAN_TAILLE
+
+refPLAN_INDEX	=	PLAN_FIN-20
+refPLAN_X	=	5	; entre 1 et 8
+refPLAN_Y	=	5	; entre 1 et 7
+
+PLAN
 
 * Sous-sol
 	hex	0000000000000000
@@ -128,6 +170,27 @@
 	hex	0000000000000000
 	hex	0000000000000000
 
+*-------------------------------
+* LES SALLES NOIRES
+*-------------------------------
+
+SALLES_SOMBRES
+	dfb	2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+	dfb	-1
+	
+*-------------------------------
+* NOMBRE DE ZOMBIES PAR SALLE
+*-------------------------------
+
+* Le skin-head sera en salle 78
+
+zENSALLE	dfb	0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0
+	dfb	1,0,0,5,0,0,2,1,1,0,0,1,1,0,3,4
+	dfb	5,0,0,2,0,1,0,2,0,1,0,1,0,0,1,2
+	dfb	1,1,1,0,1,0,1,0,1,0,1,0,0,0,0,2
+	dfb	1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0
+	dfb	0,-1,-1
+	
 *-------------------------------
 * OBJETS
 *-------------------------------

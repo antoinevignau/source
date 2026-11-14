@@ -59,6 +59,7 @@
 *  Quitter : 59,169,87,198
 *  Charger : 91,169,119,198
 *   Outils : 123,169,151,198
+*    Objet : 186,144,231,189
 
 * Logo UBI Soft : 260,170,318,193
 
@@ -93,7 +94,8 @@ rectSANTE_F	dw	96,232,103,312
 * PLAN
 *-------------------------------
 *
-* Chaque niveau est de 8x7
+* Il y a 6 niveaux
+* Chaque niveau est de 7 lignes de 8 colonnes
 *  Gauche = -1 sur la même ligne
 *  Droite = +1 sur la même ligne
 *  Avance = -8 sur la colonne précédente
@@ -101,14 +103,18 @@ rectSANTE_F	dw	96,232,103,312
 *  Recule = +8 sur la colonne suivante
 *              si 0, descendre de -56
 
+MAXN	=	6	; niveau maxi
+MAXL	=	7	; ligne maxi
+MAXC	=	8	; colonne maxi
+
 xPLAN_MIN	=	1
 xPLAN_MAX	=	8
 yPLAN_MIN	=	1
 yPLAN_MAX	=	7
 
 PLAN_DEBUT	=	0
-PLAN_TAILLE	=	8*7
-PLAN_FIN	=	6*PLAN_TAILLE
+PLAN_TAILLE	=	MAXL*MAXC
+PLAN_FIN	=	MAXN*PLAN_TAILLE
 
 refPLAN_INDEX	=	PLAN_FIN-20
 refPLAN_X	=	5	; entre 1 et 8
@@ -190,77 +196,103 @@ zENSALLE	dfb	0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0
 	dfb	1,1,1,0,1,0,1,0,1,0,1,0,0,0,0,2
 	dfb	1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0
 	dfb	0,-1,-1
+
+*-------------------------------
+* LIEUX
+*-------------------------------
+*  LIEUX = Record
+*   SUD, EST, NORD, OUEST, BAS, HAUT: BYTE;
+*   {   Passage Libre:0, 
+*      Passage Bloque:10,
+*       Porte Ouverte:20,
+*        Porte Fermee:30,
+*     Fenetre Ouverte:240,
+*      Fenetre Fermee:250,
+*        Lieu Special:254 }
+*   VIVANTS, CLARTE, MORTS, VEHICULE: BYTE;
+*   {       Permanent:0,
+*            Multiple:80,
+*             Naturel:A0,
+*          Electrique:FF }
+*   ESPACE: ARRAY[1..4,1..10] Of BYTE
+*  End;
+
+TABLEL
 	
 *-------------------------------
 * OBJETS
 *-------------------------------
+*  OBJETS = Record
+*   LARGEUR, HAUTEUR: BYTE;	// multiple de 4 et 16
+*   POSITION: INTEGER
+*  End;
 
-	hex	01020000
-	hex	01028000
-	hex	01010001
-	hex	01014001
-	hex	01028001
-	hex	01020002
-	hex	01018002
-	hex	0101C002
-	hex	01020003
-	hex	01018003
-	hex	0101C003
-	hex	01020004
-	hex	01028004
-	hex	01010005
-	hex	01014005
-	hex	01028005
-	hex	01020006
-	hex	01018006
-	hex	0101C006
-	hex	01020007
-	hex	01018007
-	hex	0101C007
-	hex	02020008
-	hex	02020009
-	hex	0201000A
-	hex	0101800A
-	hex	0101C00A
-	hex	0101000B
-	hex	0201400B
-	hex	0101C00B
-	hex	0201000C
-	hex	0101800C
-	hex	0101C00C
-	hex	0101000D
-	hex	0101400D
-	hex	0101800D
-	hex	0101C00D
-	hex	0101000E
-	hex	0101400E
-	hex	0101800E
-	hex	0101C00E
-	hex	0101000F
-	hex	0101400F
-	hex	0101800F
-	hex	0101C00F
-	hex	02010010
-	hex	01018010
-	hex	0101C010
-	hex	02010011
-	hex	02018011
-	hex	02010012
-	hex	02018012
-	hex	01010013
-	hex	01014013
-	hex	01018013
-	hex	0201C013
-	hex	02014014
-	hex	0101C014
-	hex	01010015
-	hex	01014015
-	hex	02028015
-	hex	01018016
-	hex	0101C016
-	hex	01010017
-	hex	01024017
-	hex	0102C017
+TABLEO	hex	01,02,0000
+	hex	01,02,8000
+	hex	01,01,0001
+	hex	01,01,4001
+	hex	01,02,8001
+	hex	01,02,0002
+	hex	01,01,8002
+	hex	01,01,C002
+	hex	01,02,0003
+	hex	01,01,8003
+	hex	01,01,C003
+	hex	01,02,0004
+	hex	01,02,8004
+	hex	01,01,0005
+	hex	01,01,4005
+	hex	01,02,8005
+	hex	01,02,0006
+	hex	01,01,8006
+	hex	01,01,C006
+	hex	01,02,0007
+	hex	01,01,8007
+	hex	01,01,C007
+	hex	02,02,0008
+	hex	02,02,0009
+	hex	02,01,000A
+	hex	01,01,800A
+	hex	01,01,C00A
+	hex	01,01,000B
+	hex	02,01,400B
+	hex	01,01,C00B
+	hex	02,01,000C
+	hex	01,01,800C
+	hex	01,01,C00C
+	hex	01,01,000D
+	hex	01,01,400D
+	hex	01,01,800D
+	hex	01,01,C00D
+	hex	01,01,000E
+	hex	01,01,400E
+	hex	01,01,800E
+	hex	01,01,C00E
+	hex	01,01,000F
+	hex	01,01,400F
+	hex	01,01,800F
+	hex	01,01,C00F
+	hex	02,01,0010
+	hex	01,01,8010
+	hex	01,01,C010
+	hex	02,01,0011
+	hex	02,01,8011
+	hex	02,01,0012
+	hex	02,01,8012
+	hex	01,01,0013
+	hex	01,01,4013
+	hex	01,01,8013
+	hex	02,01,C013
+	hex	02,01,4014
+	hex	01,01,C014
+	hex	01,01,0015
+	hex	01,01,4015
+	hex	02,02,8015
+	hex	01,01,8016
+	hex	01,01,C016
+	hex	01,01,0017
+	hex	01,02,4017
+	hex	01,02,C017
 
 *-------------------------------
 * PERSONNAGES
@@ -403,7 +435,7 @@ objectSIZE	dw	0,0,16,32	;  1 0000,0000,0010,0020 77 porte fermée du camion
 	dw	0,0,16,32	; 20 0000,0000,0010,0020 52 porte ouverte du couloir de la pharmacie
 	dw	0,0,16,16	; 21 0000,0000,0010,0010 58 boîte ouverte de l'électronique
 	dw	0,0,16,16	; 22 0000,0000,0010,0010 38 boîte ouverte de l'outillage
-	dw	0,15,26,17	; 23 0000,000F,001A,0011 23 chariot "caddie"
+	dw	0,15,26,17	; 23 0000,000F,001A,0011 23 chariot "caddie" (88,110)	
 	dw	2,15,27,17	; 24 0002,000F,001B,0011 15 chariot
 	dw	0,7,32,9	; 25 0000,0007,0020,0009 skin-head allongé
 	dw	1,3,14,13	; 26 0001,0003,000E,000D 51 trousse de secours dans la pharmacie

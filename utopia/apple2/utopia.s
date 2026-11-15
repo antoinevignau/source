@@ -5,6 +5,7 @@
 * (c) 1985, Unicorn Software
 * (c) 2026, Brutal Deluxe Software
 *
+* v1.1 - 20261107 - Cosmetic bug fix in room description
 
 	mx	%00
 	lst	off

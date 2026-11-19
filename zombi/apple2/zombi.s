@@ -62,6 +62,11 @@ PRESENTATION	lda	#pPRESENT	; get the title page
 	
 	lda	#TRUE	; fade out
 	jsr	fadeOUT
+
+*--- Affiche les textes
+
+PRESENT
+
 	rts
 
 *-----------------------------------
@@ -71,11 +76,6 @@ PRESENTATION	lda	#pPRESENT	; get the title page
 PLAY	
 REPLAY	jsr	INIT_ALL
 
-	lda	#changeSALLE
-	stal	$300
-	lda	#^changeSALLE
-	stal	$302
-		
 *-----------------------------------
 * MAIN LOOP
 *-----------------------------------
@@ -180,12 +180,12 @@ noCLEAR	stz	fgHORLOGE	; on arrête l'horloge
 	lda	#FREQUENCE_TEMPS
 	sta	intTIME+4
 	
-	lda	#refPLAN_X
-	sta	PLAN_X
-	lda	#refPLAN_Y
-	sta	PLAN_Y
-	lda	#refPLAN_INDEX	; on se positionne au bon endroit
-	sta	PLAN_INDEX
+*	lda	#refPLAN_X
+*	sta	PLAN_X
+*	lda	#refPLAN_Y
+*	sta	PLAN_Y
+*	lda	#refPLAN_INDEX	; on se positionne au bon endroit
+*	sta	PLAN_INDEX
 	jsr	getSALLE	; prend la salle
 	sta	SALLE
 	
@@ -210,7 +210,7 @@ changeSALLE	sta	I	; l'index
 	bne	GNS_1
 
 	lda	PLAN_X	; peut-on aller à gauche ?
-	cmp	#xPLAN_MIN	; on est au minimum
+	cmp	#MINC	; on est au minimum
 	beq	GNS_ERR_1	; oui
 	lda	PLAN_INDEX
 	dec		; non, regarde si la salle
@@ -225,7 +225,7 @@ GNS_1	cmp	#iDROITE
 	bne	GNS_2
 
 	lda	PLAN_X	; peut-on aller à droite ?
-	cmp	#xPLAN_MAX	; on est au maximum
+	cmp	#MAXC	; on est au maximum
 	beq	GNS_ERR_1	; oui
 	lda	PLAN_INDEX
 	inc		; non, regarde si la salle
@@ -238,11 +238,11 @@ GNS_2	cmp	#iHAUT
 	bne	GNS_3
 
 	lda	PLAN_Y	; on essaye d'abord
-	cmp	#yPLAN_MIN	; dans le même niveau
+	cmp	#MINL	; dans le même niveau
 	beq	GNS_2_BIS
 	lda	PLAN_INDEX
 	sec
-	sbc	#xPLAN_MAX	; -8
+	sbc	#MAXC	; -8
 	jsr	getSALLE
 	bcs	GNS_2_BIS
 	dec	PLAN_Y	; on avance dans le même niveau
@@ -260,11 +260,11 @@ GNS_3	cmp	#iBAS
 	bne	GNS_ERR_2
 
 	lda	PLAN_Y	; on essaye d'abord
-	cmp	#yPLAN_MAX	; dans le même niveau
+	cmp	#MAXL	; dans le même niveau
 	beq	GNS_3_BIS
 	lda	PLAN_INDEX
 	clc
-	adc	#xPLAN_MAX	; +8
+	adc	#MAXC	; +8
 	jsr	getSALLE
 	bcs	GNS_3_BIS
 	inc	PLAN_Y	; on recule dans le même niveau
@@ -333,7 +333,7 @@ afficheETATDESANTE
 * FORCE DU PERSO
 *-------------------------------
 
-afficheFORCE	lda	PERSO_FORCE
+afficheFORCE	lda	HERO_FC
 	clc
 	adc	#rectDEBUT
 	sta	rectFORCE_R+6
@@ -352,7 +352,7 @@ afficheFORCE	lda	PERSO_FORCE
 * HABILETE DU PERSO
 *-------------------------------
 
-afficheHABILETE	lda	PERSO_HABILETE
+afficheHABILETE	lda	HERO_HC
 	clc
 	adc	#rectDEBUT
 	sta	rectHABILETE_R+6
@@ -371,7 +371,7 @@ afficheHABILETE	lda	PERSO_HABILETE
 * SANTE DU PERSO
 *-------------------------------
 
-afficheSANTE	lda	PERSO_SANTE
+afficheSANTE	lda	HERO_SC
 	clc
 	adc	#rectDEBUT
 	sta	rectSANTE_R+6
@@ -422,7 +422,7 @@ CP_1	lda	PERSO_ACTIF	; avait-on déjà choisi un perso ?
 	tax
 	ldy	tblPERSO,x
 	ldx	#0
-]lp	lda	PERSO_ETAT,x
+]lp	lda	HERO,x
 	sta	|$0000,y
 	inx
 	inx
@@ -438,7 +438,7 @@ CP_2	lda	PERSO_CHOISI	; met le nouveau personnage en place
 	ldy	tblPERSO,x
 	ldx	#0
 ]lp	lda	|$0000,y
-	sta	PERSO_ETAT,x
+	sta	HERO,x
 	inx
 	inx
 	iny
@@ -547,13 +547,18 @@ pMASK	strl	'8/shr/autres/mask.shr'
 pPRESENT	strl	'8/shr/autres/present.shr'
 pSCREEN	strl	'8/shr/autres/screen.shr'
 
+pLIEUX	strl	'8/data/ilieux'
+pOBJETS	strl	'8/data/iobjets'
+pPLAN	strl	'8/data/plan'
+pRND	strl	'8/data/rnd'
+
 *--- Quelques tables
 
-tblPERSO	da	PERSO_ETAT	; 0
-	da	PERSO1_ETAT	; 1
-	da	PERSO2_ETAT	; 2
-	da	PERSO3_ETAT	; 3
-	da	PERSO4_ETAT	; 4
+tblPERSO	da	HERO	; 0
+	da	HERO1	; 1
+	da	HERO2	; 2
+	da	HERO3	; 3
+	da	HERO4	; 4
 
 *--- Variables
 
@@ -565,60 +570,5 @@ X	ds	2
 Y	ds	2
 Z	ds	2
 fgHORLOGE	ds	2	; 0: off, <>0: on
-
-*--- Données du jeu
-
-DEBUT_DATA
-
-OLD_SALLE	ds	2	; salle précédente
-NBOBJ	ds	2
-PERSO_ACTIF	ds	2	; personnage courant : 1 à 4
-PERSO_CHOISI	ds	2	; personnage choisi : 1 à 4
-
-PLAN_INDEX	ds	2
-PLAN_X	ds	2
-PLAN_Y	ds	2
-
-PERSO_ETAT	ds	2	; -1: MORT, 0: VIVANT, 1: MORT-VIVANT
-SALLE	ds	2	; quel homme rusé je suis !
-PERSO_FORCE	ds	2
-PERSO_HABILETE	ds	2
-PERSO_SANTE	ds	2
-PERSO_OBJETS	ds	4	; 4 objets maxi
-	ds	2	; pour faire 16, c'est plus joli
-	
-PERSO1_ETAT	dw	0	; MORT, 0: VIVANT, 1: MORT-VIVANT, 2: MORT
-PERSO1_SALLE	dw	2
-PERSO1_FORCE	dw	80
-PERSO1_HABILETE	dw	80
-PERSO1_SANTE	dw	80
-PERSO1_OBJETS	ds	4	; 4 objets maxi
-	ds	2
-
-PERSO2_ETAT	dw	0	; MORT, 0: VIVANT, 1: MORT-VIVANT, 2: MORT
-PERSO2_SALLE	dw	40
-PERSO2_FORCE	dw	30
-PERSO2_HABILETE	dw	20
-PERSO2_SANTE	dw	10
-PERSO2_OBJETS	ds	4	; 4 objets maxi
-	ds	2
-
-PERSO3_ETAT	dw	1	; MORT, 0: VIVANT, 1: MORT-VIVANT, 2: MORT
-PERSO3_SALLE	dw	62
-PERSO3_FORCE	dw	40
-PERSO3_HABILETE	dw	50
-PERSO3_SANTE	dw	40
-PERSO3_OBJETS	ds	4	; 4 objets maxi
-	ds	2
-
-PERSO4_ETAT	dw	2	; MORT, 0: VIVANT, 1: MORT-VIVANT, 2: MORT
-PERSO4_SALLE	dw	77
-PERSO4_FORCE	dw	50
-PERSO4_HABILETE	dw	60
-PERSO4_SANTE	dw	70
-PERSO4_OBJETS	ds	4	; 4 objets maxi
-	ds	2
-
-FIN_DATA
 
 *--- End of code

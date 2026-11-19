@@ -83,6 +83,7 @@ refIsResource	=	$2
 
 chrNULL	=	$00
 chrLA	=	$08
+chrTABULATION	=	$09
 chrDA	=	$0a
 chrUA	=	$0b
 chrRETURN	=	$0d
@@ -97,6 +98,11 @@ chrEOL	=	$ff
 
 chrYES	=	'O'	; FR
 chrNO	=	'N'
+
+chrRIGHT	=	'6'
+chrLEFT	=	'4'
+chrDOWN	=	'2'
+chrUP	=	'8'
 
 FALSE	=	$0000
 TRUE	=	$ffff
@@ -1055,6 +1061,8 @@ taskDATA	ds	4	; wmTaskData       +16
 * CODE BASIC EN ASM :-)
 *-----------------------------------
 
+	put	pascal.s
+	put	variable.s
 	put	zombi.s
 	put	tables.s
 	put	midi.s

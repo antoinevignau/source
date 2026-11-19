@@ -1,0 +1,151 @@
+*
+* Zombi
+*
+* (c) 1986, Yannick Cadin et Ubisoft
+* (c) 2026, Brutal Deluxe Software (Apple II)
+*
+
+	mx	%00
+	lst	off
+
+*-----------------------------------
+* I-OBJETS
+*-----------------------------------
+*
+*  OBJETS = Record
+*   LARGEUR, HAUTEUR: BYTE	// multiple de 4 et 16
+*   POSITION: INTEGER
+*  End
+
+	hex	01,02
+	dw	$0000
+	hex	01,02
+	dw	$0080
+	hex	01,01
+	dw	$0100
+	hex	01,01
+	dw	$0140
+	hex	01,02
+	dw	$0180
+	hex	01,02
+	dw	$0200
+	hex	01,01
+	dw	$0280
+	hex	01,01
+	dw	$02C0
+	hex	01,02
+	dw	$0300
+	hex	01,01
+	dw	$0380
+	hex	01,01
+	dw	$03C0
+	hex	01,02
+	dw	$0400
+	hex	01,02
+	dw	$0480
+	hex	01,01
+	dw	$0500
+	hex	01,01
+	dw	$0540
+	hex	01,02
+	dw	$0580
+	hex	01,02
+	dw	$0600
+	hex	01,01
+	dw	$0680
+	hex	01,01
+	dw	$06C0
+	hex	01,02
+	dw	$0700
+	hex	01,01
+	dw	$0780
+	hex	01,01
+	dw	$07C0
+	hex	02,02
+	dw	$0800
+	hex	02,02
+	dw	$0900
+	hex	02,01
+	dw	$0A00
+	hex	01,01
+	dw	$0A80
+	hex	01,01
+	dw	$0AC0
+	hex	01,01
+	dw	$0B00
+	hex	02,01
+	dw	$0B40
+	hex	01,01
+	dw	$0BC0
+	hex	02,01
+	dw	$0C00
+	hex	01,01
+	dw	$0C80
+	hex	01,01
+	dw	$0CC0
+	hex	01,01
+	dw	$0D00
+	hex	01,01
+	dw	$0D40
+	hex	01,01
+	dw	$0D80
+	hex	01,01
+	dw	$0DC0
+	hex	01,01
+	dw	$0E00
+	hex	01,01
+	dw	$0E40
+	hex	01,01
+	dw	$0E80
+	hex	01,01
+	dw	$0EC0
+	hex	01,01
+	dw	$0F00
+	hex	01,01
+	dw	$0F40
+	hex	01,01
+	dw	$0F80
+	hex	01,01
+	dw	$0FC0
+	hex	02,01
+	dw	$1000
+	hex	01,01
+	dw	$1080
+	hex	01,01
+	dw	$10C0
+	hex	02,01
+	dw	$1100
+	hex	02,01
+	dw	$1180
+	hex	02,01
+	dw	$1200
+	hex	02,01
+	dw	$1280
+	hex	01,01
+	dw	$1300
+	hex	01,01
+	dw	$1340
+	hex	01,01
+	dw	$1380
+	hex	02,01
+	dw	$13C0
+	hex	02,01
+	dw	$1440
+	hex	01,01
+	dw	$14C0
+	hex	01,01
+	dw	$1500
+	hex	01,01
+	dw	$1540
+	hex	02,02
+	dw	$1580
+	hex	01,01
+	dw	$1680
+	hex	01,01
+	dw	$16C0
+	hex	01,01
+	dw	$1700
+	hex	01,02
+	dw	$1740
+	hex	01,02
+	dw	$17C0
